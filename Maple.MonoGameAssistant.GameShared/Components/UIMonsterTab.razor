@@ -1,0 +1,73 @@
+﻿
+<MCard Outlined MaxWidth="1024" Class="mx-auto">
+    <MCardTitle>
+        <MToolbar Dense Flat>
+            <MTextField Label="SearchContent"
+                        @bind-Value="@SearchContent"
+                        TValue="string"
+                        Clearable
+                        HideDetails="true"
+                        AppendOuterIcon="mdi-magnify"
+                        OnAppendOuterClick="()=>this.OnSearch()"
+                        OnClearClick="()=>this.OnSearch()"
+                        OnEnter="()=>this.OnSearch()">
+            </MTextField>
+
+        </MToolbar>
+    </MCardTitle>
+    <MCardText>
+        <UIDynamicHeight>
+            <MVirtualScroll OverscanCount="2" ItemSize="64" Items="Core.ListMonster_Search">
+                <ItemContent>
+                    <MListItem Dense>
+                        <MListItemAvatar Tile Size="36">
+                            <MImage Src="@context.DisplayImage">
+                                <PlaceholderContent>
+                                    <MIcon>mdi-border-none-variant</MIcon>
+                                </PlaceholderContent>
+                            </MImage>
+                        </MListItemAvatar>
+
+
+                        <MListItemContent>
+                            <MListItemTitle>
+                                <span>@context.ToDisplayName()</span>
+                                <MChip XSmall Outlined Color="green">
+                                    @context.DisplayCategory
+                                </MChip>
+
+                            </MListItemTitle>
+                            <MListItemSubtitle>@context.ToDisplayDesc()</MListItemSubtitle>
+                            <MChipGroup ShowArrows="true">
+                                @{
+                                    foreach (var att in context.MonsterAttributes.GetItemAttributes(true))
+                                    {
+                                        <MChip Small Outlined>
+                                            <span>@att.DisplayName:</span>@att.DisplayValue
+                                        </MChip>
+
+                                    }
+                                }
+                            </MChipGroup>
+
+                        </MListItemContent>
+                        <MListItemAction>
+                            <MButtonGroup Group Rounded>
+                                <MButton OnClick="()=>OnSelected(context)">
+                                    <MIcon Color="orange darken-4">mdi-smart-card-outline</MIcon>
+                                </MButton>
+
+                            </MButtonGroup>
+                        </MListItemAction>
+
+                    </MListItem>
+
+                    <MDivider></MDivider>
+                </ItemContent>
+            </MVirtualScroll>
+        </UIDynamicHeight>
+
+    </MCardText>
+</MCard>
+
+

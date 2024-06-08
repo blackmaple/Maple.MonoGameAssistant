@@ -1,0 +1,46 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>netstandard2.0</TargetFramework>
+		<EnableNETAnalyzers>true</EnableNETAnalyzers>
+
+		<EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
+		<EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
+		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+		<Configurations>Debug;Release;Local</Configurations>
+
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Compile Include="..\Maple.MonoGameAssistant.MonoCollectorDataV2\MonoCollecotrClassSettings.cs" Link="Ref\MonoCollecotrClassSettings.cs" />
+		<Compile Include="..\Maple.MonoGameAssistant.MonoCollectorDataV2\MonoCollecotrConvString.cs" Link="Ref\MonoCollecotrConvString.cs" />
+		<Compile Include="..\Maple.MonoGameAssistant.MonoCollectorDataV2\MonoCollectorBaseAddressAttribute.cs" Link="Ref\MonoCollectorBaseAddressAttribute.cs" />
+		<Compile Include="..\Maple.MonoGameAssistant.MonoCollectorDataV2\MonoCollectorInheritViewAttribute.cs" Link="Ref\MonoCollectorInheritViewAttribute.cs" />
+		<Compile Include="..\Maple.MonoGameAssistant.MonoCollectorDataV2\MonoCollectorPtrVTableAttribute.cs" Link="Ref\MonoCollectorPtrVTableAttribute.cs" />
+		<Compile Include="..\Maple.MonoGameAssistant.MonoCollectorDataV2\MonoCollectorSettingsAttribute.cs" Link="Ref\MonoCollectorSettingsAttribute.cs" />
+		<Compile Include="..\Maple.MonoGameAssistant.MonoCollectorDataV2\MonoCollectorTypeAttribute.cs" Link="Ref\MonoCollectorTypeAttribute.cs" />
+		<Compile Include="..\Maple.MonoGameAssistant.MonoCollectorDataV2\MonoCollectorMethodAttribute.cs" Link="Ref\MonoCollectorMethodAttribute.cs" />
+		<Compile Include="..\Maple.MonoGameAssistant.MonoCollectorDataV2\MonoCollectorOptionsAttribute.cs" Link="Ref\MonoCollectorOptionsAttribute.cs" />
+		<Compile Include="..\Maple.MonoGameAssistant.MonoCollectorDataV2\MonoCollectorPropertyAttribute.cs" Link="Ref\MonoCollectorPropertyAttribute.cs" />
+		<Compile Include="..\Maple.MonoGameAssistant.MonoCollectorDataV2\MonoCollectorStaticPropertyAttribute.cs" Link="Ref\MonoCollectorStaticPropertyAttribute.cs" />
+		<Compile Include="..\Maple.MonoGameAssistant.MonoCollectorDataV2\MonoCollectorVTableMethodAttribute.cs" Link="Ref\MonoCollectorVTableMethodAttribute.cs" />
+		<Compile Include="..\Maple.MonoGameAssistant.MonoCollectorDataV2\EnumMonoCollectorTypeVersion.cs" Link="Ref\EnumMonoCollectorTypeVersion.cs" />
+		<Compile Include="..\Maple.MonoGameAssistant.MonoCollectorDataV2\MonoCollectorTypeVersionAttribute.cs" Link="Ref\MonoCollectorTypeVersionAttribute.cs" />
+		<Compile Include="..\Maple.MonoGameAssistant.MonoCollectorDataV2\MonoCollectorFlagAttribute.cs" Link="Ref\MonoCollectorFlagAttribute.cs" />
+		<Compile Include="..\Maple.MonoGameAssistant.MonoCollectorDataV2\MonoStaticMethodInvoker.cs" Link="Ref\MonoStaticMethodInvoker.cs" />
+
+
+ 
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.4">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.9.2" PrivateAssets="all" />
+	</ItemGroup>
+
+
+
+</Project>

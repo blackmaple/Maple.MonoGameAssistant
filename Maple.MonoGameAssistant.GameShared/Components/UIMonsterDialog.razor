@@ -1,0 +1,75 @@
+﻿@inherits Masa.Blazor.Popup.Components.PopupComponentBase
+
+<MDialog Value="Visible" Fullscreen >
+    <MCard Tile >
+        <MToolbar>
+
+            <MListItem>
+                <MListItemAvatar Tile>
+                    <MImage Src="@MonsterDisplayDTO.DisplayImage">
+                        <PlaceholderContent>
+                            <MIcon>mdi-border-none-variant</MIcon>
+                        </PlaceholderContent>
+                    </MImage>
+                </MListItemAvatar>
+                <MListItemContent>
+                    <MListItemTitle>
+                        @MonsterDisplayDTO.ToDisplayName()
+                    </MListItemTitle>
+                    <MListItemSubtitle>
+
+                        <MChip XSmall Outlined Color="green">
+                            @MonsterDisplayDTO.DisplayCategory
+                        </MChip>
+                    </MListItemSubtitle>
+                </MListItemContent>
+            </MListItem>
+
+            <MSpacer></MSpacer>
+            <MToolbarItems>
+                <MButton Icon
+                         OnClick="() => Visible = false">
+                    <MIcon>mdi-close</MIcon>
+                </MButton>
+            </MToolbarItems>
+        </MToolbar>
+
+        <MCardSubtitle>@MonsterDisplayDTO.ToDisplayDesc()</MCardSubtitle>
+        <MCardText>
+            @{
+                var datas = MonsterDisplayDTO.MonsterAttributes.GetItemAttributes(false).ToArray();
+                if (datas.Any())
+                {
+                    <MDescriptions  Dense Bordered AlignCenter Title="MonsterAttributes" Vertical
+                                   Xs="3"
+                                   Lg="6"
+                                   Xl="12"
+                                   Column="12">
+                        @foreach (var item in datas)
+                        {
+                            <MDescriptionsItem Label="@item.DisplayName">
+                                @item.DisplayValue
+                            </MDescriptionsItem>
+                        }
+                    </MDescriptions>
+                }
+
+                var skills = MonsterDisplayDTO.SkillInfos.GetItemAttributes(false).ToArray();
+                if (skills.Any())
+                {
+                    <MDescriptions Dense Bordered AlignCenter Title="SkillInfos" Vertical Column="4">
+                        @foreach (var item in skills)
+                        {
+                            <MDescriptionsItem Label="@item.DisplayName">
+                                @item.ToDisplayValue()
+                            </MDescriptionsItem>
+                        }
+                    </MDescriptions>
+                }
+            }
+
+        </MCardText>
+
+    </MCard>
+</MDialog>
+

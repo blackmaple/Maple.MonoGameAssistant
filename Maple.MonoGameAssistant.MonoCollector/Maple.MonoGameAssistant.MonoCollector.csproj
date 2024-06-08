@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+
+		<PublishAot>true</PublishAot>
+		<IsAotCompatible>true</IsAotCompatible>
+		<Configurations>Debug;Release;Local</Configurations>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Maple.MonoGameAssistant.Model\Maple.MonoGameAssistant.Model.csproj" />
+		<ProjectReference Include="..\Maple.MonoGameAssistant.MonoCollectorDataV2\Maple.MonoGameAssistant.MonoCollectorDataV2.csproj" />
+
+	</ItemGroup>
+
+</Project>

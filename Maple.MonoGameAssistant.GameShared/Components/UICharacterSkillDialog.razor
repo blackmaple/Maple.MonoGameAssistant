@@ -1,0 +1,101 @@
+﻿@inherits Masa.Blazor.Popup.Components.PopupComponentBase
+
+<MDialog Value="Visible">
+    <MCard Tile>
+        <MListItem>
+            <MListItemAvatar Tile>
+                <MImage Src="@CharacterDisplay.DisplayImage">
+                    <PlaceholderContent>
+                        <MIcon>mdi-border-none-variant</MIcon>
+                    </PlaceholderContent>
+                </MImage>
+            </MListItemAvatar>
+            <MListItemContent>
+                <MListItemTitle>
+                    @CharacterDisplay.ToDisplayName()
+                </MListItemTitle>
+                <MListItemSubtitle>
+
+                    <MChip XSmall Outlined Color="green">
+                        @CharacterDisplay.DisplayCategory
+                    </MChip>
+                </MListItemSubtitle>
+            </MListItemContent>
+        </MListItem>
+
+        <MCardSubtitle>@CharacterDisplay.ToDisplayDesc()</MCardSubtitle>
+        <MCardText>
+
+            @{
+                var datas = CharacterSkill.SkillInfos.GetItemAttributes(false).ToArray();
+                if (datas.Any())
+                {
+                    <MList  Dense>
+                        @foreach (var item in datas)
+                        {
+                            var data = this.Core.SearchGameSkill(item);
+                            <MListItem Dense>
+                                <MListItemAvatar Tile>
+                                    <MImage Src="@data?.DisplayImage">
+                                        <PlaceholderContent>
+                                            <MIcon>mdi-border-none-variant</MIcon>
+                                        </PlaceholderContent>
+                                    </MImage>
+                                </MListItemAvatar>
+                                <MListItemContent>
+                                    <MListItemTitle>
+                                        @data.ToDisplayName()
+                                    </MListItemTitle>
+                                    <MListItemSubtitle>
+                                        @data.ToDisplayDesc()
+                                    </MListItemSubtitle>
+                                </MListItemContent>
+                                <MListItemAction>
+                                    <MButtonGroup Rounded>
+                                        <MButton Small Disabled="@(!item.CanWrite)">
+                                            <MIcon Color="orange darken-4">mdi-plus</MIcon>
+                                        </MButton>
+                                        <MButton Small Disabled="@(!item.CanWrite)">
+                                            <MIcon Color="orange darken-4">mdi-trash-can-outline</MIcon>
+                                        </MButton>
+
+                                    </MButtonGroup>
+                                </MListItemAction>
+                            </MListItem>
+                            <MDivider></MDivider>
+                        }
+                    </MList>
+                    // <MDescriptions Dense Bordered AlignCenter Column="1">
+                    //     @foreach (var item in datas)
+                    //     {
+                    //         var data = this.Core.SearchGameInventory(item);
+                    //         <MDescriptionsItem Label="@item.DisplayName">
+                    //             <MListItem OnClick="()=>{}">
+                    //                 <MListItemAvatar Tile>
+                    //                     <MImage Src="@data?.DisplayImage">
+                    //                         <PlaceholderContent>
+                    //                             <MIcon>mdi-plus</MIcon>
+                    //                         </PlaceholderContent>
+                    //                     </MImage>
+                    //                 </MListItemAvatar>
+                    //                 <MListItemContent>
+                    //                     <MListItemTitle>
+                    //                         @data?.ToDisplayName()
+                    //                     </MListItemTitle>
+                    //                     <MListItemSubtitle>
+                    //                         @data?.ToDisplayName()
+                    //                     </MListItemSubtitle>
+                    //                 </MListItemContent>
+
+                    //             </MListItem>
+
+                    //         </MDescriptionsItem>
+                    //     }
+                    // </MDescriptions>
+                }
+            }
+        </MCardText>
+
+    </MCard>
+</MDialog>
+

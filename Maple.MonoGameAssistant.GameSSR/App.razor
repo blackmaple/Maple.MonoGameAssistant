@@ -1,0 +1,24 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <base href="/" />
+    <link rel="stylesheet" href="Maple.MonoGameAssistant.GameSSR.styles.css" />
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <link href="_content/Masa.Blazor/css/masa-blazor.min.css" rel="stylesheet">
+    <link href="css/site.css" rel="stylesheet" />
+     <link href="css/materialdesign/v7.1.96/css/materialdesignicons.min.css" rel="stylesheet">
+
+    <HeadOutlet />
+</head>
+
+<body>
+    <Main @rendermode="new InteractiveServerRenderMode(false)"></Main>
+    <script src="_framework/blazor.web.js"></script>
+    <script src="_content/BlazorComponent/js/blazor-component.js"></script>
+
+</body>
+
+</html>

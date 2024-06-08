@@ -1,0 +1,63 @@
+﻿<MCard Outlined MaxWidth="1024" Class="mx-auto">
+    <MCardTitle>
+        <MToolbar Dense Flat>
+            <MTextField Label="SearchContent"
+                        @bind-Value="@SearchContent"
+                        Color="primary"
+                        TValue="string"
+                        Clearable
+                        HideDetails="true"
+                        AppendOuterIcon="mdi-magnify"
+                        OnAppendOuterClick="()=>this.OnSearch()"
+                        OnClearClick="()=>this.OnSearch()"
+                        OnEnter="()=>this.OnSearch()">
+            </MTextField>
+        </MToolbar>
+    </MCardTitle>
+    <MCardText>
+        <UIDynamicHeight>
+            <MVirtualScroll OverscanCount="2" ItemSize="64" Items="Core.ListSwitch_Search">
+                <ItemContent>
+                    <MListItem Dense >
+
+                        <MListItemContent>
+                            <MListItemTitle>
+                                @context.DisplayName
+                            </MListItemTitle>
+                            <MListItemSubtitle>@context.DisplayDesc</MListItemSubtitle>
+
+                        </MListItemContent>
+                        <MListItemAction>
+                            @if (!context.ButtonType)
+                            {
+                                <MButton Icon 
+                                         Color="orange darken-4"
+                                         Loading="@context.Loading"
+                                         Disabled="context.Loading"
+                                         OnClick="()=>OnChange(context)">
+                                    <MIcon>mdi-crosshairs</MIcon>
+                                </MButton>
+                            }
+                            else
+                            {
+                                <MSwitch Inset
+                                         Color="orange darken-4"
+                                         Loading="@context.Loading"
+                                         Disabled="context.Loading"
+                                         OnClick="()=>OnChange(context)"
+                                         @bind-Value="@context.SwitchValue">
+                                </MSwitch>
+                            }
+
+                        </MListItemAction>
+                    </MListItem>
+
+                    <MDivider></MDivider>
+                </ItemContent>
+            </MVirtualScroll>
+        </UIDynamicHeight>
+
+    </MCardText>
+</MCard>
+
+

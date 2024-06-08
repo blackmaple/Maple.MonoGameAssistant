@@ -1,0 +1,56 @@
+﻿<MCard Outlined MaxWidth="1024" Class="mx-auto">
+    <MCardTitle>
+        <MToolbar Dense Flat>
+            <MTextField Label="SearchContent"
+                        Color="primary"
+                        @bind-Value="@SearchContent"
+                        TValue="string"
+                        Clearable
+                        HideDetails="true"
+                        AppendOuterIcon="mdi-magnify"
+                        OnAppendOuterClick="()=>this.OnSearch()"
+                        OnClearClick="()=>this.OnSearch()"
+                        OnEnter="()=>this.OnSearch()">
+            </MTextField>
+        </MToolbar>
+    </MCardTitle>
+    <MCardText>
+        <UIDynamicHeight>
+
+            <MVirtualScroll OverscanCount="2" ItemSize="64" Items="Core.ListCurrency_Search">
+                <ItemContent>
+                    <MListItem Dense >
+                        <MListItemAvatar Size="36">
+                            <MImage Src="@context.DisplayImage">
+                                <PlaceholderContent>
+                                    <MIcon>mdi-border-none-variant</MIcon>
+                                </PlaceholderContent>
+                            </MImage>
+                        </MListItemAvatar>
+                        <MListItemContent>
+                            <MListItemTitle>
+                                @context.ToDisplayName()
+                            </MListItemTitle>
+                            <MListItemSubtitle>
+                                @context.ToDisplayDesc()
+                            </MListItemSubtitle>
+
+                        </MListItemContent>
+                        <MListItemAction>
+                            <MButtonGroup Group Rounded>
+                                <MButton Icon OnClick="()=>OnSelected(context)">
+                                    <MIcon Color="orange darken-4">mdi-file-edit-outline</MIcon>
+                                </MButton>
+
+                            </MButtonGroup>
+                        </MListItemAction>
+                    </MListItem>
+                    <MDivider></MDivider>
+                </ItemContent>
+            </MVirtualScroll>
+        </UIDynamicHeight>
+
+    </MCardText>
+</MCard>
+
+

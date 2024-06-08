@@ -1,0 +1,75 @@
+﻿@inherits Masa.Blazor.Popup.Components.PopupComponentBase
+
+<MDialog Value="Visible" Fullscreen>
+    <MCard Tile>
+        <MToolbar>
+
+            <MListItem>
+                <MListItemAvatar Tile>
+                    <MImage Src="@CharacterDisplay.DisplayImage">
+                        <PlaceholderContent>
+                            <MIcon>mdi-border-none-variant</MIcon>
+                        </PlaceholderContent>
+                    </MImage>
+                </MListItemAvatar>
+                <MListItemContent>
+                    <MListItemTitle>
+                        @CharacterDisplay.ToDisplayName()
+                    </MListItemTitle>
+                    <MListItemSubtitle>
+
+                        <MChip XSmall Outlined Color="green">
+                            @CharacterDisplay.DisplayCategory
+                        </MChip>
+                    </MListItemSubtitle>
+                </MListItemContent>
+            </MListItem>
+
+            <MSpacer></MSpacer>
+            <MToolbarItems>
+                <MButton Icon
+                         OnClick="() => Visible = false">
+                    <MIcon>mdi-close</MIcon>
+                </MButton>
+            </MToolbarItems>
+        </MToolbar>
+
+        <MCardSubtitle>@CharacterDisplay.ToDisplayDesc()</MCardSubtitle>
+        <MCardText>
+            @{
+                var datas = CharacterStatus.CharacterAttributes.GetItemAttributes(false).ToArray();
+                if (datas.Any())
+                {
+                    <MDescriptions Dense Bordered AlignCenter Vertical Xs="3"
+                                   Lg="6"
+                                   Xl="12" Column="12">
+                        @foreach (var item in datas)
+                        {
+                            <MDescriptionsItem Label="@item.DisplayName">
+                                @if (item.CanWrite)
+                                {
+                                    <MTextField OnAppendClick="()=>OnUpdateCharacterStatus(item)"
+                                                AppendIcon="mdi-pencil-outline"
+                                                Type="number"
+                                                TValue="decimal"
+                                                Loading="item.Loading"
+                                                Disabled="item.Loading"
+                                                Dense
+                                                HideDetails="true"
+                                                @bind-Value="@item.Value"
+                                                NumberProps="@(prop => { prop.Min = 0; prop.Max = int.MaxValue; prop.Step =1; prop.HideControl= true; })" />
+                                }
+                                else
+                                {
+                                    @item.DisplayValue
+                                }
+                            </MDescriptionsItem>
+                        }
+                    </MDescriptions>
+                }
+            }
+        </MCardText>
+
+    </MCard>
+</MDialog>
+

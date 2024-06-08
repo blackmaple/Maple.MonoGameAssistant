@@ -1,0 +1,56 @@
+﻿@inherits Masa.Blazor.Popup.Components.PopupComponentBase
+
+<MDialog Value="Visible">
+    <MCard Tile>
+        <MListItem>
+            <MListItemAvatar Tile>
+                <MImage Src="@InventoryDisplay.DisplayImage">
+                    <PlaceholderContent>
+                        <MIcon>mdi-border-none-variant</MIcon>
+                    </PlaceholderContent>
+                </MImage>
+            </MListItemAvatar>
+            <MListItemContent>
+                <MListItemTitle>
+                    @InventoryDisplay.ToDisplayName()
+                </MListItemTitle>
+                <MListItemSubtitle>
+
+                    <MChip XSmall Outlined Color="green">
+                        @InventoryDisplay.DisplayCategory
+                    </MChip>
+                </MListItemSubtitle>
+            </MListItemContent>
+        </MListItem>
+
+        <MCardSubtitle>@InventoryDisplay.ToDisplayDesc()</MCardSubtitle>
+        <MCardText>
+            @{
+                var datas = InventoryDisplay.ItemAttributes.GetItemAttributes(false).ToArray();
+                if (datas.Any())
+                {
+                    <MDescriptions Dense Bordered AlignCenter Vertical Column="4">
+                        @foreach (var item in datas)
+                        {
+                            <MDescriptionsItem Label="@item.DisplayName">
+                                @item.DisplayValue
+                            </MDescriptionsItem>
+                        }
+                    </MDescriptions>
+                }
+            }
+        </MCardText>
+        <MCardActions>
+            <MTextField AppendIcon="mdi-pencil-outline"
+                        OnAppendClick="@OnUpdateInventoryInfo"
+                        Type="number"
+                        TValue="int"
+                        Loading="Loading"
+                        Disabled="Loading"
+                        Label="@InventoryDisplay.DisplayName"
+                        @bind-Value="InventoryInfo.InventoryCount"
+                        NumberProps="@(prop => { prop.Min = 0; prop.Max = 99; prop.Step =1; prop.HideControl=true; })" />
+        </MCardActions>
+    </MCard>
+</MDialog>
+

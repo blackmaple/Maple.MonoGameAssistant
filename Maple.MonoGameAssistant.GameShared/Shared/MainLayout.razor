@@ -1,0 +1,98 @@
+﻿@inherits LayoutComponentBase
+<PageTitle>@Core.GameSessionInfo?.DisplayName</PageTitle>
+<MApp>
+
+    <MAppBar App Dense Height="32">
+        <MAppBarNavIcon Small>
+            <MIcon>mdi-gamepad-variant-outline</MIcon>
+        </MAppBarNavIcon>
+        <MAppBarTitle>@Core.GameSessionInfo?.DisplayName</MAppBarTitle>
+    </MAppBar>
+
+
+    <MMain>
+        <CascadingValue Value="@NavTab">
+            <MContainer Fluid>
+                <MErrorHandler>
+                    @if (Status == EnumGameServiceStatus.OK)
+                    {
+                        @Body
+                    }
+                    else if (Status == EnumGameServiceStatus.Init)
+                    {
+                        <MSkeletonLoader Class="mx-auto"
+                                         Type="card-avatar,paragraph,actions">
+                        </MSkeletonLoader>
+                    }
+                    else
+                    {
+                        <MButton Block Color="primary" OnClick="()=>LoadServiceDataAsync()">
+                            <MIcon>mdi-cached</MIcon>
+                            <span>Try</span>
+                        </MButton>
+
+                    }
+                </MErrorHandler>
+            </MContainer>
+        </CascadingValue>
+
+    </MMain>
+    @if (Status == EnumGameServiceStatus.OK)
+    {
+        <MBottomNavigation @bind-Value="@NavTab" Grow Color="teal" App>
+            <MButton Value="UIMainTabs.Tab_Currency">
+                <span>Currency</span>
+                <MIcon> mdi-currency-twd</MIcon>
+
+            </MButton>
+            <MButton Value="UIMainTabs.Tab_Inventory">
+                <span>Inventory</span>
+                <MIcon>mdi-bag-personal-outline</MIcon>
+            </MButton>
+            <MButton Value="UIMainTabs.Tab_Character">
+                <span>Character</span>
+                <MIcon>mdi-face-man-shimmer-outline</MIcon>
+            </MButton>
+
+            <MMenu OpenOnHover Top OffsetY>
+                <ActivatorContent>
+                    <MButton Icon Value="UIMainTabs.Tab_Misc" @attributes="@context.Attrs">
+                        <span>Misc</span>
+                        <MIcon>mdi-chevron-up</MIcon>
+                    </MButton>
+                </ActivatorContent>
+                <ChildContent>
+                    <MList Dense>
+                        <MListItemGroup @bind-Value="@NavTab" Color="teal">
+                            <MListItem Value="UIMainTabs.Tab_Misc" Dense PrependIcon="mdi-file-question-outline"
+                                       Title="Misc">
+
+                            </MListItem>
+
+                            <MListItem Dense PrependIcon="mdi-pig-variant-outline"
+                                       Title="Monster"
+                                       Value="UIMainTabs.Tab_Monster">
+
+                            </MListItem>
+
+                            <MListItem Dense PrependIcon="mdi-book-edit-outline"
+                                       Title="Quest"
+                                       Value="UIMainTabs.Tab_Quest">
+
+                            </MListItem>
+
+                            <MListItem Dense PrependIcon="mdi-auto-fix"
+                                       Title="Effect"
+                                       Value="UIMainTabs.Tab_Effect">
+
+                            </MListItem>
+
+                        </MListItemGroup>
+                    </MList>
+                </ChildContent>
+            </MMenu>
+        </MBottomNavigation>
+    }
+</MApp>
+
+
