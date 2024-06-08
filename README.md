@@ -2,23 +2,28 @@
 
 ### 项目说明
 
-  dotNet8 + AOT + Blazor 写了一个 Unity Game 通用修改器框架 只支持WinX64
-    
-### 项目文件
+0.  参考
 
-0.  项目参考
-
-
+  
     -  [cheat-engine](https://github.com/cheat-engine/cheat-engine)
     -  [Il2CppDumper](https://github.com/Perfare/Il2CppDumper)
     -  [BepInEx](https://github.com/BepInEx/BepInEx)
     -  [MASA.Blazor](https://github.com/masastack/MASA.Blazor)
-      
-1.  
+
+1.  要求
+
     -  一个VS2022
     -  一个DotNet8 SDK 需要安装AOT
-    
-3.  Common
+    -  一个Unity编译的X64游戏
+
+2.  SDK
+     
+     -  dotNet8 + AOT + Blazor 写了一个 Unity Game 通用修改器框架 只支持WinX64
+     
+
+### 项目文件
+
+1.  Common
 
       ###
       |  project                          |  desc                                                                                            |  status  |
@@ -27,7 +32,7 @@
       |  [Maple.MonoGameAssistant.HotKey](https://github.com/blackmaple/Maple.MonoGameAssistant/tree/main/Maple.MonoGameAssistant.HotKey)    |  HOOK WIN MSG & 执行自定义消息 | OK  |
       |  [Maple.MonoGameAssistant.Logger](https://github.com/blackmaple/Maple.MonoGameAssistant/tree/main/Maple.MonoGameAssistant.Logger)    |  简单的日志 实现ILogger        |  OK  |
     
-4.  Generator
+2.  Generator
 
       ###
       |  project                          |  desc                                                                                            |  status  |
@@ -39,7 +44,7 @@
       |  [Maple.MonoGameAssistant.MonoCollectorDataV2](https://github.com/blackmaple/Maple.MonoGameAssistant/tree/main/Maple.MonoGameAssistant.MonoCollectorDataV2)|   MONOAPI&源生成器所需的公用代码2  |  OK  |
       |  [Maple.MonoGameAssistant.MonoCollectorGeneratorV2](https://github.com/blackmaple/Maple.MonoGameAssistant/tree/main/Maple.MonoGameAssistant.MonoCollectorGeneratorV2)|  源生成器-对MONOAPI生产类似元数据转成C#代码 |  OK  |
 
-5.  MonoCore
+3.  MonoCore
 
       ###
       |  project                          |  desc                                                                                            |  status  |
@@ -51,7 +56,7 @@
       - BAK
           -  MonoTask 实现一个TaskScheduler (注意:调用MONOAPI的都需要附加到MONO这个操作) 让函数利用Task调度到一个指定的线程 附加并执行代码后退出附加( 主要还是附加不退 直接关闭游戏会卡死 )
           -  UnityTask 实现一个TaskScheduler (注意:Unity的对象可能需要在UI线程上操作) 让函数利用Task调度到窗口主线程(一般也是UI线程) 利用HOOK WIN MSG 发送了一个UserMsgCode
-6. UI
+4. UI
     -  GameUI
 
       ###
@@ -80,4 +85,5 @@
       |  [Maple.MonoGameAssistant.WinForm](https://github.com/blackmaple/Maple.MonoGameAssistant/tree/main/Maple.MonoGameAssistant.WinForm)  | MONOAPI的UI 采用了DEVEXPRESS |  OK  |
 
 ***
+
 #### 项目更新说明
