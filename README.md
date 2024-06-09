@@ -40,8 +40,17 @@
       |  [Maple.MonoGameAssistant.DllHijackData](https://github.com/blackmaple/Maple.MonoGameAssistant/tree/main/Maple.MonoGameAssistant.DllHijackData)|  DLL劫持源生成器所需的公用代码  |  ✔  |
       |  [Maple.MonoGameAssistant.DllHijackGenerator](https://github.com/blackmaple/Maple.MonoGameAssistant/tree/main/Maple.MonoGameAssistant.DllHijackGenerator)|  DLL劫持源生成器实现  |  ✔  |
       |  [Maple.MonoGameAssistant.MonoCollector](https://github.com/blackmaple/Maple.MonoGameAssistant/tree/main/Maple.MonoGameAssistant.MonoCollector)| MONOAPI&源生成器所需的公用代码1 |  ✔  |
-      |  [Maple.MonoGameAssistant.MonoCollectorDataV2](https://github.com/blackmaple/Maple.MonoGameAssistant/tree/main/Maple.MonoGameAssistant.MonoCollectorDataV2)|   MONOAPI&源生成器所需的公用代码2  |  ✔  |
+      |  [Maple.MonoGameAssistant.MonoCollectorDataV2](https://github.com/blackmaple/Maple.MonoGameAssistant/tree/main/Maple.MonoGameAssistant.MonoCollectorDataV2)*API*|   MONOAPI&源生成器所需的公用代码2  |  ✔  |
       |  [Maple.MonoGameAssistant.MonoCollectorGeneratorV2](https://github.com/blackmaple/Maple.MonoGameAssistant/tree/main/Maple.MonoGameAssistant.MonoCollectorGeneratorV2)|  源生成器-对MONOAPI生产类似元数据转成C#代码 |  ✔  |
+
+      - *常用API*
+        
+        ###
+       |  Class                                   |  desc                                                                                            |      code      |
+       |  -------------------------------         |  ----------------------------------------------------------------------------------------------  |      ----      |
+       |  MonoCollectorMethodAttribute            |      对MONOAPI 提供的元数据查找函数地址 支持自定义查找规则                                        |    `[MonoCollectorMethod(Name_Func_ENCODE_TO_JPG, Search = typeof(Search_ImageConversion))]`      |
+       |  MonoCollectorPropertyAttribute          |      对MONOAPI 提供的元数据查找class 成员字段 默认按 字段名字查询 以兼容游戏版本                  |    `[MonoCollectorProperty(PropertyName = "Price")]`      |
+       |  MonoCollectorStaticPropertyAttribute    |      对MONOAPI 提供的元数据查找class 静态字段 默认按 字段名字查询 以兼容游戏版本                  |    `[MonoCollectorStaticProperty(PropertyName = "Instance")]`      |
 
 3.  MonoCore
 
@@ -50,9 +59,9 @@
       |  -------------------------------  |  ----------------------------------------------------------------------------------------------  |  ------  |
       |  [Maple.MonoGameAssistant.Core](https://github.com/blackmaple/Maple.MonoGameAssistant/tree/main/Maple.MonoGameAssistant.Core)  |  利用MONOAPI收集类似元数据的项目 参考了CheatEngine中的实现  |  ✔  |
       |  [Maple.MonoGameAssistant.Model](https://github.com/blackmaple/Maple.MonoGameAssistant/tree/main/Maple.MonoGameAssistant.Model])  | 元数据模型  |  ✔  |
-      |  [Maple.MonoGameAssistant.UnityCore](https://github.com/blackmaple/Maple.MonoGameAssistant/tree/main/Maple.MonoGameAssistant.UnityCore)*注释*  | 对Unity常用类&MONO线程的Task调度&UnityUI主线程的Task调度(Send UserWinMsg)|  ✔  |
+      |  [Maple.MonoGameAssistant.UnityCore](https://github.com/blackmaple/Maple.MonoGameAssistant/tree/main/Maple.MonoGameAssistant.UnityCore)*备注*  | 对Unity常用类&MONO线程的Task调度&UnityUI主线程的Task调度(Send UserWinMsg)|  ✔  |
 
-      - *注释*
+      - *备注*
           -  **`MonoTask` 实现一个TaskScheduler (注意:调用MONOAPI的都需要附加到MONO这个操作) 让函数利用Task调度到一个指定的线程 附加并执行代码后退出附加( 主要还是附加不退 直接关闭游戏会卡死 )**
           -  **`UnityTask` 实现一个TaskScheduler (注意:Unity的对象可能需要在UI线程上操作) 让函数利用Task调度到窗口主线程(一般也是UI线程) 利用HOOK WIN MSG 发送了一个UserMsgCode**
 
