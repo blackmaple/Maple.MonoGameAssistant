@@ -10,7 +10,6 @@
 
 		<EnableRequestDelegateGenerator>true</EnableRequestDelegateGenerator>
 		<InterceptorsPreviewNamespaces>$(InterceptorsPreviewNamespaces);Microsoft.AspNetCore.Http.Generated</InterceptorsPreviewNamespaces>
-		<Configurations>Debug;Release;Local</Configurations>
 
 	</PropertyGroup>
 

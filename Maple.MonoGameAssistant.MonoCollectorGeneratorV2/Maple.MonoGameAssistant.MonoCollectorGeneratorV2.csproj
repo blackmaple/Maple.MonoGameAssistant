@@ -7,7 +7,6 @@
 		<EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
 		<EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
 		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
-		<Configurations>Debug;Release;Local</Configurations>
 
 	</PropertyGroup>
 
