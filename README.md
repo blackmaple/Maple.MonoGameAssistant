@@ -10,7 +10,9 @@
 
     -  一个VS2022
     -  一个DotNet8 SDK 需要安装AOT
-    -  一个Unity编译的X64游戏 案例:[Bloomtown A Different Story Demo](https://github.com/blackmaple/Maple.Bloomtown)
+    -  Unity编译的X64游戏(MONO&IL2CPP)
+          -  [Bloomtown A Different Story Demo](https://github.com/blackmaple/Maple.Bloomtown)
+          -  [崛起力量: 测试英雄 试玩版](https://github.com/blackmaple/Maple.HeroTest)
 
 2.  参考
      
