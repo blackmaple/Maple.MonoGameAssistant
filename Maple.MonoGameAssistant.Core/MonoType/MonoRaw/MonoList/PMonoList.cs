@@ -1,5 +1,6 @@
 ﻿using Maple.MonoGameAssistant.Core;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -107,12 +108,37 @@ namespace Maple.MonoGameAssistant.Core
 
         public int Size => AsRef().Size;
 
+        [Obsolete("USE GetEnumerator")]
         public IEnumerable<T_DATA> AsEnumerable()
         {
             var size = this.Size;
             for (int i = 0; i < size; ++i)
             {
                 yield return this[i % size];
+            }
+        }
+
+        public Enumerator GetEnumerator() => new(this);
+
+        public struct Enumerator(PMonoList_S<T_DATA> list)
+        {
+            private int _index = 0;
+            private readonly int _size = list.Size;
+            private T_DATA _current = default;
+
+            public readonly void Dispose() { }
+
+            public readonly T_DATA Current => _current;
+
+            public bool MoveNext()
+            {
+                if (((uint)_index < (uint)_size))
+                {
+                    _current = list[_index];
+                    _index++;
+                    return true;
+                }
+                return false;
             }
         }
     }
@@ -153,16 +179,42 @@ namespace Maple.MonoGameAssistant.Core
 
         public ref T_DATA this[int index] => ref this.RefElementAt(index);
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public int Size => AsRef().Size;
+
+
+        [Obsolete("USE GetEnumerator")]
         public IEnumerable<T_DATA> AsEnumerable()
         {
             int size = this.Size<PMonoList_D<T_DATA>, Ref_MonoList_OptimizationDefault, T_DATA>();
             for (int i = 0; i < size; ++i)
-            { 
+            {
                 yield return this[i];
             }
         }
 
+        public Enumerator GetEnumerator() => new(this);
+
+        public struct Enumerator(PMonoList_D<T_DATA> list)
+        {
+            private int _index = 0;
+            private readonly int _size = list.Size;
+            private T_DATA _current = default;
+
+            public readonly void Dispose() { }
+
+            public readonly T_DATA Current => _current;
+
+            public bool MoveNext()
+            {
+                if (((uint)_index < (uint)_size))
+                {
+                    _current = list[_index];
+                    _index++;
+                    return true;
+                }
+                return false;
+            }
+        }
     }
 
 }

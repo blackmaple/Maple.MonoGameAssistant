@@ -6,5 +6,7 @@
     {
         ReadOnlySpan<T_DATA> AsReadOnlySpan();
         ref T_DATA RefElementAt(int index);
+
+        int Size => 0;
     }
 }

@@ -5,16 +5,12 @@
 		<TargetFramework>net8.0-windows</TargetFramework>
 		<UseWindowsForms>true</UseWindowsForms>
 		<Nullable>enable</Nullable>
-		<Configurations>Debug;Release;Local</Configurations>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-
+		<IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
 	</PropertyGroup>
 
 
-	<ItemGroup>
-		<PackageReference Include="DevExpress.Win.Design" Version="23.2.3" />
 
-	</ItemGroup>
 
 	<ItemGroup>
 		<ProjectReference Include="..\Maple.MonoGameAssistant.Common\Maple.MonoGameAssistant.Common.csproj" />
