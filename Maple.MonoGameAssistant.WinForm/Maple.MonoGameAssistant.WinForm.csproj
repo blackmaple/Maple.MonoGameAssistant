@@ -9,6 +9,10 @@
 		<IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
 	</PropertyGroup>
 
+	<ItemGroup>
+	  <PackageReference Include="DevExpress.Win.Design" Version="23.2.3" />
+	</ItemGroup>
+
 
 
 
