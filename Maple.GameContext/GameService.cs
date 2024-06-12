@@ -19,6 +19,7 @@ namespace Maple.GameContext
         IGameWebApiControllers
         where T_GAMECONTEXT : MonoCollectorContext
     {
+        protected virtual bool EnableService => true;
         public ILogger Logger { get; } = logger;
         public MonoRuntimeContext RuntimeContext { get; } = runtimeContext;
         public MonoGameSettings GameSettings { get; } = gameSettings;
@@ -37,15 +38,19 @@ namespace Maple.GameContext
         }
         public ValueTask LoadService()
         {
-            this.LoadGameService();
+            if (this.EnableService    )
+            {
+                this.LoadGameService();
 
-            this.HookWindowMessage();
+                this.HookWindowMessage();
 
-            this.LoadListGameSwitch();
+                this.LoadListGameSwitch();
 
-            this.TryAutoOpenUrl();
+                this.TryAutoOpenUrl();
 
-          
+            }
+
+
             return ValueTask.CompletedTask;
 
         }
@@ -62,11 +67,10 @@ namespace Maple.GameContext
                         this.GameContext = this.LoadGameContext();
                         this.UnityEngineContext = this.LoadUnityEngineContext();
                         this.Logger.LogInformation("LoadGameContext=>{game}", this.GameContext.BuildVersion);
-
                     }
                     catch (Exception ex)
                     {
-                        this.Logger.LogInformation("{ex}", ex);
+                        this.Logger.LogError("{ex}", ex);
                     }
                 }
             }

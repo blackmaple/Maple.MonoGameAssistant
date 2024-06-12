@@ -17,6 +17,7 @@ namespace Maple.MonoGameAssistant.Core
 
         internal MonoImageInfoDTO[] ImageInfoDTOs { get; } = [.. runtimeContext.EnumMonoImages()];
 
+ 
         [MonoCollectorFlag(EnumMonoCollectorFlag.GetClassInfo)]
         protected MonoCollectorClassInfo GetClassInfo(MonoCollecotrClassSettings classSettings)
         {
@@ -28,10 +29,11 @@ namespace Maple.MonoGameAssistant.Core
             }
             if (this.RuntimeContext.TryGetFirstClassInfo(imageInfoDTO, classSettings, out var classInfo) == false)
             {
-                var errMsg = $"NOT FOUND [{classSettings.ImageName}].[{classSettings.Namespace}.{classSettings.ClassName}/{classSettings.TypeToken}]";
+                var errMsg = $"NOT FOUND [{classSettings.ImageName}].[{classSettings.Namespace}.{classSettings.ClassName}]";
                 this.Logger.Error(errMsg);
                 return MonoCollectorObjectException.Throw<MonoCollectorClassInfo>(errMsg);
             }
+
             return classInfo;
         }
 

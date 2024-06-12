@@ -2,6 +2,7 @@
 using Maple.MonoGameAssistant.Model;
 using Maple.MonoGameAssistant.MonoCollector;
 using Maple.MonoGameAssistant.MonoCollectorDataV2;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Buffers;
@@ -701,21 +702,15 @@ namespace Maple.MonoGameAssistant.Core
 
         public bool TryGetFirstClassInfo(MonoImageInfoDTO imageInfoDTO, MonoCollecotrClassSettings classSettings, [MaybeNullWhen(false)] out MonoCollectorClassInfo collectorClassInfo)
         {
-            collectorClassInfo = default;
-            if (classSettings.TypeToken >= (uint)EnumMonoTokenType.MONO_TOKEN_TYPE_DEF)
-            {
-                if (this.RuntiemProvider.TryGetMonoClass(imageInfoDTO.Pointer, classSettings.TypeToken, out var pMonoClass))
-                {
-                    collectorClassInfo = GetMonoCollectorClassInfo(pMonoClass);
-                }
-            }
-            else if (this.RuntiemProvider.TryGetMonoClass(imageInfoDTO.Pointer, classSettings.Utf8Namespace, classSettings.Utf8ClassName, out var pMonoClass))
+            Unsafe.SkipInit(out collectorClassInfo);
+            if (this.RuntiemProvider.TryGetMonoClass(imageInfoDTO.Pointer, classSettings.Utf8Namespace, classSettings.Utf8ClassName, out var pMonoClass)
+                || TryFindMonoClass(imageInfoDTO.Pointer, classSettings.Utf8Namespace, classSettings.Utf8ClassName, out pMonoClass))
             {
                 collectorClassInfo = GetMonoCollectorClassInfo(pMonoClass);
-
+                return true;
             }
-            return collectorClassInfo is not null;
 
+            return false;
             MonoCollectorClassInfo GetMonoCollectorClassInfo(PMonoClass pMonoClass)
             {
                 var classInfoDTO = this.GetMonoClassInfoDTO(pMonoClass);
@@ -726,9 +721,27 @@ namespace Maple.MonoGameAssistant.Core
                 return collectorClassInfo;
             }
 
+            //参考CE直接遍历
+            bool TryFindMonoClass(PMonoImage pMonoImage, ReadOnlySpan<byte> utf8Namespace, ReadOnlySpan<byte> utf8ClassName, out PMonoClass pMonoClass)
+            {
+                Unsafe.SkipInit(out pMonoClass);
+                foreach (var ptrClass in this.RuntiemProvider.EnumMonoClasses(pMonoImage))
+                {
+                    var nameSpace = this.RuntiemProvider.GetMonoClassNamespace(ptrClass).AsReadOnlySpan();
+                    if (nameSpace.SequenceEqual(utf8Namespace))
+                    {
+                        var className = this.RuntiemProvider.GetMonoClassName(ptrClass).AsReadOnlySpan();
+                        if (className.SequenceEqual(utf8ClassName))
+                        {
+                            pMonoClass = ptrClass;
+                            return true;
+                        }
+                    }
+                }
+                return false;
+            }
+
         }
-
-
 
         #endregion
 

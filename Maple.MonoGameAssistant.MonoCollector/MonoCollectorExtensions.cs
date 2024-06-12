@@ -204,20 +204,23 @@ namespace Maple.MonoGameAssistant.MonoCollector
 
         #region TryGet
 
-        public static bool TryGetFirstImageClasses(this IReadOnlyList<MonoCollectorImageInfo> imageInfos, string imageName, [MaybeNullWhen(false)] out IReadOnlyList<MonoCollectorClassInfo> classInfos)
+        public static bool TryGetFirstImageClasses<T>(this T imageInfos, string imageName, [MaybeNullWhen(false)] out IReadOnlyList<MonoCollectorClassInfo> classInfos)
+            where T : IReadOnlyList<MonoCollectorImageInfo>
         {
             classInfos = imageInfos.FirstOrDefault(p => p.ImageInfoDTO.Name == imageName)?.ListClassInfo;
             return classInfos is not null;
         }
 
-        public static bool TryGetFirstClass(this IReadOnlyList<MonoCollectorClassInfo> classInfos, string nameSpace, string className, [MaybeNullWhen(false)] out MonoCollectorClassInfo classInfo)
+        public static bool TryGetFirstClass<T>(this T classInfos, string nameSpace, string className, [MaybeNullWhen(false)] out MonoCollectorClassInfo classInfo)
+            where T : IReadOnlyList<MonoCollectorClassInfo>
         {
             classInfo = classInfos.FirstOrDefault(p => p.ClassInfoDTO.Namespace == nameSpace && p.ClassInfoDTO.Name == className);
             return classInfo is not null;
         }
 
 
-        public static bool TryGetFirstMethodInfo(this IReadOnlyList<MonoMethodInfoDTO> methodInfoDTOs, Func<MonoMethodInfoDTO, bool> math, [MaybeNullWhen(false)] out MonoMethodInfoDTO methodInfoDTO)
+        public static bool TryGetFirstMethodInfo<T>(this T methodInfoDTOs, Func<MonoMethodInfoDTO, bool> math, [MaybeNullWhen(false)] out MonoMethodInfoDTO methodInfoDTO)
+            where T : IReadOnlyList<MonoMethodInfoDTO>
         {
             methodInfoDTO = methodInfoDTOs.FirstOrDefault(math);
             return methodInfoDTO is not null;
@@ -256,12 +259,14 @@ namespace Maple.MonoGameAssistant.MonoCollector
         //    return false;
         //}
 
-        public static bool TryGetFirstFieldInfo(this IReadOnlyList<MonoFieldInfoDTO> fieldInfoDTOs, Func<MonoFieldInfoDTO, bool> math, [MaybeNullWhen(false)] out MonoFieldInfoDTO fieldInfoDTO)
+        public static bool TryGetFirstFieldInfo<T>(this T fieldInfoDTOs, Func<MonoFieldInfoDTO, bool> math, [MaybeNullWhen(false)] out MonoFieldInfoDTO fieldInfoDTO)
+            where T : IReadOnlyList<MonoFieldInfoDTO>
         {
             fieldInfoDTO = fieldInfoDTOs.FirstOrDefault(math);
             return fieldInfoDTO is not null;
         }
-        public static bool TryGetFirstFieldInfo(this IReadOnlyList<MonoFieldInfoDTO> fieldInfoDTOs, string fieldName, [MaybeNullWhen(false)] out MonoFieldInfoDTO fieldInfoDTO)
+        public static bool TryGetFirstFieldInfo<T>(this T fieldInfoDTOs, string fieldName, [MaybeNullWhen(false)] out MonoFieldInfoDTO fieldInfoDTO)
+            where T : IReadOnlyList<MonoFieldInfoDTO>
         {
             return fieldInfoDTOs.TryGetFirstFieldInfo(p => p.Name == fieldName, out fieldInfoDTO);
         }
@@ -277,7 +282,8 @@ namespace Maple.MonoGameAssistant.MonoCollector
             return fieldInfoDTO is not null;
         }
 
-        public static bool TryGetFirstImageInfo(this IReadOnlyList<MonoImageInfoDTO> imageInfoDTOs, byte[]? utf8Name, [MaybeNullWhen(false)] out MonoImageInfoDTO imageInfoDTO)
+        public static bool TryGetFirstImageInfo<T>(this T imageInfoDTOs, byte[]? utf8Name, [MaybeNullWhen(false)] out MonoImageInfoDTO imageInfoDTO)
+            where T : IReadOnlyList<MonoImageInfoDTO>
         {
             imageInfoDTO = imageInfoDTOs.Where(p => SequenceEqual(p.Utf8Name, utf8Name)).FirstOrDefault();
             return imageInfoDTO is not null;
@@ -290,7 +296,6 @@ namespace Maple.MonoGameAssistant.MonoCollector
                 return findSearch.EndsWith(".dll"u8) && MemoryExtensions.SequenceEqual<byte>(dest, findSearch[..^4]);
             }
         }
-
         #endregion
     }
 }

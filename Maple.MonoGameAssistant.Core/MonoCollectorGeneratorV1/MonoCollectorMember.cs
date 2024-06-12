@@ -38,7 +38,7 @@ namespace Maple.MonoGameAssistant.Core
         {
             if (false == ClassInfo.MethodInfos.TryGetFirstMethodInfo(math, out var methodInfoDTO))
             {
-                var errMsg = $"{nameof(GetMethodPointer)}:NOT FOUND {methodName}";
+                var errMsg = $"{this.GetType().FullName}.{nameof(GetMethodPointer)}:NOT FOUND {methodName}";
                 this.Logger.Error(errMsg);
                 return MonoCollectorObjectException.Throw<MonoMethodPointer>(errMsg);
             }
@@ -46,7 +46,7 @@ namespace Maple.MonoGameAssistant.Core
             //   this.Logger.LogInformation("methodName:{methodName}=>methodInfoDTO:{methodInfoDTO.Pointer}=>addr:{addr}", methodName, methodInfoDTO.Pointer.ToString("X8"), addr.ToString());
             if (addr.Valid() == false)
             {
-                var errMsg = $"{nameof(GetMethodPointer)}:ERROR {methodName} ADDRESS";
+                var errMsg = $"{this.GetType().FullName}.{nameof(GetMethodPointer)}:ERROR {methodName} ADDRESS";
                 this.Logger.Error(errMsg);
                 return MonoCollectorObjectException.Throw<MonoMethodPointer>(errMsg);
             }
@@ -63,7 +63,7 @@ namespace Maple.MonoGameAssistant.Core
         {
             if (false == ClassInfo.MethodInfos.TryGetFirstMethodInfo(math, out var methodInfoDTO))
             {
-                var errMsg = $"{nameof(GetStaticMethodInvoker)}:NOT FOUND {methodName}";
+                var errMsg = $"{this.GetType().FullName}.{nameof(GetStaticMethodInvoker)}:NOT FOUND {methodName}";
                 this.Logger.Error(errMsg);
                 return MonoCollectorObjectException.Throw<MonoStaticMethodInvoker>(errMsg);
             }
@@ -71,7 +71,7 @@ namespace Maple.MonoGameAssistant.Core
             //   this.Logger.LogInformation("methodName:{methodName}=>methodInfoDTO:{methodInfoDTO.Pointer}=>addr:{addr}", methodName, methodInfoDTO.Pointer.ToString("X8"), addr.ToString());
             if (addr.Valid() == false)
             {
-                var errMsg = $"{nameof(GetStaticMethodInvoker)}:ERROR {methodName} ADDRESS";
+                var errMsg = $"{this.GetType().FullName}.{nameof(GetStaticMethodInvoker)}:ERROR {methodName} ADDRESS";
                 this.Logger.Error(errMsg);
                 return MonoCollectorObjectException.Throw<MonoStaticMethodInvoker>(errMsg);
             }
@@ -102,24 +102,22 @@ namespace Maple.MonoGameAssistant.Core
                     return true;
                 }
             }
-            return MonoCollectorObjectException.Throw<bool>($"{nameof(TryGetModuleBaseAddress)}:NOT FOUND {moduleName}");
+            return default;
 
         }
 
         [MonoCollectorFlag(EnumMonoCollectorFlag.GetModuleBaseAddress)]
         public static nint GetModuleBaseAddress(string moduleName)
         {
-
             using var process = Process.GetCurrentProcess();
             foreach (ProcessModule module in process.Modules)
             {
                 if (module.ModuleName.Contains(moduleName, StringComparison.OrdinalIgnoreCase))
                 {
                     return module.BaseAddress;
-
                 }
             }
-            return MonoCollectorObjectException.Throw<nint>($"{nameof(GetModuleBaseAddress)}:NOT FOUND {moduleName}");
+            return default;
 
         }
 
@@ -155,7 +153,9 @@ namespace Maple.MonoGameAssistant.Core
             var memberInfo = this.ClassInfo.GetFirstMemberFieldInfo(fieldName);
             if (memberInfo is null)
             {
-                return MonoCollectorObjectException.Throw<int>($"{nameof(GetMemberFieldOffset)}:NOT FOUND {fieldName}");
+                var errMsg = $"{this.GetType().FullName}.{nameof(GetMemberFieldOffset)}:NOT FOUND {fieldName}";
+                this.Logger.Error(errMsg);
+                return MonoCollectorObjectException.Throw<int>(errMsg);
             }
             return memberInfo.Offset;
         }
@@ -199,7 +199,7 @@ namespace Maple.MonoGameAssistant.Core
 
 
 
- 
+
 
 
     }

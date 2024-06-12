@@ -517,9 +517,10 @@ namespace {typeData.NameSpace}
             {nameof(MonoCollecotrClassSettings.Utf8ClassName)} = {typeData.Utf8_ClassName},
             {nameof(MonoCollecotrClassSettings.ClassName)} = ""{typeData.Const_ClassName}"",
 
-            {nameof(MonoCollecotrClassSettings.TypeToken)} = 0x{typeData.Const_TypeToken:X8}U,
 
         }}";
+            //       //     {nameof(MonoCollecotrClassSettings.TypeToken)} = 0x{typeData.Const_TypeToken:X8}U,
+
             return $@"
         {settingsFullName} {MonoCollecotrConvString.DisplayName_SettingsHeader}{typeData.ClassName} {{ get; }} = new {settingsFullName} {args};
         {MonoCollecotrConvString.DisplayName_public} {typeData.ClassFullName} {typeData.ClassName} {{ get; }}";

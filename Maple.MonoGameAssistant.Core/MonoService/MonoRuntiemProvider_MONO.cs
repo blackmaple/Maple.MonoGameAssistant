@@ -142,6 +142,8 @@ namespace Maple.MonoGameAssistant.Core
             return pMonoClass.Valid();
         }
 
+
+
         public virtual bool TryGetMonoClass(PMonoImage pMonoImage, uint type_token, out PMonoClass pMonoClass)
         {
             pMonoClass = this.Runtime.MONO_CLASS_GET.Invoke(pMonoImage, type_token);

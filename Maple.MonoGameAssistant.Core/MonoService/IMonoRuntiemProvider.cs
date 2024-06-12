@@ -46,7 +46,6 @@ namespace Maple.MonoGameAssistant.Core
         //bool TryGetMonoImage(string imageName, out PMonoImage pMonoImage);
         //bool TryGetMonoClass(PMonoImage pMonoImage, string nameSpace, string className, out PMonoClass pMonoClass);
         bool TryGetMonoClass(PMonoImage pMonoImage, ReadOnlySpan<byte> utf8Namespace, ReadOnlySpan<byte> utf8ClassName, out PMonoClass pMonoClass);
-
         bool TryGetMonoClass(PMonoImage pMonoImage, uint type_token, out PMonoClass pMonoClass);
         //bool TryGetFirstMonoMethodPointer(PMonoImage pMonoImage, string nameSpace, string className, string methodName, out MonoMethodPointer methodPointer, int paramCount = -1);
         uint GetMonoClassTypeToken(PMonoClass pMonoClass);

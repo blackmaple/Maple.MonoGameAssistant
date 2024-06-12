@@ -12,6 +12,8 @@ namespace Maple.MonoGameAssistant.MonoCollectorDataV2
         public byte[] Const_Namespace { set; get; }
         public byte[] Const_ClassName { set; get; }
         public uint Const_TypeToken { set; get; }
+
+        [Obsolete("游戏更新导致token变动;不推荐使用")]
         public MonoCollectorSettingsAttribute(byte[] const_imageName, uint const_TypeToken)
         {
 

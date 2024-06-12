@@ -108,7 +108,6 @@ namespace Maple.MonoGameAssistant.Core
 
         public int Size => AsRef().Size;
 
-        [Obsolete("USE GetEnumerator")]
         public IEnumerable<T_DATA> AsEnumerable()
         {
             var size = this.Size;
@@ -182,7 +181,6 @@ namespace Maple.MonoGameAssistant.Core
         public int Size => AsRef().Size;
 
 
-        [Obsolete("USE GetEnumerator")]
         public IEnumerable<T_DATA> AsEnumerable()
         {
             int size = this.Size<PMonoList_D<T_DATA>, Ref_MonoList_OptimizationDefault, T_DATA>();
