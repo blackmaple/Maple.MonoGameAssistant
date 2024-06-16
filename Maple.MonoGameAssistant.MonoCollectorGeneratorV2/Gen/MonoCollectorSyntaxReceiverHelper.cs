@@ -744,7 +744,8 @@ namespace Maple.MonoGameAssistant.MonoCollectorGeneratorV2
         }
         static MonoCollectorTypeData GetTypeClassSettings(this INamedTypeSymbol namedTypeSymbol, EnumMonoCollectorTypeVersion ver = EnumMonoCollectorTypeVersion.Ver_Common)
         {
-            var classGenType = namedTypeSymbol.GetAttributes().Where(p => p.AttributeClass.ToDisplayString() == typeof(MonoCollectorSettingsAttribute).FullName).FirstOrDefault()
+            var classAtts = namedTypeSymbol.GetAttributes();
+            var classGenType = classAtts.Where(p => p.AttributeClass.ToDisplayString() == typeof(MonoCollectorSettingsAttribute).FullName).FirstOrDefault()
             ?? throw new MonoCollectorGeneratorV2Exception($"NOT FOUND {namedTypeSymbol.ToDisplayString()}=>{nameof(MonoCollectorSettingsAttribute)}.{nameof(MonoCollectorSettingsAttribute)}");
 
 
@@ -756,9 +757,6 @@ namespace Maple.MonoGameAssistant.MonoCollectorGeneratorV2
                 throw new MonoCollectorGeneratorV2Exception($"NOT FOUND {namedTypeSymbol.ToDisplayString()}=>{nameof(MonoCollectorSettingsAttribute)}.{nameof(MonoCollectorSettingsAttribute.Const_ImageName)}");
 
             }
-
-
-
             var buffer_ImageName = arr_ImageName.ReadImmutableArray<byte>().ToArray();
             utf8_ImageName = buffer_ImageName.ArrayDisplay();
             const_ImageName = Encoding.UTF8.GetString(buffer_ImageName);
@@ -854,6 +852,13 @@ namespace Maple.MonoGameAssistant.MonoCollectorGeneratorV2
                     }
                 }
             }
+
+            EnumMonoCollectorFieldDatas(classAtts, s =>
+            {
+                staticFieldDatas.Add(s);
+            }, p => propertyDatas.Add(p));
+
+
             var ptrClassFullName = ptrClass is null ? $"{classFullName}.{ptrClassName}" : ptrClass.ToDisplayString();
             var methodDatas = namedTypeSymbol.EnumCurrClassMethodDatas(ptrClassFullName).ToArray();
             //var baseClassesInfo = .ToArray();
@@ -863,6 +868,7 @@ namespace Maple.MonoGameAssistant.MonoCollectorGeneratorV2
 
             var inheritViewDatas = namedTypeSymbol.EnumCurrClassInheritViewDatas(namedTypeSymbol.GetBaseClasses()).ToArray();
 
+            //add search files
 
             return new MonoCollectorTypeData()
             {
@@ -896,6 +902,67 @@ namespace Maple.MonoGameAssistant.MonoCollectorGeneratorV2
             };
 
         }
+
+
+        static void EnumMonoCollectorFieldDatas(ImmutableArray<AttributeData> classAtts,
+            Action<MonoCollectorStaticPropertyData> staticFunc,
+            Action<MonoCollectorPropertyData> propFunc)
+        {
+            var searchFieldDatas = classAtts.Where(p =>
+                p.AttributeClass.ToDisplayString() == typeof(MonoCollectorSearchFieldAttribute).FullName
+                || p.AttributeClass.BaseType.ToDisplayString() == typeof(MonoCollectorSearchFieldAttribute).FullName);
+            foreach (var search in searchFieldDatas)
+            {
+                var retType = string.Empty;
+                var index = 0;
+                if (search.AttributeClass.IsGenericType && search.AttributeClass.TypeArguments.Length == 1)
+                {
+                    retType = search.AttributeClass.TypeArguments[0].ToDisplayString();
+                    index = 0;
+                }
+                else if (search.ConstructorArguments.Length == 4 && search.TryGetAttributeValue_CtorArgs(index, out INamedTypeSymbol namedTypeSymbol))
+                {
+                    retType = namedTypeSymbol.ToDisplayString();
+
+                    ++index;
+                }
+                else
+                {
+                    // err;
+                }
+                if (search.TryGetAttributeValue_CtorArgs(index++, out string entryPoint)
+                  && search.TryGetAttributeValue_CtorArgs(index++, out string propName)
+                  && search.TryGetAttributeValue_CtorArgs(index++, out bool isStatic))
+                {
+                    if (isStatic)
+                    {
+                        staticFunc(new MonoCollectorStaticPropertyData() 
+                        {
+                            ReturnType = retType,
+                            PropertyName = propName,
+                            EntryPoint = entryPoint,
+                        });
+                    }
+                    else
+                    {
+                        var readOnly = search.GetAttributeValue_NamedArgs(nameof(MonoCollectorSearchFieldAttribute.IsReadOnly), true);
+
+                        propFunc(new MonoCollectorPropertyData()
+                        {
+                            ReturnType = retType,
+                            PropertyName = propName,
+                            IsReadOnly = readOnly,
+                            EntryPoint = entryPoint,
+                            FieldName = propName,
+                            IsSearch = true
+                        });
+                    }
+
+                }
+            }
+        }
+
+
         static MonoCollectorMethodData[] SortMonoCollectorMethodDatas(IEnumerable<MonoCollectorMethodData> methodDatas, IEnumerable<MonoCollectorMethodData> baseMethodDatas)
         {
             var allMethodDatas = methodDatas.Concat(baseMethodDatas).OrderBy(p => p.BaseClassMethod).ThenBy(p => p.MethodName).ToArray();
@@ -1024,7 +1091,7 @@ namespace Maple.MonoGameAssistant.MonoCollectorGeneratorV2
         #endregion
 
         #region MonoCollectorMethodAttribute获取Class的函数 & MonoCollectorVTableAttribute获取Class的虚函数
-        static MonoCollectorMethodData GetClassMethodData_Common(this IMethodSymbol methodSymbol, string ptrClassFullName, bool baseClassMethod = false, bool fromRuntimeMethod= false)
+        static MonoCollectorMethodData GetClassMethodData_Common(this IMethodSymbol methodSymbol, string ptrClassFullName, bool baseClassMethod = false, bool fromRuntimeMethod = false)
         {
             var methodName = methodSymbol.Name;
             var methodData = new MonoCollectorMethodData()
@@ -1128,7 +1195,7 @@ namespace Maple.MonoGameAssistant.MonoCollectorGeneratorV2
 
             var callConvs = attributeData.GetCallConvs();
 
-            var methodData = methodSymbol.GetClassMethodData_Common(ptrClassFullName, baseClassMethod,fromRuntimeMethod: fromRuntimeMethod);
+            var methodData = methodSymbol.GetClassMethodData_Common(ptrClassFullName, baseClassMethod, fromRuntimeMethod: fromRuntimeMethod);
 
             methodData.CallConvs = callConvs;
             methodData.Search = searchName;

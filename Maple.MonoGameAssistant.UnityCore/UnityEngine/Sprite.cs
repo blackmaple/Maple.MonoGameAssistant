@@ -17,6 +17,8 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
     /// </summary>
     //[Maple.MonoGameAssistant.MonoCollectorDataV2.MonoCollectorSettingsAttribute([85, 110, 105, 116, 121, 69, 110, 103, 105, 110, 101, 46, 67, 111, 114, 101, 77, 111, 100, 117, 108, 101, 46, 100, 108, 108], 0x0200014FU)]
     [Maple.MonoGameAssistant.MonoCollectorDataV2.MonoCollectorSettingsAttribute([85, 110, 105, 116, 121, 69, 110, 103, 105, 110, 101, 46, 67, 111, 114, 101, 77, 111, 100, 117, 108, 101, 46, 100, 108, 108], [85, 110, 105, 116, 121, 69, 110, 103, 105, 110, 101], [83, 112, 114, 105, 116, 101])]
+    //[Maple.MonoGameAssistant.Core.MonoCollectorSearchField<Ptr_Sprite>("_vtable", "VTable", IsReadOnly = false)]
+    //[Maple.MonoGameAssistant.MonoCollectorDataV2.MonoCollectorSearchField(typeof(Ptr_Sprite), "_synchronisation", "Synchronisation", true)]
     public partial class Sprite
     {
         //public const string Const_ImageName = "UnityEngine.CoreModule.dll";
@@ -107,7 +109,7 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
             public override string ToString()
             {
                 return _ptr.ToString("X8");
-                 
+
             }
 
             [System.Runtime.CompilerServices.MethodImplAttribute(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]

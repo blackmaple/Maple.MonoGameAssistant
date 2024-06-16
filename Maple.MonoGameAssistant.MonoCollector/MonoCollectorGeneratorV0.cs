@@ -159,6 +159,14 @@ namespace Maple.MonoGameAssistant.MonoCollector
             //{MonoCollecotrConvString.DisplayName_public} readonly {fieldInfoDTO.GetFieldTypeDisplayName()} {fieldInfoDTO.GetFixFieldName()};";
 
         }
+        static string BuildMemberField_Search(this MonoFieldInfoDTO fieldInfoDTO)
+        {
+            var displayMethodName = fieldInfoDTO.GetFixFieldName().ToTitle();
+            return $@"            
+            // {fieldInfoDTO.FieldType.GetObjectTypeInfo()} 0x{fieldInfoDTO.RawOffset:X} {fieldInfoDTO.FieldType.TypeName} {fieldInfoDTO.Name}
+            [{nameof(MonoCollectorSearchFieldAttribute)}(typeof({fieldInfoDTO.GetFieldTypeDisplayName()}),""{fieldInfoDTO.Name}"", ""{displayMethodName}"")]";
+
+        }
 
 
         static string OutputMemberFieldContent(this MonoClassInfoDTO classInfoDTO, IReadOnlyList<MonoFieldInfoDTO> fieldInfoDTOs)
@@ -223,6 +231,16 @@ namespace Maple.MonoGameAssistant.MonoCollector
             }}
         }}";
         }
+
+        static string OutputMemberFieldContent_Search(this IReadOnlyList<MonoFieldInfoDTO> fieldInfoDTOs)
+        {
+            return string.Join(Environment.NewLine, fieldInfoDTOs.Select(p =>
+            {
+                return $@"
+            {p.BuildMemberField_Search()}";
+            }));
+        }
+
         #endregion
 
         #region 创建静态字段 & 输出
@@ -235,6 +253,15 @@ namespace Maple.MonoGameAssistant.MonoCollector
             return $@"//{MonoCollecotrConvString.DisplayName_public} {MonoCollecotrConvString.DisplayName_ConstString} {MonoCollecotrConvString.DisplayName_NameHeader}{MonoCollecotrConvString.DisplayName_StaticHeader}{fieldInfoDTO.GetFixFieldName(true)} = ""{fieldInfoDTO.Name}"";";
 
         }
+        static string BuildStaticField_Search(this MonoFieldInfoDTO fieldInfoDTO)
+        {
+            var displayMethodName = fieldInfoDTO.GetFixFieldName().ToTitle();
+            return $@"            
+            //  {fieldInfoDTO.FieldType.GetObjectTypeInfo()} static {fieldInfoDTO.FieldType.TypeName} {fieldInfoDTO.Name}
+            //  [{nameof(MonoCollectorSearchFieldAttribute)}(typeof({fieldInfoDTO.GetFieldTypeDisplayName()}),""{fieldInfoDTO.Name}"", ""{displayMethodName}""), true]";
+
+        }
+
         static string OutputStaticFieldContent(this MonoClassInfoDTO classInfoDTO, IReadOnlyList<MonoFieldInfoDTO> fieldInfoDTOs)
         {
             //Static_ClassName
@@ -260,6 +287,15 @@ namespace Maple.MonoGameAssistant.MonoCollector
         }}";
 
 
+        }
+
+        static string OutputStaticFieldContent_Search(this IReadOnlyList<MonoFieldInfoDTO> fieldInfoDTOs)
+        {
+            return string.Join(Environment.NewLine, fieldInfoDTOs.Select(p =>
+            {
+                return $@"
+            {p.BuildStaticField_Search()}";
+            }));
         }
         #endregion
 
@@ -294,7 +330,7 @@ namespace Maple.MonoGameAssistant.MonoCollector
         #endregion
 
         #region 创建枚举字段 & 输出
-        static string OutputEnumFieldContent(this MonoClassInfoDTO classInfoDTO, IReadOnlyList<MonoFieldInfoDTO> fieldInfoDTOs,string? typeName)
+        static string OutputEnumFieldContent(this MonoClassInfoDTO classInfoDTO, IReadOnlyList<MonoFieldInfoDTO> fieldInfoDTOs, string? typeName)
         {
             var content = string.Join(Environment.NewLine, fieldInfoDTOs.Select(p =>
             {
@@ -354,7 +390,7 @@ namespace Maple.MonoGameAssistant.MonoCollector
             /// }}";
         }
 
-        static string? GetParamTypeDesc(this MonoParameterTypeDTO  parameterTypeDTO)
+        static string? GetParamTypeDesc(this MonoParameterTypeDTO parameterTypeDTO)
         {
             return $@"            /// <param name=""{parameterTypeDTO.ParameterName}"">{parameterTypeDTO.GetObjectTypeInfo()} {parameterTypeDTO.TypeName}</param>";
         }
@@ -364,7 +400,7 @@ namespace Maple.MonoGameAssistant.MonoCollector
             var displayRetTypeName = methodInfoDTO.ReturnType.GetReturnTypeDisplayName();
             var displayMethodName = methodInfoDTO.Name.ToTitle();
             var displayParamNames = string.Join(',', methodInfoDTO.ParameterTypes.Select(p => $"{p.GetParamTypeDisplayName()} {p.ParameterName}"));
-            var descParamTypes = string.Join(Environment.NewLine, methodInfoDTO.ParameterTypes.Select(p=>p.GetParamTypeDesc()));
+            var descParamTypes = string.Join(Environment.NewLine, methodInfoDTO.ParameterTypes.Select(p => p.GetParamTypeDesc()));
             var staticName = methodInfoDTO.IsStatic ? "static" : string.Empty;
             var abstractName = methodInfoDTO.IsAbstract ? "abstract" : string.Empty;
             if (string.IsNullOrEmpty(descParamTypes))
@@ -462,6 +498,8 @@ namespace Maple.MonoGameAssistant.MonoCollector
 
             var staticfields = classInfoDTO.GetStaticFieldInfos(fieldInfoDTOs).OrderBy(p => p.Offset).ToArray();
 
+
+
             var memberfields = classInfoDTO.GetMemberFieldInfos(fieldInfoDTOs).OrderBy(p => p.Offset).ToArray();
 
 
@@ -470,9 +508,11 @@ namespace Maple.MonoGameAssistant.MonoCollector
             var constContent = constfields.Length > 0 ? classInfoDTO.OutputConstFieldContent(constfields) : string.Empty;
             //static没有则不显示
             var staticContent = staticfields.Length > 0 ? classInfoDTO.OutputStaticFieldContent(staticfields) : string.Empty;
+            var staticAtt = staticfields.Length > 0 ? staticfields.OutputStaticFieldContent_Search() : string.Empty;
+
             //没有也显示空的ref & ptr
             var memberContent = classInfoDTO.OutputMemberFieldContent(memberfields);
-
+            var memberAtt = memberfields.OutputMemberFieldContent_Search();
             //类继承图
             var inheritViewContent = parentClasses.BuildInheritViewContent();
 
@@ -487,6 +527,8 @@ namespace Maple.MonoGameAssistant.MonoCollector
     /// </summary>
     {(classInfoDTO.IsInterface ? "" : "//")}[{typeof(MonoCollectorSettingsAttribute).FullName}({GetByteArrayDisplayName(classInfoDTO.Utf8ImageName)}, 0x{classInfoDTO.TypeToken:X8}U)]
     {(classInfoDTO.IsInterface ? "//" : "")}[{typeof(MonoCollectorSettingsAttribute).FullName}({GetByteArrayDisplayName(classInfoDTO.Utf8ImageName)}, {GetByteArrayDisplayName(classInfoDTO.Utf8Namespace)}, {GetByteArrayDisplayName(classInfoDTO.Utf8Name)})]
+    {staticAtt}
+    {memberAtt}
     {MonoCollecotrConvString.DisplayName_public} {MonoCollecotrConvString.DisplayName_PartialClass} {classInfoDTO.GetFixClassName()}
     {{ 
         //{MonoCollecotrConvString.DisplayName_public} {MonoCollecotrConvString.DisplayName_ConstString} {MonoCollecotrConvString.DisplayName_ConstImageName} = ""{classInfoDTO.ImageName}"";

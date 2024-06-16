@@ -27,9 +27,10 @@
 		<Compile Include="..\Maple.MonoGameAssistant.MonoCollectorDataV2\MonoCollectorTypeVersionAttribute.cs" Link="Ref\MonoCollectorTypeVersionAttribute.cs" />
 		<Compile Include="..\Maple.MonoGameAssistant.MonoCollectorDataV2\MonoCollectorFlagAttribute.cs" Link="Ref\MonoCollectorFlagAttribute.cs" />
 		<Compile Include="..\Maple.MonoGameAssistant.MonoCollectorDataV2\MonoStaticMethodInvoker.cs" Link="Ref\MonoStaticMethodInvoker.cs" />
+		<Compile Include="..\Maple.MonoGameAssistant.MonoCollectorDataV2\MonoCollectorSearchFieldAttribute.cs" Link="Ref\MonoCollectorSearchFieldAttribute.cs" />
 
+		
 
- 
 	</ItemGroup>
 
 	<ItemGroup>

@@ -203,6 +203,4 @@ namespace Maple.MonoGameAssistant.Core
 
 
     }
-
-
 }

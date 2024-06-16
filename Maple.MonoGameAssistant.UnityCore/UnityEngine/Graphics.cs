@@ -17,6 +17,7 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
     /// </summary>
     //[Maple.MonoGameAssistant.MonoCollectorDataV2.MonoCollectorSettingsAttribute([85, 110, 105, 116, 121, 69, 110, 103, 105, 110, 101, 46, 67, 111, 114, 101, 77, 111, 100, 117, 108, 101, 46, 100, 108, 108], 0x02000080U)]
     [Maple.MonoGameAssistant.MonoCollectorDataV2.MonoCollectorSettingsAttribute([85, 110, 105, 116, 121, 69, 110, 103, 105, 110, 101, 46, 67, 111, 114, 101, 77, 111, 100, 117, 108, 101, 46, 100, 108, 108], [85, 110, 105, 116, 121, 69, 110, 103, 105, 110, 101], [71, 114, 97, 112, 104, 105, 99, 115])]
+     
     public partial class Graphics
     {
         //public const string Const_ImageName = "UnityEngine.CoreModule.dll";
@@ -317,7 +318,7 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
         /// public static extern void BLIT_01 (nint source,nint dest,nint mat,System.Int32 pass);
 
 
-         const string Name_Func_BLIT = "Blit";
+        const string Name_Func_BLIT = "Blit";
         /// <summary>
         /// static  System.Void Blit(UnityEngine.Texture source,UnityEngine.RenderTexture dest,UnityEngine.Material mat)
         /// </summary>
@@ -326,7 +327,7 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
         /// <param name="mat">class UnityEngine.Material</param>
         /// <returns>struct System.Void</returns>
         [MonoGameAssistant.MonoCollectorDataV2.MonoCollectorMethod(Name_Func_BLIT, Search = typeof(Search_Graphics))]
-        static extern void BLIT_02 (nint source,nint dest,nint mat);
+        static extern void BLIT_02(nint source, nint dest, nint mat);
 
 
         /// const string Name_Func_COPY_TEXTURE = "CopyTexture";
@@ -458,8 +459,8 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
             /// <summary>
             /// static  System.Void Blit(UnityEngine.Texture source, UnityEngine.RenderTexture dest, UnityEngine.Material mat)
             /// </summary>
-             public static bool BLIT_02 (Maple.MonoGameAssistant.Model.MonoMethodInfoDTO monoMethodInfoDTO)
-                 =>  Maple.MonoGameAssistant.MonoCollector.MonoCollectorExtensions.SearchMonoMethodInfo(monoMethodInfoDTO, "Blit", "UnityEngine.Texture", "UnityEngine.RenderTexture", "UnityEngine.Material");
+            public static bool BLIT_02(Maple.MonoGameAssistant.Model.MonoMethodInfoDTO monoMethodInfoDTO)
+                => Maple.MonoGameAssistant.MonoCollector.MonoCollectorExtensions.SearchMonoMethodInfo(monoMethodInfoDTO, "Blit", "UnityEngine.Texture", "UnityEngine.RenderTexture", "UnityEngine.Material");
             ///     
             ///  
             /// 
