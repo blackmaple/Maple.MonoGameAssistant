@@ -70,11 +70,15 @@ namespace Maple.MonoGameAssistant.MonoCollector
                 return className;
             }
             var index = className.IndexOf('`');
-            if (index == -1)
+            if (index != -1)
             {
-                return className;
+                return $"{className[..index]}{nameof(System.Collections.Generic)}";
             }
-            return $"{className[..index]}{nameof(System.Collections.Generic)}";
+            if (className.StartsWith('.') && className.Length > 1)
+            {
+                return $"{className[1..]}";
+            }
+            return className;
         }
 
         static string? GetReturnTypeDisplayName(this MonoReturnTypeDTO returnTypeDTO)
@@ -163,8 +167,8 @@ namespace Maple.MonoGameAssistant.MonoCollector
         {
             var displayMethodName = fieldInfoDTO.GetFixFieldName().ToTitle();
             return $@"            
-            // {fieldInfoDTO.FieldType.GetObjectTypeInfo()} 0x{fieldInfoDTO.RawOffset:X} {fieldInfoDTO.FieldType.TypeName} {fieldInfoDTO.Name}
-            [{nameof(MonoCollectorSearchFieldAttribute)}(typeof({fieldInfoDTO.GetFieldTypeDisplayName()}),""{fieldInfoDTO.Name}"", ""{displayMethodName}"")]";
+    // {fieldInfoDTO.FieldType.GetObjectTypeInfo()} 0x{fieldInfoDTO.RawOffset:X} {fieldInfoDTO.FieldType.TypeName} {fieldInfoDTO.Name}
+    [{nameof(MonoCollectorSearchFieldAttribute)}(typeof({fieldInfoDTO.GetFieldTypeDisplayName()}),""{fieldInfoDTO.Name}"", ""{displayMethodName}"")]";
 
         }
 
@@ -236,8 +240,7 @@ namespace Maple.MonoGameAssistant.MonoCollector
         {
             return string.Join(Environment.NewLine, fieldInfoDTOs.Select(p =>
             {
-                return $@"
-            {p.BuildMemberField_Search()}";
+                return $@"{p.BuildMemberField_Search()}";
             }));
         }
 
@@ -257,8 +260,8 @@ namespace Maple.MonoGameAssistant.MonoCollector
         {
             var displayMethodName = fieldInfoDTO.GetFixFieldName().ToTitle();
             return $@"            
-            //  {fieldInfoDTO.FieldType.GetObjectTypeInfo()} static {fieldInfoDTO.FieldType.TypeName} {fieldInfoDTO.Name}
-            //  [{nameof(MonoCollectorSearchFieldAttribute)}(typeof({fieldInfoDTO.GetFieldTypeDisplayName()}),""{fieldInfoDTO.Name}"", ""{displayMethodName}""), true]";
+    //  {fieldInfoDTO.FieldType.GetObjectTypeInfo()} static {fieldInfoDTO.FieldType.TypeName} {fieldInfoDTO.Name}
+    //  [{nameof(MonoCollectorSearchFieldAttribute)}(typeof({fieldInfoDTO.GetFieldTypeDisplayName()}),""{fieldInfoDTO.Name}"", ""{displayMethodName}""), true]";
 
         }
 
@@ -293,8 +296,7 @@ namespace Maple.MonoGameAssistant.MonoCollector
         {
             return string.Join(Environment.NewLine, fieldInfoDTOs.Select(p =>
             {
-                return $@"
-            {p.BuildStaticField_Search()}";
+                return $@"{p.BuildStaticField_Search()}";
             }));
         }
         #endregion
@@ -304,27 +306,26 @@ namespace Maple.MonoGameAssistant.MonoCollector
         static string? BuildConstField(this MonoFieldInfoDTO fieldInfoDTO)
         {
             return $@"            
-            /// <summary>
-            /// {fieldInfoDTO.FieldType.GetObjectTypeInfo()} {fieldInfoDTO.FieldType.TypeName} {fieldInfoDTO.Name} ""{fieldInfoDTO.Value}""
-            /// </summary>
-            /// {MonoCollecotrConvString.DisplayName_public} {fieldInfoDTO.GetFieldTypeDisplayName()} {fieldInfoDTO.GetFixFieldName(true)}=>""{fieldInfoDTO.Value}"";";
+        /// <summary>
+        /// {fieldInfoDTO.FieldType.GetObjectTypeInfo()} {fieldInfoDTO.FieldType.TypeName} {fieldInfoDTO.Name} ""{fieldInfoDTO.Value}""
+        /// </summary>
+        /// {MonoCollecotrConvString.DisplayName_public} const {fieldInfoDTO.GetFieldTypeDisplayName()} {fieldInfoDTO.GetFixFieldName(true)}=>""{fieldInfoDTO.Value}"";";
 
         }
         static string OutputConstFieldContent(this MonoClassInfoDTO classInfoDTO, IReadOnlyList<MonoFieldInfoDTO> fieldInfoDTOs)
         {
             var const_className = $"{MonoCollecotrConvString.DisplayName_ConstHeader}{classInfoDTO.GetFixClassName()}";
-            var content = string.Join(Environment.NewLine, fieldInfoDTOs.Select(p =>
+            return string.Join(Environment.NewLine, fieldInfoDTOs.Select(p =>
             {
-                return $@"
-            {p.BuildConstField()}";
+                return $@"{p.BuildConstField()}";
             }));
-            return $@"
-        {MonoCollecotrConvString.DisplayName_public} {MonoCollecotrConvString.DisplayName_PartialStruct} {const_className}
-        {{
+            //    return $@"
+            //{MonoCollecotrConvString.DisplayName_public} {MonoCollecotrConvString.DisplayName_PartialStruct} {const_className}
+            //{{
 
-            {content}
+            //    {content}
 
-        }}";
+            //}}";
 
         }
         #endregion
@@ -357,7 +358,7 @@ namespace Maple.MonoGameAssistant.MonoCollector
         {
             var displayRetTypeName = methodInfoDTO.ReturnType.GetReturnTypeDisplayName();
             var displayMethodName = methodInfoDTO.Name.ToTitle();
-            var displayParamNames = string.Join(',', methodInfoDTO.ParameterTypes.Select(p => $"{p.GetParamTypeDisplayName()} {p.ParameterName}"));
+            var displayParamNames = string.Join(", ", methodInfoDTO.ParameterTypes.Select(p => $"{p.GetParamTypeDisplayName()} {p.ParameterName}"));
             var staticName = methodInfoDTO.IsStatic ? "static" : string.Empty;
             var abstractName = methodInfoDTO.IsAbstract ? "abstract" : string.Empty;
             var argName = "monoMethodInfoDTO";
@@ -395,33 +396,34 @@ namespace Maple.MonoGameAssistant.MonoCollector
             return $@"            /// <param name=""{parameterTypeDTO.ParameterName}"">{parameterTypeDTO.GetObjectTypeInfo()} {parameterTypeDTO.TypeName}</param>";
         }
 
-        static string? BuildMethod(this MonoMethodInfoDTO methodInfoDTO, string methodIndex)
+        static string? BuildMethod(this MonoMethodInfoDTO methodInfoDTO, string methodIndex, string? className)
         {
             var displayRetTypeName = methodInfoDTO.ReturnType.GetReturnTypeDisplayName();
             var displayMethodName = methodInfoDTO.Name.ToTitle();
-            var displayParamNames = string.Join(',', methodInfoDTO.ParameterTypes.Select(p => $"{p.GetParamTypeDisplayName()} {p.ParameterName}"));
+            var displayParamNames = string.Join(", ", methodInfoDTO.ParameterTypes.Select(p => $"{p.GetParamTypeDisplayName()} {p.ParameterName}"));
             var descParamTypes = string.Join(Environment.NewLine, methodInfoDTO.ParameterTypes.Select(p => p.GetParamTypeDesc()));
             var staticName = methodInfoDTO.IsStatic ? "static" : string.Empty;
             var abstractName = methodInfoDTO.IsAbstract ? "abstract" : string.Empty;
+            var searchType = string.IsNullOrEmpty(methodIndex) ? string.Empty : $", Search = typeof({MonoCollecotrConvString.DisplayName_SearchHeader}{className})";
             if (string.IsNullOrEmpty(descParamTypes))
             {
                 return $@"
-            /// {MonoCollecotrConvString.DisplayName_ConstString} {MonoCollecotrConvString.DisplayName_NameHeader}{MonoCollecotrConvString.DisplayName_FuncHeader}{displayMethodName} = ""{methodInfoDTO.Name}"";
             /// <summary>
-            /// {staticName} {abstractName} {methodInfoDTO.ReturnType.TypeName} {methodInfoDTO.Name}({string.Join(',', methodInfoDTO.ParameterTypes.Select(p => $"{p.TypeName} {p.ParameterName}"))})
+            /// {staticName} {abstractName} {methodInfoDTO.ReturnType.TypeName} {methodInfoDTO.Name}({string.Join(", ", methodInfoDTO.ParameterTypes.Select(p => $"{p.TypeName} {p.ParameterName}"))})
             /// </summary>
             /// <returns>{methodInfoDTO.ReturnType.GetObjectTypeInfo()} {methodInfoDTO.ReturnType.TypeName}</returns>
-            /// {MonoCollecotrConvString.DisplayName_public} {staticName} extern {displayRetTypeName} {displayMethodName}{methodIndex} ({displayParamNames});";
+            /// [{typeof(MonoCollectorMethodAttribute).FullName}(""{methodInfoDTO.Name}""{searchType})]
+            /// {staticName} extern {displayRetTypeName} {displayMethodName}{methodIndex} ({displayParamNames});";
 
             }
             return $@"
-            /// {MonoCollecotrConvString.DisplayName_ConstString} {MonoCollecotrConvString.DisplayName_NameHeader}{MonoCollecotrConvString.DisplayName_FuncHeader}{displayMethodName} = ""{methodInfoDTO.Name}"";
             /// <summary>
-            /// {staticName} {abstractName} {methodInfoDTO.ReturnType.TypeName} {methodInfoDTO.Name}({string.Join(',', methodInfoDTO.ParameterTypes.Select(p => $"{p.TypeName} {p.ParameterName}"))})
+            /// {staticName} {abstractName} {methodInfoDTO.ReturnType.TypeName} {methodInfoDTO.Name}({string.Join(", ", methodInfoDTO.ParameterTypes.Select(p => $"{p.TypeName} {p.ParameterName}"))})
             /// </summary>
 {descParamTypes}
             /// <returns>{methodInfoDTO.ReturnType.GetObjectTypeInfo()} {methodInfoDTO.ReturnType.TypeName}</returns>
-            /// {MonoCollecotrConvString.DisplayName_public} {staticName} extern {displayRetTypeName} {displayMethodName}{methodIndex} ({displayParamNames});";
+            /// [{typeof(MonoCollectorMethodAttribute).FullName}(""{methodInfoDTO.Name}""{searchType})]
+            /// {staticName} extern {displayRetTypeName} {displayMethodName}{methodIndex} ({displayParamNames});";
         }
         static (IReadOnlyList<MonoMethodInfoDTO> normalMethods, IReadOnlyList<(int index, MonoMethodInfoDTO method)> overrideMethods) GroupMethod(IReadOnlyList<MonoMethodInfoDTO> methodInfoDTOs)
         {
@@ -448,19 +450,20 @@ namespace Maple.MonoGameAssistant.MonoCollector
 
         static string OutputMethodContent(this MonoClassInfoDTO classInfoDTO, IReadOnlyList<MonoMethodInfoDTO> methodInfoDTOs)
         {
+            var fixClassName = classInfoDTO.GetFixClassName();
             var (normalMethods, overrideMethods) = GroupMethod(methodInfoDTOs);
             var normalMethodContent = string.Join(Environment.NewLine, normalMethods.Select(p =>
             {
                 return @$"
-            {p.BuildMethod(string.Empty)}";
+            {p.BuildMethod(string.Empty, fixClassName)}";
             }));
             var overrideMethodContent = string.Join(Environment.NewLine, overrideMethods.Select(p =>
             {
                 return @$"
-            {p.method.BuildMethod($"_{p.index:X2}")}";
+            {p.method.BuildMethod($"_{p.index:X2}", fixClassName)}";
             }));
 
-            var overrideMethodSearchContent = OutputMethodSearchContent(overrideMethods, classInfoDTO.GetFixClassName());
+            var overrideMethodSearchContent = OutputMethodSearchContent(overrideMethods, fixClassName);
 
             return $@"
         /// <summary>
@@ -507,11 +510,11 @@ namespace Maple.MonoGameAssistant.MonoCollector
             //const没有则不显示
             var constContent = constfields.Length > 0 ? classInfoDTO.OutputConstFieldContent(constfields) : string.Empty;
             //static没有则不显示
-            var staticContent = staticfields.Length > 0 ? classInfoDTO.OutputStaticFieldContent(staticfields) : string.Empty;
+            var staticContent = /*staticfields.Length > 0 ? classInfoDTO.OutputStaticFieldContent(staticfields) :*/ string.Empty;
             var staticAtt = staticfields.Length > 0 ? staticfields.OutputStaticFieldContent_Search() : string.Empty;
 
             //没有也显示空的ref & ptr
-            var memberContent = classInfoDTO.OutputMemberFieldContent(memberfields);
+            var memberContent = /*classInfoDTO.OutputMemberFieldContent(memberfields)*/ string.Empty;
             var memberAtt = memberfields.OutputMemberFieldContent_Search();
             //类继承图
             var inheritViewContent = parentClasses.BuildInheritViewContent();
