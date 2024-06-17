@@ -175,6 +175,33 @@ namespace Maple.MonoGameAssistant.MonoCollector
 
         static string OutputMemberFieldContent(this MonoClassInfoDTO classInfoDTO, IReadOnlyList<MonoFieldInfoDTO> fieldInfoDTOs)
         {
+            if (classInfoDTO.IsValueType)
+            {
+                return classInfoDTO.OutputMemberFieldContent_ValueType(fieldInfoDTOs);
+            }
+            return classInfoDTO.OutputMemberFieldContent_Common(fieldInfoDTOs);
+        }
+        static string OutputMemberFieldContent_ValueType(this MonoClassInfoDTO classInfoDTO, IReadOnlyList<MonoFieldInfoDTO> fieldInfoDTOs)
+        {
+            //Ref_ClassName
+            var ref_className = $"{MonoCollecotrConvString.DisplayName_RefHeader}{classInfoDTO.GetFixClassName()}";
+
+            var content = string.Join(Environment.NewLine, fieldInfoDTOs.Select(p =>
+            {
+                return $@"
+            {classInfoDTO.BuildMemberField(p)}";
+            }));
+            return $@"
+        [{typeof(StructLayoutAttribute).FullName}({typeof(LayoutKind).FullName}.{nameof(LayoutKind.Explicit)})]
+        {MonoCollecotrConvString.DisplayName_public} {MonoCollecotrConvString.DisplayName_PartialStruct} {ref_className}
+        {{
+    
+            {content}
+
+        }}";
+        }
+        static string OutputMemberFieldContent_Common(this MonoClassInfoDTO classInfoDTO, IReadOnlyList<MonoFieldInfoDTO> fieldInfoDTOs)
+        {
             string RefTypeMemberFields = @$"
             /// <summary>
             /// REF_MONO_OBJECT._vtable
@@ -243,6 +270,23 @@ namespace Maple.MonoGameAssistant.MonoCollector
                 return $@"{p.BuildMemberField_Search()}";
             }));
         }
+
+        static string OutputMemberFieldContent_ValueType2(this MonoClassInfoDTO classInfoDTO, IReadOnlyList<MonoFieldInfoDTO> fieldInfoDTOs)
+        {
+            var content = string.Join(Environment.NewLine, fieldInfoDTOs.Select(p =>
+            {
+                return $@"{classInfoDTO.BuildMemberField(p)}";
+            }));
+            return $@"
+    [{typeof(StructLayoutAttribute).FullName}({typeof(LayoutKind).FullName}.{nameof(LayoutKind.Explicit)})]
+    {MonoCollecotrConvString.DisplayName_public} {MonoCollecotrConvString.DisplayName_PartialStruct} {classInfoDTO.GetFixClassName()}
+    {{
+    
+        {content}
+
+    }}";
+        }
+
 
         #endregion
 
@@ -493,6 +537,46 @@ namespace Maple.MonoGameAssistant.MonoCollector
 
         #region 输出整个Class信息
 
+        static string OutputImageClassFieldContent_ValueType(this MonoClassInfoDTO classInfoDTO, IReadOnlyList<MonoFieldInfoDTO> fieldInfoDTOs, IReadOnlyList<MonoClassInfoDTO> parentClasses, IReadOnlyList<MonoInterfaceInfoDTO> interfaceInfoDTOs)
+        {
+
+            var constfields = classInfoDTO.GetConstFieldInfos(fieldInfoDTOs).OrderBy(p => p.Offset).ToArray();
+
+            var staticfields = classInfoDTO.GetStaticFieldInfos(fieldInfoDTOs).OrderBy(p => p.Offset).ToArray();
+
+
+
+            var memberfields = classInfoDTO.GetMemberFieldInfos(fieldInfoDTOs).OrderBy(p => p.Offset).ToArray();
+
+
+
+            //const没有则不显示
+            var constContent = constfields.Length > 0 ? classInfoDTO.OutputConstFieldContent(constfields) : string.Empty;
+            //static没有则不显示
+            var staticContent = /*staticfields.Length > 0 ? classInfoDTO.OutputStaticFieldContent(staticfields) :*/ string.Empty;
+
+            //struct
+            var memberContent = classInfoDTO.IsValueType ? classInfoDTO.OutputMemberFieldContent(memberfields) : string.Empty;
+
+            //接口继承图
+            var interfaceContent = interfaceInfoDTOs.BuildInheritViewContent();
+
+            return $@"
+    /// <summary>
+    /// {classInfoDTO.GetObjectTypeInfo()} [""{classInfoDTO.ImageName}"".""{classInfoDTO.Namespace}"".""{classInfoDTO.Name}""]
+    /// {interfaceContent}
+    /// </summary>
+    {MonoCollecotrConvString.DisplayName_public} {MonoCollecotrConvString.DisplayName_PartialClass} {classInfoDTO.GetFixClassName()}
+    {{ 
+
+        {constContent}
+            
+        {staticContent}
+
+        {memberContent}
+
+    }}";
+        }
 
         static string OutputImageClassFieldContent(this MonoClassInfoDTO classInfoDTO, IReadOnlyList<MonoFieldInfoDTO> fieldInfoDTOs, IReadOnlyList<MonoClassInfoDTO> parentClasses, IReadOnlyList<MonoInterfaceInfoDTO> interfaceInfoDTOs)
         {
@@ -513,8 +597,8 @@ namespace Maple.MonoGameAssistant.MonoCollector
             var staticContent = /*staticfields.Length > 0 ? classInfoDTO.OutputStaticFieldContent(staticfields) :*/ string.Empty;
             var staticAtt = staticfields.Length > 0 ? staticfields.OutputStaticFieldContent_Search() : string.Empty;
 
-            //没有也显示空的ref & ptr
-            var memberContent = /*classInfoDTO.OutputMemberFieldContent(memberfields)*/ string.Empty;
+            //struct
+            var memberContent = classInfoDTO.IsValueType ? classInfoDTO.OutputMemberFieldContent(memberfields) : string.Empty;
             var memberAtt = memberfields.OutputMemberFieldContent_Search();
             //类继承图
             var inheritViewContent = parentClasses.BuildInheritViewContent();
@@ -570,6 +654,10 @@ namespace Maple.MonoGameAssistant.MonoCollector
                 var enumInfos = classInfoDTO.GetEnumFieldInfos(fieldInfoDTOs).OrderBy(p => p.Offset).ToArray();
                 var enumTypeName = MonoCollectorExtensions.GetEnumTypeName(fieldInfoDTOs);
                 yield return classInfoDTO.OutputEnumFieldContent(enumInfos, enumTypeName);
+            }
+            if (classInfoDTO.IsValueType)
+            {
+                yield return classInfoDTO.OutputImageClassFieldContent_ValueType(fieldInfoDTOs, parentClasses, interfaceInfoDTOs);
             }
             else
             {
