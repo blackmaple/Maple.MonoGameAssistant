@@ -262,6 +262,35 @@ namespace Maple.MonoGameAssistant.MonoCollector
             }}
         }}";
         }
+        static string OutputMemberFieldContent_PtrClass(this MonoClassInfoDTO classInfoDTO, IReadOnlyList<MonoFieldInfoDTO> fieldInfoDTOs)
+        {
+            
+            //Ptr_ClassName
+            var ptr_className = $"{MonoCollecotrConvString.DisplayName_PtrHeader}{classInfoDTO.GetFixClassName()}";
+          
+            return $@"
+        [{typeof(StructLayoutAttribute).FullName}({typeof(LayoutKind).FullName}.{nameof(LayoutKind.Sequential)})]
+        {MonoCollecotrConvString.DisplayName_public} {MonoCollecotrConvString.DisplayName_PartialStruct} {ptr_className}(nint ptr)
+        {{
+
+            [{typeof(MarshalAsAttribute).FullName}({typeof(UnmanagedType).FullName}.{nameof(UnmanagedType.SysInt)})]
+            readonly nint {MonoCollecotrConvString.DisplayName_PtrClassMember} = ptr;
+            public static implicit operator {ptr_className}(nint ptr) => new(ptr);
+            public static implicit operator nint({ptr_className} obj) => obj.{MonoCollecotrConvString.DisplayName_PtrClassMember};
+            public static implicit operator bool({ptr_className} obj)=> obj.Valid();
+ 
+            public override string ToString()
+            {{
+                return {MonoCollecotrConvString.DisplayName_PtrClassMember}.ToString(""X8"");
+            }}
+
+            {MonoCollecotrConvString.DisplayName_MethodInline}
+            public bool Valid() => {MonoCollecotrConvString.DisplayName_PtrClassMember} != nint.Zero;
+
+
+
+        }}";
+        }
 
         static string OutputMemberFieldContent_Search(this IReadOnlyList<MonoFieldInfoDTO> fieldInfoDTOs)
         {
@@ -597,8 +626,8 @@ namespace Maple.MonoGameAssistant.MonoCollector
             var staticContent = /*staticfields.Length > 0 ? classInfoDTO.OutputStaticFieldContent(staticfields) :*/ string.Empty;
             var staticAtt = staticfields.Length > 0 ? staticfields.OutputStaticFieldContent_Search() : string.Empty;
 
-            //struct
-            var memberContent = classInfoDTO.IsValueType ? classInfoDTO.OutputMemberFieldContent(memberfields) : string.Empty;
+            //ptr class
+            var memberContent =  classInfoDTO.OutputMemberFieldContent_PtrClass(memberfields) ;
             var memberAtt = memberfields.OutputMemberFieldContent_Search();
             //类继承图
             var inheritViewContent = parentClasses.BuildInheritViewContent();
