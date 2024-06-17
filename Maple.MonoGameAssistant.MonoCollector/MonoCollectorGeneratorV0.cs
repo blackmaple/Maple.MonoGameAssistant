@@ -334,7 +334,7 @@ namespace Maple.MonoGameAssistant.MonoCollector
             var displayMethodName = fieldInfoDTO.GetFixFieldName().ToTitle();
             return $@"            
     //  {fieldInfoDTO.FieldType.GetObjectTypeInfo()} static {fieldInfoDTO.FieldType.TypeName} {fieldInfoDTO.Name}
-    //  [{nameof(MonoCollectorSearchFieldAttribute)}(typeof({fieldInfoDTO.GetFieldTypeDisplayName()}),""{fieldInfoDTO.Name}"", ""{displayMethodName}""), true]";
+    //  [{nameof(MonoCollectorSearchFieldAttribute)}(typeof({fieldInfoDTO.GetFieldTypeDisplayName()}),""{fieldInfoDTO.Name}"", ""{displayMethodName}"", true)]";
 
         }
 
