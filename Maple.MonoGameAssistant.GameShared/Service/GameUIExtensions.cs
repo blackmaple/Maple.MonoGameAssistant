@@ -83,6 +83,13 @@ namespace Maple.MonoGameAssistant.GameShared.Service
             }
             return false;
         }
+
+
+        public static void ReplaceRange<T>(this List<T> list, IEnumerable<T> datas)
+        { 
+            list.Clear();
+            list.AddRange(datas);
+        }
     }
 
 

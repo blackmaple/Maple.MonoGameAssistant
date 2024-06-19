@@ -29,7 +29,7 @@ namespace Maple.GameContext
         public required T_GAMECONTEXT GameContext { get; set; }
         public required UnityEngineContext UnityEngineContext { get; set; }
         public required HookWinMsgService Hook { set; get; }
-        public required GameSwitchDisplayDTO[]  ListGameSwitch  { set; get; } 
+        public required GameSwitchDisplayDTO[] ListGameSwitch { set; get; }
 
         public ValueTask DestroyService()
         {
@@ -38,16 +38,22 @@ namespace Maple.GameContext
         }
         public ValueTask LoadService()
         {
-            if (this.EnableService    )
+            if (this.EnableService)
             {
-                this.LoadGameService();
+                try
+                {
+                    this.LoadGameService();
 
-                this.HookWindowMessage();
+                    this.HookWindowMessage();
 
-                this.LoadListGameSwitch();
+                    this.LoadListGameSwitch();
 
-                this.TryAutoOpenUrl();
-
+                    this.TryAutoOpenUrl();
+                }
+                catch (Exception ex)
+                {
+                    this.Logger.LogError("LoadService Error:{ex}", ex);
+                }
             }
 
 
@@ -62,16 +68,9 @@ namespace Maple.GameContext
             {
                 using (this.RuntimeContext.CreateAttachContext())
                 {
-                    try
-                    {
-                        this.GameContext = this.LoadGameContext();
-                        this.UnityEngineContext = this.LoadUnityEngineContext();
-                        this.Logger.LogInformation("LoadGameContext=>{game}", this.GameContext.BuildVersion);
-                    }
-                    catch (Exception ex)
-                    {
-                        this.Logger.LogError("{ex}", ex);
-                    }
+                    this.GameContext = this.LoadGameContext();
+                    this.UnityEngineContext = this.LoadUnityEngineContext();
+                    this.Logger.LogInformation("LoadGameContext=>{game}", this.GameContext.BuildVersion);
                 }
             }
 
@@ -82,7 +81,7 @@ namespace Maple.GameContext
         protected virtual GameSwitchDisplayDTO[] InitListGameSwitch()
             => [];
         protected void LoadListGameSwitch()
-        { 
+        {
             this.ListGameSwitch = InitListGameSwitch();
         }
         protected GameSwitchDisplayDTO? FindGameSwitch(string objectId)
@@ -101,7 +100,7 @@ namespace Maple.GameContext
         }
         protected virtual bool TryAutoOpenUrl()
         {
-            using (this.Logger.Running(nameof(TryAutoOpenUrl)))
+            using (this.Logger.Running())
             {
                 var open = this.GameSettings.TryAutoOpenUrl(out var url);
                 this.Logger.LogInformation("{method}=>{url}=>{open}", nameof(TryAutoOpenUrl), url, open);
@@ -150,7 +149,7 @@ namespace Maple.GameContext
                 EnumVirtualKeyCode.VK_NUMPAD8 => Num8_KeyDown(),
                 EnumVirtualKeyCode.VK_NUMPAD9 => Num9_KeyDown(),
                 EnumVirtualKeyCode.VK_NUMPAD0 => Num0_KeyDown(),
-           
+
                 _ => ValueTask.CompletedTask
             }; ;
         }

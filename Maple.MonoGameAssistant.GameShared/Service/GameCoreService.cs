@@ -56,8 +56,8 @@ namespace Maple.MonoGameAssistant.GameShared.Service
                 await this.ShowErrorAsync(gameCurrencyDTO.MSG);
                 return EnumGameServiceStatus.ERROR;
             }
-            this.ListCurrency_All.AddRange(listGameCurrency);
-            this.ListCurrency_Search.AddRange(listGameCurrency);
+            this.ListCurrency_All.ReplaceRange(listGameCurrency);
+            this.ListCurrency_Search.ReplaceRange(listGameCurrency);
 
             var gameInventoryDTO = await this.Http.GetListInventoryDisplayAsync(gameSession);
             if (false == gameInventoryDTO.TryGet(out var listGameInventory))
@@ -65,8 +65,8 @@ namespace Maple.MonoGameAssistant.GameShared.Service
                 await this.ShowErrorAsync(gameInventoryDTO.MSG);
                 return EnumGameServiceStatus.ERROR;
             }
-            this.ListInventory_All.AddRange(listGameInventory);
-            this.ListInventory_Search.AddRange(listGameInventory);
+            this.ListInventory_All.ReplaceRange(listGameInventory);
+            this.ListInventory_Search.ReplaceRange(listGameInventory);
 
 
             var gameCharacterDTO = await this.Http.GetListCharacterDisplayAsync(gameSession);
@@ -75,8 +75,8 @@ namespace Maple.MonoGameAssistant.GameShared.Service
                 await this.ShowErrorAsync(gameCharacterDTO.MSG);
                 return EnumGameServiceStatus.ERROR;
             }
-            this.ListCharacter_All.AddRange(listGameCharacter);
-            this.ListCharacter_Search.AddRange(listGameCharacter);
+            this.ListCharacter_All.ReplaceRange(listGameCharacter);
+            this.ListCharacter_Search.ReplaceRange(listGameCharacter);
 
             var gameMonsterDTO = await this.Http.GetListMonsterDisplayAsync(gameSession);
             if (false == gameMonsterDTO.TryGet(out var listGameMonster))
@@ -84,8 +84,8 @@ namespace Maple.MonoGameAssistant.GameShared.Service
                 await this.ShowErrorAsync(gameMonsterDTO.MSG);
                 return EnumGameServiceStatus.ERROR;
             }
-            this.ListMonster_All.AddRange(listGameMonster);
-            this.ListMonster_Search.AddRange(listGameMonster);
+            this.ListMonster_All.ReplaceRange(listGameMonster);
+            this.ListMonster_Search.ReplaceRange(listGameMonster);
 
 
             var gameSkillDTO = await this.Http.GetListSkillDisplayAsync(gameSession);
@@ -94,8 +94,8 @@ namespace Maple.MonoGameAssistant.GameShared.Service
                 await this.ShowErrorAsync(gameSkillDTO.MSG);
                 return EnumGameServiceStatus.ERROR;
             }
-            this.ListSkill_All.AddRange(listGameSkill);
-            this.ListSkill_Search.AddRange(listGameSkill);
+            this.ListSkill_All.ReplaceRange(listGameSkill);
+            this.ListSkill_Search.ReplaceRange(listGameSkill);
 
 
             var gameSwitchDTO = await this.Http.GetListSwitchDisplayAsync(gameSession);
@@ -104,7 +104,7 @@ namespace Maple.MonoGameAssistant.GameShared.Service
                 await this.ShowErrorAsync(gameSwitchDTO.MSG);
                 return EnumGameServiceStatus.ERROR;
             }
-            this.ListSwitch_Search.AddRange(listGameSwitch);
+            this.ListSwitch_Search.ReplaceRange(listGameSwitch);
 
 
             return EnumGameServiceStatus.OK;
