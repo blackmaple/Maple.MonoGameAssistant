@@ -1,20 +1,22 @@
 <Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
 
-  <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<RunAOTCompilation>true</RunAOTCompilation>
 
-  <ItemGroup>
-    <PackageReference Include="Masa.Blazor" Version="1.5.*" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.*" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="8.0.*" PrivateAssets="all" />
-  </ItemGroup>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Maple.MonoGameAssistant.GameCore\Maple.MonoGameAssistant.GameCore.csproj" />
-    <ProjectReference Include="..\Maple.MonoGameAssistant.GameShared\Maple.MonoGameAssistant.GameShared.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Masa.Blazor" Version="1.5.*" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.*" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="8.0.*" PrivateAssets="all" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Maple.MonoGameAssistant.GameCore\Maple.MonoGameAssistant.GameCore.csproj" />
+		<ProjectReference Include="..\Maple.MonoGameAssistant.GameShared\Maple.MonoGameAssistant.GameShared.csproj" />
+	</ItemGroup>
 
 </Project>
