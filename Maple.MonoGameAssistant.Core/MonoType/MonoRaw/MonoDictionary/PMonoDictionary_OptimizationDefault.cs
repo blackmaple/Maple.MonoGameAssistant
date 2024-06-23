@@ -28,7 +28,6 @@ namespace Maple.MonoGameAssistant.Core
         public PMonoEntry<Ref_MonoEntry<T_KEY, T_VALUE>, T_KEY, T_VALUE>[] AsRefArray()
             => this.AsRefArray<PMonoDictionary_OptimizationDefault<T_KEY, T_VALUE>, Ref_MonoDictionary_OptimizationDefault, T_KEY, T_VALUE, Ref_MonoEntry<T_KEY, T_VALUE>>();
 
-
     }
 
 }
