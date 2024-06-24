@@ -36,6 +36,13 @@ namespace Maple.MonoGameAssistant.Core
             where T_REF : unmanaged, IRefMonoString
             => @this.AsRef().GetString(readSize);
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ReadOnlySpan<char> AsReadOnlySpan<T_REF>(this ref T_REF ref_this)
+            where T_REF : unmanaged, IRefMonoString
+        {
+           return MemoryMarshal.CreateReadOnlySpan(in ref_this.FirstChar, ref_this.Length);
+           
+        }
 
     }
 }
