@@ -142,6 +142,28 @@ namespace Maple.MonoGameAssistant.Model
             return convertUrl ? ConvertLocal2Url(this.WebRootPath, fullFileName) : fullFileName;
 
         }
+        public bool TryGetJsonStream(string fileName, [MaybeNullWhen(false)] out Stream stream)
+        {
+            Unsafe.SkipInit(out stream);
+            if (string.IsNullOrEmpty(this.WebRootPath))
+            {
+                return false;
+            }
+
+            var gameResource = Path.Combine(this.WebRootPath, this.GameResource ?? "GameResource");
+            if (false == Directory.Exists(gameResource))
+            {
+                Directory.CreateDirectory(gameResource);
+            }
+
+
+            var fullFileName = Path.Combine(gameResource, fileName);
+            stream = File.Open(fullFileName, FileMode.Create);
+            return true;
+
+
+
+        }
 
         public bool TryGetGameResourceUrl(string category, string fileName, [MaybeNullWhen(false)] out string url)
         {
