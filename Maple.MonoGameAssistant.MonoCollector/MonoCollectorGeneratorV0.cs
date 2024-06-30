@@ -264,10 +264,10 @@ namespace Maple.MonoGameAssistant.MonoCollector
         }
         static string OutputMemberFieldContent_PtrClass(this MonoClassInfoDTO classInfoDTO, IReadOnlyList<MonoFieldInfoDTO> fieldInfoDTOs)
         {
-            
+
             //Ptr_ClassName
             var ptr_className = $"{MonoCollecotrConvString.DisplayName_PtrHeader}{classInfoDTO.GetFixClassName()}";
-          
+
             return $@"
         [{typeof(StructLayoutAttribute).FullName}({typeof(LayoutKind).FullName}.{nameof(LayoutKind.Sequential)})]
         {MonoCollecotrConvString.DisplayName_public} {MonoCollecotrConvString.DisplayName_PartialStruct} {ptr_className}(nint ptr)
@@ -627,7 +627,7 @@ namespace Maple.MonoGameAssistant.MonoCollector
             var staticAtt = staticfields.Length > 0 ? staticfields.OutputStaticFieldContent_Search() : string.Empty;
 
             //ptr class
-            var memberContent =  classInfoDTO.OutputMemberFieldContent_PtrClass(memberfields) ;
+            var memberContent = classInfoDTO.OutputMemberFieldContent_PtrClass(memberfields);
             var memberAtt = memberfields.OutputMemberFieldContent_Search();
             //类继承图
             var inheritViewContent = parentClasses.BuildInheritViewContent();
@@ -684,12 +684,14 @@ namespace Maple.MonoGameAssistant.MonoCollector
                 var enumTypeName = MonoCollectorExtensions.GetEnumTypeName(fieldInfoDTOs);
                 yield return classInfoDTO.OutputEnumFieldContent(enumInfos, enumTypeName);
             }
-            if (classInfoDTO.IsValueType)
-            {
-                yield return classInfoDTO.OutputImageClassFieldContent_ValueType(fieldInfoDTOs, parentClasses, interfaceInfoDTOs);
-            }
             else
             {
+                if (classInfoDTO.IsValueType)
+                {
+                    yield return classInfoDTO.OutputImageClassFieldContent_ValueType(fieldInfoDTOs, parentClasses, interfaceInfoDTOs);
+                }
+
+
                 yield return classInfoDTO.OutputImageClassFieldContent(fieldInfoDTOs, parentClasses, interfaceInfoDTOs);
 
                 var chuck_methodInfos = methodInfoDTOs.OrderBy(p => p.Name).Chunk(chuck);
@@ -698,6 +700,7 @@ namespace Maple.MonoGameAssistant.MonoCollector
                     yield return classInfoDTO.OutputMethodContent(methodInfos);
                 }
             }
+         
         }
 
 

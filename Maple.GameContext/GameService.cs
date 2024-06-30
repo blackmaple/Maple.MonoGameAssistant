@@ -265,7 +265,7 @@ namespace Maple.GameContext
         #region WebApi
 
         public virtual ValueTask<GameCharacterDisplayDTO[]> GetListCharacterDisplayAsync()
-            => GameException.Throw<ValueTask<GameCharacterDisplayDTO[]>>("NotImplemented");
+            => ValueTask.FromResult<GameCharacterDisplayDTO[]>([]);
         public virtual ValueTask<GameCharacterStatusDTO> GetCharacterStatusAsync(GameCharacterObjectDTO characterObjectDTO)
             => GameException.Throw<ValueTask<GameCharacterStatusDTO>>("NotImplemented");
         public virtual ValueTask<GameCharacterEquipmentDTO> GetCharacterEquipmentAsync(GameCharacterObjectDTO characterObjectDTO)
@@ -276,16 +276,16 @@ namespace Maple.GameContext
 
 
         public virtual ValueTask<GameMonsterDisplayDTO[]> GetListMonsterDisplayAsync()
-            => GameException.Throw<ValueTask<GameMonsterDisplayDTO[]>>("NotImplemented");
+            => ValueTask.FromResult<GameMonsterDisplayDTO[]>([]);
 
         public virtual ValueTask<GameSkillDisplayDTO[]> GetListSkillDisplayAsync()
-            => GameException.Throw<ValueTask<GameSkillDisplayDTO[]>>("NotImplemented");
+            => ValueTask.FromResult<GameSkillDisplayDTO[]>([]);
 
 
 
 
         public virtual ValueTask<GameCurrencyDisplayDTO[]> GetListCurrencyDisplayAsync()
-            => GameException.Throw<ValueTask<GameCurrencyDisplayDTO[]>>("NotImplemented");
+            => ValueTask.FromResult<GameCurrencyDisplayDTO[]>([]);
 
         public virtual ValueTask<GameCurrencyInfoDTO> GetCurrencyInfoAsync(GameCurrencyObjectDTO currencyObjectDTO)
             => GameException.Throw<ValueTask<GameCurrencyInfoDTO>>("NotImplemented");
@@ -297,7 +297,7 @@ namespace Maple.GameContext
 
 
         public virtual ValueTask<GameInventoryDisplayDTO[]> GetListInventoryDisplayAsync()
-            => GameException.Throw<ValueTask<GameInventoryDisplayDTO[]>>("NotImplemented");
+            => ValueTask.FromResult<GameInventoryDisplayDTO[]>([]);
 
         public virtual ValueTask<GameInventoryInfoDTO> GetInventoryInfoAsync(GameInventoryObjectDTO inventoryObjectDTO)
             => GameException.Throw<ValueTask<GameInventoryInfoDTO>>("NotImplemented");

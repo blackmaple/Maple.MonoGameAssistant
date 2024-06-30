@@ -27,7 +27,16 @@ namespace Maple.MonoGameAssistant.Core
             return (nint)ptr;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T_Ptr AsPointer<T_Ref_Struct, T_Ptr>(this ref T_Ref_Struct ref_Struct)
+            where T_Ref_Struct : unmanaged
+            where T_Ptr : unmanaged
+        {
+            var p = ref_Struct.AsPointer();
+            return Unsafe.As<nint, T_Ptr>(ref p);
+        }
+
 
     }
- 
+
 }

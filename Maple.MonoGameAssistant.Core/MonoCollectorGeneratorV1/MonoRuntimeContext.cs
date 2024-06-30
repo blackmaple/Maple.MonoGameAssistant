@@ -669,12 +669,14 @@ namespace Maple.MonoGameAssistant.Core
             {
                 monoClassDetail.InterfaceInfos = [.. this.EnumMonoInterfaces(pMonoClass)];
             }
-
-            if (false == monoClassDetail.ClassInfoDTO.IsValueType)
+            var valueType = monoClassDetail.ClassInfoDTO.IsValueType;
+            if (false == valueType)
             {
                 monoClassDetail.ParentClassInfos = [.. this.EnumMonoParentClasses(pMonoClass)];
-                monoClassDetail.MethodInfos = [.. this.EnumMonoMethods(pMonoClass, false).OrderBy(p => p.FromParent).ThenByDescending(p => p.SourceClass).ThenBy(p => p.Name)];
             }
+            monoClassDetail.MethodInfos = [.. this.EnumMonoMethods(pMonoClass, valueType).OrderBy(p => p.FromParent).ThenByDescending(p => p.SourceClass).ThenBy(p => p.Name)];
+
+
             return monoClassDetail;
         }
 
@@ -711,15 +713,7 @@ namespace Maple.MonoGameAssistant.Core
             }
 
             return false;
-            MonoCollectorClassInfo GetMonoCollectorClassInfo(PMonoClass pMonoClass)
-            {
-                var classInfoDTO = this.GetMonoClassInfoDTO(pMonoClass);
-
-                var collectorClassInfo = new MonoCollectorClassInfo(classInfoDTO);
-                collectorClassInfo.MethodInfos.AddRange(this.EnumMonoMethods(pMonoClass, classInfoDTO.IsValueType));
-                collectorClassInfo.FieldInfos.AddRange(this.EnumMonoFields(pMonoClass, EnumMonoFieldOptions.None));
-                return collectorClassInfo;
-            }
+          
 
             //参考CE直接遍历
             bool TryFindMonoClass(PMonoImage pMonoImage, ReadOnlySpan<byte> utf8Namespace, ReadOnlySpan<byte> utf8ClassName, out PMonoClass pMonoClass)
@@ -743,6 +737,15 @@ namespace Maple.MonoGameAssistant.Core
 
         }
 
+        public MonoCollectorClassInfo GetMonoCollectorClassInfo(PMonoClass pMonoClass)
+        {
+            var classInfoDTO = this.GetMonoClassInfoDTO(pMonoClass);
+
+            var collectorClassInfo = new MonoCollectorClassInfo(classInfoDTO);
+            collectorClassInfo.MethodInfos.AddRange(this.EnumMonoMethods(pMonoClass, classInfoDTO.IsValueType));
+            collectorClassInfo.FieldInfos.AddRange(this.EnumMonoFields(pMonoClass, EnumMonoFieldOptions.None));
+            return collectorClassInfo;
+        }
         #endregion
 
         #region WebApi
