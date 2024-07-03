@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Runtime.CompilerServices;
+using System.Runtime.Versioning;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -101,7 +102,8 @@ namespace Maple.MonoGameAssistant.Model
             }
         }
 
-        public bool TryAutoOpenUrl([MaybeNullWhen(false)] out string openUrl, bool force = false)
+
+        public bool TryGetOpenUrl([MaybeNullWhen(false)] out string openUrl, bool force = false)
         {
             Unsafe.SkipInit(out openUrl);
             if ((force == false && this.AutoOpenUrl == false) || string.IsNullOrEmpty(this.BaseAddress))
@@ -109,7 +111,6 @@ namespace Maple.MonoGameAssistant.Model
                 return false;
             }
             openUrl = $"{this.BaseAddress}{this.IndexPage ?? "index.html"}";
-            System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(openUrl) { UseShellExecute = true });
             return true;
         }
 

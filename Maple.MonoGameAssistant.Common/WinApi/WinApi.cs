@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.Marshalling;
+using System.Runtime.Versioning;
 
 namespace Maple.MonoGameAssistant.Common
 {
@@ -469,7 +470,7 @@ namespace Maple.MonoGameAssistant.Common
         [return: MarshalAs(UnmanagedType.I4)]
         public static partial bool PostMessage(nint hWnd, EnumWindowMessage uMsg, nint wParam, nint lParam);
 
-        
+
         public const uint SMTO_ABORTIFHUNG = 0x2;
         public const uint SMTO_BLOCK = 0x1;
         public const uint SMTO_NORMAL = 0x0;
@@ -532,7 +533,55 @@ namespace Maple.MonoGameAssistant.Common
         //public static partial bool IsWindow(nint hWnd);
 
 
+        [SupportedOSPlatform("windows")]
+        protected static string? GetGoogleWebBrowser()
+        {
+            var regData = Microsoft.Win32.Registry.CurrentUser;
+            var webData = regData.OpenSubKey(@"Software\Google\Update", false);
+            var path = webData?.GetValue("LastInstallerSuccessLaunchCmdLine") as string;
+            return path;
+        }
 
+        [SupportedOSPlatform("windows")]
+        protected static string? GetEdgeWebBrowser()
+        {
+            var regData = Microsoft.Win32.Registry.LocalMachine;
+            var webData = regData.OpenSubKey(@"SOFTWARE\Clients\StartMenuInternet\Microsoft Edge\shell\open\command", false);
+            var path = webData?.GetValue(string.Empty) as string;
+            return path;
+        }
+        public static bool RunBrowser(string url)
+        {
+
+            if (OperatingSystem.IsWindows())
+            {
+                var webPath = GetEdgeWebBrowser();
+                if (string.IsNullOrEmpty(webPath))
+                {
+                    webPath = GetGoogleWebBrowser();
+                }
+                if (false == string.IsNullOrEmpty(webPath))
+                {
+                    return RunWebBrowser(webPath, url);
+                }
+            }
+            var p = System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(url) { UseShellExecute = true });
+            return p is not null;
+        }
+
+        protected static bool RunWebBrowser(string path, string arg)
+        {
+            var psi = new System.Diagnostics.ProcessStartInfo()
+            {
+                FileName = path,
+                UseShellExecute = true,
+                Arguments = $"--app={arg}",
+                WindowStyle = System.Diagnostics.ProcessWindowStyle.Maximized
+            };
+            var p = System.Diagnostics.Process.Start(psi);
+            return p is not null;
+
+        }
 
     }
 }

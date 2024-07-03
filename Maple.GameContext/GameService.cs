@@ -36,7 +36,7 @@ namespace Maple.GameContext
             this.Scheduler.Dispose();
             return ValueTask.CompletedTask;
         }
-        public ValueTask LoadService()
+        public async ValueTask LoadService()
         {
             if (this.EnableService)
             {
@@ -48,16 +48,19 @@ namespace Maple.GameContext
 
                     this.LoadListGameSwitch();
 
+                    await this.LoadGameDataAsync().ConfigureAwait(false);
+
                     this.TryAutoOpenUrl();
                 }
                 catch (Exception ex)
                 {
                     this.Logger.LogError("LoadService Error:{ex}", ex);
                 }
+
             }
 
 
-            return ValueTask.CompletedTask;
+
 
         }
 
@@ -69,8 +72,10 @@ namespace Maple.GameContext
                 using (this.RuntimeContext.CreateAttachContext())
                 {
                     this.GameContext = this.LoadGameContext();
-                    this.UnityEngineContext = this.LoadUnityEngineContext();
                     this.Logger.LogInformation("LoadGameContext=>{game}", this.GameContext.BuildVersion);
+                    this.UnityEngineContext = this.LoadUnityEngineContext();
+                    this.Logger.LogInformation("LoadUnityEngineContext=>{load}", this.UnityEngineContext is not null);
+
                 }
             }
 
@@ -102,13 +107,21 @@ namespace Maple.GameContext
         {
             using (this.Logger.Running())
             {
-                var open = this.GameSettings.TryAutoOpenUrl(out var url);
+                var open = false;
+                if (this.GameSettings.TryGetOpenUrl(out var url))
+                {
+                    open = WinApi.RunBrowser(url);
+                }
                 this.Logger.LogInformation("{method}=>{url}=>{open}", nameof(TryAutoOpenUrl), url, open);
                 return open;
             }
         }
 
 
+        protected virtual ValueTask LoadGameDataAsync()
+        {
+            return ValueTask.CompletedTask;
+        }
 
         #region KeyDown
         public ValueTask NotifyAsync(WinMsgNotifyDTO msgNotify)
