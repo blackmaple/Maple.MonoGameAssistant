@@ -411,21 +411,23 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
         /// public  extern System.Single GET_PIXELS_PER_UNIT ();
 
 
-        /// const string Name_Func_GET_RECT = "get_rect";
+        ///const string Name_Func_GET_RECT = "get_rect";
         /// <summary>
         ///   UnityEngine.Rect get_rect()
         /// </summary>
         /// <returns>struct UnityEngine.Rect</returns>
-        /// public  extern UnityEngine.Rect GET_RECT ();
+        ///[MonoCollectorMethod(Name_Func_GET_RECT)]
+        ///public extern UnityEngine.Rect.Ptr_Rect GET_RECT(out UnityEngine.Rect.Ref_Rect rect);
 
 
-        /// const string Name_Func_GET_RECT_INJECTED = "get_rect_Injected";
+        ///const string Name_Func_GET_RECT_INJECTED = "get_rect_Injected";
         /// <summary>
         ///   System.Void get_rect_Injected(UnityEngine.Rect& ret)
         /// </summary>
         /// <param name="ret">struct UnityEngine.Rect&</param>
         /// <returns>struct System.Void</returns>
-        /// public  extern void GET_RECT_INJECTED (UnityEngine.Rect& ret);
+        ///[MonoCollectorMethod(Name_Func_GET_RECT_INJECTED)]
+        ///public static extern void GET_RECT_INJECTED(Ptr_Sprite ptr_Sprite, out UnityEngine.Rect.Ref_Rect ret);
 
 
         /// const string Name_Func_GET_SPRITE_ATLAS_TEXTURE_SCALE = "get_spriteAtlasTextureScale";

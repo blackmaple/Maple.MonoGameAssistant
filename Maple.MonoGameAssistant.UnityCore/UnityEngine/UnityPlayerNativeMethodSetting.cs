@@ -23,6 +23,7 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
             public Maple.MonoGameAssistant.Core.PMonoArray<byte> Invoke(Maple.MonoGameAssistant.UnityCore.UnityEngine.Texture2D.Ptr_Texture2D tex) => _func(tex);
         }
         Ptr_Func_ENCODE_TO_PNG Func_ENCODE_TO_PNG;
+        [System.Runtime.CompilerServices.MethodImplAttribute(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         public PMonoArray<byte> EncodeToPng(Ptr_Texture2D pDest)
         {
             return Func_ENCODE_TO_PNG.Invoke(pDest);
@@ -46,13 +47,58 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
             public void Invoke(nint source, nint dest) => _func(source, dest);
         }
         Ptr_Func_BLIT2 Func_BLIT2;
+        [System.Runtime.CompilerServices.MethodImplAttribute(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
         public void BLIT2(nint source, nint dest)
         {
             Func_BLIT2.Invoke(source, dest);
         }
 
 
-        public void LoadNativeMethod_MONO(int offset_encode_to_png = 0x217030,int offset_blit2= 0x878C0)
+        /// <summary>
+        /// UnityEngine.Sprite::get_rect_Injected(UnityEngine.Rect&)
+        /// </summary>
+        /// <param name="ptr"></param>
+        readonly unsafe partial struct Ptr_Func_GET_RECT_INJECTED(nint ptr)
+        {
+            readonly delegate* unmanaged[SuppressGCTransition]<Maple.MonoGameAssistant.UnityCore.UnityEngine.Sprite.Ptr_Sprite, out Maple.MonoGameAssistant.UnityCore.UnityEngine.Rect.Ref_Rect, void> _func = (delegate* unmanaged[SuppressGCTransition]<Maple.MonoGameAssistant.UnityCore.UnityEngine.Sprite.Ptr_Sprite, out Maple.MonoGameAssistant.UnityCore.UnityEngine.Rect.Ref_Rect, void>)ptr;
+
+            public static implicit operator Ptr_Func_GET_RECT_INJECTED(nint ptr) => new(ptr);
+
+            public override string ToString()
+            {
+                return ((nint)((void*)_func)).ToString("X8");
+            }
+
+            [System.Runtime.CompilerServices.MethodImplAttribute(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+            public void Invoke(Maple.MonoGameAssistant.UnityCore.UnityEngine.Sprite.Ptr_Sprite ptr_Sprite, out Maple.MonoGameAssistant.UnityCore.UnityEngine.Rect.Ref_Rect ret) => _func(ptr_Sprite, out ret);
+        }
+        static Ptr_Func_GET_RECT_INJECTED Func_GET_RECT_INJECTED;
+        [System.Runtime.CompilerServices.MethodImplAttribute(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        public static void GET_RECT_INJECTED(Sprite.Ptr_Sprite ptr_Sprite, out Rect.Ref_Rect ret)
+            => Func_GET_RECT_INJECTED.Invoke(ptr_Sprite, out ret);
+
+
+        readonly unsafe partial struct Ptr_Func_GET_TEXTURE_RECT_INJECTED(nint ptr)
+        {
+            readonly delegate* unmanaged[SuppressGCTransition]<Maple.MonoGameAssistant.UnityCore.UnityEngine.Sprite.Ptr_Sprite, out Maple.MonoGameAssistant.UnityCore.UnityEngine.Rect.Ref_Rect, void> _func = (delegate* unmanaged[SuppressGCTransition]<Maple.MonoGameAssistant.UnityCore.UnityEngine.Sprite.Ptr_Sprite, out Maple.MonoGameAssistant.UnityCore.UnityEngine.Rect.Ref_Rect, void>)ptr;
+
+            public static implicit operator Ptr_Func_GET_TEXTURE_RECT_INJECTED(nint ptr) => new(ptr);
+
+            public override string ToString()
+            {
+                return ((nint)((void*)_func)).ToString("X8");
+            }
+
+            [System.Runtime.CompilerServices.MethodImplAttribute(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+            public void Invoke(Maple.MonoGameAssistant.UnityCore.UnityEngine.Sprite.Ptr_Sprite ptr_Sprite, out Maple.MonoGameAssistant.UnityCore.UnityEngine.Rect.Ref_Rect ret) => _func(ptr_Sprite, out ret);
+        }
+        static Ptr_Func_GET_TEXTURE_RECT_INJECTED Func_GET_TEXTURE_RECT_INJECTED;
+        [System.Runtime.CompilerServices.MethodImplAttribute(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        public static void GET_TEXTURE_RECT_INJECTED(Sprite.Ptr_Sprite ptr_Sprite, out Rect.Ref_Rect ret)
+            => Func_GET_TEXTURE_RECT_INJECTED.Invoke(ptr_Sprite, out ret);
+
+
+        public void LoadNativeMethod_MONO(int offset_encode_to_png = 0x217030, int offset_blit2 = 0x878C0)
         {
             var pUnityPlayer = MonoCollectorMember.GetModuleBaseAddress("UnityPlayer.dll");
             Func_ENCODE_TO_PNG = pUnityPlayer + offset_encode_to_png;
@@ -60,10 +106,15 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
         }
         public void LoadNativeMethod_IL2CPP(MonoRuntimeContext runtimeContext,
             string signature_encode_to_png = "UnityEngine.ImageConversion::EncodeToPNG(UnityEngine.Texture2D)",
-            string signature_encode_blit2 = "UnityEngine.Graphics::Blit2(UnityEngine.Texture,UnityEngine.RenderTexture)")
+            string signature_encode_blit2 = "UnityEngine.Graphics::Blit2(UnityEngine.Texture,UnityEngine.RenderTexture)",
+            string signature_get_rect_Injected = "UnityEngine.Sprite::get_rect_Injected(UnityEngine.Rect&)",
+             string signature_get_texture_rect_injected = "UnityEngine.Sprite::GetTextureRect_Injected(UnityEngine.Rect&)")
         {
             Func_ENCODE_TO_PNG = runtimeContext.GetInternalCall<Ptr_Func_ENCODE_TO_PNG>(signature_encode_to_png);
             Func_BLIT2 = runtimeContext.GetInternalCall<Ptr_Func_BLIT2>(signature_encode_blit2);
+            Func_GET_RECT_INJECTED = runtimeContext.GetInternalCall<Ptr_Func_GET_RECT_INJECTED>(signature_get_rect_Injected);
+            Func_GET_TEXTURE_RECT_INJECTED = runtimeContext.GetInternalCall<Ptr_Func_GET_TEXTURE_RECT_INJECTED>(signature_get_texture_rect_injected);
+
         }
     }
 
