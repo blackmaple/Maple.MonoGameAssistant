@@ -62,9 +62,11 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
 
             var w = (int)ref_Rect.m_Width;
             var h = (int)ref_Rect.m_Height;
+            float textureY = texture2D_height - (ref_Rect.m_YMin + ref_Rect.m_Height);
 
             pDest.CTOR_08(w, h);
-            pDest.READ_PIXELS_01(ref_Rect, 0, 0);
+            pDest.READ_PIXELS_01(
+                new Rect.Ref_Rect() { m_XMin = ref_Rect.m_XMin, m_YMin = textureY, m_Width = ref_Rect.m_Width, m_Height = ref_Rect.m_Height }, 0, 0);
             pDest.APPLY_02();
 
             RenderTexture.Ptr_RenderTexture.SET_ACTIVE(previous);
