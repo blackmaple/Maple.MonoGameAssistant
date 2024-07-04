@@ -157,6 +157,29 @@ namespace Maple.MonoGameAssistant.Core
             }
         }
 
+        public Enumerator GetEnumerator() => new(this);
+
+        public struct Enumerator(PMonoArray<T_DATA> array)
+        {
+            private int _index = 0;
+            private readonly int _size = array.Size;
+            private T_DATA _current = default;
+
+            public readonly void Dispose() { }
+
+            public readonly T_DATA Current => _current;
+
+            public bool MoveNext()
+            {
+                if (((uint)_index < (uint)_size))
+                {
+                    _current = array[_index];
+                    _index++;
+                    return true;
+                }
+                return false;
+            }
+        }
 
     }
 

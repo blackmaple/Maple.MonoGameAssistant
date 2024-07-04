@@ -254,6 +254,8 @@ namespace Maple.MonoGameAssistant.GameShared.Service
             return new GameInventoryDisplayDTO()
             {
                 ObjectId = string.Empty,
+                DisplayName = gameValue.DisplayName,
+                DisplayDesc= gameValue.DisplayValue,
             };
         }
         public GameObjectDisplayDTO? SearchGameSkill(GameValueInfoDTO gameValue)

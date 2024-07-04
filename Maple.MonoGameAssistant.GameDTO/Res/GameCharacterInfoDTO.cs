@@ -43,8 +43,14 @@ namespace Maple.MonoGameAssistant.GameDTO
         /// <summary>
         /// 装备集合
         /// </summary>
-        public GameValueInfoDTO[]? EquipmentAttributes { set; get; }
+        public GameEquipmentInfoDTO[]? EquipmentAttributes { set; get; }
 
+    }
+
+    public class GameEquipmentInfoDTO : GameValueInfoDTO 
+    { 
+        //装备分类
+        public string? DisplayCategory { set; get; }
     }
 
 
@@ -56,8 +62,16 @@ namespace Maple.MonoGameAssistant.GameDTO
         /// <summary>
         /// 技能集合
         /// </summary>
-        public GameValueInfoDTO[]? SkillInfos { set; get; }
+        public GameSkillInfoDTO[]? SkillInfos { set; get; }
 
     }
+
+
+    //public class GameSkillInfoDTO : GameValueInfoDTO
+    //{
+    //    //技能类型
+    //    public string? DisplayCategory { set; get; }
+
+    //}
 
 }

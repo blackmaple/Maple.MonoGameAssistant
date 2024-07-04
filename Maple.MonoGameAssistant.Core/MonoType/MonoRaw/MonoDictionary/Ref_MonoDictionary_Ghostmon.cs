@@ -87,5 +87,8 @@ namespace Maple.MonoGameAssistant.Core
 
         public PMonoArray Entries => _entries;
 
+
+        public int Size => Count - FreeCount;
+
     }
 }
