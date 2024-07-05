@@ -92,15 +92,20 @@ namespace Maple.MonoGameAssistant.GameCore
         {
             return this.TrySendAsync<GameSessionObjectDTO, GameCharacterDisplayDTO[]>("game/GetListCharacterDisplay", new GameSessionObjectDTO() { Session = gameSessionInfo.ObjectId });
         }
-        [Obsolete("remove...")]
-        public Task<MonoResultDTO<GameCharacterInfoDTO>> GetCharacterInfoAsync(GameSessionInfoDTO gameSessionInfo, string gameCharacterId)
-        {
-            return this.TrySendAsync<GameCharacterObjectDTO, GameCharacterInfoDTO>("game/GetCharacterInfo", new GameCharacterObjectDTO() { Session = gameSessionInfo.ObjectId, CharacterId = gameCharacterId });
-        }
+        //[Obsolete("remove...")]
+        //public Task<MonoResultDTO<GameCharacterInfoDTO>> GetCharacterInfoAsync(GameSessionInfoDTO gameSessionInfo, string gameCharacterId)
+        //{
+        //    return this.TrySendAsync<GameCharacterObjectDTO, GameCharacterInfoDTO>("game/GetCharacterInfo", new GameCharacterObjectDTO() { Session = gameSessionInfo.ObjectId, CharacterId = gameCharacterId });
+        //}
         public Task<MonoResultDTO<GameCharacterStatusDTO>> GetCharacterStatusAsync(GameSessionInfoDTO gameSessionInfo, string gameCharacterId)
         {
             return this.TrySendAsync<GameCharacterObjectDTO, GameCharacterStatusDTO>("game/GetCharacterStatus", new GameCharacterObjectDTO() { Session = gameSessionInfo.ObjectId, CharacterId = gameCharacterId });
         }
+        public Task<MonoResultDTO<GameCharacterModifyDTO>> UpdateCharacterStatusAsync(GameSessionInfoDTO gameSessionInfo, string gameCharacterId, GameValueInfoDTO gameValueInfo)
+        {
+            return this.TrySendAsync<GameCharacterModifyDTO, GameCharacterModifyDTO>("game/UpdateCharacterStatus", new GameCharacterModifyDTO() { Session = gameSessionInfo.ObjectId, CharacterId = gameCharacterId, ModifyObject = gameValueInfo.ObjectId, NewValue = gameValueInfo.DisplayValue });
+        }
+
         public Task<MonoResultDTO<GameCharacterSkillDTO>> GetCharacterSkillAsync(GameSessionInfoDTO gameSessionInfo, string gameCharacterId)
         {
             return this.TrySendAsync<GameCharacterObjectDTO, GameCharacterSkillDTO>("game/GetCharacterSkill", new GameCharacterObjectDTO() { Session = gameSessionInfo.ObjectId, CharacterId = gameCharacterId });
@@ -109,11 +114,6 @@ namespace Maple.MonoGameAssistant.GameCore
         {
             return this.TrySendAsync<GameCharacterObjectDTO, GameCharacterEquipmentDTO>("game/GetCharacterEquipment", new GameCharacterObjectDTO() { Session = gameSessionInfo.ObjectId, CharacterId = gameCharacterId });
         }
-
-        //public Task<MonoResultDTO<GameCharacterInfoDTO>> UpdateCharacterAsync(GameCharacterObjectDTO requestDTO)
-        //{
-        //    return this.TrySendAsync<GameCharacterObjectDTO, GameCharacterInfoDTO>("game/UpdateCharacter", requestDTO);
-        //}
 
         public Task<MonoResultDTO<GameMonsterDisplayDTO[]>> GetListMonsterDisplayAsync(GameSessionInfoDTO gameSessionInfo)
         {

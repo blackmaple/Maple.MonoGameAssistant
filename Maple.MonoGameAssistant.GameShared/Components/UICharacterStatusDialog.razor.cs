@@ -25,7 +25,8 @@ namespace Maple.MonoGameAssistant.GameShared.Components
             try
             {
                 gameValue.Loading = true;
-                await Task.Delay(5000);
+
+                await this.Core.OnUpdateCharacteStatus(CharacterDisplay, gameValue);
             }
             finally
             {

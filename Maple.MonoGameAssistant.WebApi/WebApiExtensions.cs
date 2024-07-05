@@ -46,6 +46,13 @@ namespace Maple.MonoGameAssistant.WebApi
                 }
                 context.Response.StatusCode = StatusCodes.Status200OK;
 
+                //var error = context.Features.Get<IExceptionHandlerFeature>();
+                //if (error is not null)
+                //{
+                //    var logger = context.RequestServices.GetRequiredService<ILogger<MonoCommonException>>();
+                //    logger.LogError("{error}", error.Error);
+                //}
+
                 switch (statusCode)
                 {
                     case StatusCodes.Status401Unauthorized:

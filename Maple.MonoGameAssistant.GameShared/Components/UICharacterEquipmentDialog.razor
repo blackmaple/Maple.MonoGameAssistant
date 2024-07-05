@@ -28,7 +28,7 @@
             <MSpacer></MSpacer>
             <MToolbarItems>
                 <MButtonGroup Rounded Group>
-                    <MButton Icon 
+                    <MButton Icon
                              OnClick="() => Visible = false">
                         <MIcon>mdi-close</MIcon>
                     </MButton>
@@ -41,16 +41,15 @@
         <MCardText>
 
             @{
-                var datas = CharacterEquipment.EquipmentAttributes.GetItemAttributes(false).ToArray();
-                if (datas.Any())
+                var equipInfos = CharacterEquipment.EquipmentInfos;
+                if (equipInfos?.Any() == true)
                 {
                     <MList Dense>
-                        @foreach (var item in datas)
+                        @foreach (var item in equipInfos)
                         {
-                            var data = this.Core.SearchGameInventory(item);
-                            <MListItem Dense  @key=item>
+                            <MListItem Dense @key=item>
                                 <MListItemAvatar Tile Size="36">
-                                    <MImage Src="@data?.DisplayImage">
+                                    <MImage Src="@item.DisplayImage">
                                         <PlaceholderContent>
                                             <MIcon>mdi-border-none-variant</MIcon>
                                         </PlaceholderContent>
@@ -60,16 +59,16 @@
 
                                 <MListItemContent>
                                     <MListItemTitle>
-                                        <span>@data.ToDisplayName()</span>
+                                        <span>@item.ToDisplayName()</span>
                                         <MChip XSmall Outlined Color="green">
-                                            @item.ObjectId
+                                            @item.DisplayCategory
                                         </MChip>
 
                                     </MListItemTitle>
-                                    <MListItemSubtitle>@data.ToDisplayDesc()</MListItemSubtitle>
+                                    <MListItemSubtitle>@item.ToDisplayDesc()</MListItemSubtitle>
                                     <MChipGroup ShowArrows="true">
                                         @{
-                                            var datas = data.ItemAttributes.GetItemAttributes(true).ToArray();
+                                            var datas = item.EquipmentAttributes.GetItemAttributes(true).ToArray();
                                             if (datas.Any())
                                             {
 
@@ -99,33 +98,6 @@
                             <MDivider></MDivider>
                         }
                     </MList>
-                    // <MDescriptions Dense Bordered AlignCenter Column="1">
-                    //     @foreach (var item in datas)
-                    //     {
-                    //         var data = this.Core.SearchGameInventory(item);
-                    //         <MDescriptionsItem Label="@item.DisplayName">
-                    //             <MListItem OnClick="()=>{}">
-                    //                 <MListItemAvatar Tile>
-                    //                     <MImage Src="@data?.DisplayImage">
-                    //                         <PlaceholderContent>
-                    //                             <MIcon>mdi-plus</MIcon>
-                    //                         </PlaceholderContent>
-                    //                     </MImage>
-                    //                 </MListItemAvatar>
-                    //                 <MListItemContent>
-                    //                     <MListItemTitle>
-                    //                         @data?.ToDisplayName()
-                    //                     </MListItemTitle>
-                    //                     <MListItemSubtitle>
-                    //                         @data?.ToDisplayName()
-                    //                     </MListItemSubtitle>
-                    //                 </MListItemContent>
-
-                    //             </MListItem>
-
-                    //         </MDescriptionsItem>
-                    //     }
-                    // </MDescriptions>
                 }
             }
         </MCardText>

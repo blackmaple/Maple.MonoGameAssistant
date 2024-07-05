@@ -209,7 +209,6 @@ namespace Maple.MonoGameAssistant.WebApi
             }
             gameGroup.MapPost("/GetListCurrencyDisplay", async (/*HttpContext context,*/ [FromBody] GameSessionObjectDTO requestDTO, [FromServices] IGameWebApiControllers gameService) =>
             {
-                //      context.Request.Host.ToUriComponent
                 requestDTO.ThrowIfGameSessionDiff();
                 var datas = await gameService.GetListCurrencyDisplayAsync().ConfigureAwait(false);
                 return datas.GetOk();
@@ -257,6 +256,12 @@ namespace Maple.MonoGameAssistant.WebApi
                 characterObjectDTO.ThrowIfGameSessionDiff();
 
                 var data = await gameService.GetCharacterStatusAsync(characterObjectDTO).ConfigureAwait(false);
+                return data.GetOk();
+            });
+            gameGroup.MapPost("/UpdateCharacterStatus", async ([FromBody] GameCharacterModifyDTO characterModifyDTO, [FromServices] IGameWebApiControllers gameService) =>
+            {
+                characterModifyDTO.ThrowIfGameSessionDiff();
+                var data = await gameService.UpdateCharacterStatusAsync(characterModifyDTO).ConfigureAwait(false);
                 return data.GetOk();
             });
             gameGroup.MapPost("/GetCharacterEquipment", async ([FromBody] GameCharacterObjectDTO characterObjectDTO, [FromServices] IGameWebApiControllers gameService) =>

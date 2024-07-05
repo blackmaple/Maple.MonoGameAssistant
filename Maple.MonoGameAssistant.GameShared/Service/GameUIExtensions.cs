@@ -43,7 +43,8 @@ namespace Maple.MonoGameAssistant.GameShared.Service
             }
             return new MarkupString(gameValueInfo.DisplayValue);
         }
-        public static IEnumerable<GameValueInfoDTO> GetItemAttributes(this GameValueInfoDTO[]? gameValueInfos, bool onlyPreview = false)
+        public static IEnumerable<T> GetItemAttributes<T>(this IReadOnlyList<T>? gameValueInfos, bool onlyPreview = false)
+            where T: GameValueInfoDTO
         {
 
             if (gameValueInfos is not null)

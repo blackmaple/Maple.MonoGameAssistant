@@ -5,6 +5,8 @@ namespace Maple.MonoGameAssistant.GameDTO
     /// <summary>
     /// 人物信息
     /// </summary>
+
+    [Obsolete("remove...")]
     public class GameCharacterInfoDTO : GameObjectDisplayDTO
     {
         /// <summary>
@@ -34,23 +36,39 @@ namespace Maple.MonoGameAssistant.GameDTO
 
     }
 
+    
+
 
     /// <summary>
-    /// 人物装逼
+    /// 人物装备
     /// </summary>
     public class GameCharacterEquipmentDTO : GameUniqueIndexDTO
     {
         /// <summary>
         /// 装备集合
         /// </summary>
-        public GameEquipmentInfoDTO[]? EquipmentAttributes { set; get; }
+        public GameEquipmentInfoDTO[]? EquipmentInfos { set; get; }
 
     }
 
-    public class GameEquipmentInfoDTO : GameValueInfoDTO 
+    /// <summary>
+    /// 装备信息
+    /// </summary>
+    public class GameEquipmentInfoDTO : GameDisplayDTO
     { 
-        //装备分类
+
+        /// <summary>
+        /// 装备分类
+        /// </summary>
         public string? DisplayCategory { set; get; }
+
+        /// <summary>
+        /// 装备属性
+        /// </summary>
+        public GameValueInfoDTO[]? EquipmentAttributes { set; get; }
+
+
+        public bool CanWrite { set; get; }
     }
 
 
@@ -66,12 +84,5 @@ namespace Maple.MonoGameAssistant.GameDTO
 
     }
 
-
-    //public class GameSkillInfoDTO : GameValueInfoDTO
-    //{
-    //    //技能类型
-    //    public string? DisplayCategory { set; get; }
-
-    //}
-
+ 
 }

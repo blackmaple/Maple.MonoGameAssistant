@@ -1,54 +1,87 @@
 ﻿@inherits Masa.Blazor.Popup.Components.PopupComponentBase
 
-<MDialog Value="Visible">
+<MDialog Value="Visible" Fullscreen>
     <MCard Tile>
-        <MListItem>
-            <MListItemAvatar Tile>
-                <MImage Src="@CharacterDisplay.DisplayImage">
-                    <PlaceholderContent>
-                        <MIcon>mdi-border-none-variant</MIcon>
-                    </PlaceholderContent>
-                </MImage>
-            </MListItemAvatar>
-            <MListItemContent>
-                <MListItemTitle>
-                    @CharacterDisplay.ToDisplayName()
-                </MListItemTitle>
-                <MListItemSubtitle>
+        <MToolbar>
 
-                    <MChip XSmall Outlined Color="green">
-                        @CharacterDisplay.DisplayCategory
-                    </MChip>
-                </MListItemSubtitle>
-            </MListItemContent>
-        </MListItem>
+            <MListItem>
+                <MListItemAvatar Tile>
+                    <MImage Src="@CharacterDisplay.DisplayImage">
+                        <PlaceholderContent>
+                            <MIcon>mdi-border-none-variant</MIcon>
+                        </PlaceholderContent>
+                    </MImage>
+                </MListItemAvatar>
+                <MListItemContent>
+                    <MListItemTitle>
+                        @CharacterDisplay.ToDisplayName()
+                    </MListItemTitle>
+                    <MListItemSubtitle>
+
+                        <MChip XSmall Outlined Color="green">
+                            @CharacterDisplay.DisplayCategory
+                        </MChip>
+                    </MListItemSubtitle>
+                </MListItemContent>
+            </MListItem>
+
+            <MSpacer></MSpacer>
+            <MToolbarItems>
+                <MButtonGroup Rounded Group>
+                    <MButton Icon
+                             OnClick="() => Visible = false">
+                        <MIcon>mdi-close</MIcon>
+                    </MButton>
+                </MButtonGroup>
+
+            </MToolbarItems>
+        </MToolbar>
 
         <MCardSubtitle>@CharacterDisplay.ToDisplayDesc()</MCardSubtitle>
         <MCardText>
 
             @{
-                var datas = CharacterSkill.SkillInfos.GetItemAttributes(false).ToArray();
-                if (datas.Any())
+                var skillInfos = CharacterSkill.SkillInfos;
+                if (skillInfos?.Any() == true)
                 {
-                    <MList  Dense>
-                        @foreach (var item in datas)
+                    <MList Dense ThreeLine>
+                        @foreach (var item in skillInfos)
                         {
-                            var data = this.Core.SearchGameSkill(item);
-                            <MListItem Dense>
-                                <MListItemAvatar Tile>
-                                    <MImage Src="@data?.DisplayImage">
+                            <MListItem Dense @key=item>
+                                <MListItemAvatar Tile Size="36">
+                                    <MImage Src="@item.DisplayImage">
                                         <PlaceholderContent>
                                             <MIcon>mdi-border-none-variant</MIcon>
                                         </PlaceholderContent>
                                     </MImage>
                                 </MListItemAvatar>
+
+
                                 <MListItemContent>
                                     <MListItemTitle>
-                                        @data.ToDisplayName()
+                                        <span>@item.ToDisplayName()</span>
+                                        <MChip XSmall Outlined Color="green">
+                                            @item.DisplayCategory
+                                        </MChip>
+
                                     </MListItemTitle>
-                                    <MListItemSubtitle>
-                                        @data.ToDisplayDesc()
-                                    </MListItemSubtitle>
+                                    <MListItemSubtitle>@item.ToDisplayDesc()</MListItemSubtitle>
+                                    <MChipGroup ShowArrows="true">
+                                        @{
+                                            var datas = item.SkillAttributes.GetItemAttributes(true).ToArray();
+                                            if (datas.Any())
+                                            {
+
+                                                @foreach (var item in datas)
+                                                {
+                                                    <MChip Small Outlined>
+                                                        <span>@item.DisplayName:</span>@item.DisplayValue
+                                                    </MChip>
+                                                }
+
+                                            }
+                                        }
+                                    </MChipGroup>
                                 </MListItemContent>
                                 <MListItemAction>
                                     <MButtonGroup Rounded>
@@ -65,33 +98,6 @@
                             <MDivider></MDivider>
                         }
                     </MList>
-                    // <MDescriptions Dense Bordered AlignCenter Column="1">
-                    //     @foreach (var item in datas)
-                    //     {
-                    //         var data = this.Core.SearchGameInventory(item);
-                    //         <MDescriptionsItem Label="@item.DisplayName">
-                    //             <MListItem OnClick="()=>{}">
-                    //                 <MListItemAvatar Tile>
-                    //                     <MImage Src="@data?.DisplayImage">
-                    //                         <PlaceholderContent>
-                    //                             <MIcon>mdi-plus</MIcon>
-                    //                         </PlaceholderContent>
-                    //                     </MImage>
-                    //                 </MListItemAvatar>
-                    //                 <MListItemContent>
-                    //                     <MListItemTitle>
-                    //                         @data?.ToDisplayName()
-                    //                     </MListItemTitle>
-                    //                     <MListItemSubtitle>
-                    //                         @data?.ToDisplayName()
-                    //                     </MListItemSubtitle>
-                    //                 </MListItemContent>
-
-                    //             </MListItem>
-
-                    //         </MDescriptionsItem>
-                    //     }
-                    // </MDescriptions>
                 }
             }
         </MCardText>

@@ -12,9 +12,15 @@
                         OnClearClick="()=>this.OnSearch()"
                         OnEnter="()=>this.OnSearch()">
             </MTextField>
-            <MButton Icon>
-                <MIcon Color="orange darken-4">mdi-cog-outline</MIcon>
-            </MButton>
+            <MButtonGroup Dense Borderless Tile >
+                <MButton Icon OnClick="()=>this.Core.GetListInventoryDisplayAsync()">
+                    <MIcon Color="orange darken-4">mdi-refresh</MIcon>
+                </MButton>
+                <MButton Icon>
+                    <MIcon Color="orange darken-4">mdi-cog-outline</MIcon>
+                </MButton>
+            </MButtonGroup>
+
         </MToolbar>
     </MCardTitle>
     <MCardText>

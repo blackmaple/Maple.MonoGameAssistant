@@ -24,7 +24,6 @@ namespace Maple.MonoGameAssistant.GameShared.Components
             try
             {
                 this.Loading = true;
-                await Task.Delay(2500);
                 await this.Core.OnUpdateInventory(InventoryDisplay.DisplayCategory, InventoryInfo);
             }
             finally

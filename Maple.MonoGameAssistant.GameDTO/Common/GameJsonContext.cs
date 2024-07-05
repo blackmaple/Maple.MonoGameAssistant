@@ -22,46 +22,48 @@ namespace Maple.MonoGameAssistant.GameDTO
     [JsonSerializable(typeof(GameSkillDisplayDTO))]
     [JsonSerializable(typeof(GameSkillDisplayDTO[]))]
 
-
-    [JsonSerializable(typeof(GameCurrencyInfoDTO))]
-    [JsonSerializable(typeof(MonoResultDTO<GameCurrencyInfoDTO>))]
     [JsonSerializable(typeof(GameCurrencyDisplayDTO))]
     [JsonSerializable(typeof(MonoResultDTO<GameCurrencyDisplayDTO[]>))]
-    [JsonSerializable(typeof(GameCurrencyModifyDTO))]
     [JsonSerializable(typeof(GameCurrencyObjectDTO))]
+    [JsonSerializable(typeof(GameCurrencyInfoDTO))]
+    [JsonSerializable(typeof(MonoResultDTO<GameCurrencyInfoDTO>))]
+    [JsonSerializable(typeof(GameCurrencyModifyDTO))]
 
-
-    [JsonSerializable(typeof(GameInventoryInfoDTO))]
-    [JsonSerializable(typeof(MonoResultDTO<GameInventoryInfoDTO>))]
     [JsonSerializable(typeof(GameInventoryDisplayDTO))]
     [JsonSerializable(typeof(MonoResultDTO<GameInventoryDisplayDTO[]>))]
-    [JsonSerializable(typeof(GameInventoryModifyDTO))]
     [JsonSerializable(typeof(GameInventoryObjectDTO))]
+    [JsonSerializable(typeof(GameInventoryInfoDTO))]
+    [JsonSerializable(typeof(MonoResultDTO<GameInventoryInfoDTO>))]
+    [JsonSerializable(typeof(GameInventoryModifyDTO))]
 
-    [JsonSerializable(typeof(GameCharacterInfoDTO))]
-    [JsonSerializable(typeof(MonoResultDTO<GameCharacterInfoDTO>))]
+    //[JsonSerializable(typeof(GameCharacterInfoDTO))]
+    //[JsonSerializable(typeof(MonoResultDTO<GameCharacterInfoDTO>))]
+    [JsonSerializable(typeof(GameCharacterDisplayDTO))]
+    [JsonSerializable(typeof(MonoResultDTO<GameCharacterDisplayDTO[]>))]
+
     [JsonSerializable(typeof(GameCharacterStatusDTO))]
     [JsonSerializable(typeof(MonoResultDTO<GameCharacterStatusDTO>))]
+    [JsonSerializable(typeof(GameCharacterObjectDTO))]
+    [JsonSerializable(typeof(GameCharacterModifyDTO))]
+    [JsonSerializable(typeof(MonoResultDTO<GameCharacterModifyDTO>))]
+
     [JsonSerializable(typeof(GameCharacterEquipmentDTO))]
     [JsonSerializable(typeof(MonoResultDTO<GameCharacterEquipmentDTO>))]
-    [JsonSerializable(typeof(GameCharacterEquipmentDTO))]
     [JsonSerializable(typeof(GameEquipmentInfoDTO))]
     [JsonSerializable(typeof(GameEquipmentInfoDTO[]))]
 
     [JsonSerializable(typeof(GameCharacterSkillDTO))]
     [JsonSerializable(typeof(MonoResultDTO<GameCharacterSkillDTO>))]
-    [JsonSerializable(typeof(GameCharacterDisplayDTO))]
-    [JsonSerializable(typeof(MonoResultDTO<GameCharacterDisplayDTO[]>))]
-    [JsonSerializable(typeof(GameCharacterObjectDTO))]
+    [JsonSerializable(typeof(GameSkillInfoDTO))]
+    [JsonSerializable(typeof(GameSkillInfoDTO[]))]
 
 
     [JsonSerializable(typeof(GameMonsterDisplayDTO))]
     [JsonSerializable(typeof(MonoResultDTO<GameMonsterDisplayDTO[]>))]
 
+
     [JsonSerializable(typeof(GameSkillDisplayDTO))]
     [JsonSerializable(typeof(MonoResultDTO<GameSkillDisplayDTO[]>))]
-    [JsonSerializable(typeof(GameSkillInfoDTO))]
-    [JsonSerializable(typeof(GameSkillInfoDTO[]))]
 
 
     [JsonSerializable(typeof(GameSwitchModifyDTO))]

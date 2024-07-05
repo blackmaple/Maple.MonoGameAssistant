@@ -8,7 +8,7 @@ namespace Maple.MonoGameAssistant.GameDTO
         public required string CharacterId { set; get; }
 
         [JsonIgnore]
-        public ulong ULongValue
+        public ulong UCharacterId
         {
             get
             {

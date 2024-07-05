@@ -50,65 +50,132 @@ namespace Maple.MonoGameAssistant.GameShared.Service
             }
             this.GameSessionInfo = gameSession;
 
-            var gameCurrencyDTO = await this.Http.GetListCurrencyDisplayAsync(gameSession);
-            if (false == gameCurrencyDTO.TryGet(out var listGameCurrency))
-            {
-                await this.ShowErrorAsync(gameCurrencyDTO.MSG);
-                return EnumGameServiceStatus.ERROR;
-            }
-            this.ListCurrency_All.ReplaceRange(listGameCurrency);
-            this.ListCurrency_Search.ReplaceRange(listGameCurrency);
-
-            var gameInventoryDTO = await this.Http.GetListInventoryDisplayAsync(gameSession);
-            if (false == gameInventoryDTO.TryGet(out var listGameInventory))
-            {
-                await this.ShowErrorAsync(gameInventoryDTO.MSG);
-                return EnumGameServiceStatus.ERROR;
-            }
-            this.ListInventory_All.ReplaceRange(listGameInventory);
-            this.ListInventory_Search.ReplaceRange(listGameInventory);
-
-
-            var gameCharacterDTO = await this.Http.GetListCharacterDisplayAsync(gameSession);
-            if (false == gameCharacterDTO.TryGet(out var listGameCharacter))
-            {
-                await this.ShowErrorAsync(gameCharacterDTO.MSG);
-                return EnumGameServiceStatus.ERROR;
-            }
-            this.ListCharacter_All.ReplaceRange(listGameCharacter);
-            this.ListCharacter_Search.ReplaceRange(listGameCharacter);
-
-            var gameMonsterDTO = await this.Http.GetListMonsterDisplayAsync(gameSession);
-            if (false == gameMonsterDTO.TryGet(out var listGameMonster))
-            {
-                await this.ShowErrorAsync(gameMonsterDTO.MSG);
-                return EnumGameServiceStatus.ERROR;
-            }
-            this.ListMonster_All.ReplaceRange(listGameMonster);
-            this.ListMonster_Search.ReplaceRange(listGameMonster);
-
-
-            var gameSkillDTO = await this.Http.GetListSkillDisplayAsync(gameSession);
-            if (false == gameSkillDTO.TryGet(out var listGameSkill))
-            {
-                await this.ShowErrorAsync(gameSkillDTO.MSG);
-                return EnumGameServiceStatus.ERROR;
-            }
-            this.ListSkill_All.ReplaceRange(listGameSkill);
-            this.ListSkill_Search.ReplaceRange(listGameSkill);
-
-
-            var gameSwitchDTO = await this.Http.GetListSwitchDisplayAsync(gameSession);
-            if (false == gameSwitchDTO.TryGet(out var listGameSwitch))
-            {
-                await this.ShowErrorAsync(gameSwitchDTO.MSG);
-                return EnumGameServiceStatus.ERROR;
-            }
-            this.ListSwitch_Search.ReplaceRange(listGameSwitch);
-
+            await this.GetListCurrencyDisplayAsync();
+            await this.GetListInventoryDisplayAsync();
+            await this.GetListCharacterDisplayAsync();
+            await this.GetListMonsterDisplayAsync();
+            await this.GetListSkillDisplayAsync();
+            await this.GetListSwitchDisplayAsync();
 
             return EnumGameServiceStatus.OK;
         }
+
+        public async Task<bool> GetListCurrencyDisplayAsync()
+        {
+            this.ListCurrency_All.Clear();
+            this.ListCurrency_Search.Clear();
+            if (this.GameSessionInfo is null)
+            {
+                return false;
+            }
+            var gameCurrencyDTO = await this.Http.GetListCurrencyDisplayAsync(this.GameSessionInfo);
+            if (false == gameCurrencyDTO.TryGet(out var listGameCurrency))
+            {
+                await this.ShowErrorAsync(gameCurrencyDTO.MSG);
+                return false;
+            }
+            this.ListCurrency_All.AddRange(listGameCurrency);
+            this.ListCurrency_Search.AddRange(listGameCurrency);
+            return true;
+        }
+        public async Task<bool> GetListInventoryDisplayAsync()
+        {
+            this.ListInventory_All.Clear();
+            this.ListInventory_Search.Clear();
+            if (this.GameSessionInfo is null)
+            {
+                return false;
+            }
+            var gameInventoryDTO = await this.Http.GetListInventoryDisplayAsync(this.GameSessionInfo);
+            if (false == gameInventoryDTO.TryGet(out var listGameInventory))
+            {
+                await this.ShowErrorAsync(gameInventoryDTO.MSG);
+                return false;
+            }
+            this.ListInventory_All.AddRange(listGameInventory);
+            this.ListInventory_Search.AddRange(listGameInventory);
+            return true;
+        }
+        public async Task<bool> GetListCharacterDisplayAsync()
+        {
+            this.ListCharacter_All.Clear();
+            this.ListCharacter_Search.Clear();
+            if (this.GameSessionInfo is null)
+            {
+                return false;
+            }
+            var gameCharacterDTO = await this.Http.GetListCharacterDisplayAsync(this.GameSessionInfo);
+            if (false == gameCharacterDTO.TryGet(out var listGameCharacter))
+            {
+                await this.ShowErrorAsync(gameCharacterDTO.MSG);
+                return false;
+            }
+            this.ListCharacter_All.AddRange(listGameCharacter);
+            this.ListCharacter_Search.AddRange(listGameCharacter);
+            return true;
+
+
+
+
+        }
+        public async Task<bool> GetListMonsterDisplayAsync()
+        {
+            this.ListMonster_All.Clear();
+            this.ListMonster_Search.Clear();
+            if (this.GameSessionInfo is null)
+            {
+                return false;
+            }
+            var gameMonsterDTO = await this.Http.GetListMonsterDisplayAsync(this.GameSessionInfo);
+            if (false == gameMonsterDTO.TryGet(out var listGameMonster))
+            {
+                await this.ShowErrorAsync(gameMonsterDTO.MSG);
+                return false;
+            }
+            this.ListMonster_All.ReplaceRange(listGameMonster);
+            this.ListMonster_Search.ReplaceRange(listGameMonster);
+            return true;
+        }
+        public async Task<bool> GetListSkillDisplayAsync()
+        {
+            this.ListSkill_All.Clear();
+            this.ListSkill_Search.Clear();
+            if (this.GameSessionInfo is null)
+            {
+                return false;
+            }
+
+            var gameSkillDTO = await this.Http.GetListSkillDisplayAsync(this.GameSessionInfo);
+            if (false == gameSkillDTO.TryGet(out var listGameSkill))
+            {
+                await this.ShowErrorAsync(gameSkillDTO.MSG);
+                return true;
+            }
+            this.ListSkill_All.ReplaceRange(listGameSkill);
+            this.ListSkill_Search.ReplaceRange(listGameSkill);
+            return false;
+
+        }
+        public async Task<bool> GetListSwitchDisplayAsync()
+        {
+            this.ListSwitch_Search.Clear();
+            if (this.GameSessionInfo is null)
+            {
+                return false;
+            }
+
+            var gameSwitchDTO = await this.Http.GetListSwitchDisplayAsync(this.GameSessionInfo);
+            if (false == gameSwitchDTO.TryGet(out var listGameSwitch))
+            {
+                await this.ShowErrorAsync(gameSwitchDTO.MSG);
+                return false;
+            }
+            this.ListSwitch_Search.ReplaceRange(listGameSwitch);
+            return true;
+
+        }
+
+
         public void OnSearchMonster(string? searchText)
         {
             this.ListMonster_Search.Clear();
@@ -138,7 +205,6 @@ namespace Maple.MonoGameAssistant.GameShared.Service
 
 
         }
-
 
 
         public void OnSearchCharacter(string? searchText)
@@ -181,20 +247,28 @@ namespace Maple.MonoGameAssistant.GameShared.Service
             {
                 return;
             }
-
-
-            var dto = await this.Http.GetCharacterSkillAsync(this.GameSessionInfo, selectedData.ObjectId);
-            if (false == dto.TryGet(out var characterSkill))
+            GameCharacterSkillDTO? characterSkill;
+            try
             {
-                await this.ShowErrorAsync(dto.MSG);
-                return;
+                this.PopupService.ShowProgressCircular();
+                var dto = await this.Http.GetCharacterSkillAsync(this.GameSessionInfo, selectedData.ObjectId);
+                if (false == dto.TryGet(out characterSkill))
+                {
+                    await this.ShowErrorAsync(dto.MSG);
+                    return;
+                }
             }
+            finally
+            {
+                this.PopupService.HideProgressCircular();
+
+            }
+
             await PopupService.OpenAsync(typeof(UICharacterSkillDialog), new Dictionary<string, object?>()
             {
                 { nameof(UICharacterSkillDialog.CharacterDisplay), selectedData },
                 { nameof(UICharacterSkillDialog.CharacterSkill), characterSkill }
             });
-
 
         }
         public async ValueTask OnSelectedCharacterEquipment(GameCharacterDisplayDTO? selectedData)
@@ -219,17 +293,22 @@ namespace Maple.MonoGameAssistant.GameShared.Service
 
 
         }
-        public ValueTask OnUpdateCharacter(GameCharacterInfoDTO? selectedData)
+        public async ValueTask OnUpdateCharacteStatus(GameCharacterDisplayDTO displayDTO, GameValueInfoDTO? selectedData)
         {
-            if (selectedData is null)
+            if (this.GameSessionInfo is null || selectedData is null)
             {
-                return ValueTask.CompletedTask;
+                return;
             }
-            return ValueTask.CompletedTask;
-
-            //get in game data;
-            //show dialog
+            var dto = await this.Http.UpdateCharacterStatusAsync(this.GameSessionInfo, displayDTO.ObjectId, selectedData);
+            if (false == dto.TryGet(out var newInfo))
+            {
+                await this.ShowErrorAsync(dto.MSG);
+                return;
+            }
+            selectedData.DisplayValue = newInfo.NewValue;
+            await this.ShowInfoAsync($"Update:{selectedData.DisplayValue}");
         }
+
         public GameInventoryDisplayDTO SearchGameInventory(GameValueInfoDTO gameValue)
         {
             var value = gameValue.DisplayValue;
@@ -255,7 +334,7 @@ namespace Maple.MonoGameAssistant.GameShared.Service
             {
                 ObjectId = string.Empty,
                 DisplayName = gameValue.DisplayName,
-                DisplayDesc= gameValue.DisplayValue,
+                DisplayDesc = gameValue.DisplayValue,
             };
         }
         public GameObjectDisplayDTO? SearchGameSkill(GameValueInfoDTO gameValue)
