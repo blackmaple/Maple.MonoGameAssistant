@@ -30,7 +30,7 @@ namespace Maple.MonoGameAssistant.WebApi
                 var error = context.Features.Get<IExceptionHandlerFeature>();
                 if (error is not null)
                 {
-                    var logger = context.RequestServices.GetRequiredService<ILogger<MonoCommonException>>();
+                    var logger = context.RequestServices.GetRequiredService<ILogger<WebApiBaseService>>();
                     logger.LogError("{error}", error.Error);
                     await context.Response.WriteResponseException(error.Error);
                 }

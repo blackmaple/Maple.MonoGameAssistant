@@ -46,7 +46,22 @@
 
                             </MListItemTitle>
                             <MListItemSubtitle>@context.ToDisplayDesc()</MListItemSubtitle>
+                            <MChipGroup ShowArrows="true">
+                                @{
+                                    var datas = context.CharacterAttributes.GetItemAttributes(true).ToArray();
+                                    if (datas.Any())
+                                    {
 
+                                        @foreach (var item in datas)
+                                        {
+                                            <MChip XSmall Outlined>
+                                                <span>@item.DisplayName:</span>@item.DisplayValue
+                                            </MChip>
+                                        }
+
+                                    }
+                                }
+                            </MChipGroup>
                         </MListItemContent>
                         <MListItemAction>
                             <MButtonGroup Rounded Group>

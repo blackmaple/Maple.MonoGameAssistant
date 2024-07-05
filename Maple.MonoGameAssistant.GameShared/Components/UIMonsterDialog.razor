@@ -54,14 +54,14 @@
                     </MDescriptions>
                 }
 
-                var skills = MonsterDisplayDTO.SkillInfos.GetItemAttributes(false).ToArray();
-                if (skills.Any())
+                var skills = MonsterDisplayDTO.SkillInfos;
+                if (skills?.Any()==true)
                 {
                     <MDescriptions Dense Bordered AlignCenter Title="SkillInfos" Vertical Column="4">
                         @foreach (var item in skills)
                         {
                             <MDescriptionsItem Label="@item.DisplayName">
-                                @item.ToDisplayValue()
+                                @item.ToDisplayDesc()
                             </MDescriptionsItem>
                         }
                     </MDescriptions>

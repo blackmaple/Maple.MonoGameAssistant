@@ -13,7 +13,7 @@
         /// <summary>
         /// 技能
         /// </summary>
-        public GameValueInfoDTO[]? SkillInfos { set; get;}
+        public GameSkillInfoDTO[]? SkillInfos { set; get;}
 
         /// <summary>
         /// 奖励

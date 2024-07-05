@@ -12,10 +12,10 @@ namespace Maple.MonoGameAssistant.GameDTO
         /// </summary>
         public GameValueInfoDTO[]? MonsterAttributes { set; get; }
 
-        /// <summary>
-        /// 技能集合
-        /// </summary>
-        public GameSkillDisplayDTO[]? SkillInfos { set; get; }
+        ///// <summary>
+        ///// 技能集合
+        ///// </summary>
+        //public GameSkillDisplayDTO[]? SkillInfos { set; get; }
 
 
     }

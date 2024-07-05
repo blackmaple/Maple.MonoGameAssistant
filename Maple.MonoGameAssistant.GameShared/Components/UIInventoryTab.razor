@@ -12,7 +12,7 @@
                         OnClearClick="()=>this.OnSearch()"
                         OnEnter="()=>this.OnSearch()">
             </MTextField>
-            <MButtonGroup Dense Borderless Tile >
+            <MButtonGroup Dense Borderless Tile>
                 <MButton Icon OnClick="()=>this.Core.GetListInventoryDisplayAsync()">
                     <MIcon Color="orange darken-4">mdi-refresh</MIcon>
                 </MButton>
@@ -27,7 +27,7 @@
         <UIDynamicHeight>
             <MVirtualScroll OverscanCount="2" ItemSize="64" Items="Core.ListInventory_Search">
                 <ItemContent>
-                    <MListItem Dense >
+                    <MListItem Dense>
                         <MListItemAvatar Tile Size="36">
                             <MImage Src="@context.DisplayImage">
                                 <PlaceholderContent>
@@ -46,7 +46,7 @@
 
                             </MListItemTitle>
                             <MListItemSubtitle>@context.ToDisplayDesc()</MListItemSubtitle>
-                            <MChipGroup  ShowArrows="true">
+                            <MChipGroup ShowArrows="true">
                                 @{
                                     var datas = context.ItemAttributes.GetItemAttributes(false).ToArray();
                                     if (datas.Any())
