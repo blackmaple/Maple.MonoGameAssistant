@@ -20,4 +20,6 @@ namespace Maple.MonoGameAssistant.GameDTO
 
     }
 
+
+
 }

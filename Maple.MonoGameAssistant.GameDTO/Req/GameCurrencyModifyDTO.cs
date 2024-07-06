@@ -51,5 +51,4 @@ namespace Maple.MonoGameAssistant.GameDTO
             set => NewValue = value.ToString();
         }
     }
-
 }

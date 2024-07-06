@@ -28,7 +28,7 @@ namespace Maple.MonoGameAssistant.GameDTO
 
 
         [JsonIgnore]
-        public decimal Value
+        public decimal DecimalValue
         {
             get => decimal.TryParse(DisplayValue, out var result) ? result : decimal.Zero;
             set => DisplayValue = value.ToString();
@@ -36,6 +36,21 @@ namespace Maple.MonoGameAssistant.GameDTO
 
         [JsonIgnore]
         public bool Loading { set; get; }
+
+
+        [JsonIgnore]
+        public bool? BoolValue
+        {
+            get
+            {
+                if (bool.TryParse(DisplayValue, out var result))
+                {
+                    return result;
+                }
+                return default;
+            }
+            set => DisplayValue = value.HasValue ? value.ToString() : string.Empty;
+        }
 
     }
 }

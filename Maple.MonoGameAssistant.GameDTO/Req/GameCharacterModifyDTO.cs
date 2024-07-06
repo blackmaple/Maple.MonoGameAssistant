@@ -4,6 +4,7 @@ namespace Maple.MonoGameAssistant.GameDTO
 {
     public class GameCharacterModifyDTO : GameCharacterObjectDTO
     {
+        // public string? ModifyCategory { set; get; }
         public string? ModifyObject { set; get; }
         public string? NewValue { set; get; }
 
@@ -14,6 +15,20 @@ namespace Maple.MonoGameAssistant.GameDTO
             get
             {
                 if (int.TryParse(NewValue, out var result))
+                {
+                    return result;
+                }
+                return 0;
+            }
+            set => NewValue = value.ToString();
+        }
+
+        [JsonIgnore]
+        public ulong ULongValue
+        {
+            get
+            {
+                if (ulong.TryParse(NewValue, out var result))
                 {
                     return result;
                 }
@@ -51,6 +66,7 @@ namespace Maple.MonoGameAssistant.GameDTO
         }
 
 
+        [JsonIgnore]
         public bool? BoolValue
         {
             get

@@ -1,5 +1,6 @@
 using Maple.MonoGameAssistant.GameDTO;
 using Maple.MonoGameAssistant.GameShared.Service;
+using Masa.Blazor;
 using Microsoft.AspNetCore.Components;
 using System.Diagnostics.CodeAnalysis;
 
@@ -19,7 +20,13 @@ namespace Maple.MonoGameAssistant.GameShared.Components
         private async Task OnSelected(GameMonsterDisplayDTO  gameMonster)
         {
             await this.Core.OnSelectedMonster(gameMonster);
-
         }
+
+        private async Task OnAddMonsterMember(GameMonsterDisplayDTO gameMonster)
+        {
+
+            await this.Core.OnAddMonsterMember(gameMonster);
+        }
+
     }
 }

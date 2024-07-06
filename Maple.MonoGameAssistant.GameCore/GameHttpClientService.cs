@@ -101,9 +101,9 @@ namespace Maple.MonoGameAssistant.GameCore
         {
             return this.TrySendAsync<GameCharacterObjectDTO, GameCharacterStatusDTO>("game/GetCharacterStatus", new GameCharacterObjectDTO() { Session = gameSessionInfo.ObjectId, CharacterId = gameCharacterId });
         }
-        public Task<MonoResultDTO<GameCharacterModifyDTO>> UpdateCharacterStatusAsync(GameSessionInfoDTO gameSessionInfo, string gameCharacterId, GameValueInfoDTO gameValueInfo)
+        public Task<MonoResultDTO<GameCharacterStatusDTO>> UpdateCharacterStatusAsync(GameSessionInfoDTO gameSessionInfo, string gameCharacterId, GameValueInfoDTO gameValueInfo)
         {
-            return this.TrySendAsync<GameCharacterModifyDTO, GameCharacterModifyDTO>("game/UpdateCharacterStatus", new GameCharacterModifyDTO() { Session = gameSessionInfo.ObjectId, CharacterId = gameCharacterId, ModifyObject = gameValueInfo.ObjectId, NewValue = gameValueInfo.DisplayValue });
+            return this.TrySendAsync<GameCharacterModifyDTO, GameCharacterStatusDTO>("game/UpdateCharacterStatus", new GameCharacterModifyDTO() { Session = gameSessionInfo.ObjectId, CharacterId = gameCharacterId, ModifyObject = gameValueInfo.ObjectId, NewValue = gameValueInfo.DisplayValue });
         }
 
         public Task<MonoResultDTO<GameCharacterSkillDTO>> GetCharacterSkillAsync(GameSessionInfoDTO gameSessionInfo, string gameCharacterId)
@@ -119,6 +119,12 @@ namespace Maple.MonoGameAssistant.GameCore
         {
             return this.TrySendAsync<GameSessionObjectDTO, GameMonsterDisplayDTO[]>("game/GetListMonsterDisplay", new GameSessionObjectDTO() { Session = gameSessionInfo.ObjectId });
         }
+        public Task<MonoResultDTO<GameCharacterSkillDTO>> AddMonsterMemberAsync(GameSessionInfoDTO gameSessionInfo,string monsterObject)
+        {
+            return this.TrySendAsync<GameMonsterObjectDTO, GameCharacterSkillDTO>("game/AddMonsterMember", new GameMonsterObjectDTO() { Session = gameSessionInfo.ObjectId, MonsterObject = monsterObject });
+        }
+
+
         public Task<MonoResultDTO<GameSkillDisplayDTO[]>> GetListSkillDisplayAsync(GameSessionInfoDTO gameSessionInfo)
         {
             return this.TrySendAsync<GameSessionObjectDTO, GameSkillDisplayDTO[]>("game/GetListSkillDisplay", new GameSessionObjectDTO() { Session = gameSessionInfo.ObjectId });

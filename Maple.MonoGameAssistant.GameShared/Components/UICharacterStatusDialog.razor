@@ -48,16 +48,30 @@
                             <MDescriptionsItem Label="@item.DisplayName">
                                 @if (item.CanWrite)
                                 {
-                                    <MTextField OnAppendClick="()=>OnUpdateCharacterStatus(item)"
-                                                AppendIcon="mdi-pencil-outline"
-                                                Type="number"
-                                                TValue="decimal"
-                                                Loading="item.Loading"
-                                                Disabled="item.Loading"
-                                                Dense
-                                                HideDetails="true"
-                                                @bind-Value="@item.Value"
-                                                NumberProps="@(prop => { prop.Min = 0; prop.Max = int.MaxValue; prop.Step =1; prop.HideControl= true; })" />
+                                    var boolVal = item.BoolValue;
+                                    if (boolVal.HasValue)
+                                    {
+                                        <MSwitch Inset Dense
+                                                 Color="orange darken-4"
+                                                 Loading="@item.Loading"
+                                                 Disabled="item.Loading"
+                                                 OnClick="()=>OnUpdateCharacterStatus(item)"
+                                                 @bind-Value="@item.BoolValue">
+                                        </MSwitch>
+                                    }
+                                    else
+                                    {
+                                        <MTextField OnAppendClick="()=>OnUpdateCharacterStatus(item)"
+                                                    AppendIcon="mdi-pencil-outline"
+                                                    Type="number"
+                                                    TValue="decimal"
+                                                    Loading="item.Loading"
+                                                    Disabled="item.Loading"
+                                                    Dense
+                                                    HideDetails="true"
+                                                    @bind-Value="@item.DecimalValue"
+                                                    NumberProps="@(prop => { prop.Min = 0; prop.Max = int.MaxValue; prop.Step =1; prop.HideControl= true; })" />
+                                    }
                                 }
                                 else
                                 {

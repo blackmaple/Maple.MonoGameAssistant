@@ -286,12 +286,14 @@ namespace Maple.GameContext
 
         public virtual ValueTask<GameCharacterSkillDTO> GetCharacterSkillAsync(GameCharacterObjectDTO characterObjectDTO)
             => GameException.Throw<ValueTask<GameCharacterSkillDTO>>("NotImplemented");
-        public virtual ValueTask<GameCharacterModifyDTO> UpdateCharacterStatusAsync(GameCharacterModifyDTO characterModifyDTO)
-            => GameException.Throw<ValueTask<GameCharacterModifyDTO>>("NotImplemented");
+        public virtual ValueTask<GameCharacterStatusDTO> UpdateCharacterStatusAsync(GameCharacterModifyDTO characterModifyDTO)
+            => GameException.Throw<ValueTask<GameCharacterStatusDTO>>("NotImplemented");
 
 
         public virtual ValueTask<GameMonsterDisplayDTO[]> GetListMonsterDisplayAsync()
             => ValueTask.FromResult<GameMonsterDisplayDTO[]>([]);
+        public virtual ValueTask<GameCharacterSkillDTO> AddMonsterMemberAsync(GameMonsterObjectDTO monsterObjectDTO)
+            => GameException.Throw<ValueTask<GameCharacterSkillDTO>>("NotImplemented");
 
         public virtual ValueTask<GameSkillDisplayDTO[]> GetListSkillDisplayAsync()
             => ValueTask.FromResult<GameSkillDisplayDTO[]>([]);

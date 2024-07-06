@@ -205,6 +205,39 @@ namespace Maple.MonoGameAssistant.GameShared.Service
 
 
         }
+        public async ValueTask OnAddMonsterMember(GameMonsterDisplayDTO? selectedData)
+        {
+            if (this.GameSessionInfo is null || selectedData is null)
+            {
+                return;
+            }
+
+            var confirmed = await PopupService.ConfirmAsync($"{selectedData.DisplayName}", $"Add Monster {selectedData.DisplayName}");
+            if (confirmed == false)
+            {
+                return;
+            }
+
+            var dto = await this.Http.AddMonsterMemberAsync(this.GameSessionInfo, selectedData.ObjectId);
+            if (false == dto.TryGet(out var characterSkillDTO))
+            {
+                await this.ShowErrorAsync(dto.MSG);
+                return;
+            }
+            await PopupService.OpenAsync(typeof(UICharacterSkillDialog), new Dictionary<string, object?>()
+            {
+                { nameof(UICharacterSkillDialog.CharacterDisplay), new GameCharacterDisplayDTO(){
+                    ObjectId = characterSkillDTO.ObjectId,
+                   DisplayName = selectedData.DisplayName,
+                   DisplayDesc = selectedData.DisplayDesc,
+                   DisplayCategory= selectedData.DisplayCategory,
+                   DisplayImage = selectedData.DisplayImage,
+                } },
+                { nameof(UICharacterSkillDialog.CharacterSkill), characterSkillDTO }
+            });
+
+
+        }
 
 
         public void OnSearchCharacter(string? searchText)
@@ -305,7 +338,20 @@ namespace Maple.MonoGameAssistant.GameShared.Service
                 await this.ShowErrorAsync(dto.MSG);
                 return;
             }
-            selectedData.DisplayValue = newInfo.NewValue;
+
+            if (displayDTO.CharacterAttributes is not null && newInfo.CharacterAttributes is not null)
+            {
+                foreach (var att in displayDTO.CharacterAttributes)
+                {
+                    var newAtt = newInfo.CharacterAttributes.Where(p => p.ObjectId == att.ObjectId).FirstOrDefault();
+                    if (newAtt is not null)
+                    {
+                        att.DisplayValue = newAtt.DisplayValue;
+                    }
+                }
+            }
+            //displayDTO.CharacterAttributes = newInfo.CharacterAttributes;
+
             await this.ShowInfoAsync($"Update:{selectedData.DisplayValue}");
         }
 

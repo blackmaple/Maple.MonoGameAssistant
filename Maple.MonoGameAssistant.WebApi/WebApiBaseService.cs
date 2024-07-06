@@ -286,6 +286,12 @@ namespace Maple.MonoGameAssistant.WebApi
                 var datas = await gameService.GetListMonsterDisplayAsync().ConfigureAwait(false);
                 return datas.GetOk();
             });
+            gameGroup.MapPost("/AddMonsterMember", async ([FromBody] GameMonsterObjectDTO requestDTO, [FromServices] IGameWebApiControllers gameService) =>
+            {
+                requestDTO.ThrowIfGameSessionDiff();
+                var datas = await gameService.AddMonsterMemberAsync(requestDTO).ConfigureAwait(false);
+                return datas.GetOk();
+            });
             gameGroup.MapPost("/GetListSkillDisplay", async ([FromBody] GameSessionObjectDTO requestDTO, [FromServices] IGameWebApiControllers gameService) =>
             {
                 requestDTO.ThrowIfGameSessionDiff();
