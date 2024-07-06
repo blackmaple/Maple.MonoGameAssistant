@@ -49,5 +49,19 @@ namespace Maple.MonoGameAssistant.GameDTO
             }
             set => NewValue = value.ToString();
         }
+
+
+        public bool? BoolValue
+        {
+            get
+            {
+                if (bool.TryParse(NewValue, out var result))
+                {
+                    return result;
+                }
+                return default;
+            }
+            set => NewValue = value.HasValue ? value.ToString() : string.Empty;
+        }
     }
 }
