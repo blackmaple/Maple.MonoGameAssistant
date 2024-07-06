@@ -278,7 +278,18 @@ namespace Maple.MonoGameAssistant.WebApi
                 var data = await gameService.GetCharacterSkillAsync(characterObjectDTO).ConfigureAwait(false);
                 return data.GetOk();
             });
-
+            gameGroup.MapPost("/UpdateCharacterSkill", async ([FromBody] GameCharacterModifyDTO characterModifyDTO, [FromServices] IGameWebApiControllers gameService) =>
+            {
+                characterModifyDTO.ThrowIfGameSessionDiff();
+                var data = await gameService.UpdateCharacterSkillAsync(characterModifyDTO).ConfigureAwait(false);
+                return data.GetOk();
+            });
+            gameGroup.MapPost("/UpdateCharacterEquipment", async ([FromBody] GameCharacterModifyDTO characterModifyDTO, [FromServices] IGameWebApiControllers gameService) =>
+            {
+                characterModifyDTO.ThrowIfGameSessionDiff();
+                var data = await gameService.UpdateCharacterEquipmentAsync(characterModifyDTO).ConfigureAwait(false);
+                return data.GetOk();
+            });
 
             gameGroup.MapPost("/GetListMonsterDisplay", async ([FromBody] GameSessionObjectDTO requestDTO, [FromServices] IGameWebApiControllers gameService) =>
             {

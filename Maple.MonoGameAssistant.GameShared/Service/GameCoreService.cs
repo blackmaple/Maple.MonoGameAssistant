@@ -12,7 +12,7 @@ namespace Maple.MonoGameAssistant.GameShared.Service
     {
         #region Service
         GameHttpClientService Http { get; } = gameHttp;
-        IPopupService PopupService { get; } = popupService;
+        public IPopupService PopupService { get; } = popupService;
         #endregion
         private List<GameCurrencyDisplayDTO> ListCurrency_All { get; } = new List<GameCurrencyDisplayDTO>(32);
         public List<GameCurrencyDisplayDTO> ListCurrency_Search { get; } = new List<GameCurrencyDisplayDTO>(32);
@@ -60,6 +60,7 @@ namespace Maple.MonoGameAssistant.GameShared.Service
             return EnumGameServiceStatus.OK;
         }
 
+        #region Currency
         public async Task<bool> GetListCurrencyDisplayAsync()
         {
             this.ListCurrency_All.Clear();
@@ -78,6 +79,57 @@ namespace Maple.MonoGameAssistant.GameShared.Service
             this.ListCurrency_Search.AddRange(listGameCurrency);
             return true;
         }
+        public void OnSearchCurrency(string? searchText)
+        {
+            this.ListCurrency_Search.Clear();
+            IEnumerable<GameCurrencyDisplayDTO> searchDatas = this.ListCurrency_All;
+
+            if (string.IsNullOrEmpty(searchText) == false)
+            {
+                searchDatas = searchDatas.Where(p => p.ContainsGameDisplay(searchText, p.DisplayCategory));
+            }
+            this.ListCurrency_Search.AddRange(searchDatas);
+
+
+        }
+        public async ValueTask OnSelectedCurrency(GameCurrencyDisplayDTO? selectedData)
+        {
+            if (this.GameSessionInfo is null || selectedData is null)
+            {
+                return;
+            }
+
+            var dto = await this.Http.GetCurrencyInfoAsync(this.GameSessionInfo, selectedData.ObjectId);
+            if (false == dto.TryGet(out var currencyInfo))
+            {
+                await this.ShowErrorAsync(dto.MSG);
+                return;
+            }
+            await PopupService.OpenAsync(typeof(UICurrencyDialog), new Dictionary<string, object?>()
+            {
+                { nameof(UICurrencyDialog.CurrencyDisplay), selectedData },
+                { nameof(UICurrencyDialog.CurrencyInfo), currencyInfo }
+            });
+        }
+        public async ValueTask OnUpdateCurrency(GameCurrencyInfoDTO? selectedData)
+        {
+            if (this.GameSessionInfo is null || selectedData is null)
+            {
+                return;
+            }
+            var dto = await this.Http.UpdateCurrencyInfoAsync(this.GameSessionInfo, selectedData);
+            if (false == dto.TryGet(out var newInfo))
+            {
+                await this.ShowErrorAsync(dto.MSG);
+                return;
+            }
+            selectedData.DisplayValue = newInfo.DisplayValue;
+            await this.ShowInfoAsync($"Update:{selectedData.DisplayValue}");
+        }
+
+        #endregion
+
+        #region Inventory
         public async Task<bool> GetListInventoryDisplayAsync()
         {
             this.ListInventory_All.Clear();
@@ -96,6 +148,59 @@ namespace Maple.MonoGameAssistant.GameShared.Service
             this.ListInventory_Search.AddRange(listGameInventory);
             return true;
         }
+
+        public void OnSearchInventory(string? searchText)
+        {
+            this.ListInventory_Search.Clear();
+            IEnumerable<GameInventoryDisplayDTO> searchDatas = this.ListInventory_All;
+
+            if (string.IsNullOrEmpty(searchText) == false)
+            {
+                searchDatas = searchDatas.Where(p => p.ContainsGameDisplay(searchText, p.DisplayCategory));
+            }
+            this.ListInventory_Search.AddRange(searchDatas);
+
+        }
+        public async ValueTask OnSelectedInventory(GameInventoryDisplayDTO? selectedData)
+        {
+            if (this.GameSessionInfo is null || selectedData is null)
+            {
+                return;
+            }
+
+
+            var dto = await this.Http.GetInventoryInfoAsync(this.GameSessionInfo, selectedData.ObjectId, selectedData.DisplayCategory);
+            if (false == dto.TryGet(out var inventoryInfo))
+            {
+                await this.ShowErrorAsync(dto.MSG);
+                return;
+            }
+            await PopupService.OpenAsync(typeof(UIInventoryDialog), new Dictionary<string, object?>()
+            {
+                { nameof(UIInventoryDialog.InventoryDisplay), selectedData },
+                { nameof(UIInventoryDialog.InventoryInfo), inventoryInfo }
+            });
+
+        }
+        public async ValueTask OnUpdateInventory(string? category, GameInventoryInfoDTO? selectedData)
+        {
+            if (this.GameSessionInfo is null || selectedData is null)
+            {
+                return;
+            }
+            var dto = await this.Http.UpdateInventoryInfoAsync(this.GameSessionInfo, category, selectedData);
+            if (false == dto.TryGet(out var newInfo))
+            {
+                await this.ShowErrorAsync(dto.MSG);
+                return;
+            }
+            selectedData.DisplayValue = newInfo.DisplayValue;
+            await this.ShowInfoAsync($"Update:{selectedData.DisplayValue}");
+        }
+
+        #endregion
+
+        #region Character
         public async Task<bool> GetListCharacterDisplayAsync()
         {
             this.ListCharacter_All.Clear();
@@ -118,128 +223,6 @@ namespace Maple.MonoGameAssistant.GameShared.Service
 
 
         }
-        public async Task<bool> GetListMonsterDisplayAsync()
-        {
-            this.ListMonster_All.Clear();
-            this.ListMonster_Search.Clear();
-            if (this.GameSessionInfo is null)
-            {
-                return false;
-            }
-            var gameMonsterDTO = await this.Http.GetListMonsterDisplayAsync(this.GameSessionInfo);
-            if (false == gameMonsterDTO.TryGet(out var listGameMonster))
-            {
-                await this.ShowErrorAsync(gameMonsterDTO.MSG);
-                return false;
-            }
-            this.ListMonster_All.ReplaceRange(listGameMonster);
-            this.ListMonster_Search.ReplaceRange(listGameMonster);
-            return true;
-        }
-        public async Task<bool> GetListSkillDisplayAsync()
-        {
-            this.ListSkill_All.Clear();
-            this.ListSkill_Search.Clear();
-            if (this.GameSessionInfo is null)
-            {
-                return false;
-            }
-
-            var gameSkillDTO = await this.Http.GetListSkillDisplayAsync(this.GameSessionInfo);
-            if (false == gameSkillDTO.TryGet(out var listGameSkill))
-            {
-                await this.ShowErrorAsync(gameSkillDTO.MSG);
-                return true;
-            }
-            this.ListSkill_All.ReplaceRange(listGameSkill);
-            this.ListSkill_Search.ReplaceRange(listGameSkill);
-            return false;
-
-        }
-        public async Task<bool> GetListSwitchDisplayAsync()
-        {
-            this.ListSwitch_Search.Clear();
-            if (this.GameSessionInfo is null)
-            {
-                return false;
-            }
-
-            var gameSwitchDTO = await this.Http.GetListSwitchDisplayAsync(this.GameSessionInfo);
-            if (false == gameSwitchDTO.TryGet(out var listGameSwitch))
-            {
-                await this.ShowErrorAsync(gameSwitchDTO.MSG);
-                return false;
-            }
-            this.ListSwitch_Search.ReplaceRange(listGameSwitch);
-            return true;
-
-        }
-
-
-        public void OnSearchMonster(string? searchText)
-        {
-            this.ListMonster_Search.Clear();
-            IEnumerable<GameMonsterDisplayDTO> searchDatas = this.ListMonster_All;
-
-            if (string.IsNullOrEmpty(searchText) == false)
-            {
-                searchDatas = searchDatas.Where(p => p.ContainsGameDisplay(searchText, p.DisplayCategory));
-            }
-            this.ListMonster_Search.AddRange(searchDatas);
-
-        }
-        public async ValueTask OnSelectedMonster(GameMonsterDisplayDTO? selectedData)
-        {
-            if (selectedData is null)
-            {
-                return;
-            }
-
-
-
-            await PopupService.OpenAsync(typeof(UIMonsterDialog), new Dictionary<string, object?>()
-            {
-                { nameof(UIMonsterDialog.MonsterDisplayDTO), selectedData },
-
-            });
-
-
-        }
-        public async ValueTask OnAddMonsterMember(GameMonsterDisplayDTO? selectedData)
-        {
-            if (this.GameSessionInfo is null || selectedData is null)
-            {
-                return;
-            }
-
-            var confirmed = await PopupService.ConfirmAsync($"{selectedData.DisplayName}", $"Add Monster {selectedData.DisplayName}");
-            if (confirmed == false)
-            {
-                return;
-            }
-
-            var dto = await this.Http.AddMonsterMemberAsync(this.GameSessionInfo, selectedData.ObjectId);
-            if (false == dto.TryGet(out var characterSkillDTO))
-            {
-                await this.ShowErrorAsync(dto.MSG);
-                return;
-            }
-            await PopupService.OpenAsync(typeof(UICharacterSkillDialog), new Dictionary<string, object?>()
-            {
-                { nameof(UICharacterSkillDialog.CharacterDisplay), new GameCharacterDisplayDTO(){
-                    ObjectId = characterSkillDTO.ObjectId,
-                   DisplayName = selectedData.DisplayName,
-                   DisplayDesc = selectedData.DisplayDesc,
-                   DisplayCategory= selectedData.DisplayCategory,
-                   DisplayImage = selectedData.DisplayImage,
-                } },
-                { nameof(UICharacterSkillDialog.CharacterSkill), characterSkillDTO }
-            });
-
-
-        }
-
-
         public void OnSearchCharacter(string? searchText)
         {
             this.ListCharacter_Search.Clear();
@@ -355,146 +338,203 @@ namespace Maple.MonoGameAssistant.GameShared.Service
             await this.ShowInfoAsync($"Update:{selectedData.DisplayValue}");
         }
 
-        public GameInventoryDisplayDTO SearchGameInventory(GameValueInfoDTO gameValue)
-        {
-            var value = gameValue.DisplayValue;
+        #endregion
 
-            var data = this.ListInventory_All.Where(p => p.ObjectId == value).FirstOrDefault();
-            if (data is not null)
+        #region Monster
+        public async Task<bool> GetListMonsterDisplayAsync()
+        {
+            this.ListMonster_All.Clear();
+            this.ListMonster_Search.Clear();
+            if (this.GameSessionInfo is null)
             {
-                return data;
+                return false;
             }
-            var monster = this.ListMonster_All.Where(p => p.ObjectId == value).FirstOrDefault();
-            if (monster is not null)
+            var gameMonsterDTO = await this.Http.GetListMonsterDisplayAsync(this.GameSessionInfo);
+            if (false == gameMonsterDTO.TryGet(out var listGameMonster))
             {
-                return new GameInventoryDisplayDTO()
+                await this.ShowErrorAsync(gameMonsterDTO.MSG);
+                return false;
+            }
+            this.ListMonster_All.ReplaceRange(listGameMonster);
+            this.ListMonster_Search.ReplaceRange(listGameMonster);
+            return true;
+        }
+        public void OnSearchMonster(string? searchText)
+        {
+            this.ListMonster_Search.Clear();
+            IEnumerable<GameMonsterDisplayDTO> searchDatas = this.ListMonster_All;
+
+            if (string.IsNullOrEmpty(searchText) == false)
+            {
+                searchDatas = searchDatas.Where(p => p.ContainsGameDisplay(searchText, p.DisplayCategory));
+            }
+            this.ListMonster_Search.AddRange(searchDatas);
+
+        }
+        public async ValueTask OnSelectedMonster(GameMonsterDisplayDTO? selectedData)
+        {
+            if (selectedData is null)
+            {
+                return;
+            }
+
+
+
+            await PopupService.OpenAsync(typeof(UIMonsterDialog), new Dictionary<string, object?>()
+            {
+                { nameof(UIMonsterDialog.MonsterDisplayDTO), selectedData },
+
+            });
+
+
+        }
+        public async ValueTask OnAddMonsterMember(GameMonsterDisplayDTO? selectedData)
+        {
+            if (this.GameSessionInfo is null || selectedData is null)
+            {
+                return;
+            }
+
+            var confirmed = await PopupService.ConfirmAsync("Add Monster", $"Add Monster:{selectedData.DisplayName}");
+            if (confirmed == false)
+            {
+                return;
+            }
+
+            var dto = await this.Http.AddMonsterMemberAsync(this.GameSessionInfo, selectedData.ObjectId);
+            if (false == dto.TryGet(out var characterSkillDTO))
+            {
+                await this.ShowErrorAsync(dto.MSG);
+                return;
+            }
+
+            await this.GetListCharacterDisplayAsync();
+
+            await PopupService.OpenAsync(typeof(UICharacterSkillDialog), new Dictionary<string, object?>()
+            {
+                { nameof(UICharacterSkillDialog.CharacterDisplay), new GameCharacterDisplayDTO(){
+                    ObjectId = characterSkillDTO.ObjectId,
+                   DisplayName = selectedData.DisplayName,
+                   DisplayDesc = selectedData.DisplayDesc,
+                   DisplayCategory= selectedData.DisplayCategory,
+                   DisplayImage = selectedData.DisplayImage,
+                } },
+                { nameof(UICharacterSkillDialog.CharacterSkill), characterSkillDTO }
+            });
+
+
+        }
+
+        #endregion
+
+        #region Skill
+        public async Task<bool> GetListSkillDisplayAsync()
+        {
+            this.ListSkill_All.Clear();
+            this.ListSkill_Search.Clear();
+            if (this.GameSessionInfo is null)
+            {
+                return false;
+            }
+
+            var gameSkillDTO = await this.Http.GetListSkillDisplayAsync(this.GameSessionInfo);
+            if (false == gameSkillDTO.TryGet(out var listGameSkill))
+            {
+                await this.ShowErrorAsync(gameSkillDTO.MSG);
+                return true;
+            }
+            this.ListSkill_All.ReplaceRange(listGameSkill);
+            this.ListSkill_Search.ReplaceRange(listGameSkill);
+            return false;
+
+        }
+        public void OnSearchSkill(string? searchText)
+        {
+            this.ListSkill_Search.Clear();
+            IEnumerable<GameSkillDisplayDTO> searchDatas = this.ListSkill_All;
+
+            if (string.IsNullOrEmpty(searchText) == false)
+            {
+                searchDatas = searchDatas.Where(p => p.ContainsGameDisplay(searchText, p.DisplayCategory));
+            }
+            this.ListSkill_Search.AddRange(searchDatas);
+
+        }
+
+        public async ValueTask OnUpdateCharacterSkill(GameCharacterDisplayDTO characterDisplayDTO, GameSkillInfoDTO? selectedData, bool remove)
+        {
+            if (this.GameSessionInfo is null || selectedData is null)
+            {
+                return;
+            }
+            MonoResultDTO<GameCharacterSkillDTO> dto;
+            if (remove)
+            {
+                var dialog = await this.PopupService.ConfirmAsync("Remove Skill", $"Remove Skill:{selectedData.DisplayName}");
+                if (false == dialog)
                 {
-                    ObjectId = monster.ObjectId,
-                    DisplayCategory = monster.DisplayCategory,
-                    DisplayDesc = monster.DisplayDesc,
-                    DisplayImage = monster.DisplayImage,
-                    ItemAttributes = monster.MonsterAttributes,
-                };
+                    return;
+                }
+                dto = await this.Http.UpdateCharacterSkillAsync(this.GameSessionInfo, characterDisplayDTO.ObjectId, selectedData.ObjectId, string.Empty);
+                if (false == dto.TryGet(out var _))
+                {
+                    await this.ShowErrorAsync(dto.MSG);
+                    return;
+                }
+                selectedData.ObjectId = string.Empty;
+                selectedData.DisplayName = string.Empty;
+                selectedData.DisplayDesc = string.Empty;
+                selectedData.DisplayImage = string.Empty;
+                selectedData.SkillAttributes = default;
+
             }
-            return new GameInventoryDisplayDTO()
+            else
             {
-                ObjectId = string.Empty,
-                DisplayName = gameValue.DisplayName,
-                DisplayDesc = gameValue.DisplayValue,
-            };
+
+                if (await PopupService.OpenAsync(typeof(UISelectedSkillDialog), new Dictionary<string, object?>()) is not GameSkillDisplayDTO newSkill)
+                {
+                    return;
+                }
+
+                dto = await this.Http.UpdateCharacterSkillAsync(this.GameSessionInfo, characterDisplayDTO.ObjectId, selectedData.ObjectId, newSkill.ObjectId);
+                if (false == dto.TryGet(out var _))
+                {
+                    await this.ShowErrorAsync(dto.MSG);
+                    return;
+                }
+                selectedData.ObjectId = newSkill.ObjectId;
+                selectedData.DisplayName = newSkill.DisplayName;
+                selectedData.DisplayDesc = newSkill.DisplayDesc;
+                selectedData.DisplayImage = newSkill.DisplayImage;
+                selectedData.DisplayCategory = newSkill.DisplayCategory;
+                selectedData.SkillAttributes = newSkill.SkillAttributes;
+
+
+
+            }
+
         }
-        public GameObjectDisplayDTO? SearchGameSkill(GameValueInfoDTO gameValue)
+        #endregion
+
+        public async Task<bool> GetListSwitchDisplayAsync()
         {
-            var value = gameValue.DisplayValue;
-            if (string.IsNullOrEmpty(value))
+            this.ListSwitch_Search.Clear();
+            if (this.GameSessionInfo is null)
             {
-                return default;
+                return false;
             }
-            GameObjectDisplayDTO? data = this.ListSkill_All.Where(p => p.ObjectId == value).FirstOrDefault();
 
-            return data;
+            var gameSwitchDTO = await this.Http.GetListSwitchDisplayAsync(this.GameSessionInfo);
+            if (false == gameSwitchDTO.TryGet(out var listGameSwitch))
+            {
+                await this.ShowErrorAsync(gameSwitchDTO.MSG);
+                return false;
+            }
+            this.ListSwitch_Search.ReplaceRange(listGameSwitch);
+            return true;
+
         }
 
-
-
-
-        public void OnSearchInventory(string? searchText)
-        {
-            this.ListInventory_Search.Clear();
-            IEnumerable<GameInventoryDisplayDTO> searchDatas = this.ListInventory_All;
-
-            if (string.IsNullOrEmpty(searchText) == false)
-            {
-                searchDatas = searchDatas.Where(p => p.ContainsGameDisplay(searchText, p.DisplayCategory));
-            }
-            this.ListInventory_Search.AddRange(searchDatas);
-
-        }
-        public async ValueTask OnSelectedInventory(GameInventoryDisplayDTO? selectedData)
-        {
-            if (this.GameSessionInfo is null || selectedData is null)
-            {
-                return;
-            }
-
-
-            var dto = await this.Http.GetInventoryInfoAsync(this.GameSessionInfo, selectedData.ObjectId, selectedData.DisplayCategory);
-            if (false == dto.TryGet(out var inventoryInfo))
-            {
-                await this.ShowErrorAsync(dto.MSG);
-                return;
-            }
-            await PopupService.OpenAsync(typeof(UIInventoryDialog), new Dictionary<string, object?>()
-            {
-                { nameof(UIInventoryDialog.InventoryDisplay), selectedData },
-                { nameof(UIInventoryDialog.InventoryInfo), inventoryInfo }
-            });
-
-        }
-        public async ValueTask OnUpdateInventory(string? category, GameInventoryInfoDTO? selectedData)
-        {
-            if (this.GameSessionInfo is null || selectedData is null)
-            {
-                return;
-            }
-            var dto = await this.Http.UpdateInventoryInfoAsync(this.GameSessionInfo, category, selectedData);
-            if (false == dto.TryGet(out var newInfo))
-            {
-                await this.ShowErrorAsync(dto.MSG);
-                return;
-            }
-            selectedData.DisplayValue = newInfo.DisplayValue;
-            await this.ShowInfoAsync($"Update:{selectedData.DisplayValue}");
-        }
-
-
-        public void OnSearchCurrency(string? searchText)
-        {
-            this.ListCurrency_Search.Clear();
-            IEnumerable<GameCurrencyDisplayDTO> searchDatas = this.ListCurrency_All;
-
-            if (string.IsNullOrEmpty(searchText) == false)
-            {
-                searchDatas = searchDatas.Where(p => p.ContainsGameDisplay(searchText, p.DisplayCategory));
-            }
-            this.ListCurrency_Search.AddRange(searchDatas);
-
-
-        }
-        public async ValueTask OnSelectedCurrency(GameCurrencyDisplayDTO? selectedData)
-        {
-            if (this.GameSessionInfo is null || selectedData is null)
-            {
-                return;
-            }
-
-            var dto = await this.Http.GetCurrencyInfoAsync(this.GameSessionInfo, selectedData.ObjectId);
-            if (false == dto.TryGet(out var currencyInfo))
-            {
-                await this.ShowErrorAsync(dto.MSG);
-                return;
-            }
-            await PopupService.OpenAsync(typeof(UICurrencyDialog), new Dictionary<string, object?>()
-            {
-                { nameof(UICurrencyDialog.CurrencyDisplay), selectedData },
-                { nameof(UICurrencyDialog.CurrencyInfo), currencyInfo }
-            });
-        }
-        public async ValueTask OnUpdateCurrency(GameCurrencyInfoDTO? selectedData)
-        {
-            if (this.GameSessionInfo is null || selectedData is null)
-            {
-                return;
-            }
-            var dto = await this.Http.UpdateCurrencyInfoAsync(this.GameSessionInfo, selectedData);
-            if (false == dto.TryGet(out var newInfo))
-            {
-                await this.ShowErrorAsync(dto.MSG);
-                return;
-            }
-            selectedData.DisplayValue = newInfo.DisplayValue;
-            await this.ShowInfoAsync($"Update:{selectedData.DisplayValue}");
-        }
 
         private Task ShowErrorAsync(string? error)
         {

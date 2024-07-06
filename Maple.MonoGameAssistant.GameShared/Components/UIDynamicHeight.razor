@@ -1,4 +1,8 @@
-﻿<div style="height: calc(100svh - 210px);">
+﻿<div style="height: calc(100svh - @(PX));">
     @ChildContent
 </div>
-
+@code
+{
+    [Parameter]
+    public string PX{ set; get; } = "210px";
+}

@@ -20,18 +20,20 @@ namespace Maple.MonoGameAssistant.GameShared.Components
 
 
         private bool Loading { set; get; } = false;
-        private async Task OnUpdateCharacterSkill()
+        private async Task OnUpdateCharacterSkill(GameSkillInfoDTO selectedData, bool remove)
         {
             try
             {
                 this.Loading = true;
-                await Task.Delay(5000);
+                await this.Core.OnUpdateCharacterSkill(CharacterDisplay, selectedData, remove);
             }
             finally
             {
                 this.Loading = false;
             }
         }
+
+
 
     }
 }

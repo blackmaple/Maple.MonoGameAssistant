@@ -85,10 +85,10 @@
                                 </MListItemContent>
                                 <MListItemAction>
                                     <MButtonGroup Rounded>
-                                        <MButton Small Disabled="@(!item.CanWrite)">
+                                        <MButton Small OnClick="()=>OnUpdateCharacterSkill(item,false)" Disabled="@(!item.CanWrite)">
                                             <MIcon Color="orange darken-4">mdi-plus</MIcon>
                                         </MButton>
-                                        <MButton Small Disabled="@(!item.CanWrite)">
+                                        <MButton Small OnClick="()=>OnUpdateCharacterSkill(item,true)" Disabled="@(!item.CanWrite)">
                                             <MIcon Color="orange darken-4">mdi-trash-can-outline</MIcon>
                                         </MButton>
 

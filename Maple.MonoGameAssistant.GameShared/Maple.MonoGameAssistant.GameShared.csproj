@@ -21,6 +21,9 @@
 	</ItemGroup>
 	
 	<ItemGroup>
+	  <Content Update="Components\UISelectedSkillDialog.razor">
+	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+	  </Content>
 	  <Content Update="Components\UIMiscTab.razor">
 	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
 	  </Content>

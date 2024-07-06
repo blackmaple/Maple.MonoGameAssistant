@@ -19,8 +19,8 @@ namespace Maple.MonoGameAssistant.GameDTO
     [JsonSerializable(typeof(GameObjectDisplayDTO))]
     [JsonSerializable(typeof(GameValueInfoDTO))]
     [JsonSerializable(typeof(GameValueInfoDTO[]))]
-    [JsonSerializable(typeof(GameSkillDisplayDTO))]
-    [JsonSerializable(typeof(GameSkillDisplayDTO[]))]
+    //[JsonSerializable(typeof(GameSkillDisplayDTO))]
+    //[JsonSerializable(typeof(GameSkillDisplayDTO[]))]
 
     [JsonSerializable(typeof(GameCurrencyDisplayDTO))]
     [JsonSerializable(typeof(MonoResultDTO<GameCurrencyDisplayDTO[]>))]
@@ -68,6 +68,7 @@ namespace Maple.MonoGameAssistant.GameDTO
 
 
     [JsonSerializable(typeof(GameSkillDisplayDTO))]
+    [JsonSerializable(typeof(GameSkillDisplayDTO[]))]
     [JsonSerializable(typeof(MonoResultDTO<GameSkillDisplayDTO[]>))]
 
 

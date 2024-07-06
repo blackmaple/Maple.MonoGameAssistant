@@ -9,11 +9,15 @@ namespace Maple.MonoGameAssistant.GameDTO
         ValueTask<GameCharacterStatusDTO> GetCharacterStatusAsync(GameCharacterObjectDTO characterObjectDTO)
             => GameException.Throw<ValueTask<GameCharacterStatusDTO>>("NotImplemented");
         ValueTask<GameCharacterEquipmentDTO> GetCharacterEquipmentAsync(GameCharacterObjectDTO characterObjectDTO)
-                        => GameException.Throw<ValueTask<GameCharacterEquipmentDTO>>("NotImplemented");
+            => GameException.Throw<ValueTask<GameCharacterEquipmentDTO>>("NotImplemented");
         ValueTask<GameCharacterSkillDTO> GetCharacterSkillAsync(GameCharacterObjectDTO characterObjectDTO)
-                        => GameException.Throw<ValueTask<GameCharacterSkillDTO>>("NotImplemented");
-        ValueTask<GameCharacterStatusDTO> UpdateCharacterStatusAsync(GameCharacterModifyDTO  characterModifyDTO)
-                => GameException.Throw<ValueTask<GameCharacterStatusDTO>>("NotImplemented");
+            => GameException.Throw<ValueTask<GameCharacterSkillDTO>>("NotImplemented");
+        ValueTask<GameCharacterStatusDTO> UpdateCharacterStatusAsync(GameCharacterModifyDTO characterModifyDTO)
+            => GameException.Throw<ValueTask<GameCharacterStatusDTO>>("NotImplemented");
+        ValueTask<GameCharacterSkillDTO> UpdateCharacterSkillAsync(GameCharacterModifyDTO characterModifyDTO)
+            => GameException.Throw<ValueTask<GameCharacterSkillDTO>>("NotImplemented");
+        ValueTask<GameCharacterEquipmentDTO> UpdateCharacterEquipmentAsync(GameCharacterModifyDTO characterModifyDTO)
+            => GameException.Throw<ValueTask<GameCharacterEquipmentDTO>>("NotImplemented");
 
 
         ValueTask<GameMonsterDisplayDTO[]> GetListMonsterDisplayAsync()
