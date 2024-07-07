@@ -1,6 +1,6 @@
-using BlazorComponent;
 using Maple.MonoGameAssistant.GameShared.Components;
 using Maple.MonoGameAssistant.GameShared.Service;
+using Masa.Blazor;
 using Microsoft.AspNetCore.Components;
 using System.Diagnostics.CodeAnalysis;
 

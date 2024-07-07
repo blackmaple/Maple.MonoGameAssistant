@@ -1,10 +1,8 @@
-﻿using BlazorComponent;
-using Maple.MonoGameAssistant.GameCore;
+﻿using Maple.MonoGameAssistant.GameCore;
 using Maple.MonoGameAssistant.GameDTO;
 using Maple.MonoGameAssistant.GameShared.Components;
 using Maple.MonoGameAssistant.Model;
 using Masa.Blazor;
-using System.Collections.Generic;
 
 namespace Maple.MonoGameAssistant.GameShared.Service
 {
