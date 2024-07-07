@@ -35,6 +35,7 @@ namespace Maple.MonoGameAssistant.GameShared.Service
         private List<GameSkillDisplayDTO> ListSkill_All { get; } = new List<GameSkillDisplayDTO>(128);
         public List<GameSkillDisplayDTO> ListSkill_Search { get; } = new List<GameSkillDisplayDTO>(128);
 
+        public List<GameSwitchDisplayDTO> ListSwitch_All { get; } = new List<GameSwitchDisplayDTO>(32);
         public List<GameSwitchDisplayDTO> ListSwitch_Search { get; } = new List<GameSwitchDisplayDTO>(32);
 
         public GameSessionInfoDTO? GameSessionInfo { get; set; }
@@ -491,7 +492,13 @@ namespace Maple.MonoGameAssistant.GameShared.Service
             else
             {
 
-                if (await PopupService.OpenAsync(typeof(UISelectedSkillDialog), new Dictionary<string, object?>()) is not GameSkillDisplayDTO newSkill)
+                if (await PopupService.OpenAsync(typeof(UISelectedSkillDialog),
+                   new Dictionary<string, object?>()
+                   {
+                       [nameof(UISelectedSkillDialog.ListSkill_All)] = 
+                       this.ListSkill_All.Where(p => p.DisplayCategory == selectedData.DisplayCategory).ToList()
+                   }
+                    ) is not GameSkillDisplayDTO newSkill)
                 {
                     return;
                 }
@@ -516,9 +523,25 @@ namespace Maple.MonoGameAssistant.GameShared.Service
         }
         #endregion
 
+        #region Switch
+        public void OnSearchSwitch(string? searchText)
+        {
+            this.ListSwitch_Search.Clear();
+
+            IEnumerable<GameSwitchDisplayDTO> searchDatas = this.ListSwitch_All;
+
+            if (string.IsNullOrEmpty(searchText) == false)
+            {
+                searchDatas = searchDatas.Where(p => p.ContainsGameDisplay(searchText, default));
+            }
+            this.ListSwitch_Search.AddRange(searchDatas);
+
+        }
         public async Task<bool> GetListSwitchDisplayAsync()
         {
             this.ListSwitch_Search.Clear();
+            this.ListSwitch_All.Clear();
+
             if (this.GameSessionInfo is null)
             {
                 return false;
@@ -530,11 +553,27 @@ namespace Maple.MonoGameAssistant.GameShared.Service
                 await this.ShowErrorAsync(gameSwitchDTO.MSG);
                 return false;
             }
-            this.ListSwitch_Search.ReplaceRange(listGameSwitch);
+            this.ListSwitch_Search.AddRange(listGameSwitch);
+            this.ListSwitch_All.AddRange(listGameSwitch);
             return true;
 
         }
 
+        public async ValueTask UpdateSwitchDisplay(GameSwitchDisplayDTO switchDisplayDTO)
+        {
+            if (this.GameSessionInfo is null)
+            {
+                return;
+            }
+            var dto = await this.Http.UpdateSwitchDisplayAsync(this.GameSessionInfo, switchDisplayDTO);
+            if (false == dto.TryGet(out var gameSwitchDisplay))
+            {
+                await this.ShowErrorAsync(dto.MSG);
+                return;
+            }
+            switchDisplayDTO.SwitchValue = gameSwitchDisplay?.SwitchValue ?? false;
+        }
+        #endregion
 
         private Task ShowErrorAsync(string? error)
         {

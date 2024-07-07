@@ -5,32 +5,29 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Maple.MonoGameAssistant.GameShared.Components
 {
-    public partial class UIMiscTab
+    public partial class UISkillTab
     {
 
         [Inject]
         [NotNull]
         private GameCoreService? Core { get; set; }
 
-
         private string? SearchContent { set; get; }
         private void OnSearch()
         {
-            this.Core.OnSearchSwitch(SearchContent);
+            this.Core.OnSearchSkill(SearchContent);
         }
-
-        private async Task OnChange(GameSwitchDisplayDTO gameSwitchDisplay)
+        private void OnSearch(string? search)
         {
-            try
-            {
-                gameSwitchDisplay.Loading = true;
-                await this.Core.UpdateSwitchDisplay(gameSwitchDisplay);
-            }
-            finally
-            {
-                gameSwitchDisplay.Loading = false;
-            }
+            this.SearchContent = search;
+            this.OnSearch();
         }
+        private Task OnSelected(GameSkillDisplayDTO gameCurrency)
+        {
+            return Task.CompletedTask;
+            //throw new NotImplementedException();
+            // await this.Core.OnSelectedCurrency(gameCurrency);
 
+        }
     }
 }

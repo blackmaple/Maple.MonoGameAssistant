@@ -13,9 +13,26 @@ namespace Maple.MonoGameAssistant.GameShared.Components
         private GameCoreService? Core { get; set; }
 
         private string? SearchContent { set; get; }
+
+        [Parameter, EditorRequired, NotNull]
+        public List<GameSkillDisplayDTO>? ListSkill_All { get; set; }
+        public List<GameSkillDisplayDTO> ListSkill_Search { get; set; } = [];
+
+        protected override void OnParametersSet()
+        {
+            base.OnParametersSet();
+            ListSkill_Search.AddRange(ListSkill_All);
+        }
         private void OnSearch()
         {
-            this.Core.OnSearchSkill(SearchContent);
+            this.ListSkill_Search.Clear();
+            IEnumerable<GameSkillDisplayDTO> searchDatas = this.ListSkill_All;
+
+            if (string.IsNullOrEmpty(SearchContent) == false)
+            {
+                searchDatas = searchDatas.Where(p => p.ContainsGameDisplay(SearchContent, p.DisplayCategory));
+            }
+            this.ListSkill_Search.AddRange(searchDatas);
         }
 
         public async Task OnSelectedData(GameSkillDisplayDTO skillDisplayDTO)

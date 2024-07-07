@@ -13,7 +13,7 @@ namespace Maple.MonoGameAssistant.GameShared.Components
         public static StringNumber Tab_Misc { get; } = 40;
         public static StringNumber Tab_Monster { get; } = 50;
         public static StringNumber Tab_Quest { get; } = 60;
-        public static StringNumber Tab_Effect { get; } = 70;
+        public static StringNumber Tab_Skill { get; } = 70;
 
 
         [NotNull]

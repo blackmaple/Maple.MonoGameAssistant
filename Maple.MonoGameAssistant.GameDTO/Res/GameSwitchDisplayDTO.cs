@@ -2,28 +2,45 @@
 using System.Text.Json.Serialization;
 namespace Maple.MonoGameAssistant.GameDTO
 {
-    public class GameSwitchDisplayDTO : GameUniqueIndexDTO
+    public class GameSwitchDisplayDTO : GameObjectDisplayDTO
     {
+        public string? NewValue { set; get; }
 
-        /// <summary>
-        /// 对象名称
-        /// </summary>
-        public string? DisplayName { set; get; }
 
-        /// <summary>
-        /// 描述
-        /// </summary>
-        public string? DisplayDesc { set; get; }
 
-        /// <summary>
-        /// 值
-        /// </summary>
-        public bool SwitchValue { set; get; }
+        [JsonIgnore]
+        public bool SwitchValue
+        {
+            get
+            {
+                if (bool.TryParse(NewValue, out var result))
+                {
+                    return result;
+                }
+                return default;
+            }
+            set
+            {
+                this.NewValue = value.ToString();
+            }
+        }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public bool ButtonType { set; get; }
+        [JsonIgnore]
+        public bool ButtonType
+        {
+            get
+            {
+                if (bool.TryParse(DisplayCategory, out var result))
+                {
+                    return result;
+                }
+                return default;
+            }
+            set
+            {
+                this.DisplayCategory = value.ToString();
+            }
+        }
 
         [JsonIgnore]
         public bool Loading { set; get; }

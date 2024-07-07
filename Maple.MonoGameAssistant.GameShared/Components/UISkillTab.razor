@@ -1,10 +1,9 @@
-﻿
-<MCard Outlined MaxWidth="1024" Class="mx-auto">
+﻿<MCard Outlined MaxWidth="1024" Class="mx-auto">
     <MCardTitle>
         <MToolbar Dense Flat>
             <MTextField Label="SearchContent"
-                        @bind-Value="@SearchContent"
                         Color="primary"
+                        @bind-Value="@SearchContent"
                         TValue="string"
                         Clearable
                         HideDetails="true"
@@ -14,7 +13,7 @@
                         OnEnter="()=>this.OnSearch()">
             </MTextField>
             <MButtonGroup Dense Borderless Tile>
-                <MButton Icon OnClick="()=>this.Core.GetListCharacterDisplayAsync()">
+                <MButton Icon OnClick="()=>this.Core.GetListSkillDisplayAsync()">
                     <MIcon Color="orange darken-4">mdi-refresh</MIcon>
                 </MButton>
                 <MButton Icon>
@@ -25,22 +24,21 @@
     </MCardTitle>
     <MCardText>
         <UIDynamicHeight>
-            <MVirtualScroll OverscanCount="2" ItemSize="64" Items="Core.ListCharacter_Search">
+
+            <MVirtualScroll OverscanCount="2" ItemSize="64" Items="Core.ListSkill_Search">
                 <ItemContent>
-                    <MListItem Dense >
-                        <MListItemAvatar Tile Size="36">
+                    <MListItem Dense  ThreeLine>
+                        <MListItemAvatar Size="36">
                             <MImage Src="@context.DisplayImage">
                                 <PlaceholderContent>
                                     <MIcon>mdi-border-none-variant</MIcon>
                                 </PlaceholderContent>
                             </MImage>
                         </MListItemAvatar>
-
-
                         <MListItemContent>
                             <MListItemTitle>
                                 <span>@context.ToDisplayName()</span>
-                                <MChip XSmall Outlined Color="green">
+                                <MChip XSmall Outlined Color="green" OnClick="()=>this.OnSearch(context.DisplayCategory)">
                                     @context.DisplayCategory
                                 </MChip>
 
@@ -48,7 +46,7 @@
                             <MListItemSubtitle>@context.ToDisplayDesc()</MListItemSubtitle>
                             <MChipGroup ShowArrows="true">
                                 @{
-                                    var datas = context.CharacterAttributes.GetItemAttributes(true).ToArray();
+                                    var datas = context.SkillAttributes.GetItemAttributes(false).ToArray();
                                     if (datas.Any())
                                     {
 
@@ -64,20 +62,14 @@
                             </MChipGroup>
                         </MListItemContent>
                         <MListItemAction>
-                            <MButtonGroup Borderless Tile Dense>
-                                <MButton OnClick="()=>OnSelectedCharacterStatus(context)">
-                                    <MIcon Color="orange darken-4">mdi-smart-card-outline</MIcon>
+                            <MButtonGroup Group Rounded>
+                                <MButton Icon OnClick="()=>OnSelected(context)">
+                                    <MIcon Color="orange darken-4">mdi-file-edit-outline</MIcon>
                                 </MButton>
-                                <MButton OnClick="()=>OnSelectedCharacterEquipment(context)">
-                                    <MIcon Color="orange darken-4">mdi-shield-sword-outline</MIcon>
-                                </MButton>
-                                <MButton OnClick="()=>OnSelectedCharacterSkill(context)">
-                                    <MIcon Color="orange darken-4">mdi-magic-staff</MIcon>
-                                </MButton>
+
                             </MButtonGroup>
                         </MListItemAction>
                     </MListItem>
-
                     <MDivider></MDivider>
                 </ItemContent>
             </MVirtualScroll>
