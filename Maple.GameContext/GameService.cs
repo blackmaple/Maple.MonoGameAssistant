@@ -338,6 +338,19 @@ namespace Maple.GameContext
                 => GameException.Throw<ValueTask<GameSwitchDisplayDTO>>("NotImplemented");
 
 
+        public void UpdateListGameImage<T>(IReadOnlyList<T> datas) where T : GameObjectDisplayDTO
+            => UpdateListGameImage(datas, static p => $"{p.ObjectId}.png");
+        public void UpdateListGameImage<T>(IReadOnlyList<T> datas, Func<T, string> func) where T : GameObjectDisplayDTO
+        {
+            foreach (var data in datas)
+            {
+                if (this.GameSettings.TryGetGameResourceUrl(data.DisplayCategory!, func(data), out var url))
+                {
+                    data.DisplayImage = url;
+                }
+            }
+        }
+
         #endregion
     }
 }
