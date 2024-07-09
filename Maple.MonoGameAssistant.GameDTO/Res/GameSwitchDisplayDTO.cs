@@ -4,16 +4,17 @@ namespace Maple.MonoGameAssistant.GameDTO
 {
     public class GameSwitchDisplayDTO : GameObjectDisplayDTO
     {
-        public string? NewValue { set; get; }
-
-
+        public bool SwitchValue { set; get; }
 
         [JsonIgnore]
-        public bool SwitchValue
+        public string? CacheValue { set; get; }
+
+        [JsonIgnore]
+        public int IntCache
         {
             get
             {
-                if (bool.TryParse(NewValue, out var result))
+                if (int.TryParse(CacheValue, out var result))
                 {
                     return result;
                 }
@@ -21,7 +22,24 @@ namespace Maple.MonoGameAssistant.GameDTO
             }
             set
             {
-                this.NewValue = value.ToString();
+                this.CacheValue = value.ToString();
+            }
+        }
+
+        [JsonIgnore]
+        public float FloatCache
+        {
+            get
+            {
+                if (float.TryParse(CacheValue, out var result))
+                {
+                    return result;
+                }
+                return default;
+            }
+            set
+            {
+                this.CacheValue = value.ToString();
             }
         }
 

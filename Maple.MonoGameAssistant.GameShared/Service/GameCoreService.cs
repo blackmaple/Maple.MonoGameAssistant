@@ -459,7 +459,18 @@ namespace Maple.MonoGameAssistant.GameShared.Service
             this.ListSkill_Search.AddRange(searchDatas);
 
         }
-
+        public async ValueTask AddSkillDisplayAsync(GameSkillDisplayDTO? gameSkillDisplay)
+        {
+            if (this.GameSessionInfo is null || gameSkillDisplay is null)
+            {
+                return;
+            }
+            var dto = await this.Http.AddSkillDisplayAsync(this.GameSessionInfo, gameSkillDisplay);
+            if (dto.TryGet(out _))
+            {
+                await this.ShowErrorAsync(dto.MSG);
+            }
+        }
         public async ValueTask OnUpdateCharacterSkill(GameCharacterDisplayDTO characterDisplayDTO, GameSkillInfoDTO? selectedData, bool remove)
         {
             if (this.GameSessionInfo is null || selectedData is null)
@@ -493,7 +504,7 @@ namespace Maple.MonoGameAssistant.GameShared.Service
                 if (await PopupService.OpenAsync(typeof(UISelectedSkillDialog),
                    new Dictionary<string, object?>()
                    {
-                       [nameof(UISelectedSkillDialog.ListSkill_All)] = 
+                       [nameof(UISelectedSkillDialog.ListSkill_All)] =
                        this.ListSkill_All.Where(p => p.DisplayCategory == selectedData.DisplayCategory).ToList()
                    }
                     ) is not GameSkillDisplayDTO newSkill)
@@ -567,7 +578,7 @@ namespace Maple.MonoGameAssistant.GameShared.Service
             if (false == dto.TryGet(out var gameSwitchDisplay))
             {
                 await this.ShowErrorAsync(dto.MSG);
-                return;
+                //               return;
             }
             switchDisplayDTO.SwitchValue = gameSwitchDisplay?.SwitchValue ?? false;
         }

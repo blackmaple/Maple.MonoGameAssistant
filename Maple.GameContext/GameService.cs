@@ -303,7 +303,8 @@ namespace Maple.GameContext
         public virtual ValueTask<GameSkillDisplayDTO[]> GetListSkillDisplayAsync()
             => ValueTask.FromResult<GameSkillDisplayDTO[]>([]);
 
-
+        public virtual ValueTask<GameSkillDisplayDTO> AddSkillDisplayAsync(GameSkillObjectDTO gameSkillObject)
+            => GameException.Throw<ValueTask<GameSkillDisplayDTO>>("NotImplemented");
 
 
         public virtual ValueTask<GameCurrencyDisplayDTO[]> GetListCurrencyDisplayAsync()

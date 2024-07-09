@@ -27,7 +27,7 @@
 
             <MVirtualScroll OverscanCount="2" ItemSize="64" Items="Core.ListSkill_Search">
                 <ItemContent>
-                    <MListItem Dense  ThreeLine>
+                    <MListItem Dense ThreeLine>
                         <MListItemAvatar Size="36">
                             <MImage Src="@context.DisplayImage">
                                 <PlaceholderContent>
@@ -63,8 +63,8 @@
                         </MListItemContent>
                         <MListItemAction>
                             <MButtonGroup Group Rounded>
-                                <MButton Icon OnClick="()=>OnSelected(context)">
-                                    <MIcon Color="orange darken-4">mdi-file-edit-outline</MIcon>
+                                <MButton Loading="context.Loading" Icon OnClick="()=>OnUpdate(context)" Disabled="@(!context.CanUse)">
+                                    <MIcon Color="orange darken-4">mdi-food-outline</MIcon>
                                 </MButton>
 
                             </MButtonGroup>

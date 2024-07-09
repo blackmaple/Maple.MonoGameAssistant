@@ -138,6 +138,10 @@ namespace Maple.MonoGameAssistant.GameCore
         {
             return this.TrySendAsync<GameSessionObjectDTO, GameSkillDisplayDTO[]>("game/GetListSkillDisplay", new GameSessionObjectDTO() { Session = gameSessionInfo.ObjectId });
         }
+        public Task<MonoResultDTO<GameSkillDisplayDTO>> AddSkillDisplayAsync(GameSessionInfoDTO gameSessionInfo, GameSkillDisplayDTO gameSkillDisplay)
+        {
+            return this.TrySendAsync<GameSkillObjectDTO, GameSkillDisplayDTO>("game/AddSkillDisplay", new GameSkillObjectDTO() { Session = gameSessionInfo.ObjectId, SkillObject = gameSkillDisplay.ObjectId, SkillCategory = gameSkillDisplay.DisplayCategory });
+        }
         //public Task<MonoResultDTO<GameMonsterInfoDTO[]>> GetListMonsterInfoAsync(GameSessionInfoDTO gameSessionInfo)
         //{
         //    return this.TrySendAsync<GameSessionObjectDTO, GameMonsterInfoDTO[]>("game/GetListMonsterInfo", new GameSessionObjectDTO() { Session = gameSessionInfo.ObjectId });
@@ -173,7 +177,7 @@ namespace Maple.MonoGameAssistant.GameCore
         }
         public Task<MonoResultDTO<GameSwitchDisplayDTO>> UpdateSwitchDisplayAsync(GameSessionInfoDTO gameSessionInfo, GameSwitchDisplayDTO gameSwitchInfo)
         {
-            return this.TrySendAsync<GameSwitchModifyDTO, GameSwitchDisplayDTO>("game/UpdateSwitchDisplay", new GameSwitchModifyDTO() { Session = gameSessionInfo.ObjectId, SwitchObjectId = gameSwitchInfo.ObjectId, SwitchValue = gameSwitchInfo.SwitchValue,  });
+            return this.TrySendAsync<GameSwitchModifyDTO, GameSwitchDisplayDTO>("game/UpdateSwitchDisplay", new GameSwitchModifyDTO() { Session = gameSessionInfo.ObjectId, SwitchObjectId = gameSwitchInfo.ObjectId, SwitchValue = gameSwitchInfo.SwitchValue, });
         }
     }
 }

@@ -22,11 +22,17 @@ namespace Maple.MonoGameAssistant.GameShared.Components
             this.SearchContent = search;
             this.OnSearch();
         }
-        private Task OnSelected(GameSkillDisplayDTO gameCurrency)
+        private async Task OnUpdate(GameSkillDisplayDTO gameSkillDisplay)
         {
-            return Task.CompletedTask;
-            //throw new NotImplementedException();
-            // await this.Core.OnSelectedCurrency(gameCurrency);
+            try
+            {
+                gameSkillDisplay.Loading = true;
+                await this.Core.AddSkillDisplayAsync(gameSkillDisplay);
+            }
+            finally
+            {
+                gameSkillDisplay.Loading = false;
+            }
 
         }
     }

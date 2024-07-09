@@ -309,6 +309,12 @@ namespace Maple.MonoGameAssistant.WebApi
                 var datas = await gameService.GetListSkillDisplayAsync().ConfigureAwait(false);
                 return datas.GetOk();
             });
+            gameGroup.MapPost("/AddSkillDisplay", async ([FromBody] GameSkillObjectDTO requestDTO, [FromServices] IGameWebApiControllers gameService) =>
+            {
+                requestDTO.ThrowIfGameSessionDiff();
+                var datas = await gameService.AddSkillDisplayAsync(requestDTO).ConfigureAwait(false);
+                return datas.GetOk();
+            });
 
 
 
