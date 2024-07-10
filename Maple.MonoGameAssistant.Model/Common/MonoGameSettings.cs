@@ -69,6 +69,7 @@ namespace Maple.MonoGameAssistant.Model
         {
             port = this.Port;
             var allPorts = GetActivePotrs().ToArray();
+            
             if (port >= 1024 && !allPorts.Contains(port))
             {
                 return true;

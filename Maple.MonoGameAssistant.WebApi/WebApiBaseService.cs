@@ -150,6 +150,7 @@ namespace Maple.MonoGameAssistant.WebApi
             {
                 try
                 {
+               //     logger.LogInformation("port=>{p}", this.Settings.Port.ToString());
                     await Task.Delay(millisecondsDelay).ConfigureAwait(false);
                     await this.RunAsync<T_GameService>().ConfigureAwait(false);
                 }

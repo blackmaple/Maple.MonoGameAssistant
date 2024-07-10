@@ -23,6 +23,19 @@ namespace Maple.MonoGameAssistant.GameDTO
         }
 
         [JsonIgnore]
+        public uint UIntContent
+        {
+            get
+            {
+                if (uint.TryParse(ContentValue, out var result))
+                {
+                    return result;
+                }
+                return default;
+            }
+            set => ContentValue = value.ToString();
+        }
+        [JsonIgnore]
         public string? CacheValue { set; get; }
 
         [JsonIgnore]

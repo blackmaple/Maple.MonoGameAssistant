@@ -23,5 +23,20 @@ namespace Maple.MonoGameAssistant.GameDTO
             }
             set => ContentValue = value.ToString();
         }
+
+        [JsonIgnore]
+        public uint UIntValue
+        {
+            get
+            {
+                if (uint.TryParse(ContentValue, out var result))
+                {
+                    return result;
+                }
+                return default;
+            }
+            set => ContentValue = value.ToString();
+        }
+
     }
 }
