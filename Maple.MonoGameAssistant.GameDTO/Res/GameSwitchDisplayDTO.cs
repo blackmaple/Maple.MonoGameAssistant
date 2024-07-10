@@ -4,7 +4,23 @@ namespace Maple.MonoGameAssistant.GameDTO
 {
     public class GameSwitchDisplayDTO : GameObjectDisplayDTO
     {
-        public bool SwitchValue { set; get; }
+        public string? ContentValue { set; get; }
+
+        public List<GameValueInfoDTO>? SelectedContents { set; get; }
+
+        [JsonIgnore]
+        public bool SwitchValue
+        {
+            get
+            {
+                if (bool.TryParse(ContentValue, out var result))
+                {
+                    return result;
+                }
+                return default;
+            }
+            set => ContentValue = value.ToString();
+        }
 
         [JsonIgnore]
         public string? CacheValue { set; get; }

@@ -18,7 +18,7 @@
         <UIDynamicHeight>
             <MVirtualScroll OverscanCount="2" ItemSize="64" Items="Core.ListSwitch_Search">
                 <ItemContent>
-                    <MListItem Dense >
+                    <MListItem Dense>
 
                         <MListItemContent>
                             <MListItemTitle>
@@ -30,13 +30,29 @@
                         <MListItemAction>
                             @if (context.ButtonType)
                             {
-                                <MButton Icon 
+                                <MButton Icon
                                          Color="orange darken-4"
                                          Loading="@context.Loading"
                                          Disabled="context.Loading"
                                          OnClick="()=>OnChange(context)">
                                     <MIcon>mdi-crosshairs</MIcon>
                                 </MButton>
+                            }
+                            else if (context.SelectedContents is not null)
+                            {
+                                <MSelect Dense HideDetails="true"
+                                         TItem="GameValueInfoDTO"
+                                         TItemValue="string"
+                                         TValue="string"
+                                         @bind-Value="@context.ContentValue"
+                                         Items="context.SelectedContents"
+                                         ItemText="p=>p.DisplayName"
+                                         ItemValue="p=>p.DisplayValue"
+                                         Color="orange darken-4"
+                                         AppendOuterIcon="mdi-crosshairs"
+                                         OnAppendOuterClick="()=>OnChange(context)"
+                                         SingleLine></MSelect>
+
                             }
                             else
                             {

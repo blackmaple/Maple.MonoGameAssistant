@@ -4,19 +4,27 @@ using Maple.MonoGameAssistant.GameSSR;
 using Maple.MonoGameAssistant.GameShared;
 using Masa.Blazor;
 using Masa.Blazor.Presets;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
-builder.Services.AddMasaBlazor(p => p.Defaults = new Dictionary<string, IDictionary<string, object?>?>()
+builder.Services.AddMasaBlazor(p => 
 {
-    [PopupComponents.SNACKBAR] = new Dictionary<string, object?>()
+    p.Defaults = new Dictionary<string, IDictionary<string, object?>?>()
     {
-        [nameof(PEnqueuedSnackbars.Closeable)] = true,
-        [nameof(PEnqueuedSnackbars.Position)] = SnackPosition.TopCenter
-    }
+        [PopupComponents.SNACKBAR] = new Dictionary<string, object?>()
+        {
+            [nameof(PEnqueuedSnackbars.Closeable)] = true,
+            [nameof(PEnqueuedSnackbars.Position)] = SnackPosition.TopCenter
+        }
+    };
+    p.ConfigureTheme(theme =>
+    {
+        theme.Dark = true;
+    });
 });
 
 builder.Services.AddHttpClient<GameHttpClientService>(p => p.BaseAddress = new Uri("http://localhost:49009/"))

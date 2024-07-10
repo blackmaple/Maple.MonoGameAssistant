@@ -1,4 +1,5 @@
 ﻿using Maple.MonoGameAssistant.Model;
+using System.Text.Json.Serialization;
 
 namespace Maple.MonoGameAssistant.GameDTO
 {
@@ -6,6 +7,21 @@ namespace Maple.MonoGameAssistant.GameDTO
     {
 
         public required string SwitchObjectId { set; get; }
-        public bool SwitchValue { set; get; }
+
+        public string? ContentValue { set; get; }
+
+        [JsonIgnore]
+        public bool SwitchValue
+        {
+            get
+            {
+                if (bool.TryParse(ContentValue, out var result))
+                {
+                    return result;
+                }
+                return default;
+            }
+            set => ContentValue = value.ToString();
+        }
     }
 }

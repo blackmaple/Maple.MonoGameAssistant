@@ -177,7 +177,7 @@ namespace Maple.MonoGameAssistant.GameCore
         }
         public Task<MonoResultDTO<GameSwitchDisplayDTO>> UpdateSwitchDisplayAsync(GameSessionInfoDTO gameSessionInfo, GameSwitchDisplayDTO gameSwitchInfo)
         {
-            return this.TrySendAsync<GameSwitchModifyDTO, GameSwitchDisplayDTO>("game/UpdateSwitchDisplay", new GameSwitchModifyDTO() { Session = gameSessionInfo.ObjectId, SwitchObjectId = gameSwitchInfo.ObjectId, SwitchValue = gameSwitchInfo.SwitchValue, });
+            return this.TrySendAsync<GameSwitchModifyDTO, GameSwitchDisplayDTO>("game/UpdateSwitchDisplay", new GameSwitchModifyDTO() { Session = gameSessionInfo.ObjectId, SwitchObjectId = gameSwitchInfo.ObjectId, ContentValue = gameSwitchInfo.ContentValue, });
         }
     }
 }

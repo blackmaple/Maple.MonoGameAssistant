@@ -580,7 +580,7 @@ namespace Maple.MonoGameAssistant.GameShared.Service
                 await this.ShowErrorAsync(dto.MSG);
                 //               return;
             }
-            switchDisplayDTO.SwitchValue = gameSwitchDisplay?.SwitchValue ?? false;
+            switchDisplayDTO.ContentValue = gameSwitchDisplay?.ContentValue ?? string.Empty;
         }
         #endregion
 
