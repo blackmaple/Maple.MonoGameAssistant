@@ -38,6 +38,7 @@ namespace Maple.MonoGameAssistant.Core
         }
 
         public PMonoString T(string str) => this.RuntimeContext.GetMonoString(str);
+        public PMonoString T(in ReadOnlySpan<char> str) => this.RuntimeContext.GetMonoString(str);
 
 
         [MonoCollectorFlag(EnumMonoCollectorFlag.Throw)]

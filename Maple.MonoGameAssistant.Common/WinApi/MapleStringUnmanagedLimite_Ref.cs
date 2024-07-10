@@ -11,7 +11,7 @@ namespace Maple.MonoGameAssistant.Common
         readonly byte* _ptr;
 
 
-        public MapleStringUnmanagedLimite_Ref(string str, Encoding encoding, Span<byte> buffer)
+        public MapleStringUnmanagedLimite_Ref(ReadOnlySpan<char> str, Encoding encoding, Span<byte> buffer)
         {
             //栈对象不需要Pin
             int exactByteCount = encoding.GetByteCount(str) + 1;

@@ -12,7 +12,7 @@ namespace Maple.MonoGameAssistant.Common
         readonly ref byte _ptr;
         byte[]? _cache;
 
-        public MapleStringUnmanaged_Ref(string str, Encoding encoding, Span<byte> buffer)
+        public MapleStringUnmanaged_Ref(ReadOnlySpan<char> str, Encoding encoding, Span<byte> buffer)
         {
             int exactByteCount = encoding.GetByteCount(str) + 1;
 

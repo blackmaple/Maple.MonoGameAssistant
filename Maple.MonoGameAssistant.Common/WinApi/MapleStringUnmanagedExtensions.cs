@@ -8,7 +8,14 @@ namespace Maple.MonoGameAssistant.Common
         {
             return new MapleStringUnmanaged_Ref(str, encoding, buffer);
         }
-
+        public static MapleStringUnmanaged_Ref AsUnmanaged(this in ReadOnlySpan<char> str, Encoding encoding, Span<byte> buffer)
+        {
+            return new MapleStringUnmanaged_Ref(str, encoding, buffer);
+        }
+        public static MapleStringUnmanagedLimite_Ref AsUnmanagedLimite(this in ReadOnlySpan<char> str, Encoding encoding, Span<byte> buffer)
+        {
+            return new MapleStringUnmanagedLimite_Ref(str, encoding, buffer);
+        }
         public static MapleStringUnmanagedLimite_Ref AsUnmanagedLimite(this string str, Encoding encoding, Span<byte> buffer)
         {
             return new MapleStringUnmanagedLimite_Ref(str, encoding, buffer);

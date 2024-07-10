@@ -31,6 +31,16 @@ namespace Maple.MonoGameAssistant.Core
                 return this.Invoke(pContent);
             }
         }
+
+        [SkipLocalsInit]
+        public readonly PMonoString Invoke(in ReadOnlySpan<char> content)
+        {
+            using var ref_Content = content.AsUnmanaged(Encoding.UTF8, (stackalloc byte[MapleStringUnmanaged_Ref.MaxSize]));
+            fixed (void* pContent = &ref_Content.GetPinnableReference())
+            {
+                return this.Invoke(pContent);
+            }
+        }
     }
 
 

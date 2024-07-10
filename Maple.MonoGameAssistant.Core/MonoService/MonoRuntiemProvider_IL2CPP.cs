@@ -126,6 +126,10 @@ namespace Maple.MonoGameAssistant.Core
         {
             return this.Runtime.IL2CPP_STRING_NEW.Invoke(str);
         }
+        public sealed override PMonoString GetMonoString(PMonoDomain pMonoDomain, ReadOnlySpan<char> str)
+        {
+            return base.GetMonoString(pMonoDomain, str);
+        }
 
         public sealed override PDelegatePointer GetInternalCall(string signature)
         {

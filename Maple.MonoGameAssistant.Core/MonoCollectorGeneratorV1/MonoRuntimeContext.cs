@@ -115,7 +115,10 @@ namespace Maple.MonoGameAssistant.Core
         {
             return this.RuntiemProvider.GetMonoString(this.RootDomain, str);
         }
-
+        public PMonoString GetMonoString(in ReadOnlySpan<char> str)
+        {
+            return this.RuntiemProvider.GetMonoString(this.RootDomain, str);
+        }
         public Span<T_Struct> CreateMonoArray<T_Struct>(PMonoClass pMonoClass, int count, out PMonoArray pMonoArray)
              where T_Struct : unmanaged
         {

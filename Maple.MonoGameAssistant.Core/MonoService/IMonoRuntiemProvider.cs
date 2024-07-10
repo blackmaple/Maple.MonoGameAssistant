@@ -103,7 +103,7 @@ namespace Maple.MonoGameAssistant.Core
         T_Struct CreateMonoClass<T_Struct>(PMonoDomain pMonoDomain, PMonoClass pMonoClass, bool execDefCtor) where T_Struct : unmanaged;
 
         PMonoString GetMonoString(PMonoDomain pMonoDomain, string str);
-
+        PMonoString GetMonoString(PMonoDomain pMonoDomain, ReadOnlySpan<char> str);
         PMonoArray CreateMonoArray(PMonoDomain pMonoDomain, PMonoClass pMonoClass, int count);
 
 
