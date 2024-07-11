@@ -163,6 +163,13 @@ namespace Maple.GameContext
                 EnumVirtualKeyCode.VK_NUMPAD9 => Num9_KeyDown(),
                 EnumVirtualKeyCode.VK_NUMPAD0 => Num0_KeyDown(),
 
+                EnumVirtualKeyCode.VK_UP => Up_KeyDown(),
+                EnumVirtualKeyCode.VK_DOWN => Down_KeyDown(),
+                EnumVirtualKeyCode.VK_LEFT => Left_KeyDown(),
+                EnumVirtualKeyCode.VK_RIGHT => Right_KeyDown(),
+
+
+
                 _ => ValueTask.CompletedTask
             }; ;
         }
@@ -273,6 +280,23 @@ namespace Maple.GameContext
 
         }
 
+
+        protected virtual ValueTask Up_KeyDown()
+        {
+            return ValueTask.CompletedTask;
+        }
+        protected virtual ValueTask Down_KeyDown()
+        {
+            return ValueTask.CompletedTask;
+        }
+        protected virtual ValueTask Left_KeyDown()
+        {
+            return ValueTask.CompletedTask;
+        }
+        protected virtual ValueTask Right_KeyDown()
+        {
+            return ValueTask.CompletedTask;
+        }
         #endregion
 
         #region WebApi

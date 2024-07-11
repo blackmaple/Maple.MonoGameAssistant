@@ -52,5 +52,18 @@ namespace Maple.MonoGameAssistant.GameDTO
             set => DisplayValue = value.HasValue ? value.ToString() : string.Empty;
         }
 
+        [JsonIgnore]
+        public uint UIntValue
+        {
+            get
+            {
+                if (uint.TryParse(DisplayValue, out var result))
+                {
+                    return result;
+                }
+                return default;
+            }
+            set => DisplayValue = value.ToString();
+        }
     }
 }
