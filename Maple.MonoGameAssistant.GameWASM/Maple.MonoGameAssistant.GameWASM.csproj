@@ -5,8 +5,9 @@
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<RunAOTCompilation>true</RunAOTCompilation>
-		<WasmStripILAfterAOT>true</WasmStripILAfterAOT>
-		<WasmEnableSIMD>false</WasmEnableSIMD>
+		<!--<WasmStripILAfterAOT>true</WasmStripILAfterAOT>-->
+		<!--<WasmEnableSIMD>false</WasmEnableSIMD>-->
+		<CompressionEnabled>false</CompressionEnabled>
 
 	</PropertyGroup>
 
