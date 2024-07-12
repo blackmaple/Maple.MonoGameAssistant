@@ -31,12 +31,19 @@ builder.Services.AddScoped<GameHttpClientService>();
 builder.Services.AddScoped<GameCoreService>();
 
 
-builder.Services.AddMasaBlazor(p => p.Defaults = new Dictionary<string, IDictionary<string, object?>?>()
+builder.Services.AddMasaBlazor(p =>  
 {
-    [PopupComponents.SNACKBAR] = new Dictionary<string, object?>()
+    p.Defaults = new Dictionary<string, IDictionary<string, object?>?>()
     {
-        [nameof(PEnqueuedSnackbars.Closeable)] = true,
-        [nameof(PEnqueuedSnackbars.Position)] = SnackPosition.TopCenter
-    }
+        [PopupComponents.SNACKBAR] = new Dictionary<string, object?>()
+        {
+            [nameof(PEnqueuedSnackbars.Closeable)] = true,
+            [nameof(PEnqueuedSnackbars.Position)] = SnackPosition.TopCenter
+        }
+    };
+    p.ConfigureTheme(theme =>
+    {
+        theme.Dark = true;
+    });
 });
 await builder.Build().RunAsync();

@@ -1,9 +1,11 @@
-﻿namespace Maple.MonoGameAssistant.GameDTO
+﻿using System.Text.Json.Serialization;
+
+namespace Maple.MonoGameAssistant.GameDTO
 {
     public class GameInventoryDisplayDTO : GameObjectDisplayDTO
     {
 
- 
+
         /// <summary>
         /// 道具属性集合
         /// </summary>
@@ -14,5 +16,7 @@
         /// </summary>
         public GameValueInfoDTO[]? ValidCharacters { set; get; }
 
+        [JsonIgnore]
+        public bool Loading { set; get; }
     }
 }

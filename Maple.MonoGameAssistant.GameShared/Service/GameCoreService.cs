@@ -59,6 +59,32 @@ namespace Maple.MonoGameAssistant.GameShared.Service
             return EnumGameServiceStatus.OK;
         }
 
+
+        #region Game Resource
+        public async ValueTask LoadGameResourceAsync()
+        {
+            if (this.GameSessionInfo is null)
+            {
+                return;
+            }
+            var load = await this.PopupService.ConfirmAsync("GameReource", "Load Game Resource?", AlertTypes.Warning);
+            if (!load)
+            {
+                return;
+            }
+            using (this.ShowWait())
+            {
+                var dto = await this.Http.LoadResourceAsync(this.GameSessionInfo).ConfigureAwait(false);
+                if (false == dto.TryGet(out _))
+                {
+                    await this.ShowErrorAsync(dto.MSG);
+                    return;
+                }
+            }
+            await this.ShowInfoAsync("Load Ok");
+        }
+        #endregion
+
         #region Currency
         public async Task<bool> GetListCurrencyDisplayAsync()
         {
@@ -104,6 +130,7 @@ namespace Maple.MonoGameAssistant.GameShared.Service
                 await this.ShowErrorAsync(dto.MSG);
                 return;
             }
+
             await PopupService.OpenAsync(typeof(UICurrencyDialog), new Dictionary<string, object?>()
             {
                 { nameof(UICurrencyDialog.CurrencyDisplay), selectedData },
@@ -116,14 +143,16 @@ namespace Maple.MonoGameAssistant.GameShared.Service
             {
                 return;
             }
+
             var dto = await this.Http.UpdateCurrencyInfoAsync(this.GameSessionInfo, selectedData);
-            if (false == dto.TryGet(out var newInfo))
+            if (false == dto.TryGet(out var currencyInfo))
             {
                 await this.ShowErrorAsync(dto.MSG);
                 return;
             }
-            selectedData.DisplayValue = newInfo.DisplayValue;
-            await this.ShowInfoAsync($"Update:{selectedData.DisplayValue}");
+
+            selectedData.DisplayValue = currencyInfo.DisplayValue;
+            await this.ShowInfoAsync($"Update:{currencyInfo.DisplayValue}");
         }
 
         #endregion
@@ -147,7 +176,6 @@ namespace Maple.MonoGameAssistant.GameShared.Service
             this.ListInventory_Search.AddRange(listGameInventory);
             return true;
         }
-
         public void OnSearchInventory(string? searchText)
         {
             this.ListInventory_Search.Clear();
@@ -167,13 +195,13 @@ namespace Maple.MonoGameAssistant.GameShared.Service
                 return;
             }
 
-
             var dto = await this.Http.GetInventoryInfoAsync(this.GameSessionInfo, selectedData.ObjectId, selectedData.DisplayCategory);
             if (false == dto.TryGet(out var inventoryInfo))
             {
                 await this.ShowErrorAsync(dto.MSG);
                 return;
             }
+
             await PopupService.OpenAsync(typeof(UIInventoryDialog), new Dictionary<string, object?>()
             {
                 { nameof(UIInventoryDialog.InventoryDisplay), selectedData },
@@ -187,13 +215,16 @@ namespace Maple.MonoGameAssistant.GameShared.Service
             {
                 return;
             }
+
+
             var dto = await this.Http.UpdateInventoryInfoAsync(this.GameSessionInfo, category, selectedData);
-            if (false == dto.TryGet(out var newInfo))
+            if (false == dto.TryGet(out var inventoryInfo))
             {
                 await this.ShowErrorAsync(dto.MSG);
                 return;
             }
-            selectedData.DisplayValue = newInfo.DisplayValue;
+
+            selectedData.DisplayValue = inventoryInfo.DisplayValue;
             await this.ShowInfoAsync($"Update:{selectedData.DisplayValue}");
         }
 
@@ -208,6 +239,7 @@ namespace Maple.MonoGameAssistant.GameShared.Service
             {
                 return false;
             }
+
             var gameCharacterDTO = await this.Http.GetListCharacterDisplayAsync(this.GameSessionInfo);
             if (false == gameCharacterDTO.TryGet(out var listGameCharacter))
             {
@@ -241,6 +273,7 @@ namespace Maple.MonoGameAssistant.GameShared.Service
                 return;
             }
 
+           
 
             var dto = await this.Http.GetCharacterStatusAsync(this.GameSessionInfo, selectedData.ObjectId);
             if (false == dto.TryGet(out var characterStatus))
@@ -248,6 +281,7 @@ namespace Maple.MonoGameAssistant.GameShared.Service
                 await this.ShowErrorAsync(dto.MSG);
                 return;
             }
+
             await PopupService.OpenAsync(typeof(UICharacterStatusDialog), new Dictionary<string, object?>()
             {
                 { nameof(UICharacterStatusDialog.CharacterDisplay), selectedData },
@@ -262,21 +296,12 @@ namespace Maple.MonoGameAssistant.GameShared.Service
             {
                 return;
             }
-            GameCharacterSkillDTO? characterSkill;
-            try
-            {
-                this.PopupService.ShowProgressCircular();
-                var dto = await this.Http.GetCharacterSkillAsync(this.GameSessionInfo, selectedData.ObjectId);
-                if (false == dto.TryGet(out characterSkill))
-                {
-                    await this.ShowErrorAsync(dto.MSG);
-                    return;
-                }
-            }
-            finally
-            {
-                this.PopupService.HideProgressCircular();
 
+            var dto = await this.Http.GetCharacterSkillAsync(this.GameSessionInfo, selectedData.ObjectId);
+            if (false == dto.TryGet(out var characterSkill))
+            {
+                await this.ShowErrorAsync(dto.MSG);
+                return;
             }
 
             await PopupService.OpenAsync(typeof(UICharacterSkillDialog), new Dictionary<string, object?>()
@@ -293,13 +318,13 @@ namespace Maple.MonoGameAssistant.GameShared.Service
                 return;
             }
 
-
             var dto = await this.Http.GetCharacterEquipmentAsync(this.GameSessionInfo, selectedData.ObjectId);
             if (false == dto.TryGet(out var characterEquipment))
             {
                 await this.ShowErrorAsync(dto.MSG);
                 return;
             }
+
             await PopupService.OpenAsync(typeof(UICharacterEquipmentDialog), new Dictionary<string, object?>()
             {
                 { nameof(UICharacterEquipmentDialog.CharacterDisplay), selectedData },
@@ -314,26 +339,25 @@ namespace Maple.MonoGameAssistant.GameShared.Service
             {
                 return;
             }
+
             var dto = await this.Http.UpdateCharacterStatusAsync(this.GameSessionInfo, displayDTO.ObjectId, selectedData);
-            if (false == dto.TryGet(out var newInfo))
+            if (false == dto.TryGet(out var characterStatus))
             {
                 await this.ShowErrorAsync(dto.MSG);
                 return;
             }
-
-            if (displayDTO.CharacterAttributes is not null && newInfo.CharacterAttributes is not null)
+            if (displayDTO.CharacterAttributes is not null && characterStatus.CharacterAttributes is not null)
             {
                 foreach (var att in displayDTO.CharacterAttributes)
                 {
-                    var newAtt = newInfo.CharacterAttributes.Where(p => p.ObjectId == att.ObjectId).FirstOrDefault();
+                    var newAtt = characterStatus.CharacterAttributes.Where(p => p.ObjectId == att.ObjectId).FirstOrDefault();
                     if (newAtt is not null)
                     {
                         att.DisplayValue = newAtt.DisplayValue;
                     }
                 }
-            }
-            //displayDTO.CharacterAttributes = newInfo.CharacterAttributes;
 
+            }
             await this.ShowInfoAsync($"Update:{selectedData.DisplayValue}");
         }
 
@@ -377,8 +401,6 @@ namespace Maple.MonoGameAssistant.GameShared.Service
                 return;
             }
 
-
-
             await PopupService.OpenAsync(typeof(UIMonsterDialog), new Dictionary<string, object?>()
             {
                 { nameof(UIMonsterDialog.MonsterDisplayDTO), selectedData },
@@ -394,33 +416,33 @@ namespace Maple.MonoGameAssistant.GameShared.Service
                 return;
             }
 
-            var confirmed = await PopupService.ConfirmAsync("Add Monster", $"Add Monster:{selectedData.DisplayName}");
+            var confirmed = await PopupService.ConfirmAsync("Add Monster", $"Add Monster:{selectedData.DisplayName}", AlertTypes.Warning);
             if (confirmed == false)
             {
                 return;
             }
 
+
             var dto = await this.Http.AddMonsterMemberAsync(this.GameSessionInfo, selectedData.ObjectId);
-            if (false == dto.TryGet(out var characterSkillDTO))
+            if (false == dto.TryGet(out var characterSkill))
             {
                 await this.ShowErrorAsync(dto.MSG);
                 return;
             }
 
-            await this.GetListCharacterDisplayAsync();
-
             await PopupService.OpenAsync(typeof(UICharacterSkillDialog), new Dictionary<string, object?>()
             {
                 { nameof(UICharacterSkillDialog.CharacterDisplay), new GameCharacterDisplayDTO(){
-                    ObjectId = characterSkillDTO.ObjectId,
+                    ObjectId = characterSkill.ObjectId,
                    DisplayName = selectedData.DisplayName,
                    DisplayDesc = selectedData.DisplayDesc,
                    DisplayCategory= selectedData.DisplayCategory,
                    DisplayImage = selectedData.DisplayImage,
                 } },
-                { nameof(UICharacterSkillDialog.CharacterSkill), characterSkillDTO }
+                { nameof(UICharacterSkillDialog.CharacterSkill), characterSkill }
             });
 
+            await this.GetListCharacterDisplayAsync();
 
         }
 
@@ -465,11 +487,14 @@ namespace Maple.MonoGameAssistant.GameShared.Service
             {
                 return;
             }
+
             var dto = await this.Http.AddSkillDisplayAsync(this.GameSessionInfo, gameSkillDisplay);
-            if (dto.TryGet(out _))
+            if (false == dto.TryGet(out var skillDisplayDTO))
             {
                 await this.ShowErrorAsync(dto.MSG);
+                return;
             }
+            await this.ShowInfoAsync($"Update {skillDisplayDTO.DisplayName}");
         }
         public async ValueTask OnUpdateCharacterSkill(GameCharacterDisplayDTO characterDisplayDTO, GameSkillInfoDTO? selectedData, bool remove)
         {
@@ -480,7 +505,7 @@ namespace Maple.MonoGameAssistant.GameShared.Service
             MonoResultDTO<GameCharacterSkillDTO> dto;
             if (remove)
             {
-                var dialog = await this.PopupService.ConfirmAsync("Remove Skill", $"Remove Skill:{selectedData.DisplayName}");
+                var dialog = await this.PopupService.ConfirmAsync("Remove Skill", $"Remove Skill:{selectedData.DisplayName}", AlertTypes.Warning);
                 if (false == dialog)
                 {
                     return;
@@ -491,6 +516,7 @@ namespace Maple.MonoGameAssistant.GameShared.Service
                     await this.ShowErrorAsync(dto.MSG);
                     return;
                 }
+
                 selectedData.ObjectId = string.Empty;
                 selectedData.DisplayName = string.Empty;
                 selectedData.DisplayDesc = string.Empty;
@@ -512,12 +538,14 @@ namespace Maple.MonoGameAssistant.GameShared.Service
                     return;
                 }
 
+
                 dto = await this.Http.UpdateCharacterSkillAsync(this.GameSessionInfo, characterDisplayDTO.ObjectId, selectedData.ObjectId, newSkill.ObjectId);
-                if (false == dto.TryGet(out var _))
+                if (false == dto.TryGet(out _))
                 {
                     await this.ShowErrorAsync(dto.MSG);
                     return;
                 }
+
                 selectedData.ObjectId = newSkill.ObjectId;
                 selectedData.DisplayName = newSkill.DisplayName;
                 selectedData.DisplayDesc = newSkill.DisplayDesc;
@@ -556,6 +584,7 @@ namespace Maple.MonoGameAssistant.GameShared.Service
                 return false;
             }
 
+
             var gameSwitchDTO = await this.Http.GetListSwitchDisplayAsync(this.GameSessionInfo);
             if (false == gameSwitchDTO.TryGet(out var listGameSwitch))
             {
@@ -567,7 +596,6 @@ namespace Maple.MonoGameAssistant.GameShared.Service
             return true;
 
         }
-
         public async ValueTask UpdateSwitchDisplay(GameSwitchDisplayDTO switchDisplayDTO)
         {
             if (this.GameSessionInfo is null)
@@ -578,11 +606,13 @@ namespace Maple.MonoGameAssistant.GameShared.Service
             if (false == dto.TryGet(out var gameSwitchDisplay))
             {
                 await this.ShowErrorAsync(dto.MSG);
-                //               return;
+                return;
             }
             switchDisplayDTO.ContentValue = gameSwitchDisplay?.ContentValue ?? string.Empty;
         }
         #endregion
+
+        #region Msg
 
         private Task ShowErrorAsync(string? error)
         {
@@ -592,5 +622,13 @@ namespace Maple.MonoGameAssistant.GameShared.Service
         {
             return this.PopupService.EnqueueSnackbarAsync(new Masa.Blazor.Presets.SnackbarOptions(msg, AlertTypes.Success, true));
         }
+
+        public UIProgressCircular ShowWait()
+        {
+            return this.PopupService.ShowWait();
+        }
+        #endregion
+
+
     }
 }

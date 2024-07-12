@@ -17,6 +17,13 @@ namespace Maple.MonoGameAssistant.GameShared.Components
         {
             this.Core.OnSearchMonster(SearchContent);
         }
+        private async Task OnReload()
+        {
+            using (this.Core.ShowWait())
+            {
+                await this.Core.GetListMonsterDisplayAsync();
+            }
+        }
         private async Task OnSelected(GameMonsterDisplayDTO  gameMonster)
         {
             await this.Core.OnSelectedMonster(gameMonster);

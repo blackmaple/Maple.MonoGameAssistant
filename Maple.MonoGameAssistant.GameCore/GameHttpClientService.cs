@@ -56,10 +56,20 @@ namespace Maple.MonoGameAssistant.GameCore
         }
         #endregion
 
+        #region Game
+
         public Task<MonoResultDTO<GameSessionInfoDTO>> GetGameSessionInfoAsync()
         {
             return this.TrySendAsync<GameUniqueIndexDTO, GameSessionInfoDTO>("game/info");
         }
+
+        public Task<MonoResultDTO<GameSessionInfoDTO>> LoadResourceAsync(GameSessionInfoDTO gameSessionInfo)
+        {
+            return this.TrySendAsync<GameSessionObjectDTO, GameSessionInfoDTO>("game/LoadResource", new GameSessionObjectDTO() { Session = gameSessionInfo.ObjectId });
+        }
+        #endregion
+
+        #region Currency
 
         public Task<MonoResultDTO<GameCurrencyDisplayDTO[]>> GetListCurrencyDisplayAsync(GameSessionInfoDTO gameSessionInfo)
         {
@@ -73,6 +83,9 @@ namespace Maple.MonoGameAssistant.GameCore
         {
             return this.TrySendAsync<GameCurrencyModifyDTO, GameCurrencyInfoDTO>("game/UpdateCurrencyInfo", new GameCurrencyModifyDTO() { Session = gameSessionInfo.ObjectId, CurrencyObject = gameCurrency.ObjectId, NewValue = gameCurrency.DisplayValue });
         }
+        #endregion
+
+        #region Inventory
 
         public Task<MonoResultDTO<GameInventoryDisplayDTO[]>> GetListInventoryDisplayAsync(GameSessionInfoDTO gameSessionInfo)
         {
@@ -86,7 +99,9 @@ namespace Maple.MonoGameAssistant.GameCore
         {
             return this.TrySendAsync<GameInventoryModifyDTO, GameInventoryInfoDTO>("game/UpdateInventoryInfo", new GameInventoryModifyDTO { Session = gameSessionInfo.ObjectId, InventoryCategory = category, InventoryObject = gameInventory.ObjectId, NewValue = gameInventory.DisplayValue });
         }
+        #endregion
 
+        #region Character
 
         public Task<MonoResultDTO<GameCharacterDisplayDTO[]>> GetListCharacterDisplayAsync(GameSessionInfoDTO gameSessionInfo)
         {
@@ -123,6 +138,9 @@ namespace Maple.MonoGameAssistant.GameCore
         {
             return this.TrySendAsync<GameCharacterObjectDTO, GameCharacterEquipmentDTO>("game/UpdateCharacterEquipment", new GameCharacterModifyDTO() { Session = gameSessionInfo.ObjectId, CharacterId = gameCharacterId, ModifyObject = oldEquip.ObjectId, NewValue = newEquip.ObjectId });
         }
+        #endregion
+
+        #region Monster
 
         public Task<MonoResultDTO<GameMonsterDisplayDTO[]>> GetListMonsterDisplayAsync(GameSessionInfoDTO gameSessionInfo)
         {
@@ -132,7 +150,9 @@ namespace Maple.MonoGameAssistant.GameCore
         {
             return this.TrySendAsync<GameMonsterObjectDTO, GameCharacterSkillDTO>("game/AddMonsterMember", new GameMonsterObjectDTO() { Session = gameSessionInfo.ObjectId, MonsterObject = monsterObject });
         }
+        #endregion
 
+        #region Skill
 
         public Task<MonoResultDTO<GameSkillDisplayDTO[]>> GetListSkillDisplayAsync(GameSessionInfoDTO gameSessionInfo)
         {
@@ -142,6 +162,9 @@ namespace Maple.MonoGameAssistant.GameCore
         {
             return this.TrySendAsync<GameSkillObjectDTO, GameSkillDisplayDTO>("game/AddSkillDisplay", new GameSkillObjectDTO() { Session = gameSessionInfo.ObjectId, SkillObject = gameSkillDisplay.ObjectId, SkillCategory = gameSkillDisplay.DisplayCategory });
         }
+
+        #endregion
+
         //public Task<MonoResultDTO<GameMonsterInfoDTO[]>> GetListMonsterInfoAsync(GameSessionInfoDTO gameSessionInfo)
         //{
         //    return this.TrySendAsync<GameSessionObjectDTO, GameMonsterInfoDTO[]>("game/GetListMonsterInfo", new GameSessionObjectDTO() { Session = gameSessionInfo.ObjectId });
@@ -170,6 +193,7 @@ namespace Maple.MonoGameAssistant.GameCore
         //    return this.TrySendAsync<GameSessionObjectDTO, GameSkillInfoDTO[]>("game/GetListSkillInfo", new GameSessionObjectDTO() { Session = gameSessionInfo.ObjectId });
         //}
 
+        #region Switch
 
         public Task<MonoResultDTO<GameSwitchDisplayDTO[]>> GetListSwitchDisplayAsync(GameSessionInfoDTO gameSessionInfo)
         {
@@ -179,5 +203,7 @@ namespace Maple.MonoGameAssistant.GameCore
         {
             return this.TrySendAsync<GameSwitchModifyDTO, GameSwitchDisplayDTO>("game/UpdateSwitchDisplay", new GameSwitchModifyDTO() { Session = gameSessionInfo.ObjectId, SwitchObjectId = gameSwitchInfo.ObjectId, ContentValue = gameSwitchInfo.ContentValue, });
         }
+        #endregion
+
     }
 }

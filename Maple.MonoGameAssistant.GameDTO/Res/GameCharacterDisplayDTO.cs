@@ -7,7 +7,8 @@ namespace Maple.MonoGameAssistant.GameDTO
 
         public GameValueInfoDTO[]? CharacterAttributes { set; get; }
 
-
+        [JsonIgnore]
+        public bool Loading { set; get; }
     }
 
 

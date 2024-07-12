@@ -16,19 +16,52 @@ namespace Maple.MonoGameAssistant.GameShared.Components
         {
             this.Core.OnSearchCharacter(SearchContent);
         }
+
+        private async Task OnReload()
+        {
+            using (this.Core.ShowWait())
+            { 
+                await this.Core.GetListCharacterDisplayAsync();
+            }
+        }
+
         private async Task OnSelectedCharacterStatus(GameCharacterDisplayDTO gameCharacter)
         {
-            await this.Core.OnSelectedCharacterStatus(gameCharacter);
+            try
+            {
+                gameCharacter.Loading = true;
+                await this.Core.OnSelectedCharacterStatus(gameCharacter);
+            }
+            finally
+            {
+                gameCharacter.Loading = false;
+            }
         }
 
         private async Task OnSelectedCharacterSkill(GameCharacterDisplayDTO gameCharacter)
         {
-            await this.Core.OnSelectedCharacterSkill(gameCharacter);
+            try
+            {
+                gameCharacter.Loading = true;
+                await this.Core.OnSelectedCharacterSkill(gameCharacter);
+            }
+            finally
+            {
+                gameCharacter.Loading = false;
+            }
         }
 
         private async Task OnSelectedCharacterEquipment(GameCharacterDisplayDTO gameCharacter)
         {
-            await this.Core.OnSelectedCharacterEquipment(gameCharacter);
+            try
+            {
+                gameCharacter.Loading = true;
+                await this.Core.OnSelectedCharacterEquipment(gameCharacter);
+            }
+            finally
+            {
+                gameCharacter.Loading = false;
+            }
         }
     }
 }

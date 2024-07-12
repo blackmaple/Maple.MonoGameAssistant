@@ -1,5 +1,6 @@
 ﻿using Maple.MonoGameAssistant.GameDTO;
 using Maple.MonoGameAssistant.Model;
+using Masa.Blazor;
 using Microsoft.AspNetCore.Components;
 using System.Reflection.Metadata;
 
@@ -91,7 +92,36 @@ namespace Maple.MonoGameAssistant.GameShared.Service
             list.Clear();
             list.AddRange(datas);
         }
+
+        public static UIProgressCircular ShowWait(this IPopupService popupService)
+        { 
+            return new UIProgressCircular(popupService);
+        }
+
     }
 
+    public sealed class UIProgressCircular : IDisposable
+    {
+        IPopupService Service { get; }
+
+        public UIProgressCircular(IPopupService service)
+        {
+            this.Service = service;
+            this.Show();
+        }
+        public void Show()
+        {
+            this.Service.ShowProgressCircular();
+        }
+        public void Close()
+        {
+            this.Service.HideProgressCircular();
+        }
+
+        public void Dispose()
+        {
+            this.Service.HideProgressCircular();
+        }
+    }
 
 }
