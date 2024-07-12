@@ -29,5 +29,9 @@ namespace Maple.MonoGameAssistant.GameShared.Shared
             Status = await this.Core.OnInitializedAsync();
         }
 
+        public async Task LoadGameResourceAsync()
+        {
+            await this.Core.LoadGameResourceAsync();
+        }
     }
 }

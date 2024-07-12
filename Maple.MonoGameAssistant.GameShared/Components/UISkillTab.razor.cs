@@ -22,6 +22,13 @@ namespace Maple.MonoGameAssistant.GameShared.Components
             this.SearchContent = search;
             this.OnSearch();
         }
+        private async Task OnReload()
+        {
+            using (this.Core.ShowWait())
+            {
+                await this.Core.GetListSkillDisplayAsync();
+            }
+        }
         private async Task OnUpdate(GameSkillDisplayDTO gameSkillDisplay)
         {
             try

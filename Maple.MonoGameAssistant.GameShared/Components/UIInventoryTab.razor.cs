@@ -22,9 +22,24 @@ namespace Maple.MonoGameAssistant.GameShared.Components
             SearchContent = displayCategory;
             this.OnSearch();
         }
+        private async Task OnReload()
+        {
+            using (this.Core.ShowWait())
+            {
+                await this.Core.GetListInventoryDisplayAsync();
+            }
+        }
         private async Task OnSelected(GameInventoryDisplayDTO gameInventory)
         {
-            await this.Core.OnSelectedInventory(gameInventory);
+            try
+            {
+                gameInventory.Loading = true;
+                await this.Core.OnSelectedInventory(gameInventory);
+            }
+            finally
+            {
+                gameInventory.Loading = false;
+            }
 
         }
     }

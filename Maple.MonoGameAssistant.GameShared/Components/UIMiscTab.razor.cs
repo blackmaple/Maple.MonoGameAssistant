@@ -18,7 +18,13 @@ namespace Maple.MonoGameAssistant.GameShared.Components
         {
             this.Core.OnSearchSwitch(SearchContent);
         }
-
+        private async Task OnReload()
+        {
+            using (this.Core.ShowWait())
+            { 
+                await this.Core.GetListSwitchDisplayAsync();
+            }
+        }
         private async Task OnChange(GameSwitchDisplayDTO gameSwitchDisplay)
         {
             try

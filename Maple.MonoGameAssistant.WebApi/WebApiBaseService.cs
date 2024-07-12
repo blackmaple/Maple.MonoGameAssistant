@@ -150,7 +150,7 @@ namespace Maple.MonoGameAssistant.WebApi
             {
                 try
                 {
-               //     logger.LogInformation("port=>{p}", this.Settings.Port.ToString());
+                    //     logger.LogInformation("port=>{p}", this.Settings.Port.ToString());
                     await Task.Delay(millisecondsDelay).ConfigureAwait(false);
                     await this.RunAsync<T_GameService>().ConfigureAwait(false);
                 }
@@ -208,6 +208,15 @@ namespace Maple.MonoGameAssistant.WebApi
             {
                 return;
             }
+            gameGroup.MapGet("/LoadResource", async ([FromBody] GameSessionObjectDTO requestDTO, [FromServices] IGameWebApiControllers gameService) =>
+            {
+                requestDTO.ThrowIfGameSessionDiff();
+                var datas = await gameService.LoadResourceAsync().ConfigureAwait(false);
+                return datas.GetOk();
+
+            });
+
+
             gameGroup.MapPost("/GetListCurrencyDisplay", async (/*HttpContext context,*/ [FromBody] GameSessionObjectDTO requestDTO, [FromServices] IGameWebApiControllers gameService) =>
             {
                 requestDTO.ThrowIfGameSessionDiff();

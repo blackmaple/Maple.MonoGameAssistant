@@ -3,7 +3,7 @@
 <MApp>
 
     <MAppBar App Dense Height="32">
-        <MAppBarNavIcon Small>
+        <MAppBarNavIcon Small OnClick="()=>LoadGameResourceAsync()">
             <MIcon>mdi-gamepad-variant-outline</MIcon>
         </MAppBarNavIcon>
         <MAppBarTitle>@Core.GameSessionInfo?.DisplayName</MAppBarTitle>
