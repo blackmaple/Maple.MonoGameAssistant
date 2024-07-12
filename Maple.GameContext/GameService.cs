@@ -128,6 +128,8 @@ namespace Maple.GameContext
         {
             return msgNotify.KeyCode switch
             {
+                EnumVirtualKeyCode.VK_Q => Q_KeyDown(),
+
                 EnumVirtualKeyCode.VK_F1 => F1_KeyDown(),
                 EnumVirtualKeyCode.VK_F2 => F2_KeyDown(),
                 EnumVirtualKeyCode.VK_F3 => F3_KeyDown(),
@@ -173,6 +175,12 @@ namespace Maple.GameContext
                 _ => ValueTask.CompletedTask
             }; ;
         }
+
+        protected virtual ValueTask Q_KeyDown()
+        {
+            return ValueTask.CompletedTask;
+        }
+
         protected virtual ValueTask F1_KeyDown()
         {
             return ValueTask.CompletedTask;
