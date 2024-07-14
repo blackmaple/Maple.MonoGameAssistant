@@ -22,5 +22,9 @@ namespace Maple.MonoGameAssistant.GameDTO
             }
             set => DisplayValue = value.ToString();
         }
+
+
+        [JsonIgnore]
+        public bool Loading { set; get; }
     }
 }

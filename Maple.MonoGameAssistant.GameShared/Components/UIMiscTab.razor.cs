@@ -25,12 +25,12 @@ namespace Maple.MonoGameAssistant.GameShared.Components
                 await this.Core.GetListSwitchDisplayAsync();
             }
         }
-        private async Task OnChange(GameSwitchDisplayDTO gameSwitchDisplay)
+        private async Task OnChange(GameSwitchDisplayDTO gameSwitchDisplay,bool mSwitch = false)
         {
             try
             {
                 gameSwitchDisplay.Loading = true;
-                await this.Core.UpdateSwitchDisplay(gameSwitchDisplay);
+                await this.Core.UpdateSwitchDisplay(gameSwitchDisplay, mSwitch);
             }
             finally
             {

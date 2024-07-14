@@ -65,13 +65,13 @@
                         </MListItemContent>
                         <MListItemAction>
                             <MButtonGroup Borderless Tile Dense>
-                                <MButton Loading="@context.Loading" OnClick="()=>OnSelectedCharacterStatus(context)">
+                                <MButton Loading="@context.Loading" Disabled="@context.Loading" OnClick="()=>OnSelectedCharacterStatus(context)">
                                     <MIcon Color="orange darken-4">mdi-smart-card-outline</MIcon>
                                 </MButton>
-                                <MButton Loading="@context.Loading" OnClick="()=>OnSelectedCharacterEquipment(context)">
+                                <MButton Loading="@context.Loading" Disabled="@context.Loading" OnClick="()=>OnSelectedCharacterEquipment(context)">
                                     <MIcon Color="orange darken-4">mdi-shield-sword-outline</MIcon>
                                 </MButton>
-                                <MButton Loading="@context.Loading" OnClick="()=>OnSelectedCharacterSkill(context)">
+                                <MButton Loading="@context.Loading" Disabled="@context.Loading" OnClick="()=>OnSelectedCharacterSkill(context)">
                                     <MIcon Color="orange darken-4">mdi-magic-staff</MIcon>
                                 </MButton>
                             </MButtonGroup>

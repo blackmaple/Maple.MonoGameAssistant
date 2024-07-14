@@ -21,7 +21,7 @@ namespace Maple.MonoGameAssistant.GameShared.Components
         {
             using (this.Core.ShowWait())
             {
-               await  this.Core.GetListCurrencyDisplayAsync();
+                await this.Core.GetListCurrencyDisplayAsync();
             }
         }
         private async Task OnSelected(GameCurrencyDisplayDTO gameCurrency)
@@ -30,6 +30,7 @@ namespace Maple.MonoGameAssistant.GameShared.Components
             {
                 gameCurrency.Loading = true;
                 await this.Core.OnSelectedCurrency(gameCurrency);
+
             }
             finally
             {

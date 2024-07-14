@@ -208,7 +208,7 @@ namespace Maple.MonoGameAssistant.WebApi
             {
                 return;
             }
-            gameGroup.MapGet("/LoadResource", async ([FromBody] GameSessionObjectDTO requestDTO, [FromServices] IGameWebApiControllers gameService) =>
+            gameGroup.MapPost("/LoadResource", async ([FromBody] GameSessionObjectDTO requestDTO, [FromServices] IGameWebApiControllers gameService) =>
             {
                 requestDTO.ThrowIfGameSessionDiff();
                 var datas = await gameService.LoadResourceAsync().ConfigureAwait(false);

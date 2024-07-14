@@ -1,6 +1,6 @@
 ﻿@inherits Masa.Blazor.Popup.Components.PopupComponentBase
 
-<MDialog Value="Visible">
+<MDialog Value="Visible" OnOutsideClick="()=>this.ClosePopupAsync()">
     <MCard Tile>
         <MListItem>
             <MListItemAvatar Tile>

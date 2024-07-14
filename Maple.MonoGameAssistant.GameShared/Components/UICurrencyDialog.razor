@@ -1,20 +1,37 @@
 ﻿@inherits Masa.Blazor.Popup.Components.PopupComponentBase
 
-<MDialog Value="Visible" MaxWidth="360">
+<MDialog Value="Visible" MaxWidth="360" OnOutsideClick="()=>this.ClosePopupAsync()">
     <MCard Tile>
-        <MListItem Title="@CurrencyDisplay.DisplayName"
-                   PrependAvatar="@CurrencyDisplay.DisplayImage">
+        <MListItem>
+            <MListItemAvatar Tile>
+                <MImage Src="@CurrencyDisplay.DisplayImage">
+                    <PlaceholderContent>
+                        <MIcon>mdi-border-none-variant</MIcon>
+                    </PlaceholderContent>
+                </MImage>
+            </MListItemAvatar>
+            <MListItemContent>
+                <MListItemTitle>
+                    @CurrencyDisplay.ToDisplayName()
+                </MListItemTitle>
+                <MListItemSubtitle>
+
+                    <MChip XSmall Outlined Color="green">
+                        @CurrencyDisplay.DisplayCategory
+                    </MChip>
+                </MListItemSubtitle>
+            </MListItemContent>
         </MListItem>
 
         <MCardSubtitle>@CurrencyDisplay.DisplayDesc</MCardSubtitle>
-    
+
         <MCardActions>
             <MTextField OnAppendClick="@OnUpdateCurrency"
                         AppendIcon="mdi-pencil-outline"
                         Type="number"
                         TValue="decimal"
-                        Loading="@CurrencyDisplay.Loading"
-                        Disabled="@CurrencyDisplay.Loading"
+                        Loading="@CurrencyInfo.Loading"
+                        Disabled="@CurrencyInfo.Loading"
                         Label="@CurrencyDisplay.DisplayName"
                         @bind-Value="@CurrencyInfo.Currency"
                         NumberProps="@(prop => { prop.Min = 0; prop.Max = int.MaxValue; prop.Step =1; prop.HideControl= true; })" />

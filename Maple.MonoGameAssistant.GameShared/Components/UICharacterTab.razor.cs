@@ -31,6 +31,7 @@ namespace Maple.MonoGameAssistant.GameShared.Components
             {
                 gameCharacter.Loading = true;
                 await this.Core.OnSelectedCharacterStatus(gameCharacter);
+               
             }
             finally
             {

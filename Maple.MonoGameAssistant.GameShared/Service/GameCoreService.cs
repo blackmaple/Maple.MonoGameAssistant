@@ -333,22 +333,22 @@ namespace Maple.MonoGameAssistant.GameShared.Service
 
 
         }
-        public async ValueTask OnUpdateCharacteStatus(GameCharacterDisplayDTO displayDTO, GameValueInfoDTO? selectedData)
+        public async ValueTask OnUpdateCharacteStatus(GameCharacterStatusDTO  gameCharacterStatus , GameValueInfoDTO? selectedData)
         {
             if (this.GameSessionInfo is null || selectedData is null)
             {
                 return;
             }
 
-            var dto = await this.Http.UpdateCharacterStatusAsync(this.GameSessionInfo, displayDTO.ObjectId, selectedData);
+            var dto = await this.Http.UpdateCharacterStatusAsync(this.GameSessionInfo, gameCharacterStatus.ObjectId, selectedData);
             if (false == dto.TryGet(out var characterStatus))
             {
                 await this.ShowErrorAsync(dto.MSG);
                 return;
             }
-            if (displayDTO.CharacterAttributes is not null && characterStatus.CharacterAttributes is not null)
+            if (gameCharacterStatus.CharacterAttributes is not null && characterStatus.CharacterAttributes is not null)
             {
-                foreach (var att in displayDTO.CharacterAttributes)
+                foreach (var att in gameCharacterStatus.CharacterAttributes)
                 {
                     var newAtt = characterStatus.CharacterAttributes.Where(p => p.ObjectId == att.ObjectId).FirstOrDefault();
                     if (newAtt is not null)
@@ -596,7 +596,7 @@ namespace Maple.MonoGameAssistant.GameShared.Service
             return true;
 
         }
-        public async ValueTask UpdateSwitchDisplay(GameSwitchDisplayDTO switchDisplayDTO)
+        public async ValueTask UpdateSwitchDisplay(GameSwitchDisplayDTO switchDisplayDTO,bool mSwitch = false)
         {
             if (this.GameSessionInfo is null)
             {
@@ -605,11 +605,16 @@ namespace Maple.MonoGameAssistant.GameShared.Service
             var dto = await this.Http.UpdateSwitchDisplayAsync(this.GameSessionInfo, switchDisplayDTO);
             if (false == dto.TryGet(out var gameSwitchDisplay))
             {
+                if (mSwitch)
+                {
+                    switchDisplayDTO.SwitchValue = !switchDisplayDTO.SwitchValue;
+                }
                 await this.ShowErrorAsync(dto.MSG);
                 return;
             }
             switchDisplayDTO.ContentValue = gameSwitchDisplay?.ContentValue ?? string.Empty;
         }
+ 
         #endregion
 
         #region Msg

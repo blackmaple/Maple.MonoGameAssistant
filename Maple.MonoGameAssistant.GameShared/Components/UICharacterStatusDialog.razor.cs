@@ -26,9 +26,8 @@ namespace Maple.MonoGameAssistant.GameShared.Components
             {
                 gameValue.Loading = true;
 
-                await this.Core.OnUpdateCharacteStatus(CharacterDisplay, gameValue);
+                await this.Core.OnUpdateCharacteStatus(CharacterStatus, gameValue);
 
-                this.StateHasChanged();
             }
             finally
             {
