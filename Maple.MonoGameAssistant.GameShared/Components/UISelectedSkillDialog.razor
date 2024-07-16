@@ -13,14 +13,12 @@
                         OnClearClick="()=>this.OnSearch()"
                         OnEnter="()=>this.OnSearch()">
             </MTextField>
-            <MButtonGroup Dense Borderless Tile>
-                <MButton Icon OnClick="()=>this.Core.GetListSkillDisplayAsync()">
-                    <MIcon Color="orange darken-4">mdi-refresh</MIcon>
-                </MButton>
-                <MButton Icon OnClick="()=>this.ClosePopupAsync(default)">
-                    <MIcon  >mdi-close</MIcon>
-                </MButton>
-            </MButtonGroup>
+            <MButton Icon OnClick="()=>this.Core.GetListSkillDisplayAsync()">
+                <MIcon Color="orange darken-4">mdi-refresh</MIcon>
+            </MButton>
+            <MButton  Icon OnClick="()=>this.ClosePopupAsync(default)">
+                <MIcon>mdi-close</MIcon>
+            </MButton>
         </MToolbar>
 
         <MCardText>
