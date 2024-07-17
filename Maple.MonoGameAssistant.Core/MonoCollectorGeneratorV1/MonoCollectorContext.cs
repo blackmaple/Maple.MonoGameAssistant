@@ -11,6 +11,7 @@ namespace Maple.MonoGameAssistant.Core
     [method: MonoCollectorFlag(EnumMonoCollectorFlag.ContextCtor)]
     public abstract class MonoCollectorContext(MonoRuntimeContext runtimeContext, EnumMonoCollectorTypeVersion typeVersion, ILogger logger)
     {
+        public virtual string ApiVersion => "0.2";
         public EnumMonoCollectorTypeVersion BuildVersion { get; } = typeVersion;
         public MonoRuntimeContext RuntimeContext { get; } = runtimeContext;
         public ILogger Logger { get; } = logger;

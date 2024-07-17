@@ -202,7 +202,11 @@ namespace Maple.MonoGameAssistant.WebApi
         private void UseGameWebApi(IEndpointRouteBuilder app)
         {
             var gameGroup = app.MapGroup("/game").RequireCors(p => p.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
-            gameGroup.MapGet("/info", () => this.Settings.GetGameSessionInfo().GetOk());
+            gameGroup.MapGet("/info", async ([FromServices] IGameWebApiControllers gameService) => 
+            {
+                var data = await gameService.GetSessionInfoAsync().ConfigureAwait(false);
+                return data.GetOk();
+            });
 
             if (!this.Settings.Http)
             {

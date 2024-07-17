@@ -1,12 +1,16 @@
 ﻿@inherits LayoutComponentBase
-<PageTitle>@Core.GameSessionInfo?.DisplayName</PageTitle>
+<PageTitle>@Core.GameName</PageTitle>
 <MApp>
-
-    <MAppBar App Dense Height="32">
-        <MAppBarNavIcon Small OnClick="()=>LoadGameResourceAsync()">
+ 
+    <MAppBar App Dense >
+        <MAppBarNavIcon  OnClick="()=>LoadGameResourceAsync()">
             <MIcon>mdi-gamepad-variant-outline</MIcon>
         </MAppBarNavIcon>
-        <MAppBarTitle>@Core.GameSessionInfo?.DisplayName</MAppBarTitle>
+        <MAppBarTitle>@Core.GameName</MAppBarTitle>
+        <MSpacer></MSpacer>
+        <MButton Icon OnClick="()=>this.Core.ShowVersionInfo()">
+            <MIcon>mdi-microsoft-xbox-controller-battery-unknown</MIcon>
+        </MButton>
     </MAppBar>
 
 

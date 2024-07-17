@@ -33,5 +33,8 @@ namespace Maple.MonoGameAssistant.GameShared.Shared
         {
             await this.Core.LoadGameResourceAsync();
         }
+
+
+
     }
 }

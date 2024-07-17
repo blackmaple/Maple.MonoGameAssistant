@@ -19,6 +19,9 @@ namespace Maple.GameContext
         IGameWebApiControllers
         where T_GAMECONTEXT : MonoCollectorContext
     {
+
+        #region props
+
         protected virtual bool EnableService => true;
         public ILogger Logger { get; } = logger;
         public MonoRuntimeContext RuntimeContext { get; } = runtimeContext;
@@ -30,6 +33,9 @@ namespace Maple.GameContext
         public required UnityEngineContext UnityEngineContext { get; set; }
         public required HookWinMsgService Hook { set; get; }
         public required GameSwitchDisplayDTO[] ListGameSwitch { set; get; }
+        #endregion
+
+        #region Host Service
 
         public ValueTask DestroyService()
         {
@@ -63,7 +69,9 @@ namespace Maple.GameContext
 
 
         }
+        #endregion
 
+        #region Init Service
 
         private void LoadGameService()
         {
@@ -122,6 +130,7 @@ namespace Maple.GameContext
         {
             return ValueTask.CompletedTask;
         }
+        #endregion
 
         #region KeyDown
         public ValueTask NotifyAsync(WinMsgNotifyDTO msgNotify)
@@ -308,6 +317,11 @@ namespace Maple.GameContext
         #endregion
 
         #region WebApi
+
+        public virtual ValueTask<GameSessionInfoDTO> GetSessionInfoAsync()
+            => GameException.Throw<ValueTask<GameSessionInfoDTO>>("NotImplemented");
+
+
         public virtual ValueTask<GameSessionInfoDTO> LoadResourceAsync()
             => GameException.Throw<ValueTask<GameSessionInfoDTO>>("NotImplemented");
 

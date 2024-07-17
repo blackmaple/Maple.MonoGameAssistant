@@ -69,7 +69,7 @@ namespace Maple.MonoGameAssistant.Model
         {
             port = this.Port;
             var allPorts = GetActivePotrs().ToArray();
-            
+
             if (port >= 1024 && !allPorts.Contains(port))
             {
                 return true;
@@ -214,7 +214,7 @@ namespace Maple.MonoGameAssistant.Model
             return localFullFile.Replace(rootPath, this.BaseAddress).Replace(@"\", @"/");
         }
 
-        public GameSessionInfoDTO GetGameSessionInfo()
+        public GameSessionInfoDTO GetGameSessionInfo(string? ver =default)
         {
             return new GameSessionInfoDTO()
             {
@@ -222,6 +222,7 @@ namespace Maple.MonoGameAssistant.Model
                 ObjectId = Environment.ProcessId.ToString(),
                 DisplayName = this.GameName,
                 DisplayDesc = string.Empty,
+                ApiVer = ver
             };
         }
     }

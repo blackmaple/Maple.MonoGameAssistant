@@ -6,12 +6,19 @@ using Masa.Blazor;
 
 namespace Maple.MonoGameAssistant.GameShared.Service
 {
+
+
     public class GameCoreService(GameHttpClientService gameHttp, IPopupService popupService)
     {
+        const string ShellUI_Ver = "0.1";
+
         #region Service
         GameHttpClientService Http { get; } = gameHttp;
         public IPopupService PopupService { get; } = popupService;
         #endregion
+
+        #region List Data
+
         private List<GameCurrencyDisplayDTO> ListCurrency_All { get; } = new List<GameCurrencyDisplayDTO>(32);
         public List<GameCurrencyDisplayDTO> ListCurrency_Search { get; } = new List<GameCurrencyDisplayDTO>(32);
 
@@ -35,10 +42,17 @@ namespace Maple.MonoGameAssistant.GameShared.Service
 
         public List<GameSwitchDisplayDTO> ListSwitch_All { get; } = new List<GameSwitchDisplayDTO>(32);
         public List<GameSwitchDisplayDTO> ListSwitch_Search { get; } = new List<GameSwitchDisplayDTO>(32);
+        #endregion
 
         public GameSessionInfoDTO? GameSessionInfo { get; set; }
+        public string? GameName => this.GameSessionInfo?.DisplayName;
+        public string? ApiVer => $"{nameof(GameSessionInfo.ApiVer)}:{this.GameSessionInfo?.ApiVer}";
+        public string? ShellUI => $"{nameof(ShellUI)}:{ShellUI_Ver}";
 
-
+        public Task ShowVersionInfo()
+        {
+            return this.PopupService.ConfirmAsync(this.GameName!, $"{ApiVer}\t{ShellUI}", AlertTypes.Info);
+        }
         public async Task<EnumGameServiceStatus> OnInitializedAsync()
         {
             var gameSessionDTO = await this.Http.GetGameSessionInfoAsync();
@@ -273,7 +287,7 @@ namespace Maple.MonoGameAssistant.GameShared.Service
                 return;
             }
 
-           
+
 
             var dto = await this.Http.GetCharacterStatusAsync(this.GameSessionInfo, selectedData.ObjectId);
             if (false == dto.TryGet(out var characterStatus))
@@ -333,7 +347,7 @@ namespace Maple.MonoGameAssistant.GameShared.Service
 
 
         }
-        public async ValueTask OnUpdateCharacteStatus(GameCharacterStatusDTO  gameCharacterStatus , GameValueInfoDTO? selectedData)
+        public async ValueTask OnUpdateCharacteStatus(GameCharacterStatusDTO gameCharacterStatus, GameValueInfoDTO? selectedData)
         {
             if (this.GameSessionInfo is null || selectedData is null)
             {
@@ -596,7 +610,7 @@ namespace Maple.MonoGameAssistant.GameShared.Service
             return true;
 
         }
-        public async ValueTask UpdateSwitchDisplay(GameSwitchDisplayDTO switchDisplayDTO,bool mSwitch = false)
+        public async ValueTask UpdateSwitchDisplay(GameSwitchDisplayDTO switchDisplayDTO, bool mSwitch = false)
         {
             if (this.GameSessionInfo is null)
             {
@@ -614,7 +628,7 @@ namespace Maple.MonoGameAssistant.GameShared.Service
             }
             switchDisplayDTO.ContentValue = gameSwitchDisplay?.ContentValue ?? string.Empty;
         }
- 
+
         #endregion
 
         #region Msg

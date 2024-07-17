@@ -4,7 +4,12 @@ namespace Maple.MonoGameAssistant.GameDTO
 {
     public interface IGameWebApiControllers
     {
+
+
+
         #region Game Res
+        ValueTask<GameSessionInfoDTO> GetSessionInfoAsync()
+            => GameException.Throw<ValueTask<GameSessionInfoDTO>>("NotImplemented");
         ValueTask<GameSessionInfoDTO> LoadResourceAsync()
             => GameException.Throw<ValueTask<GameSessionInfoDTO>>("NotImplemented");
         #endregion
