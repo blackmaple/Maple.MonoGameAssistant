@@ -12,6 +12,12 @@ namespace Maple.MonoGameAssistant.Core
     partial class MonoRuntimeApi
     {
         #region RTAPI
+        internal PMONO_GCHANDLE_NEW MONO_GCHANDLE_NEW;
+
+        internal PMONO_GCHANDLE_GET_TARGET MONO_GCHANDLE_GET_TARGET;
+
+        internal PMONO_GCHANDLE_FREE MONO_GCHANDLE_FREE;
+
         internal PMONO_THREAD_ATTACH MONO_THREAD_ATTACH;
 
         internal PMONO_GET_ROOT_DOMAIN MONO_GET_ROOT_DOMAIN;
@@ -268,6 +274,13 @@ namespace Maple.MonoGameAssistant.Core
 
             init &= TryCreate(hModule, PMONO_CLASS_GET_FLAGS.mono, out MONO_CLASS_GET_FLAGS);
 
+
+            init &= TryCreate(hModule, PMONO_GCHANDLE_NEW.mono, out MONO_GCHANDLE_NEW);
+
+            init &= TryCreate(hModule, PMONO_GCHANDLE_GET_TARGET.mono, out MONO_GCHANDLE_GET_TARGET);
+
+            init &= TryCreate(hModule, PMONO_GCHANDLE_FREE.mono, out MONO_GCHANDLE_FREE);
+
             return init;
         }
 
@@ -369,7 +382,12 @@ namespace Maple.MonoGameAssistant.Core
 
             init &= TryCreate(hModule, PIL2CPP_RESOLVE_ICALL.il2cpp, out IL2CPP_RESOLVE_ICALL);
 
-            
+
+            init &= TryCreate(hModule, PMONO_GCHANDLE_NEW.il2cpp, out MONO_GCHANDLE_NEW);
+
+            init &= TryCreate(hModule, PMONO_GCHANDLE_GET_TARGET.il2cpp, out MONO_GCHANDLE_GET_TARGET);
+
+            init &= TryCreate(hModule, PMONO_GCHANDLE_FREE.il2cpp, out MONO_GCHANDLE_FREE);
 
             return init;
         }

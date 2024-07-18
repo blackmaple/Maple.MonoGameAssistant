@@ -108,6 +108,12 @@ namespace Maple.MonoGameAssistant.Core
 
 
         PDelegatePointer GetInternalCall(string signature);
+
+
+        REF_MONO_GC_HANDLE MonoGCHandle(PMonoObject pMonoObject, bool pinned);
+        PMonoObject MonoGCHandleTarget(REF_MONO_GC_HANDLE gchandle);
+        void MonoGCHandleFree(REF_MONO_GC_HANDLE gchandle);
+
         #endregion
     }
 }
