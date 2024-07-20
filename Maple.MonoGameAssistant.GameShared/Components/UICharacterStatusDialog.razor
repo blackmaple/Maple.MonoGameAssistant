@@ -37,45 +37,68 @@
         <MCardSubtitle>@CharacterDisplay.ToDisplayDesc()</MCardSubtitle>
         <MCardText>
             @{
-                var datas = CharacterStatus.CharacterAttributes.GetItemAttributes(false).ToArray();
-                if (datas.Any())
+                var datas = CharacterStatus.CharacterAttributes;
+                if (datas?.Length > 0)
                 {
-                    <MDescriptions Dense Bordered AlignCenter Vertical Xs="3"
-                                   Lg="6"
-                                   Xl="12" Column="12">
+                    <MDescriptions Dense Bordered AlignCenter  Xs="2"
+                                   Lg="2"
+                                   Column="12">
                         @foreach (var item in datas)
                         {
                             <MDescriptionsItem Label="@item.DisplayName">
-                                @if (item.CanWrite)
+                                @if (item.ButtonType)
                                 {
-                                    var boolVal = item.BoolValue;
-                                    if (boolVal.HasValue)
-                                    {
-                                        <MSwitch Inset Dense
-                                                 Color="orange darken-4"
-                                                 Loading="@item.Loading"
-                                                 Disabled="item.Loading"
-                                                 OnClick="()=>OnUpdateCharacterStatus(item)"
-                                                 @bind-Value="@item.BoolValue">
-                                        </MSwitch>
-                                    }
-                                    else
-                                    {
-                                        <MTextField OnAppendClick="()=>OnUpdateCharacterStatus(item)"
-                                                    AppendIcon="mdi-pencil-outline"
-                                                    Type="number"
-                                                    TValue="decimal"
-                                                    Loading="item.Loading"
-                                                    Disabled="item.Loading"
-                                                    Dense
-                                                    HideDetails="true"
-                                                    @bind-Value="@item.DecimalValue"
-                                                    NumberProps="@(prop => { prop.Min = 0; prop.Max = int.MaxValue; prop.Step =1; prop.HideControl= true; })" />
-                                    }
+                                    <MButton Icon
+                                             Color="orange darken-4"
+                                             Loading="@item.Loading"
+                                             Disabled="item.Loading"
+                                             OnClick="()=>OnUpdateCharacterStatus(item)">
+                                        <MIcon>mdi-crosshairs</MIcon>
+                                    </MButton>
+                                }
+                                else if (item.SelectsType)
+                                {
+                                    <MSelect Dense HideDetails="true"
+                                             TItem="GameValueInfoDTO"
+                                             TItemValue="string"
+                                             TValue="string"
+                                             @bind-Value="@item.ContentValue"
+                                             Items="item.SelectedContents"
+                                             ItemText="p=>p.DisplayName"
+                                             ItemValue="p=>p.DisplayValue"
+                                             Color="orange darken-4"
+                                             AppendOuterIcon="mdi-crosshairs"
+                                             OnAppendOuterClick="()=>OnUpdateCharacterStatus(item)"
+                                             SingleLine></MSelect>
+
+                                }
+                                else if (item.SwitchesType)
+                                {
+                                    <MSwitch Inset Dense HideDetails="true"
+                                             Color="orange darken-4"
+                                             Loading="@item.Loading"
+                                             Disabled="item.Loading"
+                                             OnClick="()=>OnUpdateCharacterStatus(item)"
+                                             @bind-Value="@item.SwitchValue">
+                                    </MSwitch>
+                                }
+                                else if (item.TextEditorType)
+                                {
+                                    <MTextField OnAppendClick="()=>OnUpdateCharacterStatus(item)"
+                                                AppendIcon="mdi-pencil-outline"
+                                                Type="number"
+                                                TValue="decimal"
+                                                Loading="item.Loading"
+                                                Disabled="item.Loading"
+                                                Dense
+                                                HideDetails="true"
+                                                @bind-Value="@item.DecimalValue"
+                                                NumberProps="@(prop => { prop.Min = 0; prop.Max = int.MaxValue; prop.Step =1; prop.HideControl= true; })" />
+
                                 }
                                 else
                                 {
-                                    @item.DisplayValue
+                                    <MLabel>@item.ContentValue</MLabel>
                                 }
                             </MDescriptionsItem>
                         }

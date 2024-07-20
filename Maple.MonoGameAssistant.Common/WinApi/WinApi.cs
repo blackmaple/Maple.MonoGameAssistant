@@ -560,7 +560,8 @@ namespace Maple.MonoGameAssistant.Common
                 {
                     webPath = GetGoogleWebBrowser();
                 }
-                if (false == string.IsNullOrEmpty(webPath))
+
+                if (File.Exists(webPath))
                 {
                     return RunWebBrowser(webPath, url);
                 }

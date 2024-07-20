@@ -9,7 +9,11 @@ namespace Maple.MonoGameAssistant.Core
         readonly UInt32 _handle = handle;
         public static implicit operator UInt32(REF_MONO_GC_HANDLE ptr) => ptr._handle;
         public static implicit operator REF_MONO_GC_HANDLE(UInt32 ptr) => new(ptr);
- 
+
+        public override string ToString()
+        {
+            return _handle.ToString("X8");
+        }
     }
 
 }

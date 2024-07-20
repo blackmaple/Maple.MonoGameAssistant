@@ -11,7 +11,7 @@
                         OnAppendOuterClick="()=>this.OnSearch()"
                         OnClearClick="()=>this.OnSearch()"
                         OnEnter="()=>this.OnSearch()">
-            </MTextField>     
+            </MTextField>
             <MButton Icon OnClick="()=>this.OnReload()">
                 <MIcon Color="orange darken-4">mdi-refresh</MIcon>
             </MButton>
@@ -44,7 +44,7 @@
                                     <MIcon>mdi-crosshairs</MIcon>
                                 </MButton>
                             }
-                            else if (context.SelectedContents is not null)
+                            else if (context.SelectsType)
                             {
                                 <MSelect Dense HideDetails="true"
                                          TItem="GameValueInfoDTO"
@@ -60,7 +60,7 @@
                                          SingleLine></MSelect>
 
                             }
-                            else
+                            else if (context.SwitchesType)
                             {
                                 <MSwitch Inset
                                          Color="orange darken-4"
@@ -70,7 +70,24 @@
                                          @bind-Value="@context.SwitchValue">
                                 </MSwitch>
                             }
+                            else if (context.TextEditorType)
+                            {
+                                <MTextField OnAppendClick="()=>OnChange(context)"
+                                            AppendIcon="mdi-pencil-outline"
+                                            Type="number"
+                                            TValue="decimal"
+                                            Loading="context.Loading"
+                                            Disabled="context.Loading"
+                                            Dense
+                                            HideDetails="true"
+                                            @bind-Value="@context.DecimalValue"
+                                            NumberProps="@(prop => { prop.Min = 0; prop.Max = int.MaxValue; prop.Step =1; prop.HideControl= true; })" />
 
+                            }
+                            else
+                            {
+                                <MLabel>@context.ContentValue</MLabel>
+                            }
                         </MListItemAction>
                     </MListItem>
 

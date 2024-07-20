@@ -32,7 +32,7 @@ namespace Maple.MonoGameAssistant.GameDTO
         /// <summary>
         /// 属性集合
         /// </summary>
-        public GameValueInfoDTO[]? CharacterAttributes { set; get; }
+        public GameSwitchDisplayDTO[]? CharacterAttributes { set; get; }
 
     }
 

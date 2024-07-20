@@ -65,5 +65,20 @@ namespace Maple.MonoGameAssistant.GameDTO
             }
             set => DisplayValue = value.ToString();
         }
+
+        [JsonIgnore]
+        public int IntValue
+        {
+            get
+            {
+                if (int.TryParse(DisplayValue, out var result))
+                {
+                    return result;
+                }
+                return default;
+            }
+            set => DisplayValue = value.ToString();
+        }
+
     }
 }

@@ -8,6 +8,7 @@ using System;
 using System.Buffers;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
+using System.Reflection.Metadata;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Xml.Schema;
@@ -104,13 +105,11 @@ namespace Maple.MonoGameAssistant.Core
         #endregion
 
         #region IMonoRuntiemProvider->Common
-
         public T_Struct CreateMonoClass<T_Struct>(PMonoClass pMonoClass, bool execDefCtor)
            where T_Struct : unmanaged
         {
             return this.RuntiemProvider.CreateMonoClass<T_Struct>(this.RootDomain, pMonoClass, execDefCtor);
         }
-
         public PMonoString GetMonoString(string str)
         {
             return this.RuntiemProvider.GetMonoString(this.RootDomain, str);
@@ -127,11 +126,60 @@ namespace Maple.MonoGameAssistant.Core
         }
         public PMonoArray CreateMonoArray(PMonoClass pMonoClass, int count)
             => this.RuntiemProvider.CreateMonoArray(this.RootDomain, pMonoClass, count);
-
         public unsafe T_METHOD GetInternalCall<T_METHOD>(string signature) where T_METHOD : unmanaged
         {
             var pMethod = this.RuntiemProvider.GetInternalCall(signature);
             return Unsafe.As<PDelegatePointer, T_METHOD>(ref pMethod);
+        }
+
+        public MonoGCHandle CreateMonoGCHandle(PMonoObject pMonoObject, bool leavePinned = true)
+        {
+            return new MonoGCHandle(this, pMonoObject, leavePinned);
+        }
+        public REF_MONO_GC_HANDLE MonoPinned(PMonoObject pMonoObject)
+        {
+            return this.RuntiemProvider.MonoGCHandle(pMonoObject, true);
+        }
+        public PMonoObject GetMonoGCHandleTarget(REF_MONO_GC_HANDLE handle) => this.RuntiemProvider.MonoGCHandleTarget(handle);
+        public T_STRUCT GetMonoGCHandleTarget<T_STRUCT>(REF_MONO_GC_HANDLE handle)
+            where T_STRUCT : unmanaged
+        {
+            var target = GetMonoGCHandleTarget(handle);
+            return Unsafe.As<PMonoObject, T_STRUCT>(ref target);
+        }
+        public void MonoGCHandleFree(REF_MONO_GC_HANDLE handle)
+        {
+            this.RuntiemProvider.MonoGCHandleFree(handle);
+        }
+        public ref struct MonoGCHandle
+        {
+            MonoRuntimeContext RuntimeContext { get; }
+            REF_MONO_GC_HANDLE Handle { get; set; }
+            bool LeavePinned { get; }
+            public MonoGCHandle(MonoRuntimeContext runtimeContext, PMonoObject pMonoObject, bool leavePinned = true)
+            {
+                this.RuntimeContext = runtimeContext;
+                this.Handle = this.RuntimeContext.MonoPinned(pMonoObject);
+                this.LeavePinned = leavePinned;
+            }
+
+            public readonly PMonoObject GetTarget() => this.RuntimeContext.GetMonoGCHandleTarget(Handle);
+            public readonly T_STRUCT GetTarget<T_STRUCT>() where T_STRUCT : unmanaged
+            => this.RuntimeContext.GetMonoGCHandleTarget<T_STRUCT>(Handle);
+
+            public void Dispose()
+            {
+                if (this.LeavePinned == false)
+                {
+                    var handle = this.Handle;
+                    this.Handle = 0;
+                    if (handle != 0)
+                    {
+                        this.RuntimeContext.MonoGCHandleFree(handle);
+                    }
+                }
+
+            }
         }
 
         #endregion
@@ -716,7 +764,7 @@ namespace Maple.MonoGameAssistant.Core
             }
 
             return false;
-          
+
 
             //参考CE直接遍历
             bool TryFindMonoClass(PMonoImage pMonoImage, ReadOnlySpan<byte> utf8Namespace, ReadOnlySpan<byte> utf8ClassName, out PMonoClass pMonoClass)

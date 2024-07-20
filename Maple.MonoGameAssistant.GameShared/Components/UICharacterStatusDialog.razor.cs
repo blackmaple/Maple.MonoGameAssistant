@@ -20,7 +20,7 @@ namespace Maple.MonoGameAssistant.GameShared.Components
 
 
          
-        private async Task OnUpdateCharacterStatus(GameValueInfoDTO gameValue)
+        private async Task OnUpdateCharacterStatus(GameSwitchDisplayDTO gameValue)
         {
             try
             {

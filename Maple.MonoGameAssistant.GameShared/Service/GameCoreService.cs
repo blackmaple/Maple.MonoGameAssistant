@@ -347,7 +347,7 @@ namespace Maple.MonoGameAssistant.GameShared.Service
 
 
         }
-        public async ValueTask OnUpdateCharacteStatus(GameCharacterStatusDTO gameCharacterStatus, GameValueInfoDTO? selectedData)
+        public async ValueTask OnUpdateCharacteStatus(GameCharacterStatusDTO gameCharacterStatus, GameSwitchDisplayDTO? selectedData)
         {
             if (this.GameSessionInfo is null || selectedData is null)
             {
@@ -367,12 +367,12 @@ namespace Maple.MonoGameAssistant.GameShared.Service
                     var newAtt = characterStatus.CharacterAttributes.Where(p => p.ObjectId == att.ObjectId).FirstOrDefault();
                     if (newAtt is not null)
                     {
-                        att.DisplayValue = newAtt.DisplayValue;
+                        att.ContentValue = newAtt.ContentValue;
                     }
                 }
 
             }
-            await this.ShowInfoAsync($"Update:{selectedData.DisplayValue}");
+            await this.ShowInfoAsync($"Update:{selectedData.ContentValue}");
         }
 
         #endregion
