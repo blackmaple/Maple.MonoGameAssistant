@@ -114,6 +114,7 @@ namespace Maple.MonoGameAssistant.GameShared.Service
                 await this.ShowErrorAsync(gameCurrencyDTO.MSG);
                 return false;
             }
+            listGameCurrency.SortArray();
             this.ListCurrency_All.AddRange(listGameCurrency);
             this.ListCurrency_Search.AddRange(listGameCurrency);
             return true;
@@ -186,6 +187,7 @@ namespace Maple.MonoGameAssistant.GameShared.Service
                 await this.ShowErrorAsync(gameInventoryDTO.MSG);
                 return false;
             }
+            listGameInventory.SortArray();
             this.ListInventory_All.AddRange(listGameInventory);
             this.ListInventory_Search.AddRange(listGameInventory);
             return true;
@@ -260,6 +262,7 @@ namespace Maple.MonoGameAssistant.GameShared.Service
                 await this.ShowErrorAsync(gameCharacterDTO.MSG);
                 return false;
             }
+            listGameCharacter.SortArray();
             this.ListCharacter_All.AddRange(listGameCharacter);
             this.ListCharacter_Search.AddRange(listGameCharacter);
             return true;
@@ -392,6 +395,7 @@ namespace Maple.MonoGameAssistant.GameShared.Service
                 await this.ShowErrorAsync(gameMonsterDTO.MSG);
                 return false;
             }
+            listGameMonster.SortArray();
             this.ListMonster_All.ReplaceRange(listGameMonster);
             this.ListMonster_Search.ReplaceRange(listGameMonster);
             return true;
@@ -478,6 +482,7 @@ namespace Maple.MonoGameAssistant.GameShared.Service
                 await this.ShowErrorAsync(gameSkillDTO.MSG);
                 return true;
             }
+            listGameSkill.SortArray();
             this.ListSkill_All.ReplaceRange(listGameSkill);
             this.ListSkill_Search.ReplaceRange(listGameSkill);
             return false;
@@ -605,6 +610,7 @@ namespace Maple.MonoGameAssistant.GameShared.Service
                 await this.ShowErrorAsync(gameSwitchDTO.MSG);
                 return false;
             }
+            listGameSwitch.SortArray();
             this.ListSwitch_Search.AddRange(listGameSwitch);
             this.ListSwitch_All.AddRange(listGameSwitch);
             return true;

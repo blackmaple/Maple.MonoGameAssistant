@@ -556,12 +556,12 @@ namespace Maple.MonoGameAssistant.Common
             if (OperatingSystem.IsWindows())
             {
                 var webPath = GetEdgeWebBrowser();
-                if (string.IsNullOrEmpty(webPath))
-                {
-                    webPath = GetGoogleWebBrowser();
-                }
+                //if (string.IsNullOrEmpty(webPath))
+                //{
+                //    webPath = GetGoogleWebBrowser();
+                //}
 
-                if (File.Exists(webPath))
+                if (false == string.IsNullOrEmpty(webPath))
                 {
                     return RunWebBrowser(webPath, url);
                 }

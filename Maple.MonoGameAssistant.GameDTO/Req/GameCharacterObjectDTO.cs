@@ -7,6 +7,12 @@ namespace Maple.MonoGameAssistant.GameDTO
     {
         public required string CharacterId { set; get; }
 
+        /// <summary>
+        /// 对象的类型
+        /// </summary>
+        public string? CharacterCategory { set; get; }
+
+
         [JsonIgnore]
         public ulong UCharacterId
         {

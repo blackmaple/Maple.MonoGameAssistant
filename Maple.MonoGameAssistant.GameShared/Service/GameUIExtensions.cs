@@ -45,7 +45,7 @@ namespace Maple.MonoGameAssistant.GameShared.Service
             return new MarkupString(gameValueInfo.DisplayValue);
         }
         public static IEnumerable<T> GetItemAttributes<T>(this IReadOnlyList<T>? gameValueInfos, bool onlyPreview = false)
-            where T: GameValueInfoDTO
+            where T : GameValueInfoDTO
         {
 
             if (gameValueInfos is not null)
@@ -79,7 +79,7 @@ namespace Maple.MonoGameAssistant.GameShared.Service
             {
                 return true;
             }
-            if (false == string.IsNullOrEmpty(displayCategory) && displayCategory.Equals(searchContent, StringComparison.OrdinalIgnoreCase))
+            if (false == string.IsNullOrEmpty(displayCategory) && displayCategory.Contains(searchContent, StringComparison.OrdinalIgnoreCase))
             {
                 return true;
             }
@@ -88,16 +88,34 @@ namespace Maple.MonoGameAssistant.GameShared.Service
 
 
         public static void ReplaceRange<T>(this List<T> list, IEnumerable<T> datas)
-        { 
+        {
             list.Clear();
             list.AddRange(datas);
         }
 
         public static UIProgressCircular ShowWait(this IPopupService popupService)
-        { 
+        {
             return new UIProgressCircular(popupService);
         }
 
+
+        public static void SortArray<T>(this T[] datas) where T : GameObjectDisplayDTO
+        {
+            Array.Sort(datas, Comparer<T>.Create(static (x, y) =>
+            {
+                var cmp = string.Compare(x.DisplayCategory, y.DisplayCategory);
+                if (cmp != 0)
+                {
+                    return cmp;
+                }
+                cmp = string.Compare(x.ObjectId, y.ObjectId);
+                if (cmp != 0)
+                {
+                    return cmp;
+                }
+                return string.Compare(x.DisplayName, y.DisplayName);
+            }));
+        }
     }
 
     public sealed class UIProgressCircular : IDisposable
