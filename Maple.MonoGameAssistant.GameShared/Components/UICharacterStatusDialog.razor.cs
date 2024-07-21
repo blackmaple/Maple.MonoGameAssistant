@@ -19,14 +19,14 @@ namespace Maple.MonoGameAssistant.GameShared.Components
 
 
 
-         
+
         private async Task OnUpdateCharacterStatus(GameSwitchDisplayDTO gameValue)
         {
             try
             {
                 gameValue.Loading = true;
 
-                await this.Core.OnUpdateCharacteStatus(CharacterStatus, gameValue);
+                await this.Core.OnUpdateCharacteStatus(CharacterDisplay, CharacterStatus, gameValue);
 
             }
             finally

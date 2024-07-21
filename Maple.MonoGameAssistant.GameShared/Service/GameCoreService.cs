@@ -292,7 +292,7 @@ namespace Maple.MonoGameAssistant.GameShared.Service
 
 
 
-            var dto = await this.Http.GetCharacterStatusAsync(this.GameSessionInfo, selectedData.ObjectId);
+            var dto = await this.Http.GetCharacterStatusAsync(this.GameSessionInfo, selectedData);
             if (false == dto.TryGet(out var characterStatus))
             {
                 await this.ShowErrorAsync(dto.MSG);
@@ -350,14 +350,14 @@ namespace Maple.MonoGameAssistant.GameShared.Service
 
 
         }
-        public async ValueTask OnUpdateCharacteStatus(GameCharacterStatusDTO gameCharacterStatus, GameSwitchDisplayDTO? selectedData)
+        public async ValueTask OnUpdateCharacteStatus(GameCharacterDisplayDTO gameCharacterDisplay, GameCharacterStatusDTO gameCharacterStatus, GameSwitchDisplayDTO? selectedData)
         {
             if (this.GameSessionInfo is null || selectedData is null)
             {
                 return;
             }
 
-            var dto = await this.Http.UpdateCharacterStatusAsync(this.GameSessionInfo, gameCharacterStatus.ObjectId, selectedData);
+            var dto = await this.Http.UpdateCharacterStatusAsync(this.GameSessionInfo, gameCharacterDisplay, selectedData);
             if (false == dto.TryGet(out var characterStatus))
             {
                 await this.ShowErrorAsync(dto.MSG);
