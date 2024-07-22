@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using Microsoft.VisualBasic;
+using System.Runtime.InteropServices;
 
 namespace Maple.MonoGameAssistant.Core
 {
@@ -14,8 +15,8 @@ namespace Maple.MonoGameAssistant.Core
 
         readonly delegate* unmanaged[Cdecl, SuppressGCTransition]<REF_MONO_GC_HANDLE, PMonoObject> _func = (delegate* unmanaged[Cdecl, SuppressGCTransition]<REF_MONO_GC_HANDLE, PMonoObject>)ptr;
         public readonly unsafe PMonoObject Invoke(REF_MONO_GC_HANDLE gchandle) => _func(gchandle);
-
-
+ 
+        
     }
     #endregion
 

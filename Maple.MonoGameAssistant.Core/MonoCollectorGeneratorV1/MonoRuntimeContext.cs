@@ -132,40 +132,44 @@ namespace Maple.MonoGameAssistant.Core
             return Unsafe.As<PDelegatePointer, T_METHOD>(ref pMethod);
         }
 
-        public MonoGCHandle CreateMonoGCHandle(PMonoObject pMonoObject, bool leavePinned = true)
+        public MonoGCHandle<T_STRUCT> CreateMonoGCHandle<T_STRUCT>(T_STRUCT pMonoObject, bool leavePinned = true)
+           where T_STRUCT : unmanaged
         {
-            return new MonoGCHandle(this, pMonoObject, leavePinned);
+            return new MonoGCHandle<T_STRUCT>(this, pMonoObject, leavePinned);
         }
-        public REF_MONO_GC_HANDLE MonoPinned(PMonoObject pMonoObject)
+        public REF_MONO_GC_HANDLE SetMonoGCHandleAlloc<T_STRUCT>(T_STRUCT data) where T_STRUCT : unmanaged
         {
-            return this.RuntiemProvider.MonoGCHandle(pMonoObject, true);
+           
+            return this.RuntiemProvider.MonoGCHandle(PMonoObject.From(data), true);
         }
-        public PMonoObject GetMonoGCHandleTarget(REF_MONO_GC_HANDLE handle) => this.RuntiemProvider.MonoGCHandleTarget(handle);
         public T_STRUCT GetMonoGCHandleTarget<T_STRUCT>(REF_MONO_GC_HANDLE handle)
             where T_STRUCT : unmanaged
         {
-            var target = GetMonoGCHandleTarget(handle);
-            return Unsafe.As<PMonoObject, T_STRUCT>(ref target);
+            var target = this.RuntiemProvider.MonoGCHandleTarget(handle);
+            return target.To<T_STRUCT>();
         }
         public void MonoGCHandleFree(REF_MONO_GC_HANDLE handle)
         {
             this.RuntiemProvider.MonoGCHandleFree(handle);
         }
-        public ref struct MonoGCHandle
+
+        public ref struct MonoGCHandle<T_STRUCT> where T_STRUCT : unmanaged
         {
             MonoRuntimeContext RuntimeContext { get; }
             REF_MONO_GC_HANDLE Handle { get; set; }
             bool LeavePinned { get; }
-            public MonoGCHandle(MonoRuntimeContext runtimeContext, PMonoObject pMonoObject, bool leavePinned = true)
+            public MonoGCHandle(MonoRuntimeContext runtimeContext, T_STRUCT pMonoObject, bool leavePinned = true)
             {
                 this.RuntimeContext = runtimeContext;
-                this.Handle = this.RuntimeContext.MonoPinned(pMonoObject);
+                this.Handle = this.RuntimeContext.SetMonoGCHandleAlloc(pMonoObject);
                 this.LeavePinned = leavePinned;
             }
 
-            public readonly PMonoObject GetTarget() => this.RuntimeContext.GetMonoGCHandleTarget(Handle);
-            public readonly T_STRUCT GetTarget<T_STRUCT>() where T_STRUCT : unmanaged
-            => this.RuntimeContext.GetMonoGCHandleTarget<T_STRUCT>(Handle);
+
+            public readonly T_STRUCT Target => this.GetTarget();
+
+            public readonly T_STRUCT GetTarget()
+                => this.RuntimeContext.GetMonoGCHandleTarget<T_STRUCT>(Handle);
 
             public void Dispose()
             {
@@ -181,7 +185,6 @@ namespace Maple.MonoGameAssistant.Core
 
             }
         }
-
         #endregion
 
         #region IMonoRuntiemProvider->MonoField->Enum&Const&Static

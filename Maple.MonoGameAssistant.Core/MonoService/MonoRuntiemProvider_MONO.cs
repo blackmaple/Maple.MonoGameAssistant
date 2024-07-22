@@ -607,6 +607,7 @@ namespace Maple.MonoGameAssistant.Core
         {
             return this.Runtime.MONO_GCHANDLE_NEW.Invoke(pMonoObject, pinned);
         }
+ 
 
         public PMonoObject MonoGCHandleTarget(REF_MONO_GC_HANDLE gchandle)
         {

@@ -1,4 +1,5 @@
 ﻿using Maple.MonoGameAssistant.Common;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 namespace Maple.MonoGameAssistant.Core
@@ -15,6 +16,7 @@ namespace Maple.MonoGameAssistant.Core
         //MONO_API uint32_t      mono_gchandle_new         (MonoObject *obj, mono_bool pinned);
         readonly delegate* unmanaged[Cdecl, SuppressGCTransition]<PMonoObject, MapleBoolean, REF_MONO_GC_HANDLE> _func = (delegate* unmanaged[Cdecl, SuppressGCTransition]<PMonoObject, MapleBoolean, REF_MONO_GC_HANDLE>)ptr;
         public readonly unsafe REF_MONO_GC_HANDLE Invoke(PMonoObject pMonoObject, bool pinned) => _func(pMonoObject, pinned);
+
 
 
     }
