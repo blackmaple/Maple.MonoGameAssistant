@@ -580,7 +580,7 @@ namespace Maple.MonoGameAssistant.Core
                 {
                     this.Runtime.MONO_RUNTIME_OBJECT_INIT.Invoke(pMonoObject);
                 }
-                return Unsafe.As<PMonoObject, T_Struct>(ref pMonoObject);
+                return pMonoObject.To<T_Struct>();
             }
             return default;
         }

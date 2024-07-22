@@ -4,6 +4,7 @@ using Maple.MonoGameAssistant.MonoCollector;
 using Maple.MonoGameAssistant.MonoCollectorDataV2;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics.CodeAnalysis;
+using static Maple.MonoGameAssistant.Core.MonoRuntimeContext;
 
 namespace Maple.MonoGameAssistant.Core
 {
@@ -39,7 +40,9 @@ namespace Maple.MonoGameAssistant.Core
         }
 
         public PMonoString T(string str) => this.RuntimeContext.GetMonoString(str);
+        public MonoGCHandle<PMonoString> T2(string str) => this.RuntimeContext.CreateMonoGCHandle(this.RuntimeContext.GetMonoString(str));
         public PMonoString T(in ReadOnlySpan<char> str) => this.RuntimeContext.GetMonoString(str);
+        public MonoGCHandle<PMonoString> T2(in ReadOnlySpan<char> str) => this.RuntimeContext.CreateMonoGCHandle(this.RuntimeContext.GetMonoString(str));
 
 
         [MonoCollectorFlag(EnumMonoCollectorFlag.Throw)]

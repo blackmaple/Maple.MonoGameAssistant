@@ -132,14 +132,14 @@ namespace Maple.MonoGameAssistant.Core
             return Unsafe.As<PDelegatePointer, T_METHOD>(ref pMethod);
         }
 
-        public MonoGCHandle<T_STRUCT> CreateMonoGCHandle<T_STRUCT>(T_STRUCT pMonoObject, bool leavePinned = true)
+        public MonoGCHandle<T_STRUCT> CreateMonoGCHandle<T_STRUCT>(T_STRUCT pMonoObject)
            where T_STRUCT : unmanaged
         {
-            return new MonoGCHandle<T_STRUCT>(this, pMonoObject, leavePinned);
+            return new MonoGCHandle<T_STRUCT>(this, pMonoObject);
         }
         public REF_MONO_GC_HANDLE SetMonoGCHandleAlloc<T_STRUCT>(T_STRUCT data) where T_STRUCT : unmanaged
         {
-           
+
             return this.RuntiemProvider.MonoGCHandle(PMonoObject.From(data), true);
         }
         public T_STRUCT GetMonoGCHandleTarget<T_STRUCT>(REF_MONO_GC_HANDLE handle)
@@ -157,30 +157,32 @@ namespace Maple.MonoGameAssistant.Core
         {
             MonoRuntimeContext RuntimeContext { get; }
             REF_MONO_GC_HANDLE Handle { get; set; }
-            bool LeavePinned { get; }
-            public MonoGCHandle(MonoRuntimeContext runtimeContext, T_STRUCT pMonoObject, bool leavePinned = true)
+
+            public MonoGCHandle(MonoRuntimeContext runtimeContext, T_STRUCT pMonoObject)
             {
                 this.RuntimeContext = runtimeContext;
                 this.Handle = this.RuntimeContext.SetMonoGCHandleAlloc(pMonoObject);
-                this.LeavePinned = leavePinned;
+
             }
 
+            public static implicit operator T_STRUCT(MonoGCHandle<T_STRUCT> handle) => handle.Target;
+            public static implicit operator nint(MonoGCHandle<T_STRUCT> handle) => handle.GetIntPtr();
 
             public readonly T_STRUCT Target => this.GetTarget();
 
             public readonly T_STRUCT GetTarget()
                 => this.RuntimeContext.GetMonoGCHandleTarget<T_STRUCT>(Handle);
 
+            public readonly nint GetIntPtr()
+                => this.RuntimeContext.GetMonoGCHandleTarget<nint>(Handle);
+
             public void Dispose()
             {
-                if (this.LeavePinned == false)
+                var handle = this.Handle;
+                this.Handle = 0;
+                if (handle != 0)
                 {
-                    var handle = this.Handle;
-                    this.Handle = 0;
-                    if (handle != 0)
-                    {
-                        this.RuntimeContext.MonoGCHandleFree(handle);
-                    }
+                    this.RuntimeContext.MonoGCHandleFree(handle);
                 }
 
             }
