@@ -114,7 +114,7 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
 
     public sealed partial class UnityEngineContext_MONO : UnityEngineContext
     {
-        public UnityEngineContext_MONO(MonoRuntimeContext runtimeContext, ILogger logger) : base(runtimeContext, EnumMonoCollectorTypeVersion.Ver_MONO, logger)
+        public UnityEngineContext_MONO(MonoRuntimeContext runtimeContext, ILogger logger) : base(runtimeContext, EnumMonoCollectorTypeVersion.MONO, logger, "202407222110")
         {
             //用MONO 编译的GAME 获取到UnityPlayer.dll 函数地址偏移不一样 需要根据每个游戏修改
             this.NativeMethodSetting.LoadNativeMethod_MONO(offset_encode_to_png: 0x217030, offset_blit2: 0x878C0);
@@ -123,7 +123,7 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
 
     public sealed partial class UnityEngineContext_IL2CPP : UnityEngineContext
     {
-        public UnityEngineContext_IL2CPP(MonoRuntimeContext runtimeContext, ILogger logger) : base(runtimeContext, EnumMonoCollectorTypeVersion.Ver_IL2CPP, logger)
+        public UnityEngineContext_IL2CPP(MonoRuntimeContext runtimeContext, ILogger logger) : base(runtimeContext, EnumMonoCollectorTypeVersion.IL2CPP, logger, "202407222110")
         {
             this.NativeMethodSetting.LoadNativeMethod_IL2CPP(runtimeContext);
         }

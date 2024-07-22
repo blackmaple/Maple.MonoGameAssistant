@@ -10,16 +10,16 @@ namespace Maple.MonoGameAssistant.Core
 {
 
     [method: MonoCollectorFlag(EnumMonoCollectorFlag.ContextCtor)]
-    public abstract class MonoCollectorContext(MonoRuntimeContext runtimeContext, EnumMonoCollectorTypeVersion typeVersion, ILogger logger)
+    public abstract class MonoCollectorContext(MonoRuntimeContext runtimeContext, EnumMonoCollectorTypeVersion typeVersion, ILogger logger, string apiVer = "202407222030")
     {
-        public virtual string ApiVersion => "0.2";
-        public EnumMonoCollectorTypeVersion BuildVersion { get; } = typeVersion;
+        public string ApiVersion => apiVer;
+        public EnumMonoCollectorTypeVersion TypeVersion { get; } = typeVersion;
         public MonoRuntimeContext RuntimeContext { get; } = runtimeContext;
         public ILogger Logger { get; } = logger;
 
         internal MonoImageInfoDTO[] ImageInfoDTOs { get; } = [.. runtimeContext.EnumMonoImages()];
 
- 
+
         [MonoCollectorFlag(EnumMonoCollectorFlag.GetClassInfo)]
         protected MonoCollectorClassInfo GetClassInfo(MonoCollecotrClassSettings classSettings)
         {

@@ -121,22 +121,22 @@ namespace Maple.MonoGameAssistant.GameCore
             return this.TrySendAsync<GameCharacterModifyDTO, GameCharacterStatusDTO>("game/UpdateCharacterStatus", new GameCharacterModifyDTO() { Session = gameSessionInfo.ObjectId, CharacterId = gameCharacterDisplay.ObjectId , CharacterCategory = gameCharacterDisplay.DisplayCategory,   ModifyObject = gameValueInfo.ObjectId, NewValue = gameValueInfo.ContentValue });
         }
 
-        public Task<MonoResultDTO<GameCharacterSkillDTO>> GetCharacterSkillAsync(GameSessionInfoDTO gameSessionInfo, string gameCharacterId)
+        public Task<MonoResultDTO<GameCharacterSkillDTO>> GetCharacterSkillAsync(GameSessionInfoDTO gameSessionInfo, GameCharacterDisplayDTO gameCharacterDisplay)
         {
-            return this.TrySendAsync<GameCharacterObjectDTO, GameCharacterSkillDTO>("game/GetCharacterSkill", new GameCharacterObjectDTO() { Session = gameSessionInfo.ObjectId, CharacterId = gameCharacterId });
+            return this.TrySendAsync<GameCharacterObjectDTO, GameCharacterSkillDTO>("game/GetCharacterSkill", new GameCharacterObjectDTO() { Session = gameSessionInfo.ObjectId, CharacterId = gameCharacterDisplay.ObjectId, CharacterCategory = gameCharacterDisplay.DisplayCategory });
         }
-        public Task<MonoResultDTO<GameCharacterSkillDTO>> UpdateCharacterSkillAsync(GameSessionInfoDTO gameSessionInfo, string gameCharacterId, string oldSkill, string newSkill)
+        public Task<MonoResultDTO<GameCharacterSkillDTO>> UpdateCharacterSkillAsync(GameSessionInfoDTO gameSessionInfo, GameCharacterDisplayDTO gameCharacterDisplay, string oldSkill, string newSkill)
         {
-            return this.TrySendAsync<GameCharacterModifyDTO, GameCharacterSkillDTO>("game/UpdateCharacterSkill", new GameCharacterModifyDTO() { Session = gameSessionInfo.ObjectId, CharacterId = gameCharacterId, ModifyObject = oldSkill, NewValue = newSkill });
+            return this.TrySendAsync<GameCharacterModifyDTO, GameCharacterSkillDTO>("game/UpdateCharacterSkill", new GameCharacterModifyDTO() { Session = gameSessionInfo.ObjectId, CharacterId = gameCharacterDisplay.ObjectId, CharacterCategory = gameCharacterDisplay.DisplayCategory, ModifyObject = oldSkill, NewValue = newSkill });
         }
 
-        public Task<MonoResultDTO<GameCharacterEquipmentDTO>> GetCharacterEquipmentAsync(GameSessionInfoDTO gameSessionInfo, string gameCharacterId)
+        public Task<MonoResultDTO<GameCharacterEquipmentDTO>> GetCharacterEquipmentAsync(GameSessionInfoDTO gameSessionInfo, GameCharacterDisplayDTO gameCharacterDisplay)
         {
-            return this.TrySendAsync<GameCharacterObjectDTO, GameCharacterEquipmentDTO>("game/GetCharacterEquipment", new GameCharacterObjectDTO() { Session = gameSessionInfo.ObjectId, CharacterId = gameCharacterId });
+            return this.TrySendAsync<GameCharacterObjectDTO, GameCharacterEquipmentDTO>("game/GetCharacterEquipment", new GameCharacterObjectDTO() { Session = gameSessionInfo.ObjectId, CharacterId = gameCharacterDisplay.ObjectId, CharacterCategory = gameCharacterDisplay.DisplayCategory });
         }
-        public Task<MonoResultDTO<GameCharacterEquipmentDTO>> UpdateCharacterEquipmentAsync(GameSessionInfoDTO gameSessionInfo, string gameCharacterId, GameEquipmentInfoDTO oldEquip, GameEquipmentInfoDTO newEquip)
+        public Task<MonoResultDTO<GameCharacterEquipmentDTO>> UpdateCharacterEquipmentAsync(GameSessionInfoDTO gameSessionInfo, GameCharacterDisplayDTO gameCharacterDisplay, GameEquipmentInfoDTO oldEquip, GameEquipmentInfoDTO newEquip)
         {
-            return this.TrySendAsync<GameCharacterObjectDTO, GameCharacterEquipmentDTO>("game/UpdateCharacterEquipment", new GameCharacterModifyDTO() { Session = gameSessionInfo.ObjectId, CharacterId = gameCharacterId, ModifyObject = oldEquip.ObjectId, NewValue = newEquip.ObjectId });
+            return this.TrySendAsync<GameCharacterObjectDTO, GameCharacterEquipmentDTO>("game/UpdateCharacterEquipment", new GameCharacterModifyDTO() { Session = gameSessionInfo.ObjectId, CharacterId = gameCharacterDisplay.ObjectId, CharacterCategory = gameCharacterDisplay.DisplayCategory, ModifyObject = oldEquip.ObjectId, NewValue = newEquip.ObjectId });
         }
         #endregion
 

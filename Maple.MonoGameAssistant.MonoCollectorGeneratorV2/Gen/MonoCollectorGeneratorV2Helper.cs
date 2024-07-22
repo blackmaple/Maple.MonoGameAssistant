@@ -564,7 +564,7 @@ namespace {typeData.NameSpace}
         }
         public static string OutputNewClassStaticMethod(this MonoCollectorOptionsData optionsData, MonoCollectorVersionData versionData)
         {
-            if (versionData.Ver != EnumMonoCollectorTypeVersion.Ver_Common)
+            if (versionData.Ver != EnumMonoCollectorTypeVersion.Game)
             {
                 return string.Empty;
             }
@@ -575,7 +575,7 @@ namespace {typeData.NameSpace}
             }
 
 
-            if (optionsData.MonoCollectorContext_Ctor.ParamDatas.Count < 2)
+            if (optionsData.MonoCollectorContext_Ctor.ParamDatas.Count < 3)
             {
                 throw new MonoCollectorGeneratorV2Exception($"ERROR {nameof(optionsData.MonoCollectorContext_Ctor)} {nameof(optionsData.MonoCollectorContext_Ctor.ParamDatas)}.1");
             }
@@ -584,11 +584,19 @@ namespace {typeData.NameSpace}
             {
                 throw new MonoCollectorGeneratorV2Exception($"ERROR {nameof(optionsData.MonoCollectorContext_Ctor)} {nameof(optionsData.MonoCollectorContext_Ctor.ParamDatas)}.2");
             }
-            var classMainCtor = string.Join(", ", optionsData.MonoCollectorContext_Ctor.ParamDatas.Select(p => p.OutputInvoke()));
-            var baseMainCtor = string.Join(", ", optionsData.MonoCollectorContext_Ctor.ParamDatas.Select(p => p.OutputCall()));
+            var arg3 = optionsData.MonoCollectorContext_Ctor.ParamDatas[3];
+            if (arg3.TypeName != "string")
+            {
+                throw new MonoCollectorGeneratorV2Exception($"ERROR {nameof(optionsData.MonoCollectorContext_Ctor)} {nameof(optionsData.MonoCollectorContext_Ctor.ParamDatas)}.3");
+            }
+            var count = optionsData.MonoCollectorContext_Ctor.ParamDatas.Count;
+            var arrParamData = optionsData.MonoCollectorContext_Ctor.ParamDatas.Take(count - 1) ;
+            var classMainCtor = string.Join(", ", arrParamData.Select(p => p.OutputInvoke()));
+
+            var baseMainCtor = string.Join(", ", arrParamData.Concat(new MonoCollectorMethodParamData[] { new MonoCollectorMethodParamData() { ParamName= $@"""{DateTime.Now:yyyyMMddHHmmss}""" } }).Select(p => p.OutputCall()));
             var code = string.Join(SyntaxFactory.ElasticCarriageReturnLineFeed.ToString(), optionsData.VersionDatas.Select(p => p.CreateNewClassStaticMethod(baseMainCtor)));
             return $@"
-        {MonoCollecotrConvString.DisplayName_public} static {versionData.CustomClassName} Load{versionData.CustomClassName}({classMainCtor}) 
+        {MonoCollecotrConvString.DisplayName_public} static {versionData.CustomClassName} LoadGameContext({classMainCtor}) 
         {{
             return {arg1.ParamName} switch
             {{
@@ -622,7 +630,7 @@ namespace {versionData.CustomClassNamespace}
 {{
 
     {MonoCollecotrConvString.DisplayName_PartialClass} {versionData.CustomClassName} 
-        : {(versionData.Ver == EnumMonoCollectorTypeVersion.Ver_Common ? optionsData.MonoCollectorContext : optionsData.CustomClassFullName)} 
+        : {(versionData.Ver == EnumMonoCollectorTypeVersion.Game ? optionsData.MonoCollectorContext : optionsData.CustomClassFullName)} 
     {{
 
         {customClassFieldContent}

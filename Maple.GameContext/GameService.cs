@@ -80,9 +80,12 @@ namespace Maple.GameContext
                 using (this.RuntimeContext.CreateAttachContext())
                 {
                     this.GameContext = this.LoadGameContext();
-                    this.Logger.LogInformation("LoadGameContext=>{game}", this.GameContext.BuildVersion);
+                    this.Logger.LogInformation("LoadGameContext=>{ver}=>{api}", this.GameContext.TypeVersion, this.GameContext.ApiVersion);
                     this.UnityEngineContext = this.LoadUnityEngineContext();
-                    this.Logger.LogInformation("LoadUnityEngineContext=>{load}", this.UnityEngineContext is not null);
+                    this.Logger.LogInformation("LoadUnityEngineContext=>{load}=>{ver}=>{api}", 
+                        this.UnityEngineContext is not null,
+                        this.UnityEngineContext?.TypeVersion,
+                        this.UnityEngineContext?.ApiVersion);
 
                 }
             }

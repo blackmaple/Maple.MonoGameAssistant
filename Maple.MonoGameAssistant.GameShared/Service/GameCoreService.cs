@@ -314,7 +314,7 @@ namespace Maple.MonoGameAssistant.GameShared.Service
                 return;
             }
 
-            var dto = await this.Http.GetCharacterSkillAsync(this.GameSessionInfo, selectedData.ObjectId);
+            var dto = await this.Http.GetCharacterSkillAsync(this.GameSessionInfo, selectedData);
             if (false == dto.TryGet(out var characterSkill))
             {
                 await this.ShowErrorAsync(dto.MSG);
@@ -335,7 +335,7 @@ namespace Maple.MonoGameAssistant.GameShared.Service
                 return;
             }
 
-            var dto = await this.Http.GetCharacterEquipmentAsync(this.GameSessionInfo, selectedData.ObjectId);
+            var dto = await this.Http.GetCharacterEquipmentAsync(this.GameSessionInfo, selectedData);
             if (false == dto.TryGet(out var characterEquipment))
             {
                 await this.ShowErrorAsync(dto.MSG);
@@ -529,7 +529,7 @@ namespace Maple.MonoGameAssistant.GameShared.Service
                 {
                     return;
                 }
-                dto = await this.Http.UpdateCharacterSkillAsync(this.GameSessionInfo, characterDisplayDTO.ObjectId, selectedData.ObjectId, string.Empty);
+                dto = await this.Http.UpdateCharacterSkillAsync(this.GameSessionInfo, characterDisplayDTO, selectedData.ObjectId, string.Empty);
                 if (false == dto.TryGet(out var _))
                 {
                     await this.ShowErrorAsync(dto.MSG);
@@ -558,7 +558,7 @@ namespace Maple.MonoGameAssistant.GameShared.Service
                 }
 
 
-                dto = await this.Http.UpdateCharacterSkillAsync(this.GameSessionInfo, characterDisplayDTO.ObjectId, selectedData.ObjectId, newSkill.ObjectId);
+                dto = await this.Http.UpdateCharacterSkillAsync(this.GameSessionInfo, characterDisplayDTO, selectedData.ObjectId, newSkill.ObjectId);
                 if (false == dto.TryGet(out _))
                 {
                     await this.ShowErrorAsync(dto.MSG);

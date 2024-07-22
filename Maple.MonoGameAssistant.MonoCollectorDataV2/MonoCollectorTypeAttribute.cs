@@ -8,7 +8,7 @@ namespace Maple.MonoGameAssistant.MonoCollectorDataV2
     {
         public Type ClassType { set; get; }
 
-        public EnumMonoCollectorTypeVersion Ver { set; get; } = EnumMonoCollectorTypeVersion.Ver_Common;
+        public EnumMonoCollectorTypeVersion Ver { set; get; } = EnumMonoCollectorTypeVersion.Game;
 
         public MonoCollectorTypeAttribute(Type classType)
         {

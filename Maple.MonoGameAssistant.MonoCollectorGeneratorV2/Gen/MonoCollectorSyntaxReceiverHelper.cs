@@ -107,7 +107,7 @@ namespace Maple.MonoGameAssistant.MonoCollectorGeneratorV2
             List<MonoCollectorTypeData> listTypeData = new List<MonoCollectorTypeData>(256);
             List<MonoCollectorVersionData> versionDatas = new List<MonoCollectorVersionData>(256)
             {
-                classSymbol.CreateMonoCollectorVersionData(EnumMonoCollectorTypeVersion.Ver_Common)
+                classSymbol.CreateMonoCollectorVersionData(EnumMonoCollectorTypeVersion.Game)
             };
 
             foreach (var att in classSymbol.GetAttributes())
@@ -701,7 +701,7 @@ namespace Maple.MonoGameAssistant.MonoCollectorGeneratorV2
             }
             return classSymbol.CreateMonoCollectorVersionData(typeVersion);
         }
-        static MonoCollectorVersionData CreateMonoCollectorVersionData(this ISymbol classSymbol, EnumMonoCollectorTypeVersion typeVersion = EnumMonoCollectorTypeVersion.Ver_Common)
+        static MonoCollectorVersionData CreateMonoCollectorVersionData(this ISymbol classSymbol, EnumMonoCollectorTypeVersion typeVersion = EnumMonoCollectorTypeVersion.Game)
         {
 
             var className = classSymbol.Name;
@@ -731,7 +731,7 @@ namespace Maple.MonoGameAssistant.MonoCollectorGeneratorV2
             {
                 throw new MonoCollectorGeneratorV2Exception($"ERROR {namedTypeSymbol.ToDisplayString()}=>{nameof(namedTypeSymbol.IsGenericType)}");
             }
-            var ver = genType.GetAttributeValue_NamedArgs(nameof(MonoCollectorTypeAttribute.Ver), EnumMonoCollectorTypeVersion.Ver_Common);
+            var ver = genType.GetAttributeValue_NamedArgs(nameof(MonoCollectorTypeAttribute.Ver), EnumMonoCollectorTypeVersion.Game);
             return namedTypeSymbol.GetTypeClassSettings(ver);
         }
         static IEnumerable<MonoCollectorTypeData> EnumCurrContextTypeClasses(this AttributeData[] genTypes)
@@ -742,7 +742,7 @@ namespace Maple.MonoGameAssistant.MonoCollectorGeneratorV2
             }
 
         }
-        static MonoCollectorTypeData GetTypeClassSettings(this INamedTypeSymbol namedTypeSymbol, EnumMonoCollectorTypeVersion ver = EnumMonoCollectorTypeVersion.Ver_Common)
+        static MonoCollectorTypeData GetTypeClassSettings(this INamedTypeSymbol namedTypeSymbol, EnumMonoCollectorTypeVersion ver = EnumMonoCollectorTypeVersion.Game)
         {
             var classAtts = namedTypeSymbol.GetAttributes();
             var classGenType = classAtts.Where(p => p.AttributeClass.ToDisplayString() == typeof(MonoCollectorSettingsAttribute).FullName).FirstOrDefault()
