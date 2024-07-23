@@ -103,7 +103,7 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
             }
 
             UnityPlayerNativeMethodSetting.GET_TEXTURE_RECT_INJECTED(pSprite, out var ref_Rect);
-            this.Logger.LogInformation("{x}/{y}/{h}/{w}", ref_Rect.m_XMin, ref_Rect.m_YMin, ref_Rect.m_Height, ref_Rect.m_Width);
+  //          this.Logger.LogInformation("{x}/{y}/{h}/{w}", ref_Rect.m_XMin, ref_Rect.m_YMin, ref_Rect.m_Height, ref_Rect.m_Width);
 
             var pDestTexture2D = this.Texture2D.New<Ptr_Texture2D>(false);
             CopyToTexture2D2(pSrcTexture2D, pDestTexture2D, ref_Rect);
