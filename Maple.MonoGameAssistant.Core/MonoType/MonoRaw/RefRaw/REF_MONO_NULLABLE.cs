@@ -2,16 +2,16 @@
 
 namespace Maple.MonoGameAssistant.RawDotNet
 {
-    [StructLayout(LayoutKind.Explicit)]
+    [StructLayout(LayoutKind.Sequential)]
     public readonly unsafe partial struct REF_MONO_NULLABLE<T>
         where T : unmanaged
     {
 
-        [FieldOffset(0x0)]
+        [MarshalAs(UnmanagedType.U1)]
         public readonly System.Boolean hasValue;
 
 
-        [FieldOffset(0x8)]
+
         public readonly T value;
 
     }

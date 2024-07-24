@@ -18,4 +18,6 @@ namespace Maple.MonoGameAssistant.UnityCore
         public static T Throw<T>(string msg) => throw new TaskStateException(msg);
 
     }
+
+
 }
