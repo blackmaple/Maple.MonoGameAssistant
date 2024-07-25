@@ -8,7 +8,7 @@ namespace Maple.MonoGameAssistant.Core
 
     #region PMONO_DOMAIN_FOREACH
 
-    using unsafe PMonoDomainFunc = delegate*<PMonoDomain, PMonoUserData, void>;
+    using unsafe PMonoDomainFunc = delegate* unmanaged[Cdecl]<PMonoDomain, PMonoUserData, void>;
     [StructLayout(LayoutKind.Sequential)]
     internal readonly unsafe partial struct PMONO_DOMAIN_FOREACH(nint ptr)
     {

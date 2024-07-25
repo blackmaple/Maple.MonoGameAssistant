@@ -9,6 +9,7 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using static Maple.MonoGameAssistant.Core.MonoRuntimeContext;
 
 namespace Maple.MonoGameAssistant.Core
 {
@@ -145,6 +146,21 @@ namespace Maple.MonoGameAssistant.Core
 
         public PMonoString T(string str) => this.RuntimeContext.GetMonoString(str);
         public PMonoString T(in ReadOnlySpan<char> str) => this.RuntimeContext.GetMonoString(str);
+
+        public MonoGCHandle<T_MonoObject> GCNew<T_MonoObject>(bool execDefCtor)
+            where T_MonoObject : unmanaged
+        {
+            var pMonoObject = this.RuntimeContext.CreateMonoClass<T_MonoObject>(ClassInfo.ClassInfoDTO.Pointer, execDefCtor);
+            return new MonoGCHandle<T_MonoObject>(this.RuntimeContext, pMonoObject);
+        }
+
+        public Span<T_ARRAY> GCNewArray<T_ARRAY>(int count, out MonoGCHandle<PMonoArray> gchandle)
+            where T_ARRAY : unmanaged
+        {
+            var ptrRawArray = this.RuntimeContext.CreateMonoArray(ClassInfo.ClassInfoDTO.Pointer, count);
+            gchandle = new MonoGCHandle<PMonoArray>(this.RuntimeContext, ptrRawArray);
+            return gchandle.Target.AsSpan<T_ARRAY>();
+        }
 
 
 

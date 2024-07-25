@@ -36,43 +36,44 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
 
 
 
-        [StructLayout(LayoutKind.Explicit)]
-        public readonly unsafe partial struct Static_Graphics
-        {
+        //[StructLayout(LayoutKind.Explicit)]
+        //public readonly unsafe partial struct Static_Graphics
+        //{
 
 
 
-            /// <summary>
-            /// struct 0x0 System.Int32 kMaxDrawMeshInstanceCount
-            /// </summary>
-            [FieldOffset(0x0)]
-            public readonly System.Int32 kMaxDrawMeshInstanceCount;
+        //    /// <summary>
+        //    /// struct 0x0 System.Int32 kMaxDrawMeshInstanceCount
+        //    /// </summary>
+        //    [FieldOffset(0x0)]
+        //    public readonly System.Int32 kMaxDrawMeshInstanceCount;
 
-        }
-
-
-        [StructLayout(LayoutKind.Explicit)]
-        public readonly unsafe partial struct Ref_Graphics
-        {
+        //}
 
 
-            /// <summary>
-            /// REF_MONO_OBJECT._vtable
-            /// </summary>
-            [MarshalAs(UnmanagedType.SysInt)]
-            [FieldOffset(0)]
-            public readonly nint _vtable;
-
-            /// <summary>
-            /// REF_MONO_OBJECT._synchronisation
-            /// </summary>
-            [MarshalAs(UnmanagedType.SysInt)]
-            [FieldOffset(8)]
-            public readonly nint _synchronisation;
+        //[StructLayout(LayoutKind.Explicit)]
+        //public readonly unsafe partial struct Ref_Graphics
+        //{
 
 
+        //    /// <summary>
+        //    /// REF_MONO_OBJECT._vtable
+        //    /// </summary>
+        //    [MarshalAs(UnmanagedType.SysInt)]
+        //    [FieldOffset(0)]
+        //    public readonly nint _vtable;
 
-        }
+        //    /// <summary>
+        //    /// REF_MONO_OBJECT._synchronisation
+        //    /// </summary>
+        //    [MarshalAs(UnmanagedType.SysInt)]
+        //    [FieldOffset(8)]
+        //    public readonly nint _synchronisation;
+
+
+
+        //}
+
         [StructLayout(LayoutKind.Sequential)]
         public readonly unsafe partial struct Ptr_Graphics(nint ptr)
         {
@@ -90,11 +91,11 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
             [System.Runtime.CompilerServices.MethodImplAttribute(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
             public bool Valid() => _ptr != nint.Zero;
 
-            [System.Runtime.CompilerServices.MethodImplAttribute(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-            public ref Ref_Graphics AsRef()
-            {
-                return ref Unsafe.AsRef<Ref_Graphics>(_ptr.ToPointer());
-            }
+            //[System.Runtime.CompilerServices.MethodImplAttribute(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+            //public ref Ref_Graphics AsRef()
+            //{
+            //    return ref Unsafe.AsRef<Ref_Graphics>(_ptr.ToPointer());
+            //}
         }
 
     }

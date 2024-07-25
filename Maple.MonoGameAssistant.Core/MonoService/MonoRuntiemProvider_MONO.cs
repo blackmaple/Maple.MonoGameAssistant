@@ -24,17 +24,22 @@ namespace Maple.MonoGameAssistant.Core
         {
             var listMonoDomain = new List<PMonoDomain>(256);
             using var ref_listMonoDomain = new MapleObjectUnmanaged_Ref(listMonoDomain);
+          
             this.Runtime.MONO_DOMAIN_FOREACH.Invoke(&CalbackMonoDomainFunc, new(ref_listMonoDomain));
             return listMonoDomain;
+            
+        }
 
-            unsafe static void CalbackMonoDomainFunc(PMonoDomain pMonoDomain, PMonoUserData pUserData)
+        [UnmanagedCallersOnly(CallConvs = [typeof(CallConvCdecl)])]
+        static unsafe  void CalbackMonoDomainFunc(PMonoDomain pMonoDomain, PMonoUserData pUserData)
+        {
+            if (MapleObjectUnmanaged_Ref.TryGet<List<PMonoDomain>>(pUserData, out var list))
             {
-                if (MapleObjectUnmanaged_Ref.TryGet<List<PMonoDomain>>(pUserData, out var list))
-                {
-                    list.Add(pMonoDomain);
-                }
+                list.Add(pMonoDomain);
             }
         }
+
+
         public virtual PMonoDomain GetMonoRootDomain()
         {
             return this.Runtime.MONO_GET_ROOT_DOMAIN.Invoke();
@@ -58,7 +63,7 @@ namespace Maple.MonoGameAssistant.Core
             this.Runtime.MONO_ASSEMBLY_FOREACH.Invoke(&CalbackMonoAssemblyFunc, new(ref_listMonoAssembly));
             return listMonoAssembly;
 
-
+            [UnmanagedCallersOnly(CallConvs = [typeof(CallConvCdecl)])]
             unsafe static void CalbackMonoAssemblyFunc(PMonoAssembly pMonoAssembly, PMonoUserData pUserData)
             {
                 if (MapleObjectUnmanaged_Ref.TryGet<List<PMonoAssembly>>(pUserData, out var list))
@@ -67,8 +72,9 @@ namespace Maple.MonoGameAssistant.Core
                 }
             }
 
-        }
 
+
+        }
         #endregion
 
         #region MonoImages

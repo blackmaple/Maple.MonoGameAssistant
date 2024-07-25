@@ -32,70 +32,71 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
 
 
 
-        public readonly unsafe partial struct Const_Material
-        {
+        //public readonly unsafe partial struct Const_Material
+        //{
 
 
 
-            /// <summary>
-            /// class System.String objectIsNullMessage "The Object you want to instantiate is null."
-            /// </summary>
-            /// public nint OBJECT_IS_NULL_MESSAGE=>"The Object you want to instantiate is null.";
+        //    /// <summary>
+        //    /// class System.String objectIsNullMessage "The Object you want to instantiate is null."
+        //    /// </summary>
+        //    /// public nint OBJECT_IS_NULL_MESSAGE=>"The Object you want to instantiate is null.";
 
 
-            /// <summary>
-            /// class System.String cloneDestroyedMessage "Instantiate failed because the clone was destroyed during creati"
-            /// </summary>
-            /// public nint CLONE_DESTROYED_MESSAGE=>"Instantiate failed because the clone was destroyed during creati";
+        //    /// <summary>
+        //    /// class System.String cloneDestroyedMessage "Instantiate failed because the clone was destroyed during creati"
+        //    /// </summary>
+        //    /// public nint CLONE_DESTROYED_MESSAGE=>"Instantiate failed because the clone was destroyed during creati";
 
-        }
-
-
-        [System.Runtime.InteropServices.StructLayoutAttribute(System.Runtime.InteropServices.LayoutKind.Explicit)]
-        public readonly unsafe partial struct Static_Material
-        {
+        //}
 
 
-
-            /// const string Name_Field_OffsetOfInstanceIDInCPlusPlusObject = "OffsetOfInstanceIDInCPlusPlusObject";
-            /// <summary>
-            /// struct 0x0 System.Int32 OffsetOfInstanceIDInCPlusPlusObject
-            /// </summary>
-            [System.Runtime.InteropServices.FieldOffsetAttribute(0x0)]
-            public readonly System.Int32 OffsetOfInstanceIDInCPlusPlusObject;
-
-        }
-
-
-        [System.Runtime.InteropServices.StructLayoutAttribute(System.Runtime.InteropServices.LayoutKind.Explicit)]
-        public readonly unsafe partial struct Ref_Material
-        {
-
-
-            /// <summary>
-            /// REF_MONO_OBJECT._vtable
-            /// </summary>
-            [System.Runtime.InteropServices.MarshalAsAttribute(System.Runtime.InteropServices.UnmanagedType.SysInt)]
-            [System.Runtime.InteropServices.FieldOffsetAttribute(0)]
-            public readonly nint _vtable;
-
-            /// <summary>
-            /// REF_MONO_OBJECT._synchronisation
-            /// </summary>
-            [System.Runtime.InteropServices.MarshalAsAttribute(System.Runtime.InteropServices.UnmanagedType.SysInt)]
-            [System.Runtime.InteropServices.FieldOffsetAttribute(8)]
-            public readonly nint _synchronisation;
+        //[System.Runtime.InteropServices.StructLayoutAttribute(System.Runtime.InteropServices.LayoutKind.Explicit)]
+        //public readonly unsafe partial struct Static_Material
+        //{
 
 
 
-            /// const string Name_Field_m_CachedPtr = "m_CachedPtr";
-            /// <summary>
-            /// struct 0x10 System.IntPtr m_CachedPtr
-            /// </summary>
-            [System.Runtime.InteropServices.FieldOffsetAttribute(0x10)]
-            public readonly System.IntPtr m_CachedPtr;
+        //    /// const string Name_Field_OffsetOfInstanceIDInCPlusPlusObject = "OffsetOfInstanceIDInCPlusPlusObject";
+        //    /// <summary>
+        //    /// struct 0x0 System.Int32 OffsetOfInstanceIDInCPlusPlusObject
+        //    /// </summary>
+        //    [System.Runtime.InteropServices.FieldOffsetAttribute(0x0)]
+        //    public readonly System.Int32 OffsetOfInstanceIDInCPlusPlusObject;
 
-        }
+        //}
+
+
+        //[System.Runtime.InteropServices.StructLayoutAttribute(System.Runtime.InteropServices.LayoutKind.Explicit)]
+        //public readonly unsafe partial struct Ref_Material
+        //{
+
+
+        //    /// <summary>
+        //    /// REF_MONO_OBJECT._vtable
+        //    /// </summary>
+        //    [System.Runtime.InteropServices.MarshalAsAttribute(System.Runtime.InteropServices.UnmanagedType.SysInt)]
+        //    [System.Runtime.InteropServices.FieldOffsetAttribute(0)]
+        //    public readonly nint _vtable;
+
+        //    /// <summary>
+        //    /// REF_MONO_OBJECT._synchronisation
+        //    /// </summary>
+        //    [System.Runtime.InteropServices.MarshalAsAttribute(System.Runtime.InteropServices.UnmanagedType.SysInt)]
+        //    [System.Runtime.InteropServices.FieldOffsetAttribute(8)]
+        //    public readonly nint _synchronisation;
+
+
+
+        //    /// const string Name_Field_m_CachedPtr = "m_CachedPtr";
+        //    /// <summary>
+        //    /// struct 0x10 System.IntPtr m_CachedPtr
+        //    /// </summary>
+        //    [System.Runtime.InteropServices.FieldOffsetAttribute(0x10)]
+        //    public readonly System.IntPtr m_CachedPtr;
+
+        //}
+
         [System.Runtime.InteropServices.StructLayoutAttribute(System.Runtime.InteropServices.LayoutKind.Sequential)]
         public readonly unsafe partial struct Ptr_Material(nint ptr)
         {
@@ -113,11 +114,11 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
             [System.Runtime.CompilerServices.MethodImplAttribute(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
             public bool Valid() => _ptr != nint.Zero;
 
-            [System.Runtime.CompilerServices.MethodImplAttribute(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-            public ref Ref_Material AsRef()
-            {
-                return ref Unsafe.AsRef<Ref_Material>(_ptr.ToPointer());
-            }
+            //[System.Runtime.CompilerServices.MethodImplAttribute(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+            //public ref Ref_Material AsRef()
+            //{
+            //    return ref Unsafe.AsRef<Ref_Material>(_ptr.ToPointer());
+            //}
         }
 
     }

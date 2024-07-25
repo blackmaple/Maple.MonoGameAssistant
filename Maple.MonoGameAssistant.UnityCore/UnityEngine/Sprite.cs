@@ -54,49 +54,50 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
         }
 
 
-        [StructLayout(LayoutKind.Explicit)]
-        public readonly unsafe partial struct Static_Sprite
-        {
+        //[StructLayout(LayoutKind.Explicit)]
+        //public readonly unsafe partial struct Static_Sprite
+        //{
 
 
 
-            /// <summary>
-            /// struct 0x0 System.Int32 OffsetOfInstanceIDInCPlusPlusObject
-            /// </summary>
-            [FieldOffset(0x0)]
-            public readonly System.Int32 OffsetOfInstanceIDInCPlusPlusObject;
+        //    /// <summary>
+        //    /// struct 0x0 System.Int32 OffsetOfInstanceIDInCPlusPlusObject
+        //    /// </summary>
+        //    [FieldOffset(0x0)]
+        //    public readonly System.Int32 OffsetOfInstanceIDInCPlusPlusObject;
 
-        }
-
-
-        [StructLayout(LayoutKind.Explicit)]
-        public readonly unsafe partial struct Ref_Sprite
-        {
+        //}
 
 
-            /// <summary>
-            /// REF_MONO_OBJECT._vtable
-            /// </summary>
-            [MarshalAs(UnmanagedType.SysInt)]
-            [FieldOffset(0)]
-            public readonly nint _vtable;
-
-            /// <summary>
-            /// REF_MONO_OBJECT._synchronisation
-            /// </summary>
-            [MarshalAs(UnmanagedType.SysInt)]
-            [FieldOffset(8)]
-            public readonly nint _synchronisation;
+        //[StructLayout(LayoutKind.Explicit)]
+        //public readonly unsafe partial struct Ref_Sprite
+        //{
 
 
+        //    /// <summary>
+        //    /// REF_MONO_OBJECT._vtable
+        //    /// </summary>
+        //    [MarshalAs(UnmanagedType.SysInt)]
+        //    [FieldOffset(0)]
+        //    public readonly nint _vtable;
 
-            /// <summary>
-            /// struct 0x10 System.IntPtr m_CachedPtr
-            /// </summary>
-            [FieldOffset(0x10)]
-            public readonly System.IntPtr m_CachedPtr;
+        //    /// <summary>
+        //    /// REF_MONO_OBJECT._synchronisation
+        //    /// </summary>
+        //    [MarshalAs(UnmanagedType.SysInt)]
+        //    [FieldOffset(8)]
+        //    public readonly nint _synchronisation;
 
-        }
+
+
+        //    /// <summary>
+        //    /// struct 0x10 System.IntPtr m_CachedPtr
+        //    /// </summary>
+        //    [FieldOffset(0x10)]
+        //    public readonly System.IntPtr m_CachedPtr;
+
+        //}
+
         [StructLayout(LayoutKind.Sequential)]
         public readonly unsafe partial struct Ptr_Sprite(nint ptr)
         {
@@ -115,11 +116,11 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
             [System.Runtime.CompilerServices.MethodImplAttribute(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
             public bool Valid() => _ptr != nint.Zero;
 
-            [System.Runtime.CompilerServices.MethodImplAttribute(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-            public ref Ref_Sprite AsRef()
-            {
-                return ref Unsafe.AsRef<Ref_Sprite>(_ptr.ToPointer());
-            }
+            //[System.Runtime.CompilerServices.MethodImplAttribute(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+            //public ref Ref_Sprite AsRef()
+            //{
+            //    return ref Unsafe.AsRef<Ref_Sprite>(_ptr.ToPointer());
+            //}
         }
 
     }

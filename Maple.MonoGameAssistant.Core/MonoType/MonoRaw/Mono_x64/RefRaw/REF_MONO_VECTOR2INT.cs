@@ -2,14 +2,15 @@
 
 namespace Maple.MonoGameAssistant.Core
 {
-    [StructLayout(LayoutKind.Explicit)]
+    [StructLayout(LayoutKind.Sequential)]
     public struct REF_MONO_VECTOR2INT
     {
         /// const string Name_Field_m_X = "m_X";
         /// <summary>
         /// struct 0x10 System.Int32 m_X
         /// </summary>
-        [System.Runtime.InteropServices.FieldOffsetAttribute(0x0)]
+        //[System.Runtime.InteropServices.FieldOffsetAttribute(0x0)]
+        [MarshalAs(UnmanagedType.I4)]
         public readonly System.Int32 m_X;
 
 
@@ -17,7 +18,8 @@ namespace Maple.MonoGameAssistant.Core
         /// <summary>
         /// struct 0x14 System.Int32 m_Y
         /// </summary>
-        [System.Runtime.InteropServices.FieldOffsetAttribute(0x4)]
+        // [System.Runtime.InteropServices.FieldOffsetAttribute(0x4)]
+        [MarshalAs(UnmanagedType.I4)]
         public readonly System.Int32 m_Y;
 
     }

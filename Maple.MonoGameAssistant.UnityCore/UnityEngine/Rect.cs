@@ -36,7 +36,7 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
 
 
 
-        [StructLayout(LayoutKind.Explicit)]
+        [StructLayout(LayoutKind.Sequential)]
         public unsafe partial struct Ref_Rect
         {
 
@@ -47,28 +47,32 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
             /// <summary>
             /// struct 0x10 System.Single m_XMin
             /// </summary>
-            [FieldOffset(0x0)]
+            //[FieldOffset(0x0)]
+            [MarshalAs( UnmanagedType.R4)]
             public System.Single m_XMin;
 
 
             /// <summary>
             /// struct 0x14 System.Single m_YMin
             /// </summary>
-            [FieldOffset(0x4)]
+            //[FieldOffset(0x4)]
+            [MarshalAs(UnmanagedType.R4)]
             public System.Single m_YMin;
 
 
             /// <summary>
             /// struct 0x18 System.Single m_Width
             /// </summary>
-            [FieldOffset(0x8)]
+            // [FieldOffset(0x8)]
+            [MarshalAs(UnmanagedType.R4)]
             public System.Single m_Width;
 
 
             /// <summary>
             /// struct 0x1C System.Single m_Height
             /// </summary>
-            [FieldOffset(0xC)]
+            //[FieldOffset(0xC)]
+            [MarshalAs(UnmanagedType.R4)]
             public System.Single m_Height;
 
         }

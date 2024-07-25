@@ -34,75 +34,76 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
 
 
 
-        public readonly unsafe partial struct Const_Texture2D
-        {
+        //public readonly unsafe partial struct Const_Texture2D
+        //{
 
 
 
-            /// <summary>
-            /// class System.String objectIsNullMessage "The Object you want to instantiate is null."
-            /// </summary>
-            /// public nint OBJECT_IS_NULL_MESSAGE=>"The Object you want to instantiate is null.";
+        //    /// <summary>
+        //    /// class System.String objectIsNullMessage "The Object you want to instantiate is null."
+        //    /// </summary>
+        //    /// public nint OBJECT_IS_NULL_MESSAGE=>"The Object you want to instantiate is null.";
 
 
-            /// <summary>
-            /// class System.String cloneDestroyedMessage "Instantiate failed because the clone was destroyed during creati"
-            /// </summary>
-            /// public nint CLONE_DESTROYED_MESSAGE=>"Instantiate failed because the clone was destroyed during creati";
+        //    /// <summary>
+        //    /// class System.String cloneDestroyedMessage "Instantiate failed because the clone was destroyed during creati"
+        //    /// </summary>
+        //    /// public nint CLONE_DESTROYED_MESSAGE=>"Instantiate failed because the clone was destroyed during creati";
 
-        }
-
-
-        [StructLayout(LayoutKind.Explicit)]
-        public readonly unsafe partial struct Static_Texture2D
-        {
+        //}
 
 
-
-            /// <summary>
-            /// struct 0x0 System.Int32 GenerateAllMips
-            /// </summary>
-            [FieldOffset(0x0)]
-            public readonly System.Int32 GenerateAllMips;
-
-
-            /// <summary>
-            /// struct 0x0 System.Int32 OffsetOfInstanceIDInCPlusPlusObject
-            /// </summary>
-            [FieldOffset(0x0)]
-            public readonly System.Int32 OffsetOfInstanceIDInCPlusPlusObject;
-
-        }
-
-
-        [StructLayout(LayoutKind.Explicit)]
-        public readonly unsafe partial struct Ref_Texture2D
-        {
-
-
-            /// <summary>
-            /// REF_MONO_OBJECT._vtable
-            /// </summary>
-            [MarshalAs(UnmanagedType.SysInt)]
-            [FieldOffset(0)]
-            public readonly nint _vtable;
-
-            /// <summary>
-            /// REF_MONO_OBJECT._synchronisation
-            /// </summary>
-            [MarshalAs(UnmanagedType.SysInt)]
-            [FieldOffset(8)]
-            public readonly nint _synchronisation;
+        //[StructLayout(LayoutKind.Explicit)]
+        //public readonly unsafe partial struct Static_Texture2D
+        //{
 
 
 
-            /// <summary>
-            /// struct 0x10 System.IntPtr m_CachedPtr
-            /// </summary>
-            [FieldOffset(0x10)]
-            public readonly System.IntPtr m_CachedPtr;
+        //    /// <summary>
+        //    /// struct 0x0 System.Int32 GenerateAllMips
+        //    /// </summary>
+        //    [FieldOffset(0x0)]
+        //    public readonly System.Int32 GenerateAllMips;
 
-        }
+
+        //    /// <summary>
+        //    /// struct 0x0 System.Int32 OffsetOfInstanceIDInCPlusPlusObject
+        //    /// </summary>
+        //    [FieldOffset(0x0)]
+        //    public readonly System.Int32 OffsetOfInstanceIDInCPlusPlusObject;
+
+        //}
+
+
+        //[StructLayout(LayoutKind.Explicit)]
+        //public readonly unsafe partial struct Ref_Texture2D
+        //{
+
+
+        //    /// <summary>
+        //    /// REF_MONO_OBJECT._vtable
+        //    /// </summary>
+        //    [MarshalAs(UnmanagedType.SysInt)]
+        //    [FieldOffset(0)]
+        //    public readonly nint _vtable;
+
+        //    /// <summary>
+        //    /// REF_MONO_OBJECT._synchronisation
+        //    /// </summary>
+        //    [MarshalAs(UnmanagedType.SysInt)]
+        //    [FieldOffset(8)]
+        //    public readonly nint _synchronisation;
+
+
+
+        //    /// <summary>
+        //    /// struct 0x10 System.IntPtr m_CachedPtr
+        //    /// </summary>
+        //    [FieldOffset(0x10)]
+        //    public readonly System.IntPtr m_CachedPtr;
+
+        //}
+
         [StructLayout(LayoutKind.Sequential)]
         public readonly unsafe partial struct Ptr_Texture2D(nint ptr)
         {
@@ -120,11 +121,11 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
             [System.Runtime.CompilerServices.MethodImplAttribute(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
             public bool Valid() => _ptr != nint.Zero;
 
-            [System.Runtime.CompilerServices.MethodImplAttribute(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-            public ref Ref_Texture2D AsRef()
-            {
-                return ref Unsafe.AsRef<Ref_Texture2D>(_ptr.ToPointer());
-            }
+            //[System.Runtime.CompilerServices.MethodImplAttribute(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+            //public ref Ref_Texture2D AsRef()
+            //{
+            //    return ref Unsafe.AsRef<Ref_Texture2D>(_ptr.ToPointer());
+            //}
         }
 
     }

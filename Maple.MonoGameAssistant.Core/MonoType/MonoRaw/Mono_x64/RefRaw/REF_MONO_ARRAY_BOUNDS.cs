@@ -3,13 +3,13 @@ using System.Runtime.InteropServices;
 
 namespace Maple.MonoGameAssistant.Core
 {
-    [StructLayout(LayoutKind.Explicit)]
+    [StructLayout(LayoutKind.Sequential)]
     public readonly partial struct REF_MONO_ARRAY_BOUNDS
     {
-        [FieldOffset(0)]
+        //[FieldOffset(0)]
         public readonly REF_MONO_ARRAY_SIZE_T _length;
 
-        [FieldOffset(8)]
+        //[FieldOffset(8)]
         public readonly REF_MONO_ARRAY_LOWER_BOUND_T _lower_bound;
     }
 
