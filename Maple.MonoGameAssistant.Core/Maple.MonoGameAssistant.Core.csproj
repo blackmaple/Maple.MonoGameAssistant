@@ -36,6 +36,11 @@
 	  <ProjectReference Include="..\Maple.MonoGameAssistant.MonoCollector\Maple.MonoGameAssistant.MonoCollector.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="MonoType\MonoRaw\Mono_x64\MonoArray\" />
+	  <Folder Include="MonoType\MonoRaw\Mono_x64\MonoString\" />
+	</ItemGroup>
+
 
 
 

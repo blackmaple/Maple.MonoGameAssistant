@@ -9,10 +9,11 @@ namespace Maple.MonoGameAssistant.Core
         //[FieldOffset(0)]
         public readonly long _long_length;
 
-        [MarshalAs(UnmanagedType.U4)]
+        [MarshalAs(UnmanagedType.I4)]
         //[FieldOffset(0)]
         public readonly int _length;
-        [MarshalAs(UnmanagedType.U4)]
+
+        [MarshalAs(UnmanagedType.I4)]
         //[FieldOffset(4)]
         public readonly int _padding_length;
 

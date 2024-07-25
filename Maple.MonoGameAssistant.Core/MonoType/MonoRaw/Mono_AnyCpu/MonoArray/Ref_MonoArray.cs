@@ -50,7 +50,7 @@ namespace Maple.MonoGameAssistant.Core
             ref var ref_bounds = ref this._bounds.AsRef();
             return (ref_bounds._length._length, ref_bounds._lower_bound._lower_bound);
         }
-         
+
 
     }
 
