@@ -60,6 +60,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Maple.GameContext", "Maple.
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GameWebAPI", "GameWebAPI", "{8286EB1D-3DCD-4E61-B13B-E400CBB83BD1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Maple.MonoGameAssistant.MonoDataCollector", "Maple.MonoGameAssistant.MonoDataCollector\Maple.MonoGameAssistant.MonoDataCollector.csproj", "{8ECAD503-71BB-4ED4-B044-2442A6D95E1E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -67,6 +69,12 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8ECAD503-71BB-4ED4-B044-2442A6D95E1E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8ECAD503-71BB-4ED4-B044-2442A6D95E1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8ECAD503-71BB-4ED4-B044-2442A6D95E1E}.Local|Any CPU.ActiveCfg = Debug|Any CPU
+		{8ECAD503-71BB-4ED4-B044-2442A6D95E1E}.Local|Any CPU.Build.0 = Debug|Any CPU
+		{8ECAD503-71BB-4ED4-B044-2442A6D95E1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8ECAD503-71BB-4ED4-B044-2442A6D95E1E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B231AF90-D433-4573-BA67-263305536B1E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B231AF90-D433-4573-BA67-263305536B1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B231AF90-D433-4573-BA67-263305536B1E}.Local|Any CPU.ActiveCfg = Local|Any CPU
@@ -198,6 +206,7 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{8ECAD503-71BB-4ED4-B044-2442A6D95E1E} = {0429103F-7526-4A2B-84B6-A393E74C2FB7}
 		{B231AF90-D433-4573-BA67-263305536B1E} = {182DAC1C-C7C8-45BF-84CB-660D2464E0BC}
 		{0CE3C41B-B4A2-4EC3-AD1B-12CE2500DBB6} = {7BDD682A-AA14-4FF2-9046-1D5568672800}
 		{FBC12D97-0D32-4BA6-9AE4-896D06348EB7} = {7BDD682A-AA14-4FF2-9046-1D5568672800}
@@ -228,4 +237,3 @@ Global
 		SolutionGuid = {C4B1009A-7EAE-4525-A9E8-7FE3104565E7}
 	EndGlobalSection
 EndGlobal
-bal

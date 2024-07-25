@@ -101,7 +101,59 @@ namespace Maple.MonoGameAssistant.MonoCollectorGeneratorV2
             return collectorOptionsData;
         }
 
+        /// <summary>
+        /// 只获取MONOCOLLECTOR的配置参数
+        /// </summary>
+        /// <param name="genOptions"></param>
+        /// <param name="classSymbol"></param>
+        /// <returns></returns>
+        public static MonoCollectorOptionsData GetMonoCollectorOptionsData_Only(this AttributeData genOptions, ISymbol classSymbol)
+        {
+            var collectorOptionsData = genOptions.CreateMonoCollectorOptionsData();
+            collectorOptionsData.CustomClassName = classSymbol.Name;
+            collectorOptionsData.CustomClassNamespace = classSymbol.ContainingNamespace.ToDisplayString();
+            collectorOptionsData.CustomClassFullName = classSymbol.ToDisplayString();
+
+            //   collectorOptionsData.VersionDatas.AddRange(GetMonoCollectorVersionData(classSymbol));
+
+            return collectorOptionsData;
+        }
+
         static IEnumerable<MonoCollectorVersionData> GetMonoCollectorVersionData(ISymbol classSymbol)
+        {
+
+            List<MonoCollectorTypeData> listTypeData = new List<MonoCollectorTypeData>(256);
+            List<MonoCollectorVersionData> versionDatas = new List<MonoCollectorVersionData>(256)
+            {
+                classSymbol.CreateMonoCollectorVersionData(EnumMonoCollectorTypeVersion.Game)
+            };
+
+            foreach (var att in classSymbol.GetAttributes())
+            {
+                if (att.AttributeClass.ToDisplayString() == typeof(MonoCollectorTypeAttribute).FullName)
+                {
+                    listTypeData.Add(att.CreateMonoCollectorTypeData());
+                }
+                else if (att.AttributeClass.ToDisplayString() == typeof(MonoCollectorTypeVersionAttribute).FullName)
+                {
+                    var verData = att.CreateMonoCollectorVersionData();
+                    versionDatas.Add(verData);
+                }
+            }
+
+
+            foreach (var verData in versionDatas)
+            {
+                var typeData = listTypeData.Where(p => p.Ver == verData.Ver).ToArray();
+
+                verData.TypeDatas.AddRange(typeData);
+                //???过滤???
+                yield return verData;
+            }
+
+
+        }
+        public static IEnumerable<MonoCollectorVersionData> GetMonoCollectorVersionData_Only(ISymbol classSymbol)
         {
 
             List<MonoCollectorTypeData> listTypeData = new List<MonoCollectorTypeData>(256);
@@ -720,7 +772,7 @@ namespace Maple.MonoGameAssistant.MonoCollectorGeneratorV2
         #endregion
 
         #region MonoCollectorTypeAttribute获取需要处理的Class->MonoCollectorSettingsAttribute获取Class信息
-        static MonoCollectorTypeData CreateMonoCollectorTypeData(this AttributeData genType)
+        public static MonoCollectorTypeData CreateMonoCollectorTypeData(this AttributeData genType)
         {
             if (false == genType.TryGetAttributeValue_CtorArgs(0, out INamedTypeSymbol namedTypeSymbol))
             {
@@ -936,7 +988,7 @@ namespace Maple.MonoGameAssistant.MonoCollectorGeneratorV2
                 {
                     if (isStatic)
                     {
-                        staticFunc(new MonoCollectorStaticPropertyData() 
+                        staticFunc(new MonoCollectorStaticPropertyData()
                         {
                             ReturnType = retType,
                             PropertyName = propName,

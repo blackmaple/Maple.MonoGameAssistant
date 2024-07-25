@@ -1,0 +1,70 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+	  <TargetFramework>net9.0</TargetFramework>
+	  <ImplicitUsings>enable</ImplicitUsings>
+	  <Nullable>enable</Nullable>
+	  <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+	  <InvariantGlobalization>true</InvariantGlobalization>
+
+	  <PublishAot>true</PublishAot>
+	  <IsAotCompatible>true</IsAotCompatible>
+	  <OutputType>Library</OutputType>
+	  <AssemblyName>winhttp</AssemblyName>
+
+
+	  <DebuggerSupport>false</DebuggerSupport>
+	  <TrimmerRemoveSymbols>true</TrimmerRemoveSymbols>
+	  <EnableUnsafeBinaryFormatterSerialization>false</EnableUnsafeBinaryFormatterSerialization>
+	  <EnableUnsafeUTF7Encoding>false</EnableUnsafeUTF7Encoding>
+	  <EventSourceSupport>false</EventSourceSupport>
+	  <InvariantGlobalization>true</InvariantGlobalization>
+	  <MetadataUpdaterSupport>false</MetadataUpdaterSupport>
+	  <StackTraceSupport>false</StackTraceSupport>
+	  <UseSystemResourceKeys>true</UseSystemResourceKeys>
+
+
+	  <EnableConfigurationBindingGenerator>true</EnableConfigurationBindingGenerator>
+	  <EnableRequestDelegateGenerator>true</EnableRequestDelegateGenerator>
+	  <InterceptorsPreviewNamespaces>$(InterceptorsPreviewNamespaces);Microsoft.AspNetCore.Http.Generated</InterceptorsPreviewNamespaces>
+
+  </PropertyGroup>
+
+
+	<!--<ItemGroup>
+		<ProjectReference Include="..\..\Maple.MonoGameAssistant\Maple.MonoGameAssistant.MonoCollectorDataV2\Maple.MonoGameAssistant.MonoCollectorDataV2.csproj" />
+		<ProjectReference Include="..\..\Maple.MonoGameAssistant\Maple.MonoGameAssistant.MonoCollector\Maple.MonoGameAssistant.MonoCollector.csproj" />
+		<ProjectReference Include="..\..\Maple.MonoGameAssistant\Maple.MonoGameAssistant.MonoCollectorGeneratorV2\Maple.MonoGameAssistant.MonoCollectorGeneratorV2.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" PrivateAssets="all" />
+	</ItemGroup>-->
+	<ItemGroup>
+		<Compile Include="..\..\Maple.MonoGameAssistant\Maple.MonoGameAssistant.DllExportTmp\DllExport.cs" Link="GameDllExport\DllExport.cs" />
+		<AdditionalFiles Include="..\..\Maple.MonoGameAssistant\Maple.MonoGameAssistant.DllExportTmp\WinHttp.Api" Link="GameDllExport\WinHttp.Api" />
+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.10.0" />
+		<ProjectReference Include="..\..\Maple.MonoGameAssistant\Maple.MonoGameAssistant.DllHijackData\Maple.MonoGameAssistant.DllHijackData.csproj" />
+		<ProjectReference Include="..\..\Maple.MonoGameAssistant\Maple.MonoGameAssistant.DllHijackGenerator\Maple.MonoGameAssistant.DllHijackGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" PrivateAssets="all" />
+		<ProjectReference Include="..\Maple.MonoGameAssistant.Common\Maple.MonoGameAssistant.Common.csproj" />
+		<ProjectReference Include="..\Maple.MonoGameAssistant.Logger\Maple.MonoGameAssistant.Logger.csproj" />
+	</ItemGroup>
+ 
+
+
+
+
+	<Target Name="PostPublishActions" AfterTargets="Publish">
+		<PropertyGroup>
+			<Time>$([System.DateTime]::Now.ToString("yyyyMMddHHmmss"))</Time>
+			<TargetDir>C:\Program Files (x86)\Steam\steamapps\common\Yaoling Mythical Journey\</TargetDir>
+			<PublishDllPath>$(PublishDir)$(AssemblyName).dll</PublishDllPath>
+			<TargetFileName>$(AssemblyName).dll</TargetFileName>
+			<BackupFileName>$(AssemblyName).dll.bak_$(Time)</BackupFileName>
+		</PropertyGroup>
+
+		<Message Text="自动部署功能已经启动 $(PublishDir)" Importance="high" />
+
+		<Exec Command="if exist &quot;$(TargetDir)$(TargetFileName)&quot; move &quot;$(TargetDir)$(TargetFileName)&quot; &quot;$(TargetDir)$(BackupFileName)&quot;" />
+		<Exec Command="copy &quot;$(PublishDllPath)&quot; &quot;$(TargetDir)$(TargetFileName)&quot;" />
+	</Target>
+
+
+
+</Project>

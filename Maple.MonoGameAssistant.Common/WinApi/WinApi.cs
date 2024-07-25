@@ -282,10 +282,10 @@ namespace Maple.MonoGameAssistant.Common
         //[LibraryImport("kernel32.dll", EntryPoint = "LoadLibraryW", SetLastError = false, StringMarshalling = StringMarshalling.Utf16)]
         //public static partial nint LoadLibrary(string lpLibFileName);
 
-        //[System.Runtime.InteropServices.UnmanagedCallConv(CallConvs = [typeof(CallConvStdcall), typeof(CallConvSuppressGCTransition)])]
-        //[LibraryImport("kernel32.dll", EntryPoint = "VirtualProtect", SetLastError = false)]
-        //[return: MarshalAs(UnmanagedType.Bool)]
-        //public static partial bool VirtualProtect(nint lpAddress, nuint dwSize, EnumVirtualProtectType flNewProtect, out EnumVirtualProtectType lpflOldProtect);
+        [System.Runtime.InteropServices.UnmanagedCallConv(CallConvs = [typeof(CallConvStdcall), typeof(CallConvSuppressGCTransition)])]
+        [LibraryImport("kernel32.dll", EntryPoint = "VirtualProtect", SetLastError = false)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static partial bool VirtualProtect(nint lpAddress, nuint dwSize, EnumVirtualProtectType flNewProtect, out EnumVirtualProtectType lpflOldProtect);
 
         //[System.Runtime.InteropServices.UnmanagedCallConv(CallConvs = [typeof(CallConvStdcall), typeof(CallConvSuppressGCTransition)])]
         //[LibraryImport("kernel32.dll", EntryPoint = "VirtualAlloc", SetLastError = false)]
@@ -326,39 +326,39 @@ namespace Maple.MonoGameAssistant.Common
         //    [FieldOffset(2)]
         //    internal ushort wReserved;
         //}
-        //public enum EnumVirtualProtectType : uint
-        //{
-        //    ERROR_ALREADY_EXISTS = 183,
+        public enum EnumVirtualProtectType : uint
+        {
+            ERROR_ALREADY_EXISTS = 183,
 
-        //    FILE_MAP_COPY = 0x0001,
+            FILE_MAP_COPY = 0x0001,
 
-        //    FILE_MAP_WRITE = 0x0002,
+            FILE_MAP_WRITE = 0x0002,
 
-        //    FILE_MAP_READ = 0x0004,
+            FILE_MAP_READ = 0x0004,
 
-        //    FILE_MAP_ALL_ACCESS = 0x0002 | 0x0004,
+            FILE_MAP_ALL_ACCESS = 0x0002 | 0x0004,
 
-        //    PAGE_READONLY = 0x02,
+            PAGE_READONLY = 0x02,
 
-        //    PAGE_READWRITE = 0x04,
+            PAGE_READWRITE = 0x04,
 
-        //    PAGE_WRITECOPY = 0x08,
+            PAGE_WRITECOPY = 0x08,
 
-        //    PAGE_EXECUTE = 0x10,
+            PAGE_EXECUTE = 0x10,
 
-        //    PAGE_EXECUTE_READ = 0x20,
+            PAGE_EXECUTE_READ = 0x20,
 
-        //    PAGE_EXECUTE_READWRITE = 0x40,
+            PAGE_EXECUTE_READWRITE = 0x40,
 
-        //    SEC_COMMIT = 0x8000000,
+            SEC_COMMIT = 0x8000000,
 
-        //    SEC_IMAGE = 0x1000000,
+            SEC_IMAGE = 0x1000000,
 
-        //    SEC_NOCACHE = 0x10000000,
+            SEC_NOCACHE = 0x10000000,
 
-        //    SEC_RESERVE = 0x4000000,
+            SEC_RESERVE = 0x4000000,
 
-        //}
+        }
 
         //public enum EnumVirtualAllocType : uint
         //{

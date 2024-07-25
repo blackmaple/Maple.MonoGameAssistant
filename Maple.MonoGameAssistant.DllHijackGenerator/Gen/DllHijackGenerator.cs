@@ -1,51 +1,65 @@
-﻿using Microsoft.CodeAnalysis;
+﻿using Maple.MonoGameAssistant.DllHijackData;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 
 namespace Maple.MonoGameAssistant.DllHijackGenerator
 {
 
-    [Generator]
-    public class DllHijackGenerator : ISourceGenerator
+    [Generator(LanguageNames.CSharp)]
+    public class DllHijackGenerator : IIncrementalGenerator
     {
 
-        public void Execute(GeneratorExecutionContext context)
+
+
+        public void Initialize(IncrementalGeneratorInitializationContext context)
         {
+        //    Debugger.Launch();
+
             try
             {
-                if (!(context.SyntaxContextReceiver is DllHijackSyntaxReceiver receiver))
+
+                var provider = context.SyntaxProvider.ForAttributeWithMetadataName(
+             fullyQualifiedMetadataName: typeof(DllHijackAttribute).FullName,
+             predicate: (node, cancellationToken_) => node is ClassDeclarationSyntax,
+             transform: (ctx, cancellationToken) =>
+             {
+                 ISymbol classSymbol = ctx.TargetSymbol;
+                 return classSymbol.GetAttributes().Select(p => p.GetDllHijackData(classSymbol)).ToArray();
+             });
+
+
+
+                var apiFiles = context.AdditionalTextsProvider.Where(file => file.Path.EndsWith(".api", StringComparison.OrdinalIgnoreCase)).Collect();
+                var datas = provider.Combine(apiFiles);
+
+                context.RegisterSourceOutput(datas, (p, t) =>
                 {
-                    return;
-                }
-                foreach (var dllHijackData in receiver.DllHijackDatas)
-                {
-                    dllHijackData.AddApis(context.AdditionalFiles);
-                    context.LogInfo($"{dllHijackData.ClassFullName}::{dllHijackData.Apis.Count}");
-                    if (dllHijackData.Apis.Count != 0)
+                    foreach (var dllHijackData in t.Left)
                     {
-                        var fileContent = dllHijackData.OutputApis();
-                        context.AddSource($"{dllHijackData.ClassName}.g.cs", fileContent);
+                        dllHijackData.AddApis(t.Right);
+
+                        if (dllHijackData.Apis.Count != 0)
+                        {
+                            var fileContent = dllHijackData.OutputApis();
+                            p.AddSource($"{dllHijackData.ClassName}.g.cs", fileContent);
+                        }
                     }
-                }
-                context.LogInfo("DllHijackGenerator源生成器执行完毕了...");
+                });
 
             }
-            catch (DllHijackException msg)
+            catch (DllHijackException)
             {
-                context.ReportDiagnostic(Diagnostic.Create(DllHijackException.V1Error, Location.None, msg));
+
+                // context.ReportDiagnostic(Diagnostic.Create(DllHijackException.V1Error, Location.None, msg));
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                context.ReportDiagnostic(Diagnostic.Create(DllHijackException.V1Exception, Location.None, ex));
+                // context.ReportDiagnostic(Diagnostic.Create(DllHijackException.V1Exception, Location.None, ex));
             }
-
-        }
-
-        public void Initialize(GeneratorInitializationContext context)
-        {
-            //Debugger.Launch();
-            context.RegisterForSyntaxNotifications(() => new DllHijackSyntaxReceiver());
 
         }
     }

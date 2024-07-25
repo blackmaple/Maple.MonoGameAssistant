@@ -322,7 +322,11 @@ namespace Maple.GameContext
         #region WebApi
 
         public virtual ValueTask<GameSessionInfoDTO> GetSessionInfoAsync()
-            => GameException.Throw<ValueTask<GameSessionInfoDTO>>("NotImplemented");
+        {
+            var api = this.GameContext.ApiVersion;
+            var data = this.GameSettings.GetGameSessionInfo(api);
+            return ValueTask.FromResult(data);
+        }
 
 
         public virtual ValueTask<GameSessionInfoDTO> LoadResourceAsync()

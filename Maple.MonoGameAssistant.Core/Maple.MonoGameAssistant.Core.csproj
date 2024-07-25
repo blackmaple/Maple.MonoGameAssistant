@@ -6,8 +6,6 @@
 		<Nullable>enable</Nullable>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 
-		<PublishAot>true</PublishAot>
-		<IsAotCompatible>true</IsAotCompatible>
 
 
 	</PropertyGroup>
@@ -23,10 +21,10 @@
 
 
 	<ItemGroup>
-	  <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="8.0.0" />
-	  <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.1" />
-	  <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="8.0.0" />
-	  <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.1" />
+	  <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="9.0.0-preview.6.24327.7" />
+	  <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.0-preview.6.24327.7" />
+	  <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="9.0.0-preview.6.24327.7" />
+	  <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.0-preview.6.24327.7" />
 	</ItemGroup>
 
 	<ItemGroup>

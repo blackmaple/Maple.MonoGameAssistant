@@ -6,8 +6,6 @@
 		<Nullable>enable</Nullable>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 
-		<PublishAot>true</PublishAot>
-		<IsAotCompatible>true</IsAotCompatible>
 
 
 	</PropertyGroup>

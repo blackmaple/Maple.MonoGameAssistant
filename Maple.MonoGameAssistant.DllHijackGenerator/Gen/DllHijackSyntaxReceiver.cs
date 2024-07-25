@@ -6,6 +6,7 @@ using System.Linq;
 
 namespace Maple.MonoGameAssistant.DllHijackGenerator
 {
+    [System.Obsolete("remove...")]
     public class DllHijackSyntaxReceiver : ISyntaxContextReceiver
     {
         public List<DllHijackData> DllHijackDatas { get; } = new List<DllHijackData>();

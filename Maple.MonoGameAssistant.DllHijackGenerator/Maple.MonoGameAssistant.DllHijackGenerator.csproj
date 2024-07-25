@@ -7,7 +7,6 @@
 		<EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
 		<EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
 		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
-
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -17,7 +16,7 @@
  
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.4">
+		<PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.11.0-beta1.24318.1">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>

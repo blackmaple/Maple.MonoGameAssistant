@@ -2,6 +2,7 @@
 
 namespace Maple.MonoGameAssistant.MonoCollectorDataV2
 {
+    [Obsolete("remove...")]
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = true, Inherited = false)]
     public sealed class MonoCollectorTypeVersionAttribute : Attribute
     {
