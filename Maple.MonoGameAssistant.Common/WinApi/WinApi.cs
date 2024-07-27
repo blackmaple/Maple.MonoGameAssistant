@@ -259,12 +259,33 @@ namespace Maple.MonoGameAssistant.Common
 
         [System.Runtime.InteropServices.UnmanagedCallConv(CallConvs = [typeof(CallConvStdcall), typeof(CallConvSuppressGCTransition)])]
         [LibraryImport("user32.dll", EntryPoint = "SetWindowLongPtrW", SetLastError = false)]
-        public unsafe static partial nint SetWindowLongPtr(nint hWnd, EnumWindowLongPtrIndex nIndex, nint dwNewLong);
+        internal unsafe static partial nint SetWindowLong64(nint hWnd, EnumWindowLongPtrIndex nIndex, nint dwNewLong);
+        [System.Runtime.InteropServices.UnmanagedCallConv(CallConvs = [typeof(CallConvStdcall), typeof(CallConvSuppressGCTransition)])]
+        [LibraryImport("user32.dll", EntryPoint = "SetWindowLongW", SetLastError = false)]
+        internal unsafe static partial nint SetWindowLong32(nint hWnd, EnumWindowLongPtrIndex nIndex, nint dwNewLong);
+        public static nint SetWindowLongPtr(nint hWnd, EnumWindowLongPtrIndex nIndex, nint dwNewLong)
+        {
+            if (Environment.Is64BitProcess)
+            {
+                return SetWindowLong64(hWnd, nIndex, dwNewLong);
+            }
+            return SetWindowLong32(hWnd, nIndex, dwNewLong);
+        }
 
         [System.Runtime.InteropServices.UnmanagedCallConv(CallConvs = [typeof(CallConvStdcall), typeof(CallConvSuppressGCTransition)])]
         [LibraryImport("user32.dll", EntryPoint = "GetWindowLongPtrW", SetLastError = false)]
-        public unsafe static partial nint GetWindowLongPtr(nint hWnd, EnumWindowLongPtrIndex nIndex);
-
+        internal unsafe static partial nint GetWindowLong64(nint hWnd, EnumWindowLongPtrIndex nIndex);
+        [System.Runtime.InteropServices.UnmanagedCallConv(CallConvs = [typeof(CallConvStdcall), typeof(CallConvSuppressGCTransition)])]
+        [LibraryImport("user32.dll", EntryPoint = "GetWindowLongW", SetLastError = false)]
+        internal unsafe static partial nint GetWindowLong32(nint hWnd, EnumWindowLongPtrIndex nIndex);
+        public static nint GetWindowLongPtr(nint hWnd, EnumWindowLongPtrIndex nIndex)
+        {
+            if (Environment.Is64BitProcess)
+            {
+                return GetWindowLong64(hWnd, nIndex);
+            }
+            return GetWindowLong32(hWnd, nIndex);
+        }
 
         [System.Runtime.InteropServices.UnmanagedCallConv(CallConvs = [typeof(CallConvStdcall), typeof(CallConvSuppressGCTransition)])]
         [LibraryImport("kernel32.dll", EntryPoint = "GetCurrentThreadId", SetLastError = false)]
@@ -583,6 +604,6 @@ namespace Maple.MonoGameAssistant.Common
 
         }
 
- 
+
     }
 }

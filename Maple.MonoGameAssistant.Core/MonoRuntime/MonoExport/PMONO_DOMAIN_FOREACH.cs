@@ -17,7 +17,7 @@ namespace Maple.MonoGameAssistant.Core
 
         //void MONO_DOMAIN_FOREACH (MonoDomainFunc func, void *user_data)
         //typedef void (__cdecl *MONO_DOMAIN_FOREACH)(MonoDomainFunc func, void *user_data);
-        readonly delegate* unmanaged[Cdecl, SuppressGCTransition]<PMonoDomainFunc, PMonoUserData, void> _func = (delegate* unmanaged[Cdecl, SuppressGCTransition]<PMonoDomainFunc, PMonoUserData, void>)ptr;
+        readonly delegate* unmanaged[Cdecl]<PMonoDomainFunc, PMonoUserData, void> _func = (delegate* unmanaged[Cdecl]<PMonoDomainFunc, PMonoUserData, void>)ptr;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public readonly void Invoke(PMonoDomainFunc pMonoDomainFunc, PMonoUserData pMonoUserData) => _func(pMonoDomainFunc, pMonoUserData);

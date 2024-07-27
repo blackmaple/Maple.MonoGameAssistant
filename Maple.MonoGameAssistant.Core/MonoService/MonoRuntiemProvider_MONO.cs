@@ -24,14 +24,14 @@ namespace Maple.MonoGameAssistant.Core
         {
             var listMonoDomain = new List<PMonoDomain>(256);
             using var ref_listMonoDomain = new MapleObjectUnmanaged_Ref(listMonoDomain);
-          
+
             this.Runtime.MONO_DOMAIN_FOREACH.Invoke(&CalbackMonoDomainFunc, new(ref_listMonoDomain));
             return listMonoDomain;
-            
+
         }
 
         [UnmanagedCallersOnly(CallConvs = [typeof(CallConvCdecl)])]
-        static unsafe  void CalbackMonoDomainFunc(PMonoDomain pMonoDomain, PMonoUserData pUserData)
+        static unsafe void CalbackMonoDomainFunc(PMonoDomain pMonoDomain, PMonoUserData pUserData)
         {
             if (MapleObjectUnmanaged_Ref.TryGet<List<PMonoDomain>>(pUserData, out var list))
             {
@@ -60,8 +60,10 @@ namespace Maple.MonoGameAssistant.Core
         {
             var listMonoAssembly = new List<PMonoAssembly>(256);
             using var ref_listMonoAssembly = new MapleObjectUnmanaged_Ref(listMonoAssembly);
-            this.Runtime.MONO_ASSEMBLY_FOREACH.Invoke(&CalbackMonoAssemblyFunc, new(ref_listMonoAssembly));
+            PMonoUserData pUserData = new(ref_listMonoAssembly);
+            this.Runtime.MONO_ASSEMBLY_FOREACH.Invoke(&CalbackMonoAssemblyFunc, pUserData);
             return listMonoAssembly;
+
 
             [UnmanagedCallersOnly(CallConvs = [typeof(CallConvCdecl)])]
             unsafe static void CalbackMonoAssemblyFunc(PMonoAssembly pMonoAssembly, PMonoUserData pUserData)
@@ -613,7 +615,7 @@ namespace Maple.MonoGameAssistant.Core
         {
             return this.Runtime.MONO_GCHANDLE_NEW.Invoke(pMonoObject, pinned);
         }
- 
+
 
         public PMonoObject MonoGCHandleTarget(REF_MONO_GC_HANDLE gchandle)
         {

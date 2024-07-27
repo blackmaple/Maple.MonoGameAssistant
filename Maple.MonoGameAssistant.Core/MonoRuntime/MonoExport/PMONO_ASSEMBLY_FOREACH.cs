@@ -18,7 +18,7 @@ namespace Maple.MonoGameAssistant.Core
 
         //int MONO_ASSEMBLY_FOREACH (GFunc func, void *user_data)
         //typedef int (__cdecl *MONO_ASSEMBLY_FOREACH)(GFunc func, void *user_data);
-        readonly delegate* unmanaged[Cdecl, SuppressGCTransition]<PMonoAssemblyFunc, PMonoUserData, void> _func = (delegate* unmanaged[Cdecl, SuppressGCTransition]<PMonoAssemblyFunc, PMonoUserData, void>)ptr;
+        readonly delegate* unmanaged[Cdecl]<PMonoAssemblyFunc, PMonoUserData, void> _func = (delegate* unmanaged[Cdecl]<PMonoAssemblyFunc, PMonoUserData, void>)ptr;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public readonly void Invoke(PMonoAssemblyFunc pMonoAssemblyFunc, PMonoUserData pMonoUserData) => _func(pMonoAssemblyFunc, pMonoUserData);

@@ -30,6 +30,10 @@
 
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="appsettings.json" />
+  </ItemGroup>
+
 	<ItemGroup>
 		<ProjectReference Include="..\Maple.GameContext\Maple.GameContext.csproj" />
 		<ProjectReference Include="..\Maple.MonoGameAssistant.Core\Maple.MonoGameAssistant.Core.csproj" />
@@ -49,6 +53,11 @@
 	<ItemGroup>
 		<Compile Include="..\Maple.MonoGameAssistant.DllExportTmp\DllExport.cs" Link="GameDllExport\DllExport.cs" />
 		<AdditionalFiles Include="..\Maple.MonoGameAssistant.DllExportTmp\WinHttp.Api" Link="GameDllExport\WinHttp.Api" />
+		<Content Include="appsettings.json">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		  <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+		  <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+		</Content>
 		<ProjectReference Include="..\Maple.MonoGameAssistant.DllHijackData\Maple.MonoGameAssistant.DllHijackData.csproj" />
 		<ProjectReference Include="..\Maple.MonoGameAssistant.DllHijackGenerator\Maple.MonoGameAssistant.DllHijackGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" PrivateAssets="all" />
 	</ItemGroup>
@@ -60,7 +69,7 @@
 	<Target Name="PostPublishActions" AfterTargets="Publish">
 		<PropertyGroup>
 			<Time>$([System.DateTime]::Now.ToString("yyyyMMddHHmmss"))</Time>
-			<TargetDir>C:\Program Files (x86)\Steam\steamapps\common\Yaoling Mythical Journey\</TargetDir>
+			<TargetDir>C:\Program Files (x86)\Steam\steamapps\common\Cat Quest III Demo\</TargetDir>
 			<PublishDllPath>$(PublishDir)$(AssemblyName).dll</PublishDllPath>
 			<TargetFileName>$(AssemblyName).dll</TargetFileName>
 			<BackupFileName>$(AssemblyName).dll.bak_$(Time)</BackupFileName>

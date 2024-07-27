@@ -610,8 +610,10 @@ namespace Maple.MonoGameAssistant.Core
 
         public IEnumerable<MonoImageInfoDTO> EnumMonoImages()
         {
+       
             var listAsm = this.RuntiemProvider.EnumMonoAssemblies(this.RootDomain);
             var listImage = this.RuntiemProvider.EnumMonoImages(listAsm);
+
             foreach (var pMonoImage in listImage)
             {
                 yield return GetMonoImageInfoDTO(pMonoImage);

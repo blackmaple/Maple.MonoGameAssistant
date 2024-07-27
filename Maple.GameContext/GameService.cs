@@ -30,7 +30,7 @@ namespace Maple.GameContext
 
 
         public required T_GAMECONTEXT GameContext { get; set; }
-        public required UnityEngineContext UnityEngineContext { get; set; }
+        public required UnityEngineContext? UnityEngineContext { get; set; }
         public required HookWinMsgService Hook { set; get; }
         public required GameSwitchDisplayDTO[] ListGameSwitch { set; get; }
         #endregion
@@ -92,8 +92,18 @@ namespace Maple.GameContext
 
         }
         protected abstract T_GAMECONTEXT LoadGameContext();
-        protected virtual UnityEngineContext LoadUnityEngineContext()
-            => new UnityEngineContext_IL2CPP(this.RuntimeContext, this.Logger);
+        protected UnityEngineContext? LoadUnityEngineContext()
+        {
+            try
+            {
+                return UnityEngineContext.LoadUnityContext(this.RuntimeContext, this.Logger);
+            }
+            catch (Exception ex)
+            {
+                this.Logger.LogError("{ex}", ex);
+            }
+            return default;
+        }
         protected virtual GameSwitchDisplayDTO[] InitListGameSwitch()
             => [];
         protected void LoadListGameSwitch()

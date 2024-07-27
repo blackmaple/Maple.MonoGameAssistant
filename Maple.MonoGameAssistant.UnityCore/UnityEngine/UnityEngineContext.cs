@@ -2,6 +2,7 @@
 using Maple.MonoGameAssistant.MonoCollector;
 using Maple.MonoGameAssistant.MonoCollectorDataV2;
 using Microsoft.Extensions.Logging;
+using System.Runtime.CompilerServices;
 using static Maple.MonoGameAssistant.UnityCore.UnityEngine.Sprite;
 using static Maple.MonoGameAssistant.UnityCore.UnityEngine.Texture2D;
 
@@ -110,6 +111,16 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
             return NativeMethodSetting.EncodeToPng(pDestTexture2D);
         }
 
+
+        public static UnityEngineContext? LoadUnityContext(MonoRuntimeContext runtimeContext, ILogger logger)
+        {
+            return runtimeContext.RuntimeType switch
+            {
+                EnumMonoRuntimeType.MONO => new UnityEngineContext_MONO(runtimeContext, logger),
+                EnumMonoRuntimeType.IL2CPP => new UnityEngineContext_MONO(runtimeContext, logger),
+                _ => default
+            };
+        }
     }
 
     public sealed partial class UnityEngineContext_MONO : UnityEngineContext

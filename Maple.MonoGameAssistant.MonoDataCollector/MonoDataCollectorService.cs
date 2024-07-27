@@ -5,6 +5,7 @@ using Maple.MonoGameAssistant.MonoCollectorDataV2;
 using Microsoft.Extensions.Logging;
 using Maple.MonoGameAssistant.Common;
 using Maple.MonoGameAssistant.UnityCore;
+using Maple.MonoGameAssistant.UnityCore.UnityEngine;
 namespace Maple.MonoGameAssistant.MonoDataCollector
 {
     internal sealed partial class MonoDataCollectorService(
@@ -19,7 +20,15 @@ namespace Maple.MonoGameAssistant.MonoDataCollector
 
         protected sealed override MonoDataCollectorContext LoadGameContext()
            => new(this.RuntimeContext, EnumMonoCollectorTypeVersion.Collector, this.Logger);
-
+        protected sealed override ValueTask LoadGameDataAsync()
+        {
+            using (this.Logger.Running())
+            {
+                this.Logger.LogInformation("MonoString:{p}", MonoStringExtensions.GetMonoStringStructLayout());
+                this.Logger.LogInformation("MonoArray:{p}", MonoArrayExtensions.GetMonoArrayStructLayout());
+                return ValueTask.CompletedTask;
+            }
+        }
         #endregion
 
 

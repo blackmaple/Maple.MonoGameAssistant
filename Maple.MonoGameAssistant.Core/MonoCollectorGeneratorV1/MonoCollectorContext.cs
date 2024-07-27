@@ -9,16 +9,25 @@ using static Maple.MonoGameAssistant.Core.MonoRuntimeContext;
 namespace Maple.MonoGameAssistant.Core
 {
 
-    [method: MonoCollectorFlag(EnumMonoCollectorFlag.ContextCtor)]
-    public abstract class MonoCollectorContext(MonoRuntimeContext runtimeContext, EnumMonoCollectorTypeVersion typeVersion, ILogger logger, string apiVer = "202407222030")
+    public abstract class MonoCollectorContext
     {
-        public string ApiVersion => apiVer;
-        public EnumMonoCollectorTypeVersion TypeVersion { get; } = typeVersion;
-        public MonoRuntimeContext RuntimeContext { get; } = runtimeContext;
-        public ILogger Logger { get; } = logger;
+        public MonoRuntimeContext RuntimeContext { get; }  
+        public EnumMonoCollectorTypeVersion TypeVersion { get; } 
 
-        internal MonoImageInfoDTO[] ImageInfoDTOs { get; } = [.. runtimeContext.EnumMonoImages()];
+        public ILogger Logger { get; }  
+        public string ApiVersion { get; }
 
+        internal MonoImageInfoDTO[] ImageInfoDTOs { get; }
+
+        [method: MonoCollectorFlag(EnumMonoCollectorFlag.ContextCtor)]
+        public MonoCollectorContext(MonoRuntimeContext runtimeContext, EnumMonoCollectorTypeVersion typeVersion, ILogger logger, string apiVer = "202407222030")
+        {
+            this.RuntimeContext = runtimeContext;
+            this.TypeVersion = typeVersion;
+            this.Logger = logger;
+            this.ApiVersion = apiVer;
+            this.ImageInfoDTOs = [.. runtimeContext.EnumMonoImages()];
+        }
 
         [MonoCollectorFlag(EnumMonoCollectorFlag.GetClassInfo)]
         protected MonoCollectorClassInfo GetClassInfo(MonoCollecotrClassSettings classSettings)
