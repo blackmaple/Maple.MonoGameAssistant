@@ -1,4 +1,5 @@
 ﻿using Maple.MonoGameAssistant.MonoCollectorDataV2;
+using System;
 using System.Collections.Generic;
 
 namespace Maple.MonoGameAssistant.MonoCollectorGeneratorV2
@@ -25,15 +26,14 @@ namespace Maple.MonoGameAssistant.MonoCollectorGeneratorV2
         public string Utf8_ClassName { set; get; }
         public string Const_ClassName { set; get; }
 
+        [Obsolete("remove...", true)]
         public uint Const_TypeToken { set; get; }
-        public IReadOnlyList<MonoCollectorStaticPropertyData> StaticFieldDatas { set; get; }
-        public IReadOnlyList<MonoCollectorPropertyData> PropertyDatas { set; get; }
-        public IReadOnlyList<MonoCollectorMethodData> MethodDatas { set; get; }
 
-        public IReadOnlyList<MonoCollectorInheritViewData> InheritViewDatas { set; get; }
-
-
-        public IReadOnlyList<MonoCollectorPtrVTableData> VTableDatas { set; get; }
+        public IReadOnlyList<MonoCollectorStaticPropertyData> StaticFieldDatas { set; get; } //= new List<MonoCollectorStaticPropertyData>();
+        public IReadOnlyList<MonoCollectorPropertyData> PropertyDatas { set; get; } //= new List<MonoCollectorPropertyData>();
+        public IReadOnlyList<MonoCollectorMethodData> MethodDatas { set; get; } //= new List<MonoCollectorMethodData>();
+        public IReadOnlyList<MonoCollectorInheritViewData> InheritViewDatas { set; get; } //= new List<MonoCollectorInheritViewData>();
+        public IReadOnlyList<MonoCollectorPtrVTableData> VTableDatas { set; get; } //= new List<MonoCollectorPtrVTableData>();
 
 
     }

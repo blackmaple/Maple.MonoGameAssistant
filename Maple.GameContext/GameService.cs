@@ -22,7 +22,7 @@ namespace Maple.GameContext
 
         #region props
 
-        protected virtual bool EnableService => true;
+
         public ILogger Logger { get; } = logger;
         public MonoRuntimeContext RuntimeContext { get; } = runtimeContext;
         public MonoGameSettings GameSettings { get; } = gameSettings;
@@ -44,7 +44,7 @@ namespace Maple.GameContext
         }
         public async ValueTask LoadService()
         {
-            if (this.EnableService)
+            using (this.Logger.Running())
             {
                 try
                 {
@@ -82,7 +82,7 @@ namespace Maple.GameContext
                     this.GameContext = this.LoadGameContext();
                     this.Logger.LogInformation("LoadGameContext=>{ver}=>{api}", this.GameContext.TypeVersion, this.GameContext.ApiVersion);
                     this.UnityEngineContext = this.LoadUnityEngineContext();
-                    this.Logger.LogInformation("LoadUnityEngineContext=>{load}=>{ver}=>{api}", 
+                    this.Logger.LogInformation("LoadUnityEngineContext=>{load}=>{ver}=>{api}",
                         this.UnityEngineContext is not null,
                         this.UnityEngineContext?.TypeVersion,
                         this.UnityEngineContext?.ApiVersion);

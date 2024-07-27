@@ -17,7 +17,7 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
     /// 
     /// </summary>
     //[Maple.MonoGameAssistant.MonoCollectorDataV2.MonoCollectorSettingsAttribute([85, 110, 105, 116, 121, 69, 110, 103, 105, 110, 101, 46, 73, 109, 97, 103, 101, 67, 111, 110, 118, 101, 114, 115, 105, 111, 110, 77, 111, 100, 117, 108, 101, 46, 100, 108, 108], 0x02000002U)]
-    [Maple.MonoGameAssistant.MonoCollectorDataV2.MonoCollectorSettingsAttribute([85, 110, 105, 116, 121, 69, 110, 103, 105, 110, 101, 46, 73, 109, 97, 103, 101, 67, 111, 110, 118, 101, 114, 115, 105, 111, 110, 77, 111, 100, 117, 108, 101, 46, 100, 108, 108], [85, 110, 105, 116, 121, 69, 110, 103, 105, 110, 101], [73, 109, 97, 103, 101, 67, 111, 110, 118, 101, 114, 115, 105, 111, 110])]
+    //[Maple.MonoGameAssistant.MonoCollectorDataV2.MonoCollectorSettingsAttribute([85, 110, 105, 116, 121, 69, 110, 103, 105, 110, 101, 46, 73, 109, 97, 103, 101, 67, 111, 110, 118, 101, 114, 115, 105, 111, 110, 77, 111, 100, 117, 108, 101, 46, 100, 108, 108], [85, 110, 105, 116, 121, 69, 110, 103, 105, 110, 101], [73, 109, 97, 103, 101, 67, 111, 110, 118, 101, 114, 115, 105, 111, 110])]
     public partial class ImageConversion
     {
         //public const string Const_ImageName = "UnityEngine.ImageConversionModule.dll";

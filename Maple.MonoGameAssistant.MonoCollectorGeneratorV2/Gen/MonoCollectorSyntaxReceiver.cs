@@ -1,6 +1,7 @@
 ﻿using Maple.MonoGameAssistant.MonoCollectorDataV2;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -10,6 +11,7 @@ namespace Maple.MonoGameAssistant.MonoCollectorGeneratorV2
     {
         public List<MonoCollectorOptionsData> CollectorOptionsDatas { get; } = new List<MonoCollectorOptionsData>();
 
+        [Obsolete("remove...")]
         public void OnVisitSyntaxNode(GeneratorSyntaxContext context)
         {
             if (context.Node is ClassDeclarationSyntax classDeclaration)

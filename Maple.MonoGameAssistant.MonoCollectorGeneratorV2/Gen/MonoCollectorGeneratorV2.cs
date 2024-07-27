@@ -17,38 +17,88 @@ namespace Maple.MonoGameAssistant.MonoCollectorGeneratorV2
 
         public void Initialize(IncrementalGeneratorInitializationContext context)
         {
-            System.Diagnostics.Debugger.Launch();
+           //System.Diagnostics.Debugger.Launch();
             //  context.RegisterForSyntaxNotifications(() => new MonoCollectorSyntaxReceiver());
             try
             {
                 var genOptions = context.SyntaxProvider.ForAttributeWithMetadataName(typeof(MonoCollectorOptionsAttribute).FullName, (node, _) => node is ClassDeclarationSyntax, (ctx, _) =>
                 {
-                    return ctx.Attributes[0].GetMonoCollectorOptionsData(ctx.TargetSymbol);
+                    return ctx.Attributes[0].GetMonoCollectorOptionsData_NET9(ctx.TargetSymbol);
                 });
-                //var typeClasses = context.SyntaxProvider.ForAttributeWithMetadataName(typeof(MonoCollectorTypeAttribute).FullName, (node, _) => node is ClassDeclarationSyntax, (ctx, _) =>
-                //{
-                //    return ctx.Attributes.Select(p=>p.CreateMonoCollectorTypeData()).ToArray();
-                //});
-                context.RegisterSourceOutput(genOptions, (ctx, p) =>
+                var settingsClasses = context.SyntaxProvider.ForAttributeWithMetadataName(typeof(MonoCollectorTypeAttribute).FullName, (node, _) => node is ClassDeclarationSyntax, (ctx, _) =>
                 {
-                    foreach (var verData in p.VersionDatas)
+                    var verDatas = ctx.TargetSymbol.CreateMonoCollectorVersionData_NET9();
+                    var typeDatas = ctx.Attributes.Select(p => p.CreateMonoCollectorTypeSettings_NET9()).ToArray();
+                    verDatas.TypeDatas.AddRange(typeDatas);
+                    return verDatas;
+                }).Collect();
+                var genContenxt = genOptions.Combine(settingsClasses);
+                //output genContext
+                context.RegisterSourceOutput(genContenxt, (ctx, p) =>
+                {
+                    var l_genOptions = p.Left;
+                    var r_settingsClasses = p.Right;
+
+                    //兼容下
+                    l_genOptions.VersionDatas.AddRange(r_settingsClasses);
+                    foreach (var settings in r_settingsClasses)
                     {
-                        foreach (var typeData in verData.TypeDatas)
+                        foreach (var type in settings.TypeDatas)
                         {
-
-                            var fileContent = typeData.OutputCurrTypeClassContent(p);
-                            ctx.AddSource($"{typeData.ClassName}.g.cs", fileContent);
-                            //className.g.cs
+                            var typeSourceContent = type.OutputCurrTypeClassContent_Master_NET9(l_genOptions);
+                            ctx.AddSource($"{type.ClassName}.master.cs", typeSourceContent);
                         }
-
-                        var contextFile = p.OutputTypeClassesContext_Ver(verData);
-                        ctx.AddSource($"{verData.CustomClassName}.g.cs", contextFile);
-                        //optionsData.g.cs
-
+                        var verSourceContent = l_genOptions.OutputTypeClassesContext_NET9(settings);
+                        ctx.AddSource($"{settings.CustomClassName}.g.cs", verSourceContent);
                     }
-
-
                 });
+
+
+                var typeClasses = context.SyntaxProvider.ForAttributeWithMetadataName(typeof(MonoCollectorSettingsAttribute).FullName, (node, _) => node is ClassDeclarationSyntax, (ctx, _) =>
+                {
+                    return ctx.TargetSymbol.CreateMonoCollectorTypeData_NET9();
+                }).Collect();
+
+                var typeCollectDatas = genOptions.Combine(typeClasses);
+                //output typeClass
+                context.RegisterSourceOutput(typeCollectDatas, (ctx, p) =>
+                {
+                    var l_genOptions = p.Left;
+                    var r_typeClasses = p.Right;
+                    foreach (var type in r_typeClasses)
+                    {
+                        var typeSourceContent = type.OutputCurrTypeClassContent_Detail_NET9(l_genOptions);
+                        ctx.AddSource($"{type.ClassName}.detail.cs", typeSourceContent);
+                    }
+                });
+
+                //var typeClasses_1 = context.SyntaxProvider.ForAttributeWithMetadataName(typeof(MonoCollectorSettingsAttribute).FullName, (node, _) => node is ClassDeclarationSyntax, (ctx, _) =>
+                //{
+                //    return ctx.TargetSymbol;
+                //});
+                //var typeClasses_2 = context.SyntaxProvider.ForAttributeWithMetadataName(typeof(MonoCollectorSearchFieldAttribute).FullName, (node, _) => node is ClassDeclarationSyntax, (ctx, _) =>
+                //{
+                //    return ctx.TargetSymbol;
+                //});
+                ////MonoCollectorVTableMethodAttribute
+                ////MonoCollectorMethodAttribute
+                ////MonoCollectorBaseAddressAttribute
+                //context.RegisterSourceOutput(genContenxt, (ctx, p) =>
+                //{
+                //    var l_genOptions = p.Left;
+                //    var r_settingsClasses = p.Right;
+
+                //    foreach (var settings in r_settingsClasses)
+                //    {
+                //        foreach (var type in settings.TypeDatas)
+                //        {
+                //            var typeSourceContent = type.OutputCurrTypeClassContent_Master_NET9(l_genOptions);
+                //            ctx.AddSource($"{type.ClassName}.master.cs", typeSourceContent);
+                //        }
+                //        var verSourceContent = l_genOptions.OutputTypeClassesContext_NET9(settings);
+                //        ctx.AddSource($"{settings.CustomClassName}.g.cs", verSourceContent);
+                //    }
+                //});
             }
             catch (MonoCollectorGeneratorV2Exception)
             {

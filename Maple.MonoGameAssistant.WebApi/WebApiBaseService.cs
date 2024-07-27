@@ -21,12 +21,14 @@ namespace Maple.MonoGameAssistant.WebApi
 
 
 
+     //   [RequiresUnreferencedCode("This functionality is not compatible with trimming. Use 'MethodFriendlyToTrimming' instead")]
         public WebApiBaseService(string gameName = "Test")
         {
             this.SlimBuilder = WebApplication.CreateSlimBuilder();
             this.Settings = this.ConfigureMonoGameSettings(gameName);
         }
 
+    //    [RequiresUnreferencedCode("This functionality is not compatible with trimming. Use 'MethodFriendlyToTrimming' instead")]
         private MonoGameSettings ConfigureMonoGameSettings(string gameName)
         {
             var settings = SlimBuilder.Configuration.GetSection(nameof(MonoGameSettings)).Get<MonoGameSettings>();

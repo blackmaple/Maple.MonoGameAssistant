@@ -7,6 +7,7 @@
 		<InvariantGlobalization>true</InvariantGlobalization>
 		<OutputType Condition=" '$(Configuration)'=='Release'">Library</OutputType>
 
+		<EnableConfigurationBindingGenerator>true</EnableConfigurationBindingGenerator>
 		<EnableRequestDelegateGenerator>true</EnableRequestDelegateGenerator>
 		<InterceptorsPreviewNamespaces>$(InterceptorsPreviewNamespaces);Microsoft.AspNetCore.Http.Generated</InterceptorsPreviewNamespaces>
 

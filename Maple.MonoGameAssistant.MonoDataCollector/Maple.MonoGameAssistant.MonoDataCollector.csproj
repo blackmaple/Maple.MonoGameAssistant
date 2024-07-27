@@ -20,7 +20,7 @@
 	  <EventSourceSupport>false</EventSourceSupport>
 	  <InvariantGlobalization>true</InvariantGlobalization>
 	  <MetadataUpdaterSupport>false</MetadataUpdaterSupport>
-	  <StackTraceSupport>false</StackTraceSupport>
+	  <!--<StackTraceSupport>false</StackTraceSupport>-->
 	  <UseSystemResourceKeys>true</UseSystemResourceKeys>
 
 
@@ -30,20 +30,27 @@
 
   </PropertyGroup>
 
-
-	<!--<ItemGroup>
-		<ProjectReference Include="..\..\Maple.MonoGameAssistant\Maple.MonoGameAssistant.MonoCollectorDataV2\Maple.MonoGameAssistant.MonoCollectorDataV2.csproj" />
-		<ProjectReference Include="..\..\Maple.MonoGameAssistant\Maple.MonoGameAssistant.MonoCollector\Maple.MonoGameAssistant.MonoCollector.csproj" />
-		<ProjectReference Include="..\..\Maple.MonoGameAssistant\Maple.MonoGameAssistant.MonoCollectorGeneratorV2\Maple.MonoGameAssistant.MonoCollectorGeneratorV2.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" PrivateAssets="all" />
-	</ItemGroup>-->
 	<ItemGroup>
-		<Compile Include="..\..\Maple.MonoGameAssistant\Maple.MonoGameAssistant.DllExportTmp\DllExport.cs" Link="GameDllExport\DllExport.cs" />
-		<AdditionalFiles Include="..\..\Maple.MonoGameAssistant\Maple.MonoGameAssistant.DllExportTmp\WinHttp.Api" Link="GameDllExport\WinHttp.Api" />
-		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.10.0" />
-		<ProjectReference Include="..\..\Maple.MonoGameAssistant\Maple.MonoGameAssistant.DllHijackData\Maple.MonoGameAssistant.DllHijackData.csproj" />
-		<ProjectReference Include="..\..\Maple.MonoGameAssistant\Maple.MonoGameAssistant.DllHijackGenerator\Maple.MonoGameAssistant.DllHijackGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" PrivateAssets="all" />
-		<ProjectReference Include="..\Maple.MonoGameAssistant.Common\Maple.MonoGameAssistant.Common.csproj" />
+		<ProjectReference Include="..\Maple.GameContext\Maple.GameContext.csproj" />
+		<ProjectReference Include="..\Maple.MonoGameAssistant.Core\Maple.MonoGameAssistant.Core.csproj" />
+		<ProjectReference Include="..\Maple.MonoGameAssistant.GameDTO\Maple.MonoGameAssistant.GameDTO.csproj" />
+		<ProjectReference Include="..\Maple.MonoGameAssistant.HotKey\Maple.MonoGameAssistant.HotKey.csproj" />
 		<ProjectReference Include="..\Maple.MonoGameAssistant.Logger\Maple.MonoGameAssistant.Logger.csproj" />
+		<ProjectReference Include="..\Maple.MonoGameAssistant.UnityCore\Maple.MonoGameAssistant.UnityCore.csproj" />
+		<ProjectReference Include="..\Maple.MonoGameAssistant.WebApi\Maple.MonoGameAssistant.WebApi.csproj" />
+	</ItemGroup>
+	
+	<ItemGroup>
+		<ProjectReference Include="..\Maple.MonoGameAssistant.MonoCollectorDataV2\Maple.MonoGameAssistant.MonoCollectorDataV2.csproj" />
+		<ProjectReference Include="..\Maple.MonoGameAssistant.MonoCollector\Maple.MonoGameAssistant.MonoCollector.csproj" />
+		<ProjectReference Include="..\Maple.MonoGameAssistant.MonoCollectorGeneratorV2\Maple.MonoGameAssistant.MonoCollectorGeneratorV2.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" PrivateAssets="all" />
+	</ItemGroup>
+	
+	<ItemGroup>
+		<Compile Include="..\Maple.MonoGameAssistant.DllExportTmp\DllExport.cs" Link="GameDllExport\DllExport.cs" />
+		<AdditionalFiles Include="..\Maple.MonoGameAssistant.DllExportTmp\WinHttp.Api" Link="GameDllExport\WinHttp.Api" />
+		<ProjectReference Include="..\Maple.MonoGameAssistant.DllHijackData\Maple.MonoGameAssistant.DllHijackData.csproj" />
+		<ProjectReference Include="..\Maple.MonoGameAssistant.DllHijackGenerator\Maple.MonoGameAssistant.DllHijackGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" PrivateAssets="all" />
 	</ItemGroup>
  
 

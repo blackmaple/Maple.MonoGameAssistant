@@ -8,8 +8,7 @@ namespace Maple.MonoGameAssistant.MonoCollectorDataV2
     {
         public Type ClassType { set; get; }
 
-        [Obsolete("remove...")]
-        public EnumMonoCollectorTypeVersion Ver { set; get; } = EnumMonoCollectorTypeVersion.Game;
+        public EnumMonoCollectorTypeVersion Ver { set; get; } = EnumMonoCollectorTypeVersion.APP;
 
         public MonoCollectorTypeAttribute(Type classType)
         {
@@ -19,9 +18,5 @@ namespace Maple.MonoGameAssistant.MonoCollectorDataV2
 
     }
 
-    //[AttributeUsage(AttributeTargets.Class, AllowMultiple = true, Inherited = true)]
-    //public class MonoCollectorTypeAttribute<T>() : MonoCollectorTypeAttribute(typeof(T)) where T : class
-    //{ 
-    
-    //}
+
 }

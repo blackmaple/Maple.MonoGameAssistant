@@ -496,12 +496,68 @@ namespace {typeData.NameSpace}
 
 
         }
+        public static string OutputCurrTypeClassContent_Master_NET9(this MonoCollectorTypeData typeData, MonoCollectorOptionsData optionsData)
+        {
+           var (classMainCtor, baseMainCtor) = optionsData.GetCurrClassMainCtor();
+         //   var methodContent = typeData.MethodDatas.OutputMethodDataContent(typeData, optionsData);
+       //     var propertyDataContent = typeData.OutputPropertyDataContent(optionsData);
+      //      var inheritViewDatas = typeData.InheritViewDatas.OutputInheritViewContent(typeData.PtrClassName);
+      //      var staticFieldContent = typeData.StaticFieldDatas.OutputStaticFieldContent(optionsData);
+      //      var initMemeberContent = typeData.OutputInitMemeberContent(optionsData);
+            var objectNewContent = typeData.OutputObjectNewContent(optionsData);
+            return $@"
+using System;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
+
+namespace {typeData.NameSpace}
+{{
+    {MonoCollecotrConvString.DisplayName_PartialClass} {typeData.ClassName}({classMainCtor}) : {optionsData.MonoCollectorMember}({baseMainCtor})
+    {{
+        {objectNewContent}
+    }}
+}}";
+
+
+        }
+        public static string OutputCurrTypeClassContent_Detail_NET9(this MonoCollectorTypeData typeData, MonoCollectorOptionsData optionsData)
+        {
+         //   var (classMainCtor, baseMainCtor) = optionsData.GetCurrClassMainCtor();
+            var methodContent = typeData.MethodDatas.OutputMethodDataContent(typeData, optionsData);
+            var propertyDataContent = typeData.OutputPropertyDataContent(optionsData);
+        //    var inheritViewDatas = typeData.InheritViewDatas.OutputInheritViewContent(typeData.PtrClassName);
+            var staticFieldContent = typeData.StaticFieldDatas.OutputStaticFieldContent(optionsData);
+            var initMemeberContent = typeData.OutputInitMemeberContent(optionsData);
+      //      var objectNewContent = typeData.OutputObjectNewContent(optionsData);
+            return $@"
+using System;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
+
+namespace {typeData.NameSpace}
+{{
+    {MonoCollecotrConvString.DisplayName_PartialClass} {typeData.ClassName}
+    {{
+        {staticFieldContent}
+
+        {methodContent}
+        
+        {propertyDataContent}
+        
+        {initMemeberContent}
+
+
+    }}
+}}";
+
+
+        }
 
         #endregion
 
 
         #region 声明Class&创建查找Class条件属性&输出
-        static string BuildTypeClassesField(this MonoCollectorTypeData typeData)
+        static string BuildTypeClassesClassSettings(this MonoCollectorTypeData typeData)
         {
             //            {nameof(MonoCollecotrClassSettings.EnumParentCount)} = {typeData.InheritViewDatas.Count},
 
@@ -527,7 +583,7 @@ namespace {typeData.NameSpace}
         }
         static string OutputTypeClassesFieldContent(this MonoCollectorVersionData versionData)
         {
-            return string.Join(SyntaxFactory.ElasticCarriageReturnLineFeed.ToString(), versionData.TypeDatas.Select(p => p.BuildTypeClassesField()));
+            return string.Join(SyntaxFactory.ElasticCarriageReturnLineFeed.ToString(), versionData.TypeDatas.Select(p => p.BuildTypeClassesClassSettings()));
 
         }
         #endregion
@@ -564,7 +620,7 @@ namespace {typeData.NameSpace}
         }
         public static string OutputNewClassStaticMethod(this MonoCollectorOptionsData optionsData, MonoCollectorVersionData versionData)
         {
-            if (versionData.Ver != EnumMonoCollectorTypeVersion.Game)
+            if (versionData.Ver != EnumMonoCollectorTypeVersion.APP)
             {
                 return string.Empty;
             }
@@ -630,7 +686,37 @@ namespace {versionData.CustomClassNamespace}
 {{
 
     {MonoCollecotrConvString.DisplayName_PartialClass} {versionData.CustomClassName} 
-        : {(versionData.Ver == EnumMonoCollectorTypeVersion.Game ? optionsData.MonoCollectorContext : optionsData.CustomClassFullName)} 
+        : {(versionData.Ver == EnumMonoCollectorTypeVersion.APP ? optionsData.MonoCollectorContext : optionsData.CustomClassFullName)} 
+    {{
+
+        {customClassFieldContent}
+
+        {mainCtorContent}
+
+        {newClassStaticMethod}
+
+    }}
+}}";
+
+        }
+
+        public static string OutputTypeClassesContext_NET9(
+    this MonoCollectorOptionsData optionsData,
+    MonoCollectorVersionData versionData)
+        {
+            var customClassFieldContent = versionData.OutputTypeClassesFieldContent();
+            var mainCtorContent = versionData.OutputTypeClassesInitContent_MainCtor(optionsData);
+            var newClassStaticMethod = optionsData.OutputNewClassStaticMethod(versionData);
+            return $@"
+using System;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
+
+namespace {versionData.CustomClassNamespace}
+{{
+
+    {MonoCollecotrConvString.DisplayName_PartialClass} {versionData.CustomClassName} 
+        : {(versionData.Ver == EnumMonoCollectorTypeVersion.APP ? optionsData.MonoCollectorContext : optionsData.CustomClassFullName)} 
     {{
 
         {customClassFieldContent}

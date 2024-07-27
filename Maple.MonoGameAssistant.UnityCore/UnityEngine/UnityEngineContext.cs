@@ -17,12 +17,12 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
     [MonoCollectorType(typeof(Sprite))]
     [MonoCollectorType(typeof(Texture2D))]
     [MonoCollectorType(typeof(RenderTexture))]
-    // [MonoCollectorType(typeof(Graphics))]
-    // [MonoCollectorType(typeof(Material))]
+    //[MonoCollectorType(typeof(Graphics))]
+    //[MonoCollectorType(typeof(Material))]
 
     //[MonoCollectorTypeVersion(typeof(UnityEngineContext_MONO), EnumMonoCollectorTypeVersion.Ver_MONO)]
     //[MonoCollectorTypeVersion(typeof(UnityEngineContext_IL2CPP), EnumMonoCollectorTypeVersion.Ver_IL2CPP)]
-    // [MonoCollectorType(typeof(ImageConversion), Ver = EnumMonoCollectorTypeVersion.Ver_IL2CPP)]
+    //[MonoCollectorType(typeof(ImageConversion))]
     public partial class UnityEngineContext
     {
         protected UnityPlayerNativeMethodSetting NativeMethodSetting { get; } = new UnityPlayerNativeMethodSetting();
@@ -103,7 +103,7 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
             }
 
             UnityPlayerNativeMethodSetting.GET_TEXTURE_RECT_INJECTED(pSprite, out var ref_Rect);
-  //          this.Logger.LogInformation("{x}/{y}/{h}/{w}", ref_Rect.m_XMin, ref_Rect.m_YMin, ref_Rect.m_Height, ref_Rect.m_Width);
+            //          this.Logger.LogInformation("{x}/{y}/{h}/{w}", ref_Rect.m_XMin, ref_Rect.m_YMin, ref_Rect.m_Height, ref_Rect.m_Width);
 
             var pDestTexture2D = this.Texture2D.New<Ptr_Texture2D>(false);
             CopyToTexture2D2(pSrcTexture2D, pDestTexture2D, ref_Rect);
@@ -131,5 +131,7 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
 
 
     }
+
+
 
 }

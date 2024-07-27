@@ -7,7 +7,7 @@ namespace Maple.MonoGameAssistant.MonoCollectorDataV2
     public sealed class MonoCollectorTypeVersionAttribute : Attribute
     {
         public Type ClassType { get; }
-        public EnumMonoCollectorTypeVersion Ver { get; } = EnumMonoCollectorTypeVersion.Game;
+        public EnumMonoCollectorTypeVersion Ver { get; } = EnumMonoCollectorTypeVersion.APP;
 
         public MonoCollectorTypeVersionAttribute(Type classType, EnumMonoCollectorTypeVersion ver)
         {
