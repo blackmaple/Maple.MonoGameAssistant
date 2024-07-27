@@ -11,6 +11,14 @@ namespace Maple.MonoGameAssistant.Core
 
         //[FieldOffset(8)]
         public readonly REF_MONO_ARRAY_LOWER_BOUND_T _lower_bound;
+
+
+        public int Length => _length.Length;
+        public long LongLength => _length.LongLength;
+
+        public int LowerBound => _lower_bound.LowerBound;
+        public long LongLowerBound => _lower_bound.LongLowerBound;
+
     }
 
     [StructLayout(LayoutKind.Sequential)]

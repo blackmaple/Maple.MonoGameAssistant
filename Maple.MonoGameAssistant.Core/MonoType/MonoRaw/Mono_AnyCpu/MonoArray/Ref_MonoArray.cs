@@ -17,20 +17,20 @@ namespace Maple.MonoGameAssistant.Core
     AsSpan<T_REF>(int size);
     */
 
-    [StructLayout(LayoutKind.Explicit)]
+    [StructLayout(LayoutKind.Sequential)]
     public readonly unsafe partial struct Ref_MonoArray
     {
-        [FieldOffset(0)]
+     //   [FieldOffset(0)]
         public readonly REF_MONO_OBJECT _obj;
 
-        [FieldOffset(0x10)]
+     //   [FieldOffset(0x10)]
         public readonly PTR_MONO_ARRAY_BOUNDS _bounds;
 
-        [FieldOffset(0x18)]
+      //  [FieldOffset(0x18)]
         public readonly REF_MONO_ARRAY_SIZE_T _length;
 
         [MarshalAs(UnmanagedType.U1)]
-        [FieldOffset(0x20)]
+    //    [FieldOffset(0x20)]
         public readonly byte _first_byte;
         //public byte Byte_2;
         //public ...
@@ -41,14 +41,14 @@ namespace Maple.MonoGameAssistant.Core
 
     readonly unsafe partial struct Ref_MonoArray : IRefMonoArray
     {
-        public int Size => _length._length;
+        public int Size => new nint(_length._length.ToPointer()).ToInt32();
 
         public ref byte FirstByte => ref Unsafe.AsRef(in _first_byte);
 
         public (int Length, int LowerBound) GetArrayBounds()
         {
             ref var ref_bounds = ref this._bounds.AsRef();
-            return (ref_bounds._length._length, ref_bounds._lower_bound._lower_bound);
+            return (ref_bounds.Length, ref_bounds.LowerBound);
         }
 
 

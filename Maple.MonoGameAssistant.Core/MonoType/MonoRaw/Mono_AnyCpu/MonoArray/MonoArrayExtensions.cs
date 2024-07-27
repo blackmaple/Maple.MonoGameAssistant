@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using System.Text;
 
 namespace Maple.MonoGameAssistant.Core
 {
@@ -95,7 +96,18 @@ namespace Maple.MonoGameAssistant.Core
 
 
 
-
+        public unsafe static string GetMonoArrayStructLayout()
+        {
+            StringBuilder stringBuilder = new();
+            Ref_MonoArray ex = new();
+            byte* addr = (byte*)&ex;
+            stringBuilder.AppendFormat("Size:      {0:x};", Unsafe.SizeOf<Ref_MonoArray>());
+            stringBuilder.AppendFormat("_obj Offset: {0:x};", (byte*)&ex._obj - addr);
+            stringBuilder.AppendFormat("_bounds Offset: {0:x};", (byte*)&ex._bounds - addr);
+            stringBuilder.AppendFormat("_length Offset: {0:x};", (byte*)&ex._length - addr);
+            stringBuilder.AppendFormat("_first_byte Offset: {0:x};", &ex._first_byte - addr);
+            return stringBuilder.ToString();
+        }
 
     }
 }

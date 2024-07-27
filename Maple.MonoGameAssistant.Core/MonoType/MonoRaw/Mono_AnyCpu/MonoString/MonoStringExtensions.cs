@@ -1,5 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using System.Text;
 
 namespace Maple.MonoGameAssistant.Core
 {
@@ -52,5 +53,17 @@ namespace Maple.MonoGameAssistant.Core
            
         }
 
+
+        public unsafe static string GetMonoStringStructLayout()
+        {
+            StringBuilder stringBuilder = new();
+            Ref_MonoString ex = new();
+            byte* addr = (byte*)&ex;
+            stringBuilder.AppendFormat("Size:      {0:x};", Unsafe.SizeOf<Ref_MonoArray>());
+            stringBuilder.AppendFormat("_obj Offset: {0:x};", (byte*)&ex._obj - addr);
+            stringBuilder.AppendFormat("m_stringLength Offset: {0:x};", (byte*)&ex.m_stringLength - addr);
+            stringBuilder.AppendFormat("m_firstChar Offset: {0:x};", (byte*)&ex.m_firstChar - addr);
+            return stringBuilder.ToString();
+        }
     }
 }
