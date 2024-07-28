@@ -7,6 +7,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Runtime;
 using System.Text;
 
 namespace Maple.MonoGameAssistant.MonoCollectorGeneratorV2
@@ -17,7 +18,7 @@ namespace Maple.MonoGameAssistant.MonoCollectorGeneratorV2
 
         public void Initialize(IncrementalGeneratorInitializationContext context)
         {
-           //System.Diagnostics.Debugger.Launch();
+  //        System.Diagnostics.Debugger.Launch();
             //  context.RegisterForSyntaxNotifications(() => new MonoCollectorSyntaxReceiver());
             try
             {
@@ -37,20 +38,28 @@ namespace Maple.MonoGameAssistant.MonoCollectorGeneratorV2
                 context.RegisterSourceOutput(genContenxt, (ctx, p) =>
                 {
                     var l_genOptions = p.Left;
+                    var genSourceContent = l_genOptions.OutputTypeClassesContext_Master_NET9();
+                    ctx.AddSource($"{l_genOptions.CustomClassName}.master.cs", genSourceContent);
+
+
                     var r_settingsClasses = p.Right;
 
                     //兼容下
-                    l_genOptions.VersionDatas.AddRange(r_settingsClasses);
-                    foreach (var settings in r_settingsClasses)
+                    if (r_settingsClasses.Length >0)
                     {
-                        foreach (var type in settings.TypeDatas)
+                        l_genOptions.VersionDatas.AddRange(r_settingsClasses);
+                        foreach (var settings in r_settingsClasses)
                         {
-                            var typeSourceContent = type.OutputCurrTypeClassContent_Master_NET9(l_genOptions);
-                            ctx.AddSource($"{type.ClassName}.master.cs", typeSourceContent);
+                            foreach (var type in settings.TypeDatas)
+                            {
+                                var typeSourceContent = type.OutputCurrTypeClassContent_Master_NET9(l_genOptions);
+                                ctx.AddSource($"{type.ClassName}.master.cs", typeSourceContent);
+                            }
+                            var verSourceContent = l_genOptions.OutputTypeClassesContext_Detail_NET9(settings);
+                            ctx.AddSource($"{settings.CustomClassName}.detail.cs", verSourceContent);
                         }
-                        var verSourceContent = l_genOptions.OutputTypeClassesContext_NET9(settings);
-                        ctx.AddSource($"{settings.CustomClassName}.g.cs", verSourceContent);
                     }
+
                 });
 
 

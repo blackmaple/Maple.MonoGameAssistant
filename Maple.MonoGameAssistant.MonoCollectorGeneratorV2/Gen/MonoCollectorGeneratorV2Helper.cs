@@ -498,12 +498,12 @@ namespace {typeData.NameSpace}
         }
         public static string OutputCurrTypeClassContent_Master_NET9(this MonoCollectorTypeData typeData, MonoCollectorOptionsData optionsData)
         {
-           var (classMainCtor, baseMainCtor) = optionsData.GetCurrClassMainCtor();
-         //   var methodContent = typeData.MethodDatas.OutputMethodDataContent(typeData, optionsData);
-       //     var propertyDataContent = typeData.OutputPropertyDataContent(optionsData);
-      //      var inheritViewDatas = typeData.InheritViewDatas.OutputInheritViewContent(typeData.PtrClassName);
-      //      var staticFieldContent = typeData.StaticFieldDatas.OutputStaticFieldContent(optionsData);
-      //      var initMemeberContent = typeData.OutputInitMemeberContent(optionsData);
+            var (classMainCtor, baseMainCtor) = optionsData.GetCurrClassMainCtor();
+            //   var methodContent = typeData.MethodDatas.OutputMethodDataContent(typeData, optionsData);
+            //     var propertyDataContent = typeData.OutputPropertyDataContent(optionsData);
+            //      var inheritViewDatas = typeData.InheritViewDatas.OutputInheritViewContent(typeData.PtrClassName);
+            //      var staticFieldContent = typeData.StaticFieldDatas.OutputStaticFieldContent(optionsData);
+            //      var initMemeberContent = typeData.OutputInitMemeberContent(optionsData);
             var objectNewContent = typeData.OutputObjectNewContent(optionsData);
             return $@"
 using System;
@@ -522,13 +522,13 @@ namespace {typeData.NameSpace}
         }
         public static string OutputCurrTypeClassContent_Detail_NET9(this MonoCollectorTypeData typeData, MonoCollectorOptionsData optionsData)
         {
-         //   var (classMainCtor, baseMainCtor) = optionsData.GetCurrClassMainCtor();
+            //   var (classMainCtor, baseMainCtor) = optionsData.GetCurrClassMainCtor();
             var methodContent = typeData.MethodDatas.OutputMethodDataContent(typeData, optionsData);
             var propertyDataContent = typeData.OutputPropertyDataContent(optionsData);
-        //    var inheritViewDatas = typeData.InheritViewDatas.OutputInheritViewContent(typeData.PtrClassName);
+            //    var inheritViewDatas = typeData.InheritViewDatas.OutputInheritViewContent(typeData.PtrClassName);
             var staticFieldContent = typeData.StaticFieldDatas.OutputStaticFieldContent(optionsData);
             var initMemeberContent = typeData.OutputInitMemeberContent(optionsData);
-      //      var objectNewContent = typeData.OutputObjectNewContent(optionsData);
+            //      var objectNewContent = typeData.OutputObjectNewContent(optionsData);
             return $@"
 using System;
 using System.Runtime.CompilerServices;
@@ -646,10 +646,10 @@ namespace {typeData.NameSpace}
                 throw new MonoCollectorGeneratorV2Exception($"ERROR {nameof(optionsData.MonoCollectorContext_Ctor)} {nameof(optionsData.MonoCollectorContext_Ctor.ParamDatas)}.3");
             }
             var count = optionsData.MonoCollectorContext_Ctor.ParamDatas.Count;
-            var arrParamData = optionsData.MonoCollectorContext_Ctor.ParamDatas.Take(count - 1) ;
+            var arrParamData = optionsData.MonoCollectorContext_Ctor.ParamDatas.Take(count - 1);
             var classMainCtor = string.Join(", ", arrParamData.Select(p => p.OutputInvoke()));
 
-            var baseMainCtor = string.Join(", ", arrParamData.Concat(new MonoCollectorMethodParamData[] { new MonoCollectorMethodParamData() { ParamName= $@"""{DateTime.Now:yyyyMMddHHmmss}""" } }).Select(p => p.OutputCall()));
+            var baseMainCtor = string.Join(", ", arrParamData.Concat(new MonoCollectorMethodParamData[] { new MonoCollectorMethodParamData() { ParamName = $@"""{DateTime.Now:yyyyMMddHHmmss}""" } }).Select(p => p.OutputCall()));
             var code = string.Join(SyntaxFactory.ElasticCarriageReturnLineFeed.ToString(), optionsData.VersionDatas.Select(p => p.CreateNewClassStaticMethod(baseMainCtor)));
             return $@"
         {MonoCollecotrConvString.DisplayName_public} static {versionData.CustomClassName} LoadGameContext({classMainCtor}) 
@@ -700,7 +700,7 @@ namespace {versionData.CustomClassNamespace}
 
         }
 
-        public static string OutputTypeClassesContext_NET9(
+        public static string OutputTypeClassesContext_Detail_NET9(
     this MonoCollectorOptionsData optionsData,
     MonoCollectorVersionData versionData)
         {
@@ -716,7 +716,6 @@ namespace {versionData.CustomClassNamespace}
 {{
 
     {MonoCollecotrConvString.DisplayName_PartialClass} {versionData.CustomClassName} 
-        : {(versionData.Ver == EnumMonoCollectorTypeVersion.APP ? optionsData.MonoCollectorContext : optionsData.CustomClassFullName)} 
     {{
 
         {customClassFieldContent}
@@ -724,6 +723,26 @@ namespace {versionData.CustomClassNamespace}
         {mainCtorContent}
 
         {newClassStaticMethod}
+
+    }}
+}}";
+
+        }
+
+        public static string OutputTypeClassesContext_Master_NET9(this MonoCollectorOptionsData optionsData)
+        {
+            return $@"
+using System;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
+
+namespace {optionsData.CustomClassNamespace}
+{{
+
+    {MonoCollecotrConvString.DisplayName_PartialClass} {optionsData.CustomClassName} : {optionsData.MonoCollectorContext} 
+    {{
+
+       
 
     }}
 }}";
