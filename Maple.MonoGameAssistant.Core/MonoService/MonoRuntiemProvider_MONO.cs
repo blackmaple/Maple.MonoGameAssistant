@@ -1,6 +1,7 @@
 ﻿using Maple.MonoGameAssistant.Common;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Buffers;
 using System.Diagnostics;
 using System.Globalization;
 using System.Runtime.CompilerServices;
@@ -525,19 +526,10 @@ namespace Maple.MonoGameAssistant.Core
                 //T_STRUCT ref_data = this.Runtime.MONO_FIELD_STATIC_GET_VALUE.Invoke<T_STRUCT>(pMonoVirtualTable, pMonoField);
                 //return ref_data;
             }
-            var size = Unsafe.SizeOf<T_STRUCT>();
-          
-            System.Diagnostics.Trace.Assert(size <= sizeof(long));
-            Span<byte> buffer = (stackalloc byte[size]);
-            ref var ref_buffer = ref MemoryMarshal.GetReference(buffer);
-            var pBuffer = Unsafe.AsPointer(ref ref_buffer);
-        
-            this.Runtime.MONO_FIELD_STATIC_GET_VALUE.Invoke(pMonoVirtualTable, pMonoField, pBuffer);
-           
-            var ref_data =  Unsafe.As<byte, T_STRUCT>(ref ref_buffer);
-            this.Logger.Info(Convert.ToHexString(buffer));
-            this.Logger.Info("3");
-            //T_STRUCT ref_data = this.Runtime.MONO_FIELD_STATIC_GET_VALUE.Invoke<T_STRUCT>(pMonoVirtualTable, pMonoField);
+
+
+            
+            T_STRUCT ref_data = this.Runtime.MONO_FIELD_STATIC_GET_VALUE.Invoke2<T_STRUCT>(pMonoVirtualTable, pMonoField);
             return ref_data;
 
 
