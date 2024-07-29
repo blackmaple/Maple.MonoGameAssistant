@@ -44,6 +44,7 @@ namespace Maple.MonoGameAssistant.Core
         /// <param name="pMonoVirtualTable"></param>
         /// <param name="pMonoField"></param>
         /// <returns></returns>
+        [Obsolete("Call x86 monoapi stackalloc error", true)]
         [SkipLocalsInit]
         public readonly T_STRUCT Invoke<T_STRUCT>(PMonoVirtualTable pMonoVirtualTable, PMonoField pMonoField)
             where T_STRUCT : struct
@@ -58,7 +59,6 @@ namespace Maple.MonoGameAssistant.Core
             return Unsafe.As<byte, T_STRUCT>(ref ref_buffer);
         }
 
-        [SkipLocalsInit]
         public readonly T_STRUCT Invoke2<T_STRUCT>(PMonoVirtualTable pMonoVirtualTable, PMonoField pMonoField)
             where T_STRUCT : struct
         {
