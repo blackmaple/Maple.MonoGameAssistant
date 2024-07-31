@@ -333,7 +333,8 @@ namespace Maple.GameContext
 
         public virtual ValueTask<GameSessionInfoDTO> GetSessionInfoAsync()
         {
-            var api = this.GameContext.ApiVersion;
+
+            var api = this.GameContext is not null ? this.GameContext.ApiVersion : "???";
             var data = this.GameSettings.GetGameSessionInfo(api);
             return ValueTask.FromResult(data);
         }
