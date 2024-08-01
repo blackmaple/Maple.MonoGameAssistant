@@ -136,6 +136,25 @@ namespace Maple.MonoGameAssistant.Core
             return this.RuntimeContext.CreateMonoClass<T_MonoObject>(ClassInfo.ClassInfoDTO.Pointer, true);
         }
 
+        [MonoCollectorFlag(EnumMonoCollectorFlag.Ctor)]
+        public T_MonoObject IsFrom<T_MonoObject>(PMonoObject pMonoObject)
+        where T_MonoObject : unmanaged
+        {
+            var pMonoClass = pMonoObject.MonoClass;
+            if (pMonoClass == this.ClassInfo.ClassInfoDTO.Pointer)
+            {
+               return pMonoObject.To<T_MonoObject>();
+            }
+            return default;
+        }
+        [MonoCollectorFlag(EnumMonoCollectorFlag.Ctor)]
+        public T_MonoObject IsFrom<T_MonoObject>(nint pObj)
+            where T_MonoObject : unmanaged
+        {
+            return IsFrom<T_MonoObject>(new PMonoObject(pObj));
+        }
+
+
         [MonoCollectorFlag(EnumMonoCollectorFlag.NewArray)]
         public Span<T_ARRAY> NewArray<T_ARRAY>(int count, out PMonoArray ptrRawArray)
             where T_ARRAY : unmanaged

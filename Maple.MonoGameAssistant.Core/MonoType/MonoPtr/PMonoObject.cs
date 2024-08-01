@@ -30,10 +30,10 @@ namespace Maple.MonoGameAssistant.Core
             return Unsafe.As<T_STRUCT, PMonoObject>(ref data);
         }
 
-        public PMonoClass MonoClass=> To<REF_MONO_OBJECT>().MonoClass;
+        public PMonoClass MonoClass => _ptr.AsRefStruct<REF_MONO_OBJECT>().MonoClass;
     }
 
-
-
  
+
+
 }
