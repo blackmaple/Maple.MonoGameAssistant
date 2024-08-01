@@ -14,6 +14,8 @@ namespace Maple.MonoGameAssistant.Core
       //  [FieldOffset(8)]
         public readonly nint _synchronisation;
 
+
+        public PMonoClass  MonoClass=> _vtable.AsRef().MonoClass;
     }
 
 

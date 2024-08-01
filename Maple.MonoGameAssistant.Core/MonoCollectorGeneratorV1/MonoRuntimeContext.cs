@@ -547,7 +547,7 @@ namespace Maple.MonoGameAssistant.Core
             return GetMonoClassInfoDTO(typeClass, pMonoType, monoTypeInfoDTO, false);
         }
 
-        private MonoClassInfoDTO GetMonoClassInfoDTO(PMonoClass pMonoClass) => GetMonoClassInfoDTO(pMonoClass, new MonoClassInfoDTO(), false);
+        public MonoClassInfoDTO GetMonoClassInfoDTO(PMonoClass pMonoClass) => GetMonoClassInfoDTO(pMonoClass, new MonoClassInfoDTO(), false);
         #endregion
 
         #region IMonoRuntiemProvider->MonoType
