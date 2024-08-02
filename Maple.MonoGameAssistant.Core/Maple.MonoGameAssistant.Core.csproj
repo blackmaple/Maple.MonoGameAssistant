@@ -11,8 +11,14 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Compile Remove="MonoType\MonoRaw\Mono_x64\MonoArray\**" />
+	  <Compile Remove="MonoType\MonoRaw\Mono_x64\MonoString\**" />
 	  <Compile Remove="MonoType\MonoRaw\x86\**" />
+	  <EmbeddedResource Remove="MonoType\MonoRaw\Mono_x64\MonoArray\**" />
+	  <EmbeddedResource Remove="MonoType\MonoRaw\Mono_x64\MonoString\**" />
 	  <EmbeddedResource Remove="MonoType\MonoRaw\x86\**" />
+	  <None Remove="MonoType\MonoRaw\Mono_x64\MonoArray\**" />
+	  <None Remove="MonoType\MonoRaw\Mono_x64\MonoString\**" />
 	  <None Remove="MonoType\MonoRaw\x86\**" />
 	</ItemGroup>
 
@@ -32,11 +38,6 @@
 	  <ProjectReference Include="..\Maple.MonoGameAssistant.Logger\Maple.MonoGameAssistant.Logger.csproj" />
 	  <ProjectReference Include="..\Maple.MonoGameAssistant.Model\Maple.MonoGameAssistant.Model.csproj" />
 	  <ProjectReference Include="..\Maple.MonoGameAssistant.MonoCollector\Maple.MonoGameAssistant.MonoCollector.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="MonoType\MonoRaw\Mono_x64\MonoArray\" />
-	  <Folder Include="MonoType\MonoRaw\Mono_x64\MonoString\" />
 	</ItemGroup>
 
 

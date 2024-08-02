@@ -34,7 +34,7 @@ namespace Maple.MonoGameAssistant.Core
         /// <summary>
         /// 0x10 nint _comparer;
         /// </summary>
-        [FieldOffset(0x10)] 
+        [FieldOffset(0x10)]
         public readonly nint _comparer;
 
 
@@ -42,7 +42,7 @@ namespace Maple.MonoGameAssistant.Core
         /// <summary>
         /// 0x14 nint _siInfo;
         /// </summary>
-        [FieldOffset(0x14)] 
+        [FieldOffset(0x14)]
         public readonly nint _siInfo;
 
 
@@ -71,7 +71,7 @@ namespace Maple.MonoGameAssistant.Core
         /// <summary>
         /// 0x24 System.Int32 _version;
         /// </summary>
-        [FieldOffset(0x24)] 
+        [FieldOffset(0x24)]
         public readonly System.Int32 _version;
 
 
