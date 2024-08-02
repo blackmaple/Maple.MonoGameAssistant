@@ -18,7 +18,7 @@ namespace Maple.MonoGameAssistant.MonoCollectorGeneratorV2
 
         public void Initialize(IncrementalGeneratorInitializationContext context)
         {
-  //        System.Diagnostics.Debugger.Launch();
+            //System.Diagnostics.Debugger.Launch();
             //  context.RegisterForSyntaxNotifications(() => new MonoCollectorSyntaxReceiver());
             try
             {
@@ -38,26 +38,24 @@ namespace Maple.MonoGameAssistant.MonoCollectorGeneratorV2
                 context.RegisterSourceOutput(genContenxt, (ctx, p) =>
                 {
                     var l_genOptions = p.Left;
-                    var genSourceContent = l_genOptions.OutputTypeClassesContext_Master_NET9();
-                    ctx.AddSource($"{l_genOptions.CustomClassName}.master.cs", genSourceContent);
-
-
                     var r_settingsClasses = p.Right;
 
-                    //兼容下
-                    if (r_settingsClasses.Length >0)
+                    if (r_settingsClasses.Length > 0)
                     {
-                        l_genOptions.VersionDatas.AddRange(r_settingsClasses);
+                      
                         foreach (var settings in r_settingsClasses)
                         {
-                            foreach (var type in settings.TypeDatas)
-                            {
-                                var typeSourceContent = type.OutputCurrTypeClassContent_Master_NET9(l_genOptions);
-                                ctx.AddSource($"{type.ClassName}.master.cs", typeSourceContent);
-                            }
+                            l_genOptions.VersionDatas.Add(settings);
                             var verSourceContent = l_genOptions.OutputTypeClassesContext_Detail_NET9(settings);
                             ctx.AddSource($"{settings.CustomClassName}.detail.cs", verSourceContent);
+                            l_genOptions.VersionDatas.Clear();
                         }
+                    }
+                    else
+                    {
+                        var verSourceContent = l_genOptions.OutputTypeClassesContext_Master_NET9();
+                        ctx.AddSource($"{l_genOptions.CustomClassName}.master.cs", verSourceContent);
+
                     }
 
                 });
@@ -76,8 +74,17 @@ namespace Maple.MonoGameAssistant.MonoCollectorGeneratorV2
                     var r_typeClasses = p.Right;
                     foreach (var type in r_typeClasses)
                     {
-                        var typeSourceContent = type.OutputCurrTypeClassContent_Detail_NET9(l_genOptions);
-                        ctx.AddSource($"{type.ClassName}.detail.cs", typeSourceContent);
+                        var v = new MonoCollectorVersionData()
+                        {
+                            CustomClassFullName = l_genOptions.CustomClassFullName,
+                            CustomClassName = l_genOptions.CustomClassName,
+                            CustomClassNamespace = l_genOptions.CustomClassNamespace,
+                            Ver = EnumMonoCollectorTypeVersion.APP,
+                        };
+                        v.TypeDatas.Add(type);
+                        l_genOptions.VersionDatas.Add(v);
+                        var typeSourceContent_Detail = type.OutputCurrTypeClassContent_Detail_NET9(l_genOptions);
+                        ctx.AddSource($"{type.ClassName}.detail.cs", typeSourceContent_Detail);
                     }
                 });
 

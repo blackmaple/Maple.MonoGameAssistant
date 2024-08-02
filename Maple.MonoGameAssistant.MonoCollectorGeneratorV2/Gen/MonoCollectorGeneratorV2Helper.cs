@@ -496,6 +496,8 @@ namespace {typeData.NameSpace}
 
 
         }
+
+        [Obsolete("remove...")]
         public static string OutputCurrTypeClassContent_Master_NET9(this MonoCollectorTypeData typeData, MonoCollectorOptionsData optionsData)
         {
             var (classMainCtor, baseMainCtor) = optionsData.GetCurrClassMainCtor();
@@ -522,13 +524,13 @@ namespace {typeData.NameSpace}
         }
         public static string OutputCurrTypeClassContent_Detail_NET9(this MonoCollectorTypeData typeData, MonoCollectorOptionsData optionsData)
         {
-            //   var (classMainCtor, baseMainCtor) = optionsData.GetCurrClassMainCtor();
+            var (classMainCtor, baseMainCtor) = optionsData.GetCurrClassMainCtor();
             var methodContent = typeData.MethodDatas.OutputMethodDataContent(typeData, optionsData);
             var propertyDataContent = typeData.OutputPropertyDataContent(optionsData);
             //    var inheritViewDatas = typeData.InheritViewDatas.OutputInheritViewContent(typeData.PtrClassName);
             var staticFieldContent = typeData.StaticFieldDatas.OutputStaticFieldContent(optionsData);
             var initMemeberContent = typeData.OutputInitMemeberContent(optionsData);
-            //      var objectNewContent = typeData.OutputObjectNewContent(optionsData);
+            var objectNewContent = typeData.OutputObjectNewContent(optionsData);
             return $@"
 using System;
 using System.Runtime.CompilerServices;
@@ -536,8 +538,10 @@ using System.Runtime.InteropServices;
 
 namespace {typeData.NameSpace}
 {{
-    {MonoCollecotrConvString.DisplayName_PartialClass} {typeData.ClassName}
+    {MonoCollecotrConvString.DisplayName_PartialClass} {typeData.ClassName}({classMainCtor}) : {optionsData.MonoCollectorMember}({baseMainCtor})
     {{
+        {objectNewContent}
+
         {staticFieldContent}
 
         {methodContent}
@@ -610,6 +614,17 @@ namespace {typeData.NameSpace}
             {initContent}
         }}";
         }
+        static string OutputTypeClasses_MainCtor(this MonoCollectorOptionsData optionsData)
+        {
+            var classMainCtor = string.Join(", ", optionsData.MonoCollectorContext_Ctor.ParamDatas.Select(p => p.OutputInvoke()));
+            var baseMainCtor = string.Join(", ", optionsData.MonoCollectorContext_Ctor.ParamDatas.Select(p => p.OutputCall()));
+            return $@"
+        {MonoCollecotrConvString.DisplayName_public} {optionsData.CustomClassName}({classMainCtor}) : base({baseMainCtor})
+        {{
+             
+        }}";
+        }
+
         #endregion
 
         #region 创建一个根据版本号实例化的静态方法 仅在ver_commmon
@@ -715,7 +730,7 @@ using System.Runtime.InteropServices;
 namespace {versionData.CustomClassNamespace}
 {{
 
-    {MonoCollecotrConvString.DisplayName_PartialClass} {versionData.CustomClassName} 
+    {MonoCollecotrConvString.DisplayName_PartialClass} {versionData.CustomClassName} : {optionsData.MonoCollectorContext} 
     {{
 
         {customClassFieldContent}
@@ -731,6 +746,8 @@ namespace {versionData.CustomClassNamespace}
 
         public static string OutputTypeClassesContext_Master_NET9(this MonoCollectorOptionsData optionsData)
         {
+            var mainCtorContent = optionsData.OutputTypeClasses_MainCtor();
+
             return $@"
 using System;
 using System.Runtime.CompilerServices;
@@ -742,7 +759,7 @@ namespace {optionsData.CustomClassNamespace}
     {MonoCollecotrConvString.DisplayName_PartialClass} {optionsData.CustomClassName} : {optionsData.MonoCollectorContext} 
     {{
 
-       
+       {mainCtorContent}
 
     }}
 }}";
