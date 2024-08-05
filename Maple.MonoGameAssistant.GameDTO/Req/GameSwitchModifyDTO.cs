@@ -38,5 +38,7 @@ namespace Maple.MonoGameAssistant.GameDTO
             set => ContentValue = value.ToString();
         }
 
+
+       
     }
 }

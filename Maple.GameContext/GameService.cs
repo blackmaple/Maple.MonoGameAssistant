@@ -341,7 +341,7 @@ namespace Maple.GameContext
 
 
         public virtual ValueTask<GameSessionInfoDTO> LoadResourceAsync()
-            => GameException.Throw<ValueTask<GameSessionInfoDTO>>("NotImplemented");
+            => GetSessionInfoAsync();
 
         public virtual ValueTask<GameCharacterDisplayDTO[]> GetListCharacterDisplayAsync()
             => ValueTask.FromResult<GameCharacterDisplayDTO[]>([]);
