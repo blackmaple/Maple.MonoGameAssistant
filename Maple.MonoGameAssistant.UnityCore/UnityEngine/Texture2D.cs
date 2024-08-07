@@ -430,7 +430,7 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
         ///   System.Int32 get_height()
         /// </summary>
         /// <returns>struct System.Int32</returns>
-        [MonoCollectorMethod(Name_Func_GET_HEIGHT)]
+        [MonoCollectorMethod(Name_Func_GET_HEIGHT, CallConvs = [typeof(CallConvCdecl)])]
         extern System.Int32 GET_HEIGHT();
 
 
@@ -616,7 +616,7 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
         ///   System.Int32 get_width()
         /// </summary>
         /// <returns>struct System.Int32</returns>
-        [MonoCollectorMethod(Name_Func_GET_WIDTH)]
+        [MonoCollectorMethod(Name_Func_GET_WIDTH, CallConvs = [typeof(CallConvCdecl)])]
         extern System.Int32 GET_WIDTH();
 
 
@@ -1438,7 +1438,7 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
         /// <param name="textureFormat">enum UnityEngine.TextureFormat</param>
         /// <param name="mipChain">struct System.Boolean</param>
         /// <returns>struct System.Void</returns>
-        [MonoCollectorMethod(Name_Func_CTOR, Search = typeof(Search_Texture2D))]
+        [MonoCollectorMethod(Name_Func_CTOR, Search = typeof(Search_Texture2D), CallConvs = [typeof(CallConvCdecl)])]
         public extern void CTOR_07(System.Int32 width, System.Int32 height, UnityEngine.TextureFormat textureFormat, System.Boolean mipChain);
 
 
@@ -1448,7 +1448,7 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
         /// <param name="width">struct System.Int32</param>
         /// <param name="height">struct System.Int32</param>
         /// <returns>struct System.Void</returns>
-        [MonoCollectorMethod(Name_Func_CTOR, Search = typeof(Search_Texture2D))]
+        [MonoCollectorMethod(Name_Func_CTOR, Search = typeof(Search_Texture2D), CallConvs = [typeof(CallConvCdecl)])]
         extern void CTOR_08(System.Int32 width, System.Int32 height);
 
 
@@ -1492,7 +1492,7 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
         ///   System.Void Apply()
         /// </summary>
         /// <returns>struct System.Void</returns>
-        [MonoCollectorMethod(Name_Func_APPLY, Search = typeof(Search_Texture2D))]
+        [MonoCollectorMethod(Name_Func_APPLY, Search = typeof(Search_Texture2D), CallConvs = [typeof(CallConvCdecl)])]
         extern void APPLY_02();
 
 
@@ -1946,7 +1946,7 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
         /// <param name="destX">struct System.Int32</param>
         /// <param name="destY">struct System.Int32</param>
         /// <returns>struct System.Void</returns>
-        [MonoCollectorMethod(Name_Func_READ_PIXELS, Search = typeof(Search_Texture2D))]
+        [MonoCollectorMethod(Name_Func_READ_PIXELS, Search = typeof(Search_Texture2D), CallConvs = [typeof(CallConvCdecl)])]
         extern void READ_PIXELS_01(UnityEngine.Rect.Ref_Rect source, System.Int32 destX, System.Int32 destY);
 
 

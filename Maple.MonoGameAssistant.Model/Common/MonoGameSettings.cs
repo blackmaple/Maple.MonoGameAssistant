@@ -65,6 +65,8 @@ namespace Maple.MonoGameAssistant.Model
         /// </summary>
         public string? GameResource { set; get; }
 
+
+        public string? QQ { set; get; }
         public bool TryGetRandomPort(out int port)
         {
             port = this.Port;
@@ -214,7 +216,7 @@ namespace Maple.MonoGameAssistant.Model
             return localFullFile.Replace(rootPath, this.BaseAddress).Replace(@"\", @"/");
         }
 
-        public GameSessionInfoDTO GetGameSessionInfo(string? ver =default)
+        public GameSessionInfoDTO GetGameSessionInfo(string? ver = default)
         {
             return new GameSessionInfoDTO()
             {
@@ -222,7 +224,8 @@ namespace Maple.MonoGameAssistant.Model
                 ObjectId = Environment.ProcessId.ToString(),
                 DisplayName = this.GameName,
                 DisplayDesc = string.Empty,
-                ApiVer = ver
+                ApiVer = ver,
+                QQ = this.QQ,
             };
         }
     }

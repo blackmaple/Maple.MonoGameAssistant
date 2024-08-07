@@ -21,15 +21,15 @@ namespace Maple.MonoGameAssistant.WebApi
 
 
 
-     //   [RequiresUnreferencedCode("This functionality is not compatible with trimming. Use 'MethodFriendlyToTrimming' instead")]
-        public WebApiBaseService(string gameName = "Test")
+        //   [RequiresUnreferencedCode("This functionality is not compatible with trimming. Use 'MethodFriendlyToTrimming' instead")]
+        public WebApiBaseService(string gameName = "Test", string? qq = default)
         {
             this.SlimBuilder = WebApplication.CreateSlimBuilder();
-            this.Settings = this.ConfigureMonoGameSettings(gameName);
+            this.Settings = this.ConfigureMonoGameSettings(gameName, qq);
         }
 
-    //    [RequiresUnreferencedCode("This functionality is not compatible with trimming. Use 'MethodFriendlyToTrimming' instead")]
-        private MonoGameSettings ConfigureMonoGameSettings(string gameName)
+        //    [RequiresUnreferencedCode("This functionality is not compatible with trimming. Use 'MethodFriendlyToTrimming' instead")]
+        private MonoGameSettings ConfigureMonoGameSettings(string gameName, string? qq = default)
         {
             var settings = SlimBuilder.Configuration.GetSection(nameof(MonoGameSettings)).Get<MonoGameSettings>();
             settings ??= new MonoGameSettings()
@@ -38,8 +38,10 @@ namespace Maple.MonoGameAssistant.WebApi
                 NamedPipe = true,
                 Http = false,
                 IndexPage = "/index.html"
+
             };
             settings.GameName = gameName;
+            settings.QQ = qq;
             settings.GamePath = this.SlimBuilder.Environment.ContentRootPath;
             settings.WebRootPath = this.SlimBuilder.Environment.WebRootPath;
             this.ServiceDescriptors.AddSingleton(settings);
@@ -204,7 +206,7 @@ namespace Maple.MonoGameAssistant.WebApi
         private void UseGameWebApi(IEndpointRouteBuilder app)
         {
             var gameGroup = app.MapGroup("/game").RequireCors(p => p.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
-            gameGroup.MapGet("/info", async ([FromServices] IGameWebApiControllers gameService) => 
+            gameGroup.MapGet("/info", async ([FromServices] IGameWebApiControllers gameService) =>
             {
                 var data = await gameService.GetSessionInfoAsync().ConfigureAwait(false);
                 return data.GetOk();

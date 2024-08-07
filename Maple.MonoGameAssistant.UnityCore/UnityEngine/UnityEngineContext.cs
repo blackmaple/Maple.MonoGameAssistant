@@ -1,4 +1,5 @@
-﻿using Maple.MonoGameAssistant.Core;
+﻿using Maple.MonoGameAssistant.Common;
+using Maple.MonoGameAssistant.Core;
 using Maple.MonoGameAssistant.MonoCollector;
 using Maple.MonoGameAssistant.MonoCollectorDataV2;
 using Microsoft.Extensions.Logging;
@@ -102,10 +103,7 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
             {
                 return default;
             }
-
             UnityPlayerNativeMethodSetting.GET_TEXTURE_RECT_INJECTED(pSprite, out var ref_Rect);
-            //          this.Logger.LogInformation("{x}/{y}/{h}/{w}", ref_Rect.m_XMin, ref_Rect.m_YMin, ref_Rect.m_Height, ref_Rect.m_Width);
-
             var pDestTexture2D = this.Texture2D.New<Ptr_Texture2D>(false);
             CopyToTexture2D2(pSrcTexture2D, pDestTexture2D, ref_Rect);
             return NativeMethodSetting.EncodeToPng(pDestTexture2D);
@@ -128,6 +126,8 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
         public UnityEngineContext_MONO(MonoRuntimeContext runtimeContext, ILogger logger) : base(runtimeContext, EnumMonoCollectorTypeVersion.MONO, logger, "202407222110")
         {
             //用MONO 编译的GAME 获取到UnityPlayer.dll 函数地址偏移不一样 需要根据每个游戏修改
+            //UnityEngine.ImageConversion::EncodeToPNG
+            //UnityEngine.Graphics::Blit2
             this.NativeMethodSetting.LoadNativeMethod_MONO(offset_encode_to_png: 0x217030, offset_blit2: 0x878C0);
         }
     }

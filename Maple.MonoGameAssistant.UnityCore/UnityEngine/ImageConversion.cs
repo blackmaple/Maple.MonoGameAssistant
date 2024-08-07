@@ -96,7 +96,7 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
         /// </summary>
         /// <param name="tex">class UnityEngine.Texture2D</param>
         /// <returns>class System.Byte[]</returns>
-        [MonoCollectorBaseAddress("UnityPlayer.dll", 0xAFFB90, RealTime = false)]
+        [MonoCollectorBaseAddress("UnityPlayer.dll", 0xAFFB90, RealTime = false, CallConvs = [typeof(CallConvCdecl)])]
         static unsafe extern PMonoArray<byte> ENCODE_TO_PNG2(UnityEngine.Texture2D.Ptr_Texture2D tex);
 
 
@@ -107,7 +107,7 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
         /// </summary>
         /// <param name="tex">class UnityEngine.Texture2D</param>
         /// <returns>class System.Byte[]</returns>
-        [MonoCollectorMethod(Name_Func_ENCODE_TO_PNG)]
+        [MonoCollectorMethod(Name_Func_ENCODE_TO_PNG, CallConvs = [typeof(CallConvCdecl)])]
         static extern PMonoArray<byte> ENCODE_TO_PNG(UnityEngine.Texture2D.Ptr_Texture2D tex);
 
 
@@ -128,7 +128,7 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
         /// </summary>
         /// <param name="tex">class UnityEngine.Texture2D</param>
         /// <returns>class System.Byte[]</returns>
-        [MonoCollectorMethod(Name_Func_ENCODE_TO_JPG, Search = typeof(Search_ImageConversion))]
+        [MonoCollectorMethod(Name_Func_ENCODE_TO_JPG, Search = typeof(Search_ImageConversion), CallConvs = [typeof(CallConvCdecl)])]
         static extern nint ENCODE_TO_JPG_01(nint tex);
 
 

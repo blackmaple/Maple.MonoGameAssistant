@@ -284,7 +284,7 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
         /// static  UnityEngine.RenderTexture get_active()
         /// </summary>
         /// <returns>class UnityEngine.RenderTexture</returns>
-        [MonoGameAssistant.MonoCollectorDataV2.MonoCollectorMethod(Name_Func_GET_ACTIVE)]
+        [MonoGameAssistant.MonoCollectorDataV2.MonoCollectorMethod(Name_Func_GET_ACTIVE, CallConvs = [typeof(CallConvCdecl)])]
         static extern nint GET_ACTIVE();
 
 
@@ -973,7 +973,7 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
         /// </summary>
         /// <param name="temp">class UnityEngine.RenderTexture</param>
         /// <returns>struct System.Void</returns>
-        [MonoGameAssistant.MonoCollectorDataV2.MonoCollectorMethod(Name_Func_RELEASE_TEMPORARY)]
+        [MonoGameAssistant.MonoCollectorDataV2.MonoCollectorMethod(Name_Func_RELEASE_TEMPORARY, CallConvs = [typeof(CallConvCdecl)])]
         static extern void RELEASE_TEMPORARY(nint temp);
 
 
@@ -1000,7 +1000,7 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
         /// </summary>
         /// <param name="value">class UnityEngine.RenderTexture</param>
         /// <returns>struct System.Void</returns>
-        [MonoGameAssistant.MonoCollectorDataV2.MonoCollectorMethod(Name_Func_SET_ACTIVE)]
+        [MonoGameAssistant.MonoCollectorDataV2.MonoCollectorMethod(Name_Func_SET_ACTIVE, CallConvs = [typeof(CallConvCdecl)])]
         static extern void SET_ACTIVE(nint value);
 
 
@@ -1694,7 +1694,7 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
         ///   System.Int32 get_height()
         /// </summary>
         /// <returns>struct System.Int32</returns>
-        [MonoGameAssistant.MonoCollectorDataV2.MonoCollectorMethod(Name_Func_GET_HEIGHT)]
+        [MonoGameAssistant.MonoCollectorDataV2.MonoCollectorMethod(Name_Func_GET_HEIGHT, CallConvs = [typeof(CallConvCdecl)])]
         extern System.Int32 GET_HEIGHT_00();
 
 
@@ -1711,7 +1711,7 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
         ///   System.Int32 get_width()
         /// </summary>
         /// <returns>struct System.Int32</returns>
-        [MonoGameAssistant.MonoCollectorDataV2.MonoCollectorMethod(Name_Func_GET_WIDTH)]
+        [MonoGameAssistant.MonoCollectorDataV2.MonoCollectorMethod(Name_Func_GET_WIDTH, CallConvs = [typeof(CallConvCdecl)])]
         extern System.Int32 GET_WIDTH_00();
 
 
@@ -1874,7 +1874,7 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
         /// <param name="format">enum UnityEngine.RenderTextureFormat</param>
         /// <param name="readWrite">enum UnityEngine.RenderTextureReadWrite</param>
         /// <returns>class UnityEngine.RenderTexture</returns>
-        [MonoGameAssistant.MonoCollectorDataV2.MonoCollectorMethod(Name_Func_GET_TEMPORARY, Search = typeof(Search_RenderTexture))]
+        [MonoGameAssistant.MonoCollectorDataV2.MonoCollectorMethod(Name_Func_GET_TEMPORARY, Search = typeof(Search_RenderTexture), CallConvs = [typeof(CallConvCdecl)])]
         static extern RenderTexture.Ptr_RenderTexture GET_TEMPORARY_0A(System.Int32 width, System.Int32 height, System.Int32 depthBuffer, UnityEngine.RenderTextureFormat format, UnityEngine.RenderTextureReadWrite readWrite);
 
 

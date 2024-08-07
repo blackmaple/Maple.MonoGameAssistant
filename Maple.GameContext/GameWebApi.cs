@@ -14,8 +14,8 @@ namespace Maple.GameContext
     public class GameWebApi<
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] T_GAMEWEBAPI,
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] T_GAMESERVICE,
-        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] T_GAMECONTEXT>(string gameName)
-        : WebApiBaseService(gameName)
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] T_GAMECONTEXT>(string gameName, string? qq = default)
+        : WebApiBaseService(gameName, qq)
         where T_GAMEWEBAPI : WebApiBaseService, new()
         where T_GAMESERVICE : GameService<T_GAMECONTEXT>
         where T_GAMECONTEXT : MonoCollectorContext

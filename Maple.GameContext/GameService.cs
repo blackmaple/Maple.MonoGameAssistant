@@ -81,7 +81,7 @@ namespace Maple.GameContext
                 {
                     this.GameContext = this.LoadGameContext();
                     this.Logger.LogInformation("LoadGameContext=>{ver}=>{api}", this.GameContext.TypeVersion, this.GameContext.ApiVersion);
-                    this.UnityEngineContext = this.LoadUnityEngineContext();
+                    this.UnityEngineContext = this.TryLoadUnityEngineContext();
                     this.Logger.LogInformation("LoadUnityEngineContext=>{load}=>{ver}=>{api}",
                         this.UnityEngineContext is not null,
                         this.UnityEngineContext?.TypeVersion,
@@ -92,11 +92,12 @@ namespace Maple.GameContext
 
         }
         protected abstract T_GAMECONTEXT LoadGameContext();
-        protected UnityEngineContext? LoadUnityEngineContext()
+        protected virtual UnityEngineContext? LoadUnityEngineContext() => UnityEngineContext.LoadUnityContext(this.RuntimeContext, this.Logger);
+        protected UnityEngineContext? TryLoadUnityEngineContext()
         {
             try
             {
-                return UnityEngineContext.LoadUnityContext(this.RuntimeContext, this.Logger);
+                return LoadUnityEngineContext();
             }
             catch (Exception ex)
             {

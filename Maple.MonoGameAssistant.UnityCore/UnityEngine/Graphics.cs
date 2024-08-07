@@ -17,7 +17,7 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
     /// </summary>
     //[Maple.MonoGameAssistant.MonoCollectorDataV2.MonoCollectorSettingsAttribute([85, 110, 105, 116, 121, 69, 110, 103, 105, 110, 101, 46, 67, 111, 114, 101, 77, 111, 100, 117, 108, 101, 46, 100, 108, 108], 0x02000080U)]
     //[Maple.MonoGameAssistant.MonoCollectorDataV2.MonoCollectorSettingsAttribute([85, 110, 105, 116, 121, 69, 110, 103, 105, 110, 101, 46, 67, 111, 114, 101, 77, 111, 100, 117, 108, 101, 46, 100, 108, 108], [85, 110, 105, 116, 121, 69, 110, 103, 105, 110, 101], [71, 114, 97, 112, 104, 105, 99, 115])]
-     
+
     public partial class Graphics
     {
         //public const string Const_ImageName = "UnityEngine.CoreModule.dll";
@@ -327,7 +327,7 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
         /// <param name="dest">class UnityEngine.RenderTexture</param>
         /// <param name="mat">class UnityEngine.Material</param>
         /// <returns>struct System.Void</returns>
-        [MonoGameAssistant.MonoCollectorDataV2.MonoCollectorMethod(Name_Func_BLIT, Search = typeof(Search_Graphics))]
+        [MonoGameAssistant.MonoCollectorDataV2.MonoCollectorMethod(Name_Func_BLIT, Search = typeof(Search_Graphics), CallConvs = [typeof(CallConvCdecl)])]
         static extern void BLIT_02(nint source, nint dest, nint mat);
 
 

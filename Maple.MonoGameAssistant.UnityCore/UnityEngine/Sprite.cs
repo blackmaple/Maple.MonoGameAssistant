@@ -444,7 +444,7 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
         ///   UnityEngine.Texture2D get_texture()
         /// </summary>
         /// <returns>class UnityEngine.Texture2D</returns>
-        [MonoCollectorMethod(Name_Func_GET_TEXTURE)]
+        [MonoCollectorMethod(Name_Func_GET_TEXTURE,  CallConvs = [typeof(CallConvCdecl)])]
         public extern UnityEngine.Texture2D.Ptr_Texture2D GET_TEXTURE();
 
 
