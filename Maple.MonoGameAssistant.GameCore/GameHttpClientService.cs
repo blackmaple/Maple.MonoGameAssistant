@@ -47,7 +47,7 @@ namespace Maple.MonoGameAssistant.GameCore
             }
             catch (GameException ex)
             {
-                return MonoResultDTO.GetBizError<T_RESPONSE>(0, ex.Message);
+                return MonoResultDTO.GetBizError<T_RESPONSE>(ex.Code, ex.Message);
             }
             catch (Exception ex)
             {
@@ -118,7 +118,7 @@ namespace Maple.MonoGameAssistant.GameCore
         }
         public Task<MonoResultDTO<GameCharacterStatusDTO>> UpdateCharacterStatusAsync(GameSessionInfoDTO gameSessionInfo, GameCharacterDisplayDTO gameCharacterDisplay, GameSwitchDisplayDTO gameValueInfo)
         {
-            return this.TrySendAsync<GameCharacterModifyDTO, GameCharacterStatusDTO>("game/UpdateCharacterStatus", new GameCharacterModifyDTO() { Session = gameSessionInfo.ObjectId, CharacterId = gameCharacterDisplay.ObjectId , CharacterCategory = gameCharacterDisplay.DisplayCategory,   ModifyObject = gameValueInfo.ObjectId, NewValue = gameValueInfo.ContentValue });
+            return this.TrySendAsync<GameCharacterModifyDTO, GameCharacterStatusDTO>("game/UpdateCharacterStatus", new GameCharacterModifyDTO() { Session = gameSessionInfo.ObjectId, CharacterId = gameCharacterDisplay.ObjectId, CharacterCategory = gameCharacterDisplay.DisplayCategory, ModifyObject = gameValueInfo.ObjectId, NewValue = gameValueInfo.ContentValue });
         }
 
         public Task<MonoResultDTO<GameCharacterSkillDTO>> GetCharacterSkillAsync(GameSessionInfoDTO gameSessionInfo, GameCharacterDisplayDTO gameCharacterDisplay)

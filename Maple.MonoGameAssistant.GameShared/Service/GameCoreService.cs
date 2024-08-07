@@ -3,18 +3,20 @@ using Maple.MonoGameAssistant.GameDTO;
 using Maple.MonoGameAssistant.GameShared.Components;
 using Maple.MonoGameAssistant.Model;
 using Masa.Blazor;
+using Microsoft.AspNetCore.Components;
 
 namespace Maple.MonoGameAssistant.GameShared.Service
 {
 
 
-    public class GameCoreService(GameHttpClientService gameHttp, IPopupService popupService)
+    public class GameCoreService(GameHttpClientService gameHttp, IPopupService popupService, NavigationManager navigationManager)
     {
-        const string ShellUI_Ver = "0.1";
+        const string ShellUI_Ver = "0.15";
 
         #region Service
         GameHttpClientService Http { get; } = gameHttp;
         public IPopupService PopupService { get; } = popupService;
+        NavigationManager NavigationManager { get; } = navigationManager;
         #endregion
 
         #region List Data
@@ -45,13 +47,23 @@ namespace Maple.MonoGameAssistant.GameShared.Service
         #endregion
 
         public GameSessionInfoDTO? GameSessionInfo { get; set; }
-        public string? GameName => this.GameSessionInfo?.DisplayName;
-        public string? ApiVer => $"{nameof(GameSessionInfo.ApiVer)}:{this.GameSessionInfo?.ApiVer}";
-        public string? ShellUI => $"{nameof(ShellUI)}:{ShellUI_Ver}";
+        public string GameName => this.GameSessionInfo?.DisplayName ?? "???";
+        public string? QQ => this.GameSessionInfo?.QQ;
+
+        public string ApiVer => $"{nameof(GameSessionInfo.ApiVer)}:{this.GameSessionInfo?.ApiVer ?? "???"}";
+        public string ShellUI => $"{nameof(ShellUI)}:{ShellUI_Ver}";
 
         public Task ShowVersionInfo()
         {
-            return this.PopupService.ConfirmAsync(this.GameName!, $"{ApiVer}\t{ShellUI}", AlertTypes.Info);
+            return this.PopupService.ConfirmAsync($"{this.GameName}:{ApiVer}", ShellUI, AlertTypes.Info);
+        }
+        public void JumpQQ()
+        {
+            if (string.IsNullOrEmpty(this.QQ))
+            {
+                return;
+            }
+            NavigationManager.NavigateTo(this.QQ, true);
         }
         public async Task<EnumGameServiceStatus> OnInitializedAsync()
         {
@@ -100,6 +112,7 @@ namespace Maple.MonoGameAssistant.GameShared.Service
         #endregion
 
         #region Currency
+        public bool CurrencyDisabled { set; get; }
         public async Task<bool> GetListCurrencyDisplayAsync()
         {
             this.ListCurrency_All.Clear();
@@ -111,7 +124,14 @@ namespace Maple.MonoGameAssistant.GameShared.Service
             var gameCurrencyDTO = await this.Http.GetListCurrencyDisplayAsync(this.GameSessionInfo);
             if (false == gameCurrencyDTO.TryGet(out var listGameCurrency))
             {
-                await this.ShowErrorAsync(gameCurrencyDTO.MSG);
+                if (gameCurrencyDTO.CODE == (int)EnumMonoCommonCode.BIZ_UIHIDE)
+                {
+                    CurrencyDisabled = true;
+                }
+                else
+                {
+                    await this.ShowErrorAsync(gameCurrencyDTO.MSG);
+                }
                 return false;
             }
             listGameCurrency.SortArray();
@@ -173,6 +193,8 @@ namespace Maple.MonoGameAssistant.GameShared.Service
         #endregion
 
         #region Inventory
+        public bool InventoryDisabled { set; get; }
+
         public async Task<bool> GetListInventoryDisplayAsync()
         {
             this.ListInventory_All.Clear();
@@ -184,7 +206,14 @@ namespace Maple.MonoGameAssistant.GameShared.Service
             var gameInventoryDTO = await this.Http.GetListInventoryDisplayAsync(this.GameSessionInfo);
             if (false == gameInventoryDTO.TryGet(out var listGameInventory))
             {
-                await this.ShowErrorAsync(gameInventoryDTO.MSG);
+                if (gameInventoryDTO.CODE == (int)EnumMonoCommonCode.BIZ_UIHIDE)
+                {
+                    this.InventoryDisabled = true;
+                }
+                else
+                {
+                    await this.ShowErrorAsync(gameInventoryDTO.MSG);
+                }
                 return false;
             }
             listGameInventory.SortArray();
@@ -247,6 +276,7 @@ namespace Maple.MonoGameAssistant.GameShared.Service
         #endregion
 
         #region Character
+        public bool CharacterDisabled { set; get; }
         public async Task<bool> GetListCharacterDisplayAsync()
         {
             this.ListCharacter_All.Clear();
@@ -259,7 +289,14 @@ namespace Maple.MonoGameAssistant.GameShared.Service
             var gameCharacterDTO = await this.Http.GetListCharacterDisplayAsync(this.GameSessionInfo);
             if (false == gameCharacterDTO.TryGet(out var listGameCharacter))
             {
-                await this.ShowErrorAsync(gameCharacterDTO.MSG);
+                if (gameCharacterDTO.CODE == (int)EnumMonoCommonCode.BIZ_UIHIDE)
+                {
+                    CharacterDisabled = true;
+                }
+                else
+                {
+                    await this.ShowErrorAsync(gameCharacterDTO.MSG);
+                }
                 return false;
             }
             listGameCharacter.SortArray();
@@ -381,6 +418,7 @@ namespace Maple.MonoGameAssistant.GameShared.Service
         #endregion
 
         #region Monster
+        public bool MonsterDisabled { set; get; }
         public async Task<bool> GetListMonsterDisplayAsync()
         {
             this.ListMonster_All.Clear();
@@ -392,7 +430,14 @@ namespace Maple.MonoGameAssistant.GameShared.Service
             var gameMonsterDTO = await this.Http.GetListMonsterDisplayAsync(this.GameSessionInfo);
             if (false == gameMonsterDTO.TryGet(out var listGameMonster))
             {
-                await this.ShowErrorAsync(gameMonsterDTO.MSG);
+                if (gameMonsterDTO.CODE == (int)EnumMonoCommonCode.BIZ_UIHIDE)
+                { 
+                    this.MonsterDisabled = true;
+                }
+                else
+                {
+                    await this.ShowErrorAsync(gameMonsterDTO.MSG);
+                }
                 return false;
             }
             listGameMonster.SortArray();
@@ -467,6 +512,7 @@ namespace Maple.MonoGameAssistant.GameShared.Service
         #endregion
 
         #region Skill
+        public bool SkillDisabled { set; get; }
         public async Task<bool> GetListSkillDisplayAsync()
         {
             this.ListSkill_All.Clear();
@@ -479,7 +525,14 @@ namespace Maple.MonoGameAssistant.GameShared.Service
             var gameSkillDTO = await this.Http.GetListSkillDisplayAsync(this.GameSessionInfo);
             if (false == gameSkillDTO.TryGet(out var listGameSkill))
             {
-                await this.ShowErrorAsync(gameSkillDTO.MSG);
+                if (gameSkillDTO.CODE == (int)EnumMonoCommonCode.BIZ_UIHIDE)
+                {
+                    this.SkillDisabled = true;
+                }
+                else
+                {
+                    await this.ShowErrorAsync(gameSkillDTO.MSG);
+                }
                 return true;
             }
             listGameSkill.SortArray();
@@ -580,6 +633,7 @@ namespace Maple.MonoGameAssistant.GameShared.Service
         #endregion
 
         #region Switch
+        public bool MiscDisabled { set; get; }
         public void OnSearchSwitch(string? searchText)
         {
             this.ListSwitch_Search.Clear();
@@ -607,7 +661,14 @@ namespace Maple.MonoGameAssistant.GameShared.Service
             var gameSwitchDTO = await this.Http.GetListSwitchDisplayAsync(this.GameSessionInfo);
             if (false == gameSwitchDTO.TryGet(out var listGameSwitch))
             {
-                await this.ShowErrorAsync(gameSwitchDTO.MSG);
+                if (gameSwitchDTO.CODE == (int)EnumMonoCommonCode.BIZ_UIHIDE)
+                {
+                    this.MiscDisabled = true;
+                }
+                else
+                {
+                    await this.ShowErrorAsync(gameSwitchDTO.MSG);
+                }
                 return false;
             }
             listGameSwitch.SortArray();

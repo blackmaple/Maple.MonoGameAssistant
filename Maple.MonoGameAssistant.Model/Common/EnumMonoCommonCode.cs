@@ -10,5 +10,7 @@
 
 
         BIZ_USERCODE= 1000,
+
+        BIZ_UIHIDE = 2000,
     }
 }
