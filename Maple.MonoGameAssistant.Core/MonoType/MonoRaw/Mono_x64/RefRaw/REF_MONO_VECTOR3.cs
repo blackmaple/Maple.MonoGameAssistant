@@ -1,4 +1,5 @@
-﻿using System.Numerics;
+﻿using System;
+using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
@@ -43,5 +44,38 @@ namespace Maple.MonoGameAssistant.RawDotNet
             double num3 = a.z - b.z;
             return (float)Math.Sqrt(num * num + num2 * num2 + num3 * num3);
         }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static float Angle(in REF_MONO_VECTOR3 from, in REF_MONO_VECTOR3 to)
+        {
+            float num = (float)Math.Sqrt((double)(from.SqrMagnitude * to.SqrMagnitude));
+            if (num < 1E-15f)
+            {
+                return 0f;
+            }
+
+            float num2 = Math.Clamp(Dot(from, to) / num, -1f, 1f);
+            return (float)Math.Acos((double)num2) * 57.29578f;
+        }
+
+        //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+        //public static REF_MONO_VECTOR3 Normalize(in REF_MONO_VECTOR3 value)
+        //{
+        //    float num = Magnitude(value);
+        //    if (num > 1E-05f)
+        //    {
+        //        return value / num;
+        //    }
+
+        //    return new REF_MONO_VECTOR3(0f, 0f, 0f);
+        //}
+
+        public static float Magnitude(in REF_MONO_VECTOR3 vector)
+        {
+            return (float)Math.Sqrt((double)(vector.x * vector.x + vector.y * vector.y + vector.z * vector.z));
+        }
+        public readonly float SqrMagnitude => x * x + y * y + z * z;
+
+
     }
 }
