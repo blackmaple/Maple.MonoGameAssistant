@@ -340,19 +340,18 @@ namespace Maple.GameContext
             return ValueTask.FromResult(data);
         }
 
-
         public virtual ValueTask<GameSessionInfoDTO> LoadResourceAsync()
             => GetSessionInfoAsync();
 
         public virtual ValueTask<GameCharacterDisplayDTO[]> GetListCharacterDisplayAsync()
-            => ValueTask.FromResult<GameCharacterDisplayDTO[]>([]);
+            => GameException.ThrowUIHide<ValueTask<GameCharacterDisplayDTO[]>>("NotImplemented");
         public virtual ValueTask<GameCharacterStatusDTO> GetCharacterStatusAsync(GameCharacterObjectDTO characterObjectDTO)
             => GameException.Throw<ValueTask<GameCharacterStatusDTO>>("NotImplemented");
         public virtual ValueTask<GameCharacterEquipmentDTO> GetCharacterEquipmentAsync(GameCharacterObjectDTO characterObjectDTO)
             => GameException.Throw<ValueTask<GameCharacterEquipmentDTO>>("NotImplemented");
 
         public virtual ValueTask<GameCharacterSkillDTO> GetCharacterSkillAsync(GameCharacterObjectDTO characterObjectDTO)
-            => GameException.Throw<ValueTask<GameCharacterSkillDTO>>("NotImplemented");
+            => GameException.ThrowUIHide<ValueTask<GameCharacterSkillDTO>>("NotImplemented");
         public virtual ValueTask<GameCharacterStatusDTO> UpdateCharacterStatusAsync(GameCharacterModifyDTO characterModifyDTO)
             => GameException.Throw<ValueTask<GameCharacterStatusDTO>>("NotImplemented");
         public virtual ValueTask<GameCharacterSkillDTO> UpdateCharacterSkillAsync(GameCharacterModifyDTO characterModifyDTO)
@@ -363,19 +362,19 @@ namespace Maple.GameContext
 
 
         public virtual ValueTask<GameMonsterDisplayDTO[]> GetListMonsterDisplayAsync()
-            => ValueTask.FromResult<GameMonsterDisplayDTO[]>([]);
+            => GameException.ThrowUIHide<ValueTask<GameMonsterDisplayDTO[]>>("NotImplemented");
         public virtual ValueTask<GameCharacterSkillDTO> AddMonsterMemberAsync(GameMonsterObjectDTO monsterObjectDTO)
             => GameException.Throw<ValueTask<GameCharacterSkillDTO>>("NotImplemented");
 
         public virtual ValueTask<GameSkillDisplayDTO[]> GetListSkillDisplayAsync()
-            => ValueTask.FromResult<GameSkillDisplayDTO[]>([]);
+            => GameException.ThrowUIHide<ValueTask<GameSkillDisplayDTO[]>>("NotImplemented");
 
         public virtual ValueTask<GameSkillDisplayDTO> AddSkillDisplayAsync(GameSkillObjectDTO gameSkillObject)
             => GameException.Throw<ValueTask<GameSkillDisplayDTO>>("NotImplemented");
 
 
         public virtual ValueTask<GameCurrencyDisplayDTO[]> GetListCurrencyDisplayAsync()
-            => ValueTask.FromResult<GameCurrencyDisplayDTO[]>([]);
+            => GameException.ThrowUIHide<ValueTask<GameCurrencyDisplayDTO[]>>("NotImplemented");
 
         public virtual ValueTask<GameCurrencyInfoDTO> GetCurrencyInfoAsync(GameCurrencyObjectDTO currencyObjectDTO)
             => GameException.Throw<ValueTask<GameCurrencyInfoDTO>>("NotImplemented");
@@ -387,7 +386,7 @@ namespace Maple.GameContext
 
 
         public virtual ValueTask<GameInventoryDisplayDTO[]> GetListInventoryDisplayAsync()
-            => ValueTask.FromResult<GameInventoryDisplayDTO[]>([]);
+            => GameException.ThrowUIHide<ValueTask<GameInventoryDisplayDTO[]>>("NotImplemented");
 
         public virtual ValueTask<GameInventoryInfoDTO> GetInventoryInfoAsync(GameInventoryObjectDTO inventoryObjectDTO)
             => GameException.Throw<ValueTask<GameInventoryInfoDTO>>("NotImplemented");
@@ -408,6 +407,7 @@ namespace Maple.GameContext
 
         public void UpdateListGameImage<T>(IReadOnlyList<T> datas) where T : GameObjectDisplayDTO
             => UpdateListGameImage(datas, static p => $"{p.ObjectId}.png");
+
         public void UpdateListGameImage<T>(IReadOnlyList<T> datas, Func<T, string> func) where T : GameObjectDisplayDTO
         {
             foreach (var data in datas)
