@@ -4,15 +4,20 @@
 
 0.  描述
 
-      -  dotNet8 + AOT + Blazor 写了一个 Unity Game 通用修改器框架 只支持WinX64
+      -  dotNet8 + AOT + Blazor 写了一个 Unity Game 通用修改器框架
+      -  支持WINX86(分支dev-x86)
+      -  支持WINX64
+ 
 
 1.  要求
 
     -  一个VS2022
     -  一个DotNet8 SDK 需要安装AOT
-    -  Unity编译的X64游戏(MONO&IL2CPP)
+    -  Unity编译的游戏(MONO&IL2CPP)
           -  [Bloomtown A Different Story Demo](https://github.com/blackmaple/Maple.Bloomtown)
           -  [崛起力量: 测试英雄 试玩版](https://github.com/blackmaple/Maple.HeroTest)
+          -  [妖之乡](https://github.com/blackmaple/Maple.Ghostmon)
+          -  [猫咪斗恶龙3 Cat Quest III](https://github.com/blackmaple/Maple.CatQuest3)*winx86
 
 2.  参考
      
