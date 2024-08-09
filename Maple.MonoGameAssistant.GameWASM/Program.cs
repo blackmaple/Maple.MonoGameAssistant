@@ -13,21 +13,24 @@ builder.RootComponents.Add<Main>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
 #if DEBUG 
-builder.Services.AddScoped(sp =>
-{
-    var http = new HttpClient
-    {
-        BaseAddress = new Uri("http://localhost:49009/")
-    };
-    return http;
-});
-//builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+//builder.Services.AddScoped(sp =>
+//{
+//    var http = new HttpClient
+//    {
+//        BaseAddress = new Uri("http://localhost:49009/")
+//    };
+//    return http;
+//});
+////builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+
+GameCoreExtensions.AddGameCoreService_WASM(builder.Services, "http://localhost:49009/");
 
 #else
-builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+//builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+GameCoreExtensions.AddGameCoreService_WASM(builder.Services, builder.HostEnvironment.BaseAddress);
 
 #endif
-builder.Services.AddScoped<GameHttpClientService>();
+//builder.Services.AddScoped<GameHttpClientService>();
 builder.Services.AddScoped<GameCoreService>();
 
 

@@ -79,7 +79,7 @@ namespace Maple.MonoGameAssistant.GameDTO
     [JsonSerializable(typeof(GameSwitchDisplayDTO[]))]
     [JsonSerializable(typeof(MonoResultDTO<GameSwitchDisplayDTO[]>))]
     [JsonSerializable(typeof(MonoResultDTO<GameSwitchDisplayDTO>))]
-    
+
     public partial class GameJsonContext: JsonSerializerContext
     {
 

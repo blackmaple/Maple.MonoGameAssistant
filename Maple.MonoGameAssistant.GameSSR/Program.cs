@@ -27,10 +27,10 @@ builder.Services.AddMasaBlazor(p =>
     });
 });
 
-builder.Services.AddHttpClient<GameHttpClientService>(p => p.BaseAddress = new Uri("http://localhost:49009/"))
-    .ConfigurePrimaryHttpMessageHandler(p => new HttpClientHandler() { AutomaticDecompression = System.Net.DecompressionMethods.Brotli });
-
+//builder.Services.AddHttpClient<GameHttpClientService>(p => p.BaseAddress = new Uri("http://localhost:49009/"))
+//    .ConfigurePrimaryHttpMessageHandler(p => new HttpClientHandler() { AutomaticDecompression = System.Net.DecompressionMethods.Brotli });
 builder.Services.AddScoped<GameCoreService>();
+GameCoreExtensions.AddGameCoreService(builder.Services, "http://localhost:49009/");
 
 var app = builder.Build();
 
@@ -45,7 +45,7 @@ app.UseAntiforgery();
 
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode()
-    .AddAdditionalAssemblies(typeof(Main).Assembly);
+    .AddAdditionalAssemblies(typeof(Maple.MonoGameAssistant.GameShared.Main).Assembly);
 
 
 

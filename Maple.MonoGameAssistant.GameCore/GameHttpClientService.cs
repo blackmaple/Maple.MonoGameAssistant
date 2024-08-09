@@ -4,17 +4,10 @@ using System.Net.Http.Json;
 
 namespace Maple.MonoGameAssistant.GameCore
 {
-    public class GameHttpClientService
+    public class GameHttpClientService(GameCloudService gameCloudService)
     {
 
-        public HttpClient Client { get; }
-        public GameHttpClientService(HttpClient httpClient)
-        {
-            this.Client = httpClient;
-            this.Client.Timeout = TimeSpan.FromSeconds(30D);
-            this.Client.DefaultRequestHeaders.AcceptEncoding.Add(new System.Net.Http.Headers.StringWithQualityHeaderValue("br"));
-        }
-
+        public HttpClient Client { get; } = gameCloudService.CreateHttpClient();
         #region HttpCore
 
         async Task<MonoResultDTO<T_RESPONSE>> SendAsync<T_REQUEST, T_RESPONSE>(string url, T_REQUEST? req)
