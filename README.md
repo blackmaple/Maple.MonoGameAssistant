@@ -14,10 +14,10 @@
     -  一个VS2022
     -  一个DotNet8 SDK 需要安装AOT
     -  Unity编译的游戏(MONO&IL2CPP)
-          -  [Bloomtown A Different Story Demo](https://github.com/blackmaple/Maple.Bloomtown)
-          -  [崛起力量: 测试英雄 试玩版](https://github.com/blackmaple/Maple.HeroTest)
-          -  [妖之乡](https://github.com/blackmaple/Maple.Ghostmon)
-          -  [猫咪斗恶龙3 Cat Quest III](https://github.com/blackmaple/Maple.CatQuest3)*winx86
+          -  [Bloomtown A Different Story Demo](https://github.com/blackmaple/Maple.Bloomtown)!游戏更新未适配
+          -  [崛起力量: 测试英雄 试玩版](https://github.com/blackmaple/Maple.HeroTest)!游戏更新未适配
+          -  [妖之乡](https://github.com/blackmaple/Maple.Ghostmon)!支持0.95E
+          -  [猫咪斗恶龙3 Cat Quest III](https://github.com/blackmaple/Maple.CatQuest3)!支持1.1.3*(WINX86)
 
 2.  参考
      
