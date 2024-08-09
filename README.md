@@ -4,8 +4,8 @@
 
 0.  描述
 
-      -  dotNet8 + AOT + Blazor 写了一个 Unity Game 通用修改器框架
-      -  支持WINX86(分支dev-x86)
+      -  dotNet8(+) + AOT + Blazor 写了一个 Unity Game 通用修改器框架
+      -  支持WINX86(分支dev-x86 SDK:dotNET9 P6+)
       -  支持WINX64
  
 
