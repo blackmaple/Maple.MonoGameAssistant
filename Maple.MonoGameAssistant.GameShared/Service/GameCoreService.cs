@@ -4,19 +4,24 @@ using Maple.MonoGameAssistant.GameShared.Components;
 using Maple.MonoGameAssistant.Model;
 using Masa.Blazor;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.WebUtilities;
+using System.Diagnostics.CodeAnalysis;
+using System.Text;
 
 namespace Maple.MonoGameAssistant.GameShared.Service
 {
 
 
-    public class GameCoreService(GameHttpClientService gameHttp, IPopupService popupService, NavigationManager navigationManager)
+    public class GameCoreService(GameCloudConfig cloudConfig, GameHttpClientService gameHttp, IPopupService popupService, NavigationManager navigationManager)
     {
-        const string ShellUI_Ver = "0.15";
+        const string ShellUI_Ver = "Cloud:0.1";
 
         #region Service
         GameHttpClientService Http { get; } = gameHttp;
         public IPopupService PopupService { get; } = popupService;
         NavigationManager NavigationManager { get; } = navigationManager;
+        GameCloudConfig GameCloudConfig { get; } = cloudConfig;
+
         #endregion
 
         #region List Data
@@ -65,6 +70,22 @@ namespace Maple.MonoGameAssistant.GameShared.Service
             }
             NavigationManager.NavigateTo(this.QQ, true);
         }
+
+        public void InitGameConfig()
+        {
+            try
+            {
+                var uri = NavigationManager.ToAbsoluteUri(NavigationManager.Uri);
+                if (QueryHelpers.ParseQuery(uri.Query).TryGetValue("code", out var codeValue))
+                {
+                    var url = GameCloudConfig.FromCode(codeValue.ToString());
+                    GameCloudConfig.GameApiUrl = url;
+                }
+            }
+            catch { }
+
+        }
+
         public async Task<EnumGameServiceStatus> OnInitializedAsync()
         {
             var gameSessionDTO = await this.Http.GetGameSessionInfoAsync();
@@ -431,7 +452,7 @@ namespace Maple.MonoGameAssistant.GameShared.Service
             if (false == gameMonsterDTO.TryGet(out var listGameMonster))
             {
                 if (gameMonsterDTO.CODE == (int)EnumMonoCommonCode.BIZ_UIHIDE)
-                { 
+                {
                     this.MonsterDisabled = true;
                 }
                 else

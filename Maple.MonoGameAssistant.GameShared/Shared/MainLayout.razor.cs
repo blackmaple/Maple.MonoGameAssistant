@@ -25,6 +25,7 @@ namespace Maple.MonoGameAssistant.GameShared.Shared
 
         public async Task LoadServiceDataAsync()
         {
+            this.Core.InitGameConfig();
             Status = EnumGameServiceStatus.Init;
             Status = await this.Core.OnInitializedAsync();
         }

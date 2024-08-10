@@ -7,7 +7,7 @@
 		<RunAOTCompilation>true</RunAOTCompilation>
 		<!--<WasmStripILAfterAOT>true</WasmStripILAfterAOT>-->
 		<!--<WasmEnableSIMD>false</WasmEnableSIMD>-->
-		<CompressionEnabled>false</CompressionEnabled>
+		<!--<CompressionEnabled>false</CompressionEnabled>-->
 
 	</PropertyGroup>
 

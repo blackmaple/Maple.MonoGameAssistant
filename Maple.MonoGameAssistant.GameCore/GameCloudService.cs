@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Maple.MonoGameAssistant.GameDTO;
+using Microsoft.Extensions.Options;
 using System.Net.Http;
 
 namespace Maple.MonoGameAssistant.GameCore

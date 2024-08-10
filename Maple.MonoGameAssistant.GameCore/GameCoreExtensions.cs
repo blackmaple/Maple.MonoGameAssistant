@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Maple.MonoGameAssistant.GameDTO;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Maple.MonoGameAssistant.GameCore
 {
