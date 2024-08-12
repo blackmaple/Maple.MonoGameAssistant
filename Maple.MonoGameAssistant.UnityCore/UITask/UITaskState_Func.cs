@@ -4,9 +4,9 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Maple.MonoGameAssistant.UnityCore
 {
-    internal class UnityTaskState_Func<T_GAMECONTEXT, T_RETURN>(T_GAMECONTEXT gameContext, HookWinMsgService hook, Func<T_GAMECONTEXT, T_RETURN> func) : UnityTaskState<T_GAMECONTEXT>(gameContext, hook)
+    internal class UITaskState_Func<T_GAMECONTEXT, T_RETURN>(T_GAMECONTEXT gameContext, Func<T_GAMECONTEXT, T_RETURN> func)
+        : UITaskState<T_GAMECONTEXT>(gameContext)
         where T_GAMECONTEXT : MonoCollectorContext
-        //     where T_RETURN : notnull
     {
         public Func<T_GAMECONTEXT, T_RETURN> Func { get; } = func;
 

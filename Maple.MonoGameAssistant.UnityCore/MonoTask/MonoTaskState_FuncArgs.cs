@@ -7,7 +7,7 @@ namespace Maple.MonoGameAssistant.UnityCore
         : MonoTaskState<T_GAMECONTEXT>(gameContext)
         where T_GAMECONTEXT : MonoCollectorContext
         where T_ARGS : notnull
-      where T_RETURN : notnull
+  //    where T_RETURN : notnull
     {
         public Func<T_GAMECONTEXT, T_ARGS, T_RETURN> Func { get; } = func;
         public T_ARGS Args { get; } = args;

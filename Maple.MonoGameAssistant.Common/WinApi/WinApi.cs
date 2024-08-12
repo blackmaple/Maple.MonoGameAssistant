@@ -12,15 +12,25 @@ namespace Maple.MonoGameAssistant.Common
 
     using unsafe CallBackEnumThreadWindows = delegate* unmanaged[Stdcall]<nint, nint, bool>;
     using unsafe CallbackWndProc = delegate* unmanaged[Stdcall]<nint, EnumWindowMessage, nint, nint, nint>;
+    using unsafe TimerProc = delegate* unmanaged[Stdcall]<nint, uint, nuint, uint, void>;
 
     public partial class WinApi
     {
+        [System.Runtime.InteropServices.UnmanagedCallConv(CallConvs = [typeof(CallConvStdcall), typeof(CallConvSuppressGCTransition)])]
+        [LibraryImport("user32.dll", EntryPoint = "SetTimer", SetLastError = false, StringMarshalling = StringMarshalling.Utf16)]
+        public static unsafe partial nuint SetTimer(nint hWnd, nuint nIDEvent, uint uElapse, TimerProc lpTimerFunc);
+
+        [System.Runtime.InteropServices.UnmanagedCallConv(CallConvs = [typeof(CallConvStdcall), typeof(CallConvSuppressGCTransition)])]
+        [LibraryImport("user32.dll", EntryPoint = "KillTimer", SetLastError = false, StringMarshalling = StringMarshalling.Utf16)]
+        [return: MarshalAsAttribute(UnmanagedType.Bool)]
+        public static partial bool KillTimer(nint hWnd, nuint nIDEvent);
+
 
         public const int PROCESS_VM_READ = 0x10;
         public const int PROCESS_QUERY_INFORMATION = 0x0400;
         [System.Runtime.InteropServices.UnmanagedCallConv(CallConvs = [typeof(CallConvStdcall), typeof(CallConvSuppressGCTransition)])]
         [LibraryImport("kernel32.dll", EntryPoint = "OpenProcess", SetLastError = false, StringMarshalling = StringMarshalling.Utf16)]
-        public static partial nint OpenProcess(int dwDesiredAccess, [MarshalAsAttribute(UnmanagedType.I4)] bool bInheritHandle, int dwProcessId);
+        public static partial nint OpenProcess(int dwDesiredAccess, [MarshalAsAttribute(UnmanagedType.Bool)] bool bInheritHandle, int dwProcessId);
 
         //[System.Runtime.InteropServices.UnmanagedCallConv(CallConvs = [typeof(CallConvStdcall), typeof(CallConvSuppressGCTransition)])]
         //[LibraryImport("kernel32.dll", EntryPoint = "GetModuleFileNameW", SetLastError = false, StringMarshalling = StringMarshalling.Utf16)]
@@ -447,13 +457,13 @@ namespace Maple.MonoGameAssistant.Common
 
         [UnmanagedCallConv(CallConvs = [typeof(CallConvStdcall)])]
         [LibraryImport("user32.dll", EntryPoint = "PostThreadMessageW", SetLastError = false, StringMarshalling = StringMarshalling.Utf16)]
-        [return: MarshalAs(UnmanagedType.I4)]
+        [return: MarshalAs(UnmanagedType.Bool)]
         public static partial bool PostThreadMessage(int idThread, EnumWindowMessage Msg, nint wParam, nint lParam);
 
 
         [UnmanagedCallConv(CallConvs = [typeof(CallConvStdcall)])]
         [LibraryImport("user32.dll", EntryPoint = "WaitMessage", SetLastError = false, StringMarshalling = StringMarshalling.Utf16)]
-        [return: MarshalAs(UnmanagedType.I4)]
+        [return: MarshalAs(UnmanagedType.Bool)]
         public static partial bool WaitMessage();
 
         [UnmanagedCallConv(CallConvs = [typeof(CallConvStdcall)])]
@@ -466,7 +476,7 @@ namespace Maple.MonoGameAssistant.Common
 
         [UnmanagedCallConv(CallConvs = [typeof(CallConvStdcall)])]
         [LibraryImport("user32.dll", EntryPoint = "PeekMessageW", SetLastError = false, StringMarshalling = StringMarshalling.Utf16)]
-        [return: MarshalAs(UnmanagedType.I4)]
+        [return: MarshalAs(UnmanagedType.Bool)]
         public static partial bool PeekMessage(ref MSG lpMsg, nint hWnd, uint wMsgFilterMin, uint wMsgFilterMax, uint wRemoveMsg);
         public const uint PM_NOREMOVE = 0;
         public const uint PM_REMOVE = 1;
@@ -480,7 +490,7 @@ namespace Maple.MonoGameAssistant.Common
 
         [UnmanagedCallConv(CallConvs = [typeof(CallConvStdcall)])]
         [LibraryImport("user32.dll", EntryPoint = "SendMessageTimeoutW", SetLastError = true, StringMarshalling = StringMarshalling.Utf16)]
-        [return: MarshalAs(UnmanagedType.I4)]
+        [return: MarshalAs(UnmanagedType.Bool)]
         public static partial bool SendMessageTimeout(nint hWnd, EnumWindowMessage uMsg, nint wParam, nint lParam, uint fuFlags, uint uTimeout, out uint lpdwResult);
 
         [UnmanagedCallConv(CallConvs = [typeof(CallConvStdcall)])]
@@ -489,7 +499,7 @@ namespace Maple.MonoGameAssistant.Common
 
         [UnmanagedCallConv(CallConvs = [typeof(CallConvStdcall)])]
         [LibraryImport("user32.dll", EntryPoint = "PostMessageW", SetLastError = true, StringMarshalling = StringMarshalling.Utf16)]
-        [return: MarshalAs(UnmanagedType.I4)]
+        [return: MarshalAs(UnmanagedType.Bool)]
         public static partial bool PostMessage(nint hWnd, EnumWindowMessage uMsg, nint wParam, nint lParam);
 
 
@@ -507,13 +517,13 @@ namespace Maple.MonoGameAssistant.Common
 
         [UnmanagedCallConv(CallConvs = [typeof(CallConvStdcall)])]
         [LibraryImport("Kernel32.dll", EntryPoint = "GetExitCodeThread", SetLastError = false, StringMarshalling = StringMarshalling.Utf16)]
-        [return: MarshalAs(UnmanagedType.I4)]
+        [return: MarshalAs(UnmanagedType.Bool)]
         public static partial bool GetExitCodeThread(nint hThread, out uint lpExitCode);
         public const uint STILL_ACTIVE = 0x103;
 
         [UnmanagedCallConv(CallConvs = [typeof(CallConvStdcall)])]
         [LibraryImport("Kernel32.dll", EntryPoint = "OpenThread", SetLastError = false, StringMarshalling = StringMarshalling.Utf16)]
-        public static partial nint OpenThread(uint dwDesiredAccess, [MarshalAs(UnmanagedType.I4)] bool bInheritHandle, int dwThreadId);
+        public static partial nint OpenThread(uint dwDesiredAccess, [MarshalAs(UnmanagedType.Bool)] bool bInheritHandle, int dwThreadId);
 
         public const uint THREAD_QUERY_INFORMATION = 0x40;
 
@@ -537,7 +547,7 @@ namespace Maple.MonoGameAssistant.Common
 
         [UnmanagedCallConv(CallConvs = [typeof(CallConvStdcall)])]
         [LibraryImport("Kernel32.dll", EntryPoint = "CloseHandle", SetLastError = false, StringMarshalling = StringMarshalling.Utf16)]
-        [return: MarshalAs(UnmanagedType.I4)]
+        [return: MarshalAs(UnmanagedType.Bool)]
         public static partial bool CloseHandle(nint hObject);
 
         //[UnmanagedCallConv(CallConvs = [typeof(CallConvStdcall)])]

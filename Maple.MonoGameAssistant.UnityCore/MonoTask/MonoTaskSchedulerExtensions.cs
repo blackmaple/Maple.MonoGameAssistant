@@ -8,12 +8,12 @@ namespace Maple.MonoGameAssistant.UnityCore
         public static Task<T_RETURN> MonoTaskAsync<T_GAMECONTEXT, T_ARGS, T_RETURN>(this IMonoTaskScheduler<T_GAMECONTEXT> taskScheduler, Func<T_GAMECONTEXT, T_ARGS, T_RETURN> func, T_ARGS args)
             where T_GAMECONTEXT : MonoCollectorContext
             where T_ARGS : notnull
-            where T_RETURN : notnull
+     //       where T_RETURN : notnull
             => MonoTaskAsync(taskScheduler.GameContext, taskScheduler.Scheduler, func, args);
         public static Task<T_RETURN> MonoTaskAsync<T_GAMECONTEXT, T_ARGS, T_RETURN>(this T_GAMECONTEXT gameContext, MonoTaskScheduler scheduler, Func<T_GAMECONTEXT, T_ARGS, T_RETURN> func, T_ARGS args)
             where T_GAMECONTEXT : MonoCollectorContext
             where T_ARGS : notnull
-           where T_RETURN : notnull
+       //    where T_RETURN : notnull
         {
             return Task.Factory.StartNew(ExecCodeProc, new MonoTaskState_FuncArgs<T_GAMECONTEXT, T_ARGS, T_RETURN>(gameContext, func, args), CancellationToken.None, TaskCreationOptions.DenyChildAttach, scheduler);
 
@@ -29,11 +29,11 @@ namespace Maple.MonoGameAssistant.UnityCore
 
         public static Task<T_RETURN> MonoTaskAsync<T_GAMECONTEXT, T_RETURN>(this IMonoTaskScheduler<T_GAMECONTEXT> taskScheduler, Func<T_GAMECONTEXT, T_RETURN> func)
             where T_GAMECONTEXT : MonoCollectorContext
-            where T_RETURN : notnull
+      //      where T_RETURN : notnull
             => MonoTaskAsync(taskScheduler.GameContext, taskScheduler.Scheduler, func);
         public static Task<T_RETURN> MonoTaskAsync<T_GAMECONTEXT, T_RETURN>(this T_GAMECONTEXT gameContext, MonoTaskScheduler scheduler, Func<T_GAMECONTEXT, T_RETURN> func)
             where T_GAMECONTEXT : MonoCollectorContext
-            where T_RETURN : notnull
+      //      where T_RETURN : notnull
         {
             return Task.Factory.StartNew(ExecCodeProc, new MonoTaskState_Func<T_GAMECONTEXT, T_RETURN>(gameContext, func), CancellationToken.None, TaskCreationOptions.DenyChildAttach, scheduler);
 

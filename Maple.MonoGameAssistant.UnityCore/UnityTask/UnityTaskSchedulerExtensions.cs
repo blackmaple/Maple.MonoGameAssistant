@@ -8,13 +8,13 @@ namespace Maple.MonoGameAssistant.UnityCore
     {
         public static Task<T_RETURN> UnityTaskAsync<T_GAMECONTEXT, T_RETURN>(this IUnityTaskScheduler<T_GAMECONTEXT> taskScheduler, Func<T_GAMECONTEXT, T_RETURN> func)
             where T_GAMECONTEXT : MonoCollectorContext
-            where T_RETURN : notnull
+      //      where T_RETURN : notnull
         {
             return UnityTaskAsync(taskScheduler.GameContext, taskScheduler.Hook, func);
         }
         public static Task<T_RETURN> UnityTaskAsync<T_GAMECONTEXT, T_RETURN>(this T_GAMECONTEXT gameContext, HookWinMsgService hook, Func<T_GAMECONTEXT, T_RETURN> func)
             where T_GAMECONTEXT : MonoCollectorContext
-            where T_RETURN : notnull
+   //         where T_RETURN : notnull
         {
             return Task.Factory.StartNew(SendExecUnmanagedCode, new UnityTaskState_Func<T_GAMECONTEXT, T_RETURN>(gameContext, hook, func));
 
@@ -48,14 +48,14 @@ namespace Maple.MonoGameAssistant.UnityCore
         public static Task<T_RETURN> UnityTaskAsync<T_GAMECONTEXT, T_ARGS, T_RETURN>(this IUnityTaskScheduler<T_GAMECONTEXT> taskScheduler, Func<T_GAMECONTEXT, T_ARGS, T_RETURN> func, T_ARGS args)
             where T_GAMECONTEXT : MonoCollectorContext
             where T_ARGS : notnull
-            where T_RETURN : notnull
+          //  where T_RETURN : notnull
         {
             return UnityTaskAsync(taskScheduler.GameContext, taskScheduler.Hook, func, args);
         }
         public static Task<T_RETURN> UnityTaskAsync<T_GAMECONTEXT, T_ARGS, T_RETURN>(this T_GAMECONTEXT gameContext, HookWinMsgService hook, Func<T_GAMECONTEXT, T_ARGS, T_RETURN> func, T_ARGS args)
                     where T_GAMECONTEXT : MonoCollectorContext
                     where T_ARGS : notnull
-                     where T_RETURN : notnull
+           //          where T_RETURN : notnull
         {
             var taskState = new UnityTaskState_FuncArgs<T_GAMECONTEXT, T_ARGS, T_RETURN>(gameContext, hook, func, args);
             return Task.Factory.StartNew(SendExecUnmanagedCode, taskState);
