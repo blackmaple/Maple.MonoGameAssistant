@@ -127,6 +127,15 @@ namespace Maple.MonoGameAssistant.WebApi
                 HttpsCompression = Microsoft.AspNetCore.Http.Features.HttpsCompressionMode.Compress,
             });
 
+            app.Use(async (ctx, next) =>
+            {
+                if (ctx.Request.Method.Equals("options", StringComparison.InvariantCultureIgnoreCase) && ctx.Request.Headers.ContainsKey("Access-Control-Request-Private-Network"))
+                {
+                    ctx.Response.Headers.TryAdd("Access-Control-Allow-Private-Network", "true");
+                }
+
+                await next();
+            });
             app.UseCors();
 
             UseWebApi(app);
