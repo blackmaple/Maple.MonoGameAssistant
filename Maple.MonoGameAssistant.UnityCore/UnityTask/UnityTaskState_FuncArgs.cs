@@ -8,7 +8,7 @@ namespace Maple.MonoGameAssistant.UnityCore
         (T_GAMECONTEXT gameContext, HookWinMsgService hook, Func<T_GAMECONTEXT, T_ARGS, T_RETURN> func, T_ARGS args) : UnityTaskState<T_GAMECONTEXT>(gameContext, hook)
     where T_GAMECONTEXT : MonoCollectorContext
     where T_ARGS : notnull
-  //    where T_RETURN : notnull
+        //    where T_RETURN : notnull
     {
         public Func<T_GAMECONTEXT, T_ARGS, T_RETURN> Func { get; } = func;
         public T_ARGS Args { get; } = args;
@@ -21,10 +21,9 @@ namespace Maple.MonoGameAssistant.UnityCore
             return this.ExecSuccess;
         }
 
-        public void Execute()
+        protected override void ExecuteImp()
         {
             this.ReturnValue = this.Func.Invoke(this.GameContext, this.Args);
-            this.ExecSuccess = true;
         }
 
     }

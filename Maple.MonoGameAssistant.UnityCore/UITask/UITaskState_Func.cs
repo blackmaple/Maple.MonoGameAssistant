@@ -18,10 +18,9 @@ namespace Maple.MonoGameAssistant.UnityCore
             return this.ExecSuccess;
         }
 
-        public void Execute()
+        protected override void ExecuteImp()
         {
             this.ReturnValue = this.Func.Invoke(this.GameContext);
-            this.ExecSuccess = true;
         }
     }
 

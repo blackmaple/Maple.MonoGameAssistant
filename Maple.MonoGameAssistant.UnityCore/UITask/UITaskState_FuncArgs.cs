@@ -5,7 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 namespace Maple.MonoGameAssistant.UnityCore
 {
     internal sealed class UITaskState_FuncArgs<T_GAMECONTEXT, T_ARGS, T_RETURN>
-        (T_GAMECONTEXT gameContext,  Func<T_GAMECONTEXT, T_ARGS, T_RETURN> func, T_ARGS args) 
+        (T_GAMECONTEXT gameContext, Func<T_GAMECONTEXT, T_ARGS, T_RETURN> func, T_ARGS args)
         : UITaskState<T_GAMECONTEXT>(gameContext)
     where T_GAMECONTEXT : MonoCollectorContext
     where T_ARGS : notnull
@@ -21,10 +21,10 @@ namespace Maple.MonoGameAssistant.UnityCore
             return this.ExecSuccess;
         }
 
-        public void Execute()
+        protected override void ExecuteImp()
         {
             this.ReturnValue = this.Func.Invoke(this.GameContext, this.Args);
-            this.ExecSuccess = true;
+            
         }
 
     }

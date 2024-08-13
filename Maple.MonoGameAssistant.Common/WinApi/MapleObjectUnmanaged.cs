@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 
 namespace Maple.MonoGameAssistant.Common
 {
-    public unsafe   struct MapleObjectUnmanaged(object obj)
+    public unsafe struct MapleObjectUnmanaged(object obj) : IDisposable
     {
         GCHandle _handle = GCHandle.Alloc(obj);
 

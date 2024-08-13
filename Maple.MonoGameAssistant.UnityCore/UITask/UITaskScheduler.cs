@@ -11,6 +11,8 @@ using System.Threading.Tasks;
 
 namespace Maple.MonoGameAssistant.UnityCore
 {
+
+    [Obsolete("remove...")]
     public sealed class UITaskScheduler : TaskScheduler, IDisposable
     {
         Channel<Task> TaskChannel { get; }
