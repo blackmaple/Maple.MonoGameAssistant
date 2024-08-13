@@ -10,6 +10,7 @@
 		<EnableConfigurationBindingGenerator>true</EnableConfigurationBindingGenerator>
 		<EnableRequestDelegateGenerator>true</EnableRequestDelegateGenerator>
 		<InterceptorsPreviewNamespaces>$(InterceptorsPreviewNamespaces);Microsoft.AspNetCore.Http.Generated</InterceptorsPreviewNamespaces>
+		<LangVersion>preview</LangVersion>
 
 	</PropertyGroup>
 

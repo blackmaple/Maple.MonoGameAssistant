@@ -9,10 +9,9 @@ namespace Maple.MonoGameAssistant.UnityCore
     {
         public Action<T_GAMECONTEXT> Action { get; } = action;
 
-        public void Execute()
+        protected override void ExecuteImp()
         {
             this.Action.Invoke(this.GameContext);
-            this.ExecSuccess = true;
         }
 
     }

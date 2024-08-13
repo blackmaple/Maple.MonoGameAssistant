@@ -16,6 +16,7 @@ namespace Maple.GameContext
          : IMapleGameService, IWinMsgNotifyService,
         IUnityTaskScheduler<T_GAMECONTEXT>,
         IMonoTaskScheduler<T_GAMECONTEXT>,
+        IUITaskScheduler<T_GAMECONTEXT>,
         IGameWebApiControllers
         where T_GAMECONTEXT : MonoCollectorContext
     {

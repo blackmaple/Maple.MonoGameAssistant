@@ -12,16 +12,15 @@ namespace Maple.MonoGameAssistant.UnityCore
 
         public T_RETURN? ReturnValue { set; get; }
 
-        public bool TryGetValue([MaybeNullWhen(false)] out T_RETURN val)
+        public bool TryGetValue([MaybeNullWhen(false)]out T_RETURN val)
         {
             val = ReturnValue;
             return this.ExecSuccess;
         }
 
-        public void Execute()
+        protected override void ExecuteImp()
         {
             this.ReturnValue = this.Func.Invoke(this.GameContext);
-            this.ExecSuccess = true;
         }
     }
 
