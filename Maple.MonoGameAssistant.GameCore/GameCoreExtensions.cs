@@ -8,32 +8,23 @@ namespace Maple.MonoGameAssistant.GameCore
         public static IServiceCollection AddGameCoreService(IServiceCollection services, string defApiUrl)
         {
             services.AddSingleton(new GameCloudConfig() { GameApiUrl = defApiUrl });
-            services.AddHttpClient();
-            services.ConfigureHttpClientDefaults(p => p.ConfigurePrimaryHttpMessageHandler(_ => new HttpClientHandler() { AutomaticDecompression = System.Net.DecompressionMethods.Brotli }));
-            services.AddSingleton<GameCloudService>();
-            services.AddScoped<GameHttpClientService>();
+          
+            services.AddHttpClient<GameHttpClientService>().ConfigurePrimaryHttpMessageHandler(()=> new HttpClientHandler() { AutomaticDecompression = System.Net.DecompressionMethods.Brotli }) ;
+         
             return services;
         }
 
         public static IServiceCollection AddGameCoreService_WASM(IServiceCollection services, string defApiUrl)
         {
             services.AddSingleton(new GameCloudConfig() { GameApiUrl = defApiUrl });
-            services.AddSingleton<IHttpClientFactory, WasmHttpClientFactory>();
-            services.AddSingleton<GameCloudService>();
-            services.AddScoped<GameHttpClientService>();
+            services.AddSingleton<IHttpClientFactory, GameCloudHttpClientFactory_WASM>();
+            services.AddScoped(p => p.GetRequiredService<IHttpClientFactory>().CreateClient());
             services.AddScoped<GameHttpClientService>();
 
             return services;
 
         }
 
-        internal class WasmHttpClientFactory : IHttpClientFactory
-        {
-            public HttpClient CreateClient(string name)
-            {
-                return new HttpClient();
-            }
-        }
 
     }
 

@@ -5,6 +5,7 @@ using Maple.MonoGameAssistant.Model;
 using Masa.Blazor;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.Extensions.DependencyInjection;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
@@ -12,12 +13,13 @@ namespace Maple.MonoGameAssistant.GameShared.Service
 {
 
 
-    public class GameCoreService(GameCloudConfig cloudConfig, GameHttpClientService gameHttp, IPopupService popupService, NavigationManager navigationManager)
+    public class GameCoreService(GameCloudConfig cloudConfig, IServiceProvider  serviceProvider, IPopupService popupService, NavigationManager navigationManager)
     {
         const string ShellUI_Ver = "Cloud:0.1";
 
         #region Service
-        GameHttpClientService Http { get; } = gameHttp;
+        IServiceProvider  ServiceProvider { get; } = serviceProvider;
+        public required GameHttpClientService Http { get; set; }
         public IPopupService PopupService { get; } = popupService;
         NavigationManager NavigationManager { get; } = navigationManager;
         GameCloudConfig GameCloudConfig { get; } = cloudConfig;
@@ -84,6 +86,7 @@ namespace Maple.MonoGameAssistant.GameShared.Service
             }
             catch { }
 
+            this.Http = this.ServiceProvider.GetRequiredService<GameHttpClientService>();
         }
 
         public async Task<EnumGameServiceStatus> OnInitializedAsync()

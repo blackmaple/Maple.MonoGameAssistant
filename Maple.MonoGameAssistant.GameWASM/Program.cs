@@ -23,7 +23,7 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 //});
 ////builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
-GameCoreExtensions.AddGameCoreService_WASM(builder.Services, "http://localhost:49009/");
+GameCoreExtensions.AddGameCoreService_WASM(builder.Services, "http://localhost:49001/");
 
 #else
 //builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
