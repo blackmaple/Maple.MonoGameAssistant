@@ -14,7 +14,7 @@ namespace Maple.MonoGameAssistant.GameCore
             this.Client.BaseAddress = new Uri(cloudConfig.GameApiUrl);
             this.Client.Timeout = TimeSpan.FromSeconds(30D);
             this.Client.DefaultRequestHeaders.AcceptEncoding.Add(new System.Net.Http.Headers.StringWithQualityHeaderValue("br"));
-            this.Client.DefaultRequestHeaders.Add("Access-Control-Request-Private-Network", "true");
+        //    this.Client.DefaultRequestHeaders.Add("Access-Control-Request-Private-Network", "true");
             //Access-Control-Request-Private-Network
         }
         #region HttpCore
