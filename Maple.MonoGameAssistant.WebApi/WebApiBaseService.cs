@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.StaticFiles;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.IO.Compression;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Maple.MonoGameAssistant.WebApi
 {
@@ -105,6 +106,7 @@ namespace Maple.MonoGameAssistant.WebApi
             var app = SlimBuilder.Build();
             app.UseResponseCompression();
             app.UseTryCatchService();
+
 
             app.UseStaticFiles();
             app.UseStaticFiles(new StaticFileOptions()
