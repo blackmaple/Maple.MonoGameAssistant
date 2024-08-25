@@ -1,18 +1,10 @@
 ﻿using Maple.MonoGameAssistant.Common;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading.Channels;
-using System.Threading.Tasks;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace Maple.MonoGameAssistant.HotKey
 {
-    internal class MapleThreadMessage
+    internal class UnmanagedThreadMessage
     {
         int ThreadId { set; get; }
 
@@ -23,7 +15,7 @@ namespace Maple.MonoGameAssistant.HotKey
         public ChannelReader<WinMsgNotifyDTO> NotifyReader => NotifyChannel.Reader;
         ILogger Logger => MsgNotifyService.Logger;
         IWinMsgNotifyService MsgNotifyService { get; }
-        public MapleThreadMessage(IWinMsgNotifyService winMsgNotifyService)
+        public UnmanagedThreadMessage(IWinMsgNotifyService winMsgNotifyService)
         {
             this.MsgNotifyService = winMsgNotifyService;
             this.NotifyChannel = Channel.CreateUnbounded<WinMsgNotifyDTO>();

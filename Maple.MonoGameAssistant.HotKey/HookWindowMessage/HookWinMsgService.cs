@@ -9,7 +9,7 @@ namespace Maple.MonoGameAssistant.HotKey
     using unsafe CallbackWndProc = delegate* unmanaged[Stdcall]<nint, EnumWindowMessage, nint, nint, nint>;
     public sealed unsafe class HookWinMsgService : IDisposable
     {
-        MapleThreadMessage? ThreadMessage { get; set; }
+        UnmanagedThreadMessage? ThreadMessage { get; set; }
         MapleObjectUnmanaged ObjectUnmanaged { get; }
         nint HookWindowHandle { get; }
         nint OldCallbackWndProc { set; get; }
@@ -72,7 +72,7 @@ namespace Maple.MonoGameAssistant.HotKey
             var b = this.SetHook();
             if (b)
             {
-                this.ThreadMessage = new MapleThreadMessage(winMsgNotify);
+                this.ThreadMessage = new UnmanagedThreadMessage(winMsgNotify);
                 _ = this.ThreadMessage.RunAsync();
             }
             return b;
