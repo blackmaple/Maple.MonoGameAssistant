@@ -1,7 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using Maple.MonoGameAssistant.Common;
 using System.Text;
-using Maple.MonoGameAssistant.Model;
 namespace Maple.MonoGameAssistant.Core
 {
     public static class MonoRuntimeServiceExtensions

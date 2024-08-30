@@ -9,7 +9,8 @@
 	</PropertyGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\Maple.MonoGameAssistant.Common\Maple.MonoGameAssistant.Common.csproj" />
-		<ProjectReference Include="..\Maple.MonoGameAssistant.Core\Maple.MonoGameAssistant.Core.csproj" />
+		<ProjectReference Include="..\Maple.MonoGameAssistant.HotKey.Abstractions\Maple.MonoGameAssistant.HotKey.Abstractions.csproj" />
+		<ProjectReference Include="..\Maple.MonoGameAssistant.WinApi\Maple.MonoGameAssistant.WinApi.csproj" />
 	</ItemGroup>
 
 </Project>

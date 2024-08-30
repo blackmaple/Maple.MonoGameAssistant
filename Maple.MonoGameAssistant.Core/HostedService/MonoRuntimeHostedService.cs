@@ -1,7 +1,5 @@
 ﻿using Maple.MonoGameAssistant.Common;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 
 namespace Maple.MonoGameAssistant.Core
 {

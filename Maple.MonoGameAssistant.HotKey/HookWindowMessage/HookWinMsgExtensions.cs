@@ -1,7 +1,8 @@
 ﻿using Maple.MonoGameAssistant.Common;
+using Maple.MonoGameAssistant.HotKey.Abstractions;
+using Maple.MonoGameAssistant.WinApi;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
-using System.Threading.Channels;
 
 namespace Maple.MonoGameAssistant.HotKey
 {
@@ -9,7 +10,7 @@ namespace Maple.MonoGameAssistant.HotKey
     {
         
 
-        public static HookWinMsgService CreateHookWinMsgService()
+        public static IHookWinMsgService CreateHookWinMsgService()
         {
             using var currentProcess = System.Diagnostics.Process.GetCurrentProcess();
             var hWnd = currentProcess.MainWindowHandle;
@@ -29,14 +30,14 @@ namespace Maple.MonoGameAssistant.HotKey
 
         internal static bool TryGetWindowUserData(this nint hWnd, out nint pUserData)
         {
-            pUserData = WinApi.GetWindowLongPtr(hWnd, EnumWindowLongPtrIndex.GWLP_USERDATA);
+            pUserData = WindowsRuntime.GetWindowLongPtr(hWnd, EnumWindowLongPtrIndex.GWLP_USERDATA);
             return pUserData != nint.Zero;
         }
 
         internal static bool TrySetWindowUserData(this nint hWnd, nint pUserData, out nint pOldUserData)
         {
             Marshal.SetLastPInvokeError(0);
-            pOldUserData = WinApi.SetWindowLongPtr(hWnd, EnumWindowLongPtrIndex.GWLP_USERDATA, pUserData);
+            pOldUserData = WindowsRuntime.SetWindowLongPtr(hWnd, EnumWindowLongPtrIndex.GWLP_USERDATA, pUserData);
             var lastError = Marshal.GetLastPInvokeError();
             return lastError == 0;
         }

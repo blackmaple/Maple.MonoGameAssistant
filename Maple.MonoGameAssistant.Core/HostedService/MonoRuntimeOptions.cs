@@ -1,5 +1,7 @@
 ﻿namespace Maple.MonoGameAssistant.Core
 {
+
+    [Obsolete("remove...")]
     public class MonoRuntimeOptions
     { 
         public required string DllFileName { set; get; }

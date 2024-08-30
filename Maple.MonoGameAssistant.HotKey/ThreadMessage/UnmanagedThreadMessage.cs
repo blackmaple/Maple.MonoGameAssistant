@@ -1,4 +1,6 @@
 ﻿using Maple.MonoGameAssistant.Common;
+using Maple.MonoGameAssistant.HotKey.Abstractions;
+using Maple.MonoGameAssistant.WinApi;
 using Microsoft.Extensions.Logging;
 using System.Threading.Channels;
 
@@ -30,19 +32,19 @@ namespace Maple.MonoGameAssistant.HotKey
             using (Logger.Running())
             {
 
-                this.ThreadId = WinApi.GetCurrentThreadId();
+                this.ThreadId = WindowsRuntime.GetCurrentThreadId();
 
-                WinApi.MSG msg = default;
+                WindowsRuntime.MSG msg = default;
                 while (!PostedQuit)
                 {
 
-                    if (WinApi.PeekMessage(ref msg, WinApi.MessageThreadHandle, 0, 0, WinApi.PM_NOREMOVE))
+                    if (WindowsRuntime.PeekMessage(ref msg, WindowsRuntime.MessageThreadHandle, 0, 0, WindowsRuntime.PM_NOREMOVE))
                     {
                         if (PostedQuit)
                         {
                             break;
                         }
-                        WinApi.GetMessage(ref msg, WinApi.MessageThreadHandle, 0, 0);
+                        WindowsRuntime.GetMessage(ref msg, WindowsRuntime.MessageThreadHandle, 0, 0);
                         if (PostedQuit)
                         {
                             break;
@@ -56,7 +58,7 @@ namespace Maple.MonoGameAssistant.HotKey
                             break;
                         }
                         //WaitMessage 可能会失败 所以不判断返回值
-                        WinApi.WaitMessage();
+                        WindowsRuntime.WaitMessage();
                         if (PostedQuit)
                         {
                             break;
@@ -70,7 +72,7 @@ namespace Maple.MonoGameAssistant.HotKey
 
         public bool TrySendThreadMsg(EnumWindowMessage Msg, nint wParam, nint lParam)
         {
-            return !this.PostedQuit && this.ThreadId != 0 && WinApi.PostThreadMessage(this.ThreadId, Msg, wParam, lParam);
+            return !this.PostedQuit && this.ThreadId != 0 && WindowsRuntime.PostThreadMessage(this.ThreadId, Msg, wParam, lParam);
         }
         public void TryExit()
         {

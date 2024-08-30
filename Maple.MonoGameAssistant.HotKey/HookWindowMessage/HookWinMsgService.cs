@@ -1,4 +1,6 @@
 ﻿using Maple.MonoGameAssistant.Common;
+using Maple.MonoGameAssistant.HotKey.Abstractions;
+using Maple.MonoGameAssistant.WinApi;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
@@ -7,7 +9,7 @@ namespace Maple.MonoGameAssistant.HotKey
     using unsafe ExecUnmanagedCodeProc = delegate*<nint, void>;
 
     using unsafe CallbackWndProc = delegate* unmanaged[Stdcall]<nint, EnumWindowMessage, nint, nint, nint>;
-    public sealed unsafe class HookWinMsgService : IDisposable
+    internal sealed unsafe class HookWinMsgService : IHookWinMsgService
     {
         UnmanagedThreadMessage? ThreadMessage { get; set; }
         MapleObjectUnmanaged ObjectUnmanaged { get; }
@@ -44,10 +46,10 @@ namespace Maple.MonoGameAssistant.HotKey
                     {
                         hookWindowMessage.ThreadMessage?.TryExit();
                     }
-                    return WinApi.CallWindowProc(pCallback, hWnd, msg, wParam, lParam);
+                    return WindowsRuntime.CallWindowProc(pCallback, hWnd, msg, wParam, lParam);
                 }
             }
-            return WinApi.DefWindowProc(hWnd, msg, wParam, lParam);
+            return WindowsRuntime.DefWindowProc(hWnd, msg, wParam, lParam);
 
 
         }
@@ -62,7 +64,7 @@ namespace Maple.MonoGameAssistant.HotKey
             {
                 CallbackWndProc callbackWndProc = &CallbackWndProc;
                 this.OldUserData = userData;
-                this.OldCallbackWndProc = WinApi.SetWindowLongPtr(this.HookWindowHandle, EnumWindowLongPtrIndex.GWLP_WNDPROC, (nint)callbackWndProc);
+                this.OldCallbackWndProc = WindowsRuntime.SetWindowLongPtr(this.HookWindowHandle, EnumWindowLongPtrIndex.GWLP_WNDPROC, (nint)callbackWndProc);
             }
             return this.OldCallbackWndProc != nint.Zero;
         }
@@ -83,7 +85,8 @@ namespace Maple.MonoGameAssistant.HotKey
         {
             if (this.OldCallbackWndProc != nint.Zero)
             {
-                WinApi.SetWindowLongPtr(this.HookWindowHandle, EnumWindowLongPtrIndex.GWLP_WNDPROC, this.OldCallbackWndProc);
+
+                WindowsRuntime.SetWindowLongPtr(this.HookWindowHandle, EnumWindowLongPtrIndex.GWLP_WNDPROC, this.OldCallbackWndProc);
                 this.HookWindowHandle.TrySetWindowUserData(this.OldUserData, out _);
                 this.OldCallbackWndProc = nint.Zero;
                 this.OldUserData = nint.Zero;
@@ -108,8 +111,9 @@ namespace Maple.MonoGameAssistant.HotKey
         {
             nint wParam = new(execCode);
             nint lParam = pArgs;
-            return WinApi.SendMessageTimeout(this.HookWindowHandle, EnumWindowMessage.USER_EXEC_CODE, wParam, lParam, WinApi.SMTO_BLOCK, 5000, out _);
+            return WindowsRuntime.SendMessageTimeout(this.HookWindowHandle, EnumWindowMessage.USER_EXEC_CODE, wParam, lParam, WindowsRuntime.SMTO_BLOCK, 5000, out _);
         }
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static void ExecUnmanagedCode(nint pProc, nint pArgs)
         {

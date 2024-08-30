@@ -1,5 +1,6 @@
 
 using Maple.MonoGameAssistant.Common;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 namespace Maple.MonoGameAssistant.Core
@@ -17,10 +18,13 @@ namespace Maple.MonoGameAssistant.Core
         public readonly PMonoUtf8Char Invoke(PMonoImage pMonoImage, uint addr) => _func(pMonoImage, addr);
         public static bool TryCreate(nint hModule, string name, out PMONO_IMAGE_RVA_MAP func)
         {
-            var address = WinApi.GetProcAddress(hModule, name);
-            func = new(address);
-            return address != nint.Zero;
-
+            Unsafe.SkipInit(out func);
+            if (NativeLibrary.TryGetExport(hModule, name, out var address))
+            {
+                func = new(address);
+                return true;
+            }
+            return false;
         }
 
     }
