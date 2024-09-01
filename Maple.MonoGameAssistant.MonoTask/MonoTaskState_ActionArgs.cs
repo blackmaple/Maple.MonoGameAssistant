@@ -4,7 +4,7 @@ namespace Maple.MonoGameAssistant.MonoTask
 {
     internal sealed class MonoTaskState_ActionArgs<T_GAMECONTEXT, T_Args>(T_GAMECONTEXT gameContext, Action<T_GAMECONTEXT, T_Args> action, T_Args args)
     : MonoTaskState<T_GAMECONTEXT>(gameContext)
-    where T_GAMECONTEXT : MonoCollectorContext
+    where T_GAMECONTEXT : class
     where T_Args : notnull
     {
         public Action<T_GAMECONTEXT, T_Args> Action { get; } = action;

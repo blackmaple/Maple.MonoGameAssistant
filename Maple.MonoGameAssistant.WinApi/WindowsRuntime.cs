@@ -1,4 +1,5 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.Marshalling;
 using System.Runtime.Versioning;
@@ -274,6 +275,19 @@ namespace Maple.MonoGameAssistant.WinApi
             }
             return SetWindowLong32(hWnd, nIndex, dwNewLong);
         }
+        public static bool TryGetWindowUserData(nint hWnd, out nint pUserData)
+        {
+            pUserData =  GetWindowLongPtr(hWnd, EnumWindowLongPtrIndex.GWLP_USERDATA);
+            return pUserData != nint.Zero;
+        }
+        public static bool TrySetWindowUserData(nint hWnd, nint pUserData, out nint pOldUserData)
+        {
+            Marshal.SetLastPInvokeError(0);
+            pOldUserData =  SetWindowLongPtr(hWnd, EnumWindowLongPtrIndex.GWLP_USERDATA, pUserData);
+            var lastError = Marshal.GetLastPInvokeError();
+            return lastError == 0;
+        }
+
 
         [System.Runtime.InteropServices.UnmanagedCallConv(CallConvs = [typeof(CallConvStdcall), typeof(CallConvSuppressGCTransition)])]
         [LibraryImport("user32.dll", EntryPoint = "GetWindowLongPtrW", SetLastError = false)]
@@ -609,4 +623,7 @@ namespace Maple.MonoGameAssistant.WinApi
 
 
     }
+
+
+
 }

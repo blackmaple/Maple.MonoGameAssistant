@@ -1,11 +1,8 @@
-﻿using Maple.MonoGameAssistant.Core;
-using Maple.MonoGameAssistant.HotKey.Abstractions;
-
-namespace Maple.MonoGameAssistant.HookTask
+﻿namespace Maple.MonoGameAssistant.HookTask
 {
-    internal sealed class HookTaskState_ActionArgs<T_GAMECONTEXT, T_Args>(T_GAMECONTEXT gameContext, IHookWinMsgService hook, Action<T_GAMECONTEXT, T_Args> action, T_Args args)
-        : HookTaskState<T_GAMECONTEXT>(gameContext, hook)
-        where T_GAMECONTEXT : MonoCollectorContext
+    internal sealed class HookTaskState_ActionArgs<T_GAMECONTEXT, T_Args>(IHookTaskScheduler<T_GAMECONTEXT> taskScheduler, Action<T_GAMECONTEXT, T_Args> action, T_Args args)
+        : HookTaskState<T_GAMECONTEXT>(taskScheduler)
+        where T_GAMECONTEXT : class
         where T_Args : notnull
     {
         public Action<T_GAMECONTEXT, T_Args> Action { get; } = action;

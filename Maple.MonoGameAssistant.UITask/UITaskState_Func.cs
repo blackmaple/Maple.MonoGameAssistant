@@ -1,11 +1,10 @@
-﻿using Maple.MonoGameAssistant.Core;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 
 namespace Maple.MonoGameAssistant.UITask
 {
     internal class UITaskState_Func<T_GAMECONTEXT, T_RETURN>(T_GAMECONTEXT gameContext, Func<T_GAMECONTEXT, T_RETURN> func)
         : UITaskState<T_GAMECONTEXT>(gameContext)
-        where T_GAMECONTEXT : MonoCollectorContext
+        where T_GAMECONTEXT : class
     {
         public Func<T_GAMECONTEXT, T_RETURN> Func { get; } = func;
 

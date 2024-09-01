@@ -1,10 +1,8 @@
-﻿using Maple.MonoGameAssistant.Core;
-
-namespace Maple.MonoGameAssistant.UITask
+﻿namespace Maple.MonoGameAssistant.UITask
 {
     internal sealed class UITaskState_ActionArgs<T_GAMECONTEXT, T_Args>(T_GAMECONTEXT gameContext, Action<T_GAMECONTEXT, T_Args> action, T_Args args)
         : UITaskState<T_GAMECONTEXT>(gameContext)
-        where T_GAMECONTEXT : MonoCollectorContext
+        where T_GAMECONTEXT : class
         where T_Args : notnull
     {
         public Action<T_GAMECONTEXT, T_Args> Action { get; } = action;

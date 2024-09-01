@@ -1,11 +1,10 @@
-﻿using Maple.MonoGameAssistant.Core;
-using Maple.MonoGameAssistant.TaskSchedulerCore;
+﻿using Maple.MonoGameAssistant.TaskSchedulerCore;
 
 namespace Maple.MonoGameAssistant.MonoTask
 {
-    public interface IMonoTaskScheduler<T_GAMECONTEXT>: ITaskSchedulerCore<T_GAMECONTEXT> where T_GAMECONTEXT : MonoCollectorContext
+    public interface IMonoTaskScheduler<T_GAMECONTEXT>: ITaskSchedulerCore<T_GAMECONTEXT> where T_GAMECONTEXT : class
     {
-        MonoTaskScheduler Scheduler { get; }
+        TaskScheduler Scheduler { get; }
 
     }
 

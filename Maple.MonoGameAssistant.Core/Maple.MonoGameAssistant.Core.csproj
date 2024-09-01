@@ -6,22 +6,14 @@
 		<Nullable>enable</Nullable>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 		<LangVersion>preview</LangVersion>
+		<PublishAot>true</PublishAot>
+		<IsAotCompatible>true</IsAotCompatible>
 
 
 
 	</PropertyGroup>
 
-	<ItemGroup>
-	  <Compile Remove="MonoType\MonoRaw\Mono_x64\MonoArray\**" />
-	  <Compile Remove="MonoType\MonoRaw\Mono_x64\MonoString\**" />
-	  <Compile Remove="MonoType\MonoRaw\x86\**" />
-	  <EmbeddedResource Remove="MonoType\MonoRaw\Mono_x64\MonoArray\**" />
-	  <EmbeddedResource Remove="MonoType\MonoRaw\Mono_x64\MonoString\**" />
-	  <EmbeddedResource Remove="MonoType\MonoRaw\x86\**" />
-	  <None Remove="MonoType\MonoRaw\Mono_x64\MonoArray\**" />
-	  <None Remove="MonoType\MonoRaw\Mono_x64\MonoString\**" />
-	  <None Remove="MonoType\MonoRaw\x86\**" />
-	</ItemGroup>
+	
 
  
 
@@ -36,9 +28,12 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\Maple.MonoGameAssistant.Common\Maple.MonoGameAssistant.Common.csproj" />
-	  <ProjectReference Include="..\Maple.MonoGameAssistant.Logger\Maple.MonoGameAssistant.Logger.csproj" />
 	  <ProjectReference Include="..\Maple.MonoGameAssistant.Model\Maple.MonoGameAssistant.Model.csproj" />
 	  <ProjectReference Include="..\Maple.MonoGameAssistant.MonoCollector\Maple.MonoGameAssistant.MonoCollector.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Properties\" />
 	</ItemGroup>
 
 

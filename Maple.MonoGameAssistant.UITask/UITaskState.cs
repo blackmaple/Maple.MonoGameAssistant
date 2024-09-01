@@ -1,6 +1,4 @@
-﻿using Maple.MonoGameAssistant.Core;
-
-namespace Maple.MonoGameAssistant.UITask
+﻿namespace Maple.MonoGameAssistant.UITask
 {
     internal abstract class UITaskState
     {
@@ -44,7 +42,7 @@ namespace Maple.MonoGameAssistant.UITask
     }
 
     internal class UITaskState<T_GAMECONTEXT>(T_GAMECONTEXT gameContext) : UITaskState
-        where T_GAMECONTEXT : MonoCollectorContext
+        where T_GAMECONTEXT : class
     {
         public T_GAMECONTEXT GameContext { get; } = gameContext;
 

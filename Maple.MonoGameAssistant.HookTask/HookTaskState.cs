@@ -1,10 +1,11 @@
-﻿using Maple.MonoGameAssistant.Core;
-using Maple.MonoGameAssistant.HotKey.Abstractions;
+﻿using Maple.MonoGameAssistant.HotKey.Abstractions;
 
 namespace Maple.MonoGameAssistant.HookTask
 {
-    internal abstract class HookTaskState
+    internal abstract class HookTaskState(IHookWinMsgService hook)
     {
+        public IHookWinMsgService Hook { get; } = hook;
+
         public bool ExecSuccess { set; get; }
         public void Execute()
         {
@@ -16,11 +17,10 @@ namespace Maple.MonoGameAssistant.HookTask
 
     }
 
-    internal class HookTaskState<T_GAMECONTEXT>(T_GAMECONTEXT gameContext, IHookWinMsgService hook) : HookTaskState
-        where T_GAMECONTEXT : MonoCollectorContext
+    internal class HookTaskState<T_GAMECONTEXT>(IHookTaskScheduler<T_GAMECONTEXT> taskScheduler) : HookTaskState(taskScheduler.Hook)
+        where T_GAMECONTEXT : class
     {
-        public IHookWinMsgService Hook { get; } = hook;
-        public T_GAMECONTEXT GameContext { get; } = gameContext;
+        public T_GAMECONTEXT GameContext { get; } = taskScheduler.GameContext;
 
         protected override void ExecuteImp()
         {

@@ -1,5 +1,4 @@
-﻿using Maple.MonoGameAssistant.Core;
-using Maple.MonoGameAssistant.TaskSchedulerCore;
+﻿using Maple.MonoGameAssistant.TaskSchedulerCore;
 
 namespace Maple.MonoGameAssistant.MonoTask
 {
@@ -7,16 +6,11 @@ namespace Maple.MonoGameAssistant.MonoTask
     {
 
         public static Task<T_RETURN> MonoTaskAsync<T_GAMECONTEXT, T_ARGS, T_RETURN>(this IMonoTaskScheduler<T_GAMECONTEXT> taskScheduler, Func<T_GAMECONTEXT, T_ARGS, T_RETURN> func, T_ARGS args)
-            where T_GAMECONTEXT : MonoCollectorContext
+            where T_GAMECONTEXT : class
             where T_ARGS : notnull
-     //       where T_RETURN : notnull
-            => MonoTaskAsync(taskScheduler.GameContext, taskScheduler.Scheduler, func, args);
-        public static Task<T_RETURN> MonoTaskAsync<T_GAMECONTEXT, T_ARGS, T_RETURN>(this T_GAMECONTEXT gameContext, MonoTaskScheduler scheduler, Func<T_GAMECONTEXT, T_ARGS, T_RETURN> func, T_ARGS args)
-            where T_GAMECONTEXT : MonoCollectorContext
-            where T_ARGS : notnull
-       //    where T_RETURN : notnull
         {
-            return Task.Factory.StartNew(ExecCodeProc, new MonoTaskState_FuncArgs<T_GAMECONTEXT, T_ARGS, T_RETURN>(gameContext, func, args), CancellationToken.None, TaskCreationOptions.DenyChildAttach, scheduler);
+            var taskState = new MonoTaskState_FuncArgs<T_GAMECONTEXT, T_ARGS, T_RETURN>(taskScheduler.GameContext, func, args);
+            return Task.Factory.StartNew(ExecCodeProc, taskState, CancellationToken.None, TaskCreationOptions.DenyChildAttach, taskScheduler.Scheduler);
 
             static T_RETURN ExecCodeProc(object? state)
             {
@@ -29,14 +23,10 @@ namespace Maple.MonoGameAssistant.MonoTask
         }
 
         public static Task<T_RETURN> MonoTaskAsync<T_GAMECONTEXT, T_RETURN>(this IMonoTaskScheduler<T_GAMECONTEXT> taskScheduler, Func<T_GAMECONTEXT, T_RETURN> func)
-            where T_GAMECONTEXT : MonoCollectorContext
-      //      where T_RETURN : notnull
-            => MonoTaskAsync(taskScheduler.GameContext, taskScheduler.Scheduler, func);
-        public static Task<T_RETURN> MonoTaskAsync<T_GAMECONTEXT, T_RETURN>(this T_GAMECONTEXT gameContext, MonoTaskScheduler scheduler, Func<T_GAMECONTEXT, T_RETURN> func)
-            where T_GAMECONTEXT : MonoCollectorContext
-      //      where T_RETURN : notnull
+            where T_GAMECONTEXT : class
         {
-            return Task.Factory.StartNew(ExecCodeProc, new MonoTaskState_Func<T_GAMECONTEXT, T_RETURN>(gameContext, func), CancellationToken.None, TaskCreationOptions.DenyChildAttach, scheduler);
+            var taskState = new MonoTaskState_Func<T_GAMECONTEXT, T_RETURN>(taskScheduler.GameContext, func);
+            return Task.Factory.StartNew(ExecCodeProc, taskState, CancellationToken.None, TaskCreationOptions.DenyChildAttach, taskScheduler.Scheduler);
 
             static T_RETURN ExecCodeProc(object? state)
             {
@@ -49,12 +39,10 @@ namespace Maple.MonoGameAssistant.MonoTask
         }
 
         public static Task<bool> MonoTaskAsync<T_GAMECONTEXT>(this IMonoTaskScheduler<T_GAMECONTEXT> taskScheduler, Action<T_GAMECONTEXT> action)
-            where T_GAMECONTEXT : MonoCollectorContext
-            => MonoTaskAsync(taskScheduler.GameContext, taskScheduler.Scheduler, action);
-        public static Task<bool> MonoTaskAsync<T_GAMECONTEXT>(this T_GAMECONTEXT gameContext, MonoTaskScheduler scheduler, Action<T_GAMECONTEXT> action)
-            where T_GAMECONTEXT : MonoCollectorContext
+            where T_GAMECONTEXT : class
         {
-            return Task.Factory.StartNew(ExecCodeProc, new MonoTaskState_Action<T_GAMECONTEXT>(gameContext, action), CancellationToken.None, TaskCreationOptions.DenyChildAttach, scheduler);
+            var taskState = new MonoTaskState_Action<T_GAMECONTEXT>(taskScheduler.GameContext, action);
+            return Task.Factory.StartNew(ExecCodeProc, taskState, CancellationToken.None, TaskCreationOptions.DenyChildAttach, taskScheduler.Scheduler);
 
             static bool ExecCodeProc(object? state)
             {
@@ -68,14 +56,11 @@ namespace Maple.MonoGameAssistant.MonoTask
         }
 
         public static Task<bool> MonoTaskAsync<T_GAMECONTEXT, T_ARGS>(this IMonoTaskScheduler<T_GAMECONTEXT> taskScheduler, Action<T_GAMECONTEXT, T_ARGS> action, T_ARGS args)
-            where T_GAMECONTEXT : MonoCollectorContext
-            where T_ARGS : notnull
-            => MonoTaskAsync(taskScheduler.GameContext, taskScheduler.Scheduler, action, args);
-        public static Task<bool> MonoTaskAsync<T_GAMECONTEXT, T_ARGS>(this T_GAMECONTEXT gameContext, MonoTaskScheduler scheduler, Action<T_GAMECONTEXT, T_ARGS> action, T_ARGS args)
-            where T_GAMECONTEXT : MonoCollectorContext
-            where T_ARGS : notnull
+           where T_GAMECONTEXT : class
+           where T_ARGS : notnull
         {
-            return Task.Factory.StartNew(ExecCodeProc, new MonoTaskState_ActionArgs<T_GAMECONTEXT, T_ARGS>(gameContext, action, args), CancellationToken.None, TaskCreationOptions.DenyChildAttach, scheduler);
+            var taskState = new MonoTaskState_ActionArgs<T_GAMECONTEXT, T_ARGS>(taskScheduler.GameContext, action, args);
+            return Task.Factory.StartNew(ExecCodeProc, taskState, CancellationToken.None, TaskCreationOptions.DenyChildAttach, taskScheduler.Scheduler);
 
             static bool ExecCodeProc(object? state)
             {

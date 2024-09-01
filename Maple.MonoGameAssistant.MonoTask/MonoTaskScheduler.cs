@@ -62,7 +62,7 @@ namespace Maple.MonoGameAssistant.MonoTask
     {
         Channel<Task> TaskChannel { get; }
         MonoRuntimeContext RuntimeContext { get; }
-        public MonoTaskScheduler(MonoRuntimeContext runtimeContext, int concurrencyLevel)
+        MonoTaskScheduler(MonoRuntimeContext runtimeContext, int concurrencyLevel)
         {
             this.RuntimeContext = runtimeContext;
             this.TaskChannel = Channel.CreateBounded<Task>(new BoundedChannelOptions(128)
@@ -82,7 +82,7 @@ namespace Maple.MonoGameAssistant.MonoTask
             {
                 var task = Task.Run(ExecTaskProc);
             }
-           
+
             async Task ExecTaskProc()
             {
                 await foreach (var task in this.TaskChannel.Reader.ReadAllAsync().ConfigureAwait(false))
