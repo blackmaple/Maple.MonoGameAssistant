@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace Maple.MonoGameAssistant.Core
+namespace Maple.MonoGameAssistant.MonoCollectorApi
 {
     public static class MonoCollectorApiExtensions
     {

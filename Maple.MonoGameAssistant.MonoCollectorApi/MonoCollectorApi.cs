@@ -2,7 +2,7 @@
 using Maple.MonoGameAssistant.MonoTask;
 using Maple.MonoGameAssistant.TaskSchedulerCore;
 
-namespace Maple.MonoGameAssistant.Core
+namespace Maple.MonoGameAssistant.MonoCollectorApi
 {
     public sealed class MonoCollectorApiService(MonoRuntimeContext runtimeContext, MonoTaskScheduler taskScheduler)
         : IMonoTaskScheduler<MonoRuntimeContext>
