@@ -74,7 +74,7 @@ namespace Maple.MonoGameAssistant.WebApi
         private void ConfigureMonoGameService<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] T_GameService>()
               where T_GameService : class, IMapleGameService, IGameWebApiControllers
         {
-            this.ServiceDescriptors.AddMonoRT();
+            this.ServiceDescriptors.AddMonoRuntimeService();
             this.ServiceDescriptors.AddLogging(p => p.AddOnlyMonoLogger());
             this.ServiceDescriptors.AddGameHostedService<T_GameService>();
             this.ServiceDescriptors.AddSingleton<IGameWebApiControllers>(p => p.GetRequiredService<T_GameService>());

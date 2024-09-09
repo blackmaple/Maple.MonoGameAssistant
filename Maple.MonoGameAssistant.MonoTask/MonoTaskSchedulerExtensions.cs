@@ -1,4 +1,5 @@
 ﻿using Maple.MonoGameAssistant.TaskSchedulerCore;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Maple.MonoGameAssistant.MonoTask
 {
@@ -72,5 +73,11 @@ namespace Maple.MonoGameAssistant.MonoTask
             }
         }
 
+
+
+        public static IServiceCollection AddMonoTaskScheduler(this IServiceCollection serviceDescriptors)
+        {
+            return serviceDescriptors.AddSingleton<MonoTaskScheduler>();
+        }
     }
 }

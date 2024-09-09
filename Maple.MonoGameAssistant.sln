@@ -76,6 +76,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Maple.MonoGameAssistant.Hoo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Maple.MonoGameAssistant.TaskSchedulerCore", "Maple.MonoGameAssistant.TaskSchedulerCore\Maple.MonoGameAssistant.TaskSchedulerCore.csproj", "{B053AE8C-59E6-4888-B324-763887CD69E1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Maple.MonoGameAssistant.MonoCollectorApi", "Maple.MonoGameAssistant.MonoCollectorApi\Maple.MonoGameAssistant.MonoCollectorApi.csproj", "{937BF016-315C-4531-803F-944523F88628}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -251,6 +253,12 @@ Global
 		{B053AE8C-59E6-4888-B324-763887CD69E1}.Local|Any CPU.Build.0 = Debug|Any CPU
 		{B053AE8C-59E6-4888-B324-763887CD69E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B053AE8C-59E6-4888-B324-763887CD69E1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{937BF016-315C-4531-803F-944523F88628}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{937BF016-315C-4531-803F-944523F88628}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{937BF016-315C-4531-803F-944523F88628}.Local|Any CPU.ActiveCfg = Debug|Any CPU
+		{937BF016-315C-4531-803F-944523F88628}.Local|Any CPU.Build.0 = Debug|Any CPU
+		{937BF016-315C-4531-803F-944523F88628}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{937BF016-315C-4531-803F-944523F88628}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -288,6 +296,7 @@ Global
 		{22096AEC-8DBE-46C1-BFCC-D7F12899F957} = {4CA229EE-313B-4246-B8AF-676662ED7374}
 		{294B9670-70B7-4B4B-8F51-58F615367D7E} = {4CA229EE-313B-4246-B8AF-676662ED7374}
 		{B053AE8C-59E6-4888-B324-763887CD69E1} = {182DAC1C-C7C8-45BF-84CB-660D2464E0BC}
+		{937BF016-315C-4531-803F-944523F88628} = {182DAC1C-C7C8-45BF-84CB-660D2464E0BC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C4B1009A-7EAE-4525-A9E8-7FE3104565E7}

@@ -806,9 +806,9 @@ namespace Maple.MonoGameAssistant.Core
         }
         #endregion
 
-        #region WebApi
-        public MonoRuntimeWebApiService CreateWebApiService() => new(this);
+        //#region WebApi
+        //public MonoRuntimeWebApiService CreateWebApiService() => new(this);
 
-        #endregion
+        //#endregion
     }
 }
