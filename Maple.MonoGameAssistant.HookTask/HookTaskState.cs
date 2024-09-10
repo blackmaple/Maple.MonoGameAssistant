@@ -17,15 +17,14 @@ namespace Maple.MonoGameAssistant.HookTask
 
     }
 
-    internal class HookTaskState<T_GAMECONTEXT>(IHookTaskScheduler<T_GAMECONTEXT> taskScheduler) : HookTaskState(taskScheduler.Hook)
-        where T_GAMECONTEXT : class
+    internal class HookTaskState<T_CONTEXT>(IHookTaskScheduler<T_CONTEXT> taskScheduler) : HookTaskState(taskScheduler.Hook)
+        where T_CONTEXT : class
     {
-        public T_GAMECONTEXT GameContext { get; } = taskScheduler.GameContext;
+        public T_CONTEXT Context { get; } = taskScheduler.Context;
 
         protected override void ExecuteImp()
         {
 
         }
     }
-
 }

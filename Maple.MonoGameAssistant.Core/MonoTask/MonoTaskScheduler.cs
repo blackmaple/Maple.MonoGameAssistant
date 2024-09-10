@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Hosting;
 using System.Threading.Channels;
 
-namespace Maple.MonoGameAssistant.MonoTask
+namespace Maple.MonoGameAssistant.Core
 {
     //public sealed class MonoTaskScheduler : TaskScheduler, IDisposable
     //{

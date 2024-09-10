@@ -10,7 +10,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Maple.MonoGameAssistant.Common\Maple.MonoGameAssistant.Common.csproj" />
     <ProjectReference Include="..\Maple.MonoGameAssistant.HotKey.Abstractions\Maple.MonoGameAssistant.HotKey.Abstractions.csproj" />
-    <ProjectReference Include="..\Maple.MonoGameAssistant.TaskSchedulerCore\Maple.MonoGameAssistant.TaskSchedulerCore.csproj" />
+    <ProjectReference Include="..\Maple.MonoGameAssistant.Model\Maple.MonoGameAssistant.Model.csproj" />
   </ItemGroup>
 
 </Project>

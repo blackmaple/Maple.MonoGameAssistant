@@ -1,61 +1,59 @@
 ﻿using Maple.MonoGameAssistant.Common;
-using Maple.MonoGameAssistant.TaskSchedulerCore;
 using Maple.MonoGameAssistant.WinApi;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using System.Threading.Tasks;
 
 namespace Maple.MonoGameAssistant.UITask
 {
     public static class UITaskSchedulerExtensions
     {
-        public static async ValueTask<T_RETURN> UITaskAsync<T_GAMECONTEXT, T_RETURN>(this IUITaskScheduler<T_GAMECONTEXT> taskScheduler, Func<T_GAMECONTEXT, T_RETURN> func)
-            where T_GAMECONTEXT : class
+        public static async ValueTask<T_RETURN> UITaskAsync<T_CONTEXT, T_RETURN>(this IUITaskScheduler<T_CONTEXT> taskScheduler, Func<T_CONTEXT, T_RETURN> func)
+            where T_CONTEXT : class
         {
-            var taskState = new UITaskState_Func<T_GAMECONTEXT, T_RETURN>(taskScheduler.GameContext, func);
+            var taskState = new UITaskState_Func<T_CONTEXT, T_RETURN>(taskScheduler.Context, func);
             if (await ExecSetTimerAsync(taskState).ConfigureAwait(false))
             {
                 return taskState.ReturnValue!;
             }
-            return TaskStateException.Throw<T_RETURN>($"EXEC ERROR {nameof(ExecSetTimerAsync)}");
+            return UITaskStateException.Throw<T_RETURN>($"EXEC ERROR {nameof(ExecSetTimerAsync)}");
         }
 
 
-        public static async ValueTask<T_RETURN> UITaskAsync<T_GAMECONTEXT, T_ARGS, T_RETURN>(this IUITaskScheduler<T_GAMECONTEXT> taskScheduler, Func<T_GAMECONTEXT, T_ARGS, T_RETURN> func, T_ARGS args)
-            where T_GAMECONTEXT : class
+        public static async ValueTask<T_RETURN> UITaskAsync<T_CONTEXT, T_ARGS, T_RETURN>(this IUITaskScheduler<T_CONTEXT> taskScheduler, Func<T_CONTEXT, T_ARGS, T_RETURN> func, T_ARGS args)
+            where T_CONTEXT : class
             where T_ARGS : notnull
         {
-            var taskState = new UITaskState_FuncArgs<T_GAMECONTEXT, T_ARGS, T_RETURN>(taskScheduler.GameContext, func, args);
+            var taskState = new UITaskState_FuncArgs<T_CONTEXT, T_ARGS, T_RETURN>(taskScheduler.Context, func, args);
             if (await ExecSetTimerAsync(taskState).ConfigureAwait(false))
             {
                 return taskState.ReturnValue!;
             }
-            return TaskStateException.Throw<T_RETURN>($"EXEC ERROR {nameof(ExecSetTimerAsync)}");
+            return UITaskStateException.Throw<T_RETURN>($"EXEC ERROR {nameof(ExecSetTimerAsync)}");
         }
 
 
-        public static async ValueTask<bool> UITaskAsync<T_GAMECONTEXT>(this IUITaskScheduler<T_GAMECONTEXT> taskScheduler, Action<T_GAMECONTEXT> action)
-            where T_GAMECONTEXT : class
+        public static async ValueTask<bool> UITaskAsync<T_CONTEXT>(this IUITaskScheduler<T_CONTEXT> taskScheduler, Action<T_CONTEXT> action)
+            where T_CONTEXT : class
         {
-            var taskState = new UITaskState_Action<T_GAMECONTEXT>(taskScheduler.GameContext, action);
+            var taskState = new UITaskState_Action<T_CONTEXT>(taskScheduler.Context, action);
             if (await ExecSetTimerAsync(taskState).ConfigureAwait(false))
             {
                 return true;
             }
-            return TaskStateException.Throw<bool>($"EXEC ERROR {nameof(ExecSetTimerAsync)}");
+            return UITaskStateException.Throw<bool>($"EXEC ERROR {nameof(ExecSetTimerAsync)}");
         }
 
 
-        public static async ValueTask<bool> UITaskAsync<T_GAMECONTEXT, T_ARGS>(this IUITaskScheduler<T_GAMECONTEXT> taskScheduler, Action<T_GAMECONTEXT, T_ARGS> action, T_ARGS args)
-            where T_GAMECONTEXT : class
+        public static async ValueTask<bool> UITaskAsync<T_CONTEXT, T_ARGS>(this IUITaskScheduler<T_CONTEXT> taskScheduler, Action<T_CONTEXT, T_ARGS> action, T_ARGS args)
+            where T_CONTEXT : class
             where T_ARGS : notnull
         {
-            var taskState = new UITaskState_ActionArgs<T_GAMECONTEXT, T_ARGS>(taskScheduler.GameContext, action, args);
+            var taskState = new UITaskState_ActionArgs<T_CONTEXT, T_ARGS>(taskScheduler.Context, action, args);
             if (await  ExecSetTimerAsync(taskState).ConfigureAwait(false))
             {
                 return true;
             }
-            return TaskStateException.Throw<bool>($"EXEC ERROR {nameof(ExecSetTimerAsync)}");
+            return UITaskStateException.Throw<bool>($"EXEC ERROR {nameof(ExecSetTimerAsync)}");
 
         }
      
@@ -66,7 +64,7 @@ namespace Maple.MonoGameAssistant.UITask
             var hwnd = System.Diagnostics.Process.GetCurrentProcess().MainWindowHandle;
             if (hwnd == nint.Zero)
             {
-                return TaskStateException.Throw<bool>("NOT FOUND MainWindowHandle");
+                return UITaskStateException.Throw<bool>("NOT FOUND MainWindowHandle");
             }
             using var objectUnmanaged = new MapleObjectUnmanaged(taskState);
             var id = (nuint)objectUnmanaged.ToIntPtr();

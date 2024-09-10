@@ -6,108 +6,189 @@ using Maple.MonoGameAssistant.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.AspNetCore.StaticFiles;
+using Microsoft.Extensions.DependencyInjection;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.IO.Compression;
-using System.Security.Cryptography.X509Certificates;
+using System.Net;
 
 namespace Maple.MonoGameAssistant.WebApi
 {
-    public class WebApiBaseService
+    //public class WebApiBaseService
+    //{
+
+    //    WebApplicationBuilder SlimBuilder { get; }
+    //    IServiceCollection ServiceDescriptors => SlimBuilder.Services;
+    //    MonoGameSettings Settings { get; }
+
+
+
+
+
+
+
+    //    private void ConfigureMonoGameService<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] T_GameService>()
+    //          where T_GameService : class, IMapleGameService, IGameWebApiControllers
+    //    {
+    //        this.ServiceDescriptors.AddLogging(p => p.AddOnlyMonoLogger());
+    //        this.ServiceDescriptors.AddSingleton<IGameWebApiControllers>(p => p.GetRequiredService<T_GameService>());
+
+    //    }
+
+
+    //    private WebApplication ConfigureWebApplication()
+    //    {
+    //        var app = SlimBuilder.Build();
+    //        app.UseResponseCompression();
+    //        app.UseTryCatchService();
+
+    //        app.UseStaticFiles();
+    //        app.UseStaticFiles(new StaticFileOptions()
+    //        {
+    //            ContentTypeProvider = new FileExtensionContentTypeProvider(new Dictionary<string, string>
+    //            {
+    //                [".blat"] = "application/octet-stream",
+    //                [".dll"] = "application/octet-stream",
+    //                [".webcil"] = "application/octet-stream",
+    //                [".dat"] = "application/octet-stream",
+
+    //                [".wasm"] = "application/wasm",
+
+    //                [".json"] = "application/json",
+
+    //                [".woff"] = "application/font-woff",
+    //                [".woff2"] = "application/font-woff",
+
+    //            }),
+    //            HttpsCompression = Microsoft.AspNetCore.Http.Features.HttpsCompressionMode.Compress,
+    //        });
+
+
+    //        app.UseCors();
+
+    //        UseWebApi(app);
+
+    //        return app;
+    //    }
+
+    //    internal Task RunAsync<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] T_GameService>()
+    //        where T_GameService : class, IMapleGameService, IGameWebApiControllers
+    //    {
+    //        this.ConfigureListenNamedPipe();
+    //        this.ConfigureListenIP();
+    //        this.ConfigureMonoGameService<T_GameService>();
+    //        this.ConfigureHttpService();
+    //        var app = this.ConfigureWebApplication();
+    //        return app.RunAsync();
+
+    //    }
+
+    //    public async Task LazyRunAsync<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] T_GameService>(int millisecondsDelay = 2500)
+    //        where T_GameService : class, IMapleGameService, IGameWebApiControllers
+    //    {
+    //        var logger = MonoLoggerExtensions.DefaultProvider.CreateLogger(typeof(T_GameService).FullName ?? typeof(T_GameService).Name);
+    //        using (logger.Running())
+    //        {
+    //            try
+    //            {
+    //                //     logger.LogInformation("port=>{p}", this.Settings.Port.ToString());
+    //                await Task.Delay(millisecondsDelay).ConfigureAwait(false);
+    //                await this.RunAsync<T_GameService>().ConfigureAwait(false);
+    //            }
+    //            catch (Exception ex)
+    //            {
+    //                logger.Error(ex);
+    //            }
+    //        }
+    //    }
+
+
+
+
+
+    //}
+
+
+    public static class WebApiServiceExtensions
     {
 
-        WebApplicationBuilder SlimBuilder { get; }
-        IServiceCollection ServiceDescriptors => SlimBuilder.Services;
-        MonoGameSettings Settings { get; }
-
-
-
-        //   [RequiresUnreferencedCode("This functionality is not compatible with trimming. Use 'MethodFriendlyToTrimming' instead")]
-        public WebApiBaseService(string gameName = "Test", string? qq = default)
+        public static WebApplication AddWebApiService(
+            Action<MonoGameSettings> actionGameSettings,
+            Action<IServiceCollection> actionAddServices)
         {
-            this.SlimBuilder = WebApplication.CreateSlimBuilder();
-            this.Settings = this.ConfigureMonoGameSettings(gameName, qq);
-        }
-
-        //    [RequiresUnreferencedCode("This functionality is not compatible with trimming. Use 'MethodFriendlyToTrimming' instead")]
-        private MonoGameSettings ConfigureMonoGameSettings(string gameName, string? qq = default)
-        {
-            var settings = SlimBuilder.Configuration.GetSection(nameof(MonoGameSettings)).Get<MonoGameSettings>();
-            settings ??= new MonoGameSettings()
+            var slimBuilder = WebApplication.CreateSlimBuilder();
+            var settings = new MonoGameSettings()
             {
                 MonoDataCollector = true,
                 NamedPipe = true,
                 Http = false,
-                IndexPage = "/index.html"
-
+                IndexPage = "/index.html",
+                GamePath = slimBuilder.Environment.ContentRootPath,
+                WebRootPath = slimBuilder.Environment.WebRootPath
             };
-            settings.GameName = gameName;
-            settings.QQ = qq;
-            settings.GamePath = this.SlimBuilder.Environment.ContentRootPath;
-            settings.WebRootPath = this.SlimBuilder.Environment.WebRootPath;
-            this.ServiceDescriptors.AddSingleton(settings);
-            return settings;
+            actionGameSettings(settings);
+            slimBuilder.Services.AddSingleton(settings);
+
+            slimBuilder.ConfigureListenIP(settings);
+            slimBuilder.ConfigureListenNamedPipe(settings);
+            slimBuilder.ConfigureHttpService(settings);
+
+            actionAddServices(slimBuilder.Services);
+
+            var app = slimBuilder.BuildWebApplication();
+            app.UseEnumMonoWebApi(settings);
+            app.UseGameWebApi(settings);
+
+            return app;
         }
 
-
-        private void ConfigureListenIP()
+        private static void ConfigureListenIP(this WebApplicationBuilder slimBuilder, MonoGameSettings settings)
         {
-            if (this.Settings.Http && this.Settings.TryGetRandomPort(out var port))
+            if (settings.Http && settings.TryGetRandomPort(out var port))
             {
-                this.Settings.BaseAddress = $"http://localhost:{port}";
-                SlimBuilder.WebHost.UseKestrel(p => p.ListenAnyIP(port));
+
+                settings.BaseAddress = $"http://localhost:{port}";
+                slimBuilder.WebHost.UseKestrel(p => p.ListenAnyIP(port));
             }
         }
-
-
-        private void ConfigureListenNamedPipe()
+        private static void ConfigureListenNamedPipe(this WebApplicationBuilder slimBuilder, MonoGameSettings settings)
         {
-            if (this.Settings.NamedPipe)
+            if (settings.NamedPipe)
             {
-                this.SlimBuilder.WebHost.UseKestrel(p =>
+                slimBuilder.WebHost.UseKestrel(p =>
                 {
                     p.ListenNamedPipe(MonoJsonExtensions.GetPipeName(Process.GetCurrentProcess()));
                 });
             }
         }
-
-        private void ConfigureMonoGameService<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] T_GameService>()
-              where T_GameService : class, IMapleGameService, IGameWebApiControllers
+        private static void ConfigureHttpService(this WebApplicationBuilder slimBuilder, MonoGameSettings settings)
         {
-            this.ServiceDescriptors.AddMonoRuntimeService();
-            this.ServiceDescriptors.AddLogging(p => p.AddOnlyMonoLogger());
-            this.ServiceDescriptors.AddGameHostedService<T_GameService>();
-            this.ServiceDescriptors.AddSingleton<IGameWebApiControllers>(p => p.GetRequiredService<T_GameService>());
-
-        }
-
-
-        private void ConfigureHttpService()
-        {
-            ServiceDescriptors.ConfigureHttpJsonOptions(jsonOptions =>
+            var serviceDescriptors = slimBuilder.Services;
+            serviceDescriptors.ConfigureHttpJsonOptions(jsonOptions =>
             {
                 jsonOptions.SerializerOptions.AddMonoJsonContext();
                 jsonOptions.SerializerOptions.TypeInfoResolverChain.Insert(0, GameJsonContext.Default);
             });
-            ServiceDescriptors.AddResponseCompression(options =>
+            serviceDescriptors.AddResponseCompression(options =>
             {
                 options.Providers.Add<BrotliCompressionProvider>();
             });
-            ServiceDescriptors.Configure<BrotliCompressionProviderOptions>(options =>
+            serviceDescriptors.Configure<BrotliCompressionProviderOptions>(options =>
             {
                 options.Level = CompressionLevel.Optimal;
             });
-            ServiceDescriptors.AddCors();
+            serviceDescriptors.AddCors();
 
-            ServiceDescriptors.AddTryCatchService(this.Settings.IndexPage ?? "/index.html", ["/mono", "/game"]);
+            serviceDescriptors.AddTryCatchService(settings.IndexPage ?? "/index.html", ["/mono", "/game"]);
         }
-        private WebApplication ConfigureWebApplication()
+
+
+
+        private static WebApplication BuildWebApplication(this WebApplicationBuilder slimBuilder)
         {
-            var app = SlimBuilder.Build();
+            var app = slimBuilder.Build();
             app.UseResponseCompression();
             app.UseTryCatchService();
-
-
             app.UseStaticFiles();
             app.UseStaticFiles(new StaticFileOptions()
             {
@@ -128,101 +209,43 @@ namespace Maple.MonoGameAssistant.WebApi
                 }),
                 HttpsCompression = Microsoft.AspNetCore.Http.Features.HttpsCompressionMode.Compress,
             });
-
-            //app.Use(async (ctx, next) =>
-            //{
-            //    var logger = ctx.RequestServices.GetRequiredService<ILogger<WebApiBaseService>>();
-            //    using (logger.Running($"httpMethod:{ctx.Request.Method}"))
-            //    {
-
-            //        if (ctx.Request.Method.Equals(HttpMethod.Options.Method, StringComparison.OrdinalIgnoreCase) && ctx.Request.Headers.ContainsKey("Access-Control-Request-Private-Network"))
-            //        {
-            //            logger.Info("Access-Control-Request-Private-Network");
-            //            ctx.Response.Headers.TryAdd("Access-Control-Allow-Private-Network", "true");
-            //        }
-
-            //    }
-
-
-            //    await next().ConfigureAwait(false);
-            //});
             app.UseCors();
-
-            UseWebApi(app);
-
             return app;
         }
-
-        internal Task RunAsync<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] T_GameService>()
-            where T_GameService : class, IMapleGameService, IGameWebApiControllers
+        private static void UseEnumMonoWebApi(this IEndpointRouteBuilder app, MonoGameSettings settings)
         {
-            this.ConfigureListenNamedPipe();
-            this.ConfigureListenIP();
-            this.ConfigureMonoGameService<T_GameService>();
-            this.ConfigureHttpService();
-            var app = this.ConfigureWebApplication();
-            return app.RunAsync();
-
-        }
-
-        public async Task LazyRunAsync<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] T_GameService>(int millisecondsDelay = 2500)
-            where T_GameService : class, IMapleGameService, IGameWebApiControllers
-        {
-            var logger = MonoLoggerExtensions.DefaultProvider.CreateLogger(typeof(T_GameService).FullName ?? typeof(T_GameService).Name);
-            using (logger.Running())
-            {
-                try
-                {
-                    //     logger.LogInformation("port=>{p}", this.Settings.Port.ToString());
-                    await Task.Delay(millisecondsDelay).ConfigureAwait(false);
-                    await this.RunAsync<T_GameService>().ConfigureAwait(false);
-                }
-                catch (Exception ex)
-                {
-                    logger.Error(ex);
-                }
-            }
-        }
-
-        private void UseWebApi(IEndpointRouteBuilder app)
-        {
-            this.UseGameWebApi(app);
-            this.UseEnumMonoWebApi(app);
-        }
-        private void UseEnumMonoWebApi(IEndpointRouteBuilder app)
-        {
-            if (!this.Settings.MonoDataCollector)
+            if (!settings.MonoDataCollector)
             {
                 return;
             }
             var monoGroup = app.MapGroup("/mono");
 
-            monoGroup.MapGet("/EnumImages", ([FromServices] MonoRuntimeContext runtimeContext) =>
+            monoGroup.MapGet("/EnumImages", async ([FromServices] MonoCollectorApiService webApiService) =>
             {
-                using var webApiService = runtimeContext.CreateWebApiService();
-                return webApiService.Api_EnumMonoImages().GetOk();
+                var dto = await webApiService.EnumMonoImagesAsync().ConfigureAwait(false);
+                return dto.GetOk();
 
             });
-            monoGroup.MapPost("/EnumClasses", ([FromBody] MonoPointerRequestDTO postDTO, [FromServices] MonoRuntimeContext runtimeContext) =>
+            monoGroup.MapPost("/EnumClasses", async ([FromBody] MonoPointerRequestDTO postDTO, [FromServices] MonoCollectorApiService webApiService) =>
             {
-                using var webApiService = runtimeContext.CreateWebApiService();
-                return webApiService.Api_EnumMonoClasses(postDTO.Pointer).GetOk();
+                var dto = await webApiService.EnumMonoClassesAsync(postDTO.Pointer).ConfigureAwait(false);
+                return dto.GetOk();
 
             });
-            monoGroup.MapPost("/EnumObjects", ([FromBody] MonoPointerRequestDTO postDTO, [FromServices] MonoRuntimeContext runtimeContext) =>
+            monoGroup.MapPost("/EnumObjects", async ([FromBody] MonoPointerRequestDTO postDTO, [FromServices] MonoCollectorApiService webApiService) =>
             {
-                using var webApiService = runtimeContext.CreateWebApiService();
-                return webApiService.Api_EnumMonoObjects(postDTO.Pointer).GetOk();
+                var dto = await webApiService.EnumMonoObjectsAsync(postDTO.Pointer).ConfigureAwait(false);
+                return dto.GetOk();
 
             });
-            monoGroup.MapPost("/EnumClassDetail", ([FromBody] MonoClassDetailRequestDTO postDTO, [FromServices] MonoRuntimeContext runtimeContext) =>
+            monoGroup.MapPost("/EnumClassDetail", async ([FromBody] MonoClassDetailRequestDTO postDTO, [FromServices] MonoCollectorApiService webApiService) =>
             {
-                using var webApiService = runtimeContext.CreateWebApiService();
-                return webApiService.Api_EnumMonoClassDetail(postDTO.Pointer, postDTO.FieldOptions).GetOk();
+                var dto = await webApiService.EnumMonoClassDetailAsync(postDTO.Pointer, postDTO.FieldOptions).ConfigureAwait(false);
+                return dto.GetOk();
             });
 
         }
-        private void UseGameWebApi(IEndpointRouteBuilder app)
+        private static void UseGameWebApi(this IEndpointRouteBuilder app, MonoGameSettings settings)
         {
             var gameGroup = app.MapGroup("/game").RequireCors(p => p.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
             gameGroup.MapGet("/info", async ([FromServices] IGameWebApiControllers gameService) =>
@@ -231,7 +254,7 @@ namespace Maple.MonoGameAssistant.WebApi
                 return data.GetOk();
             });
 
-            if (!this.Settings.Http)
+            if (settings.Http)
             {
                 return;
             }
@@ -370,9 +393,5 @@ namespace Maple.MonoGameAssistant.WebApi
 
         }
 
-
-
-
     }
-
 }

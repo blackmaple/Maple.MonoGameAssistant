@@ -1,9 +1,7 @@
-﻿using Maple.MonoGameAssistant.TaskSchedulerCore;
-
-namespace Maple.MonoGameAssistant.UITask
+﻿namespace Maple.MonoGameAssistant.UITask
 {
-    public interface IUITaskScheduler<T_GAMECONTEXT>: ITaskSchedulerCore<T_GAMECONTEXT> where T_GAMECONTEXT : class
+    public interface IUITaskScheduler<T_CONTEXT>  where T_CONTEXT : class
     {
-
+        T_CONTEXT Context { get; }
     }
 }

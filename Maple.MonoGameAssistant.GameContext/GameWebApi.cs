@@ -1,15 +1,5 @@
-﻿using Maple.MonoGameAssistant.Common;
-using Maple.MonoGameAssistant.Core;
-using Maple.MonoGameAssistant.GameDTO;
-using Maple.MonoGameAssistant.WebApi;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Routing;
-using System.Diagnostics.CodeAnalysis;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-using System.Text.Json.Serialization;
-namespace Maple.GameContext
+﻿using System.Diagnostics.CodeAnalysis;
+namespace Maple.MonoGameAssistant.GameContext
 {
     public class GameWebApi<
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] T_GAMEWEBAPI,

@@ -1,14 +1,11 @@
-﻿using Maple.MonoGameAssistant.Core;
-using Maple.MonoGameAssistant.Model;
+﻿using Maple.MonoGameAssistant.Model;
 using Microsoft.AspNetCore.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using System.Net.Mime;
 
 namespace Maple.MonoGameAssistant.WebApi
 {
-    public static class WebApiExtensions
+    internal static class WebApiHelper
     {
         internal static IServiceCollection AddTryCatchService(this IServiceCollection services, string errorPage, string[] webApiPaths)
         {
@@ -18,7 +15,6 @@ namespace Maple.MonoGameAssistant.WebApi
                 p.ApiPaths = webApiPaths;
             });
         }
-
         internal static IApplicationBuilder UseTryCatchService(this IApplicationBuilder app)
         {
             app.UseExceptionHandler(p => p.Run(ExceptionHandler));
@@ -134,17 +130,6 @@ namespace Maple.MonoGameAssistant.WebApi
                 CODE = (int)EnumMonoCommonCode.OK,
                 DATA = dto
             };
-        }
-    }
-
-    public class WebApiPathSettings
-    {
-        public required string ErrorPage { set; get; }
-        public required string[] ApiPaths { get; set; }
-
-        public bool ExistsWebApiPath(PathString pathString)
-        {
-            return this.ApiPaths.Any(p => pathString.StartsWithSegments(p));
         }
     }
 }

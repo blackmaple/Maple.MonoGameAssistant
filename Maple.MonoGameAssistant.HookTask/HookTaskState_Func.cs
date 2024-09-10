@@ -2,11 +2,11 @@
 
 namespace Maple.MonoGameAssistant.HookTask
 {
-    internal class HookTaskState_Func<T_GAMECONTEXT, T_RETURN>(IHookTaskScheduler<T_GAMECONTEXT> taskScheduler, Func<T_GAMECONTEXT, T_RETURN> func) 
-        : HookTaskState<T_GAMECONTEXT>(taskScheduler)
-        where T_GAMECONTEXT : class
+    internal class HookTaskState_Func<T_CONTEXT, T_RETURN>(IHookTaskScheduler<T_CONTEXT> taskScheduler, Func<T_CONTEXT, T_RETURN> func) 
+        : HookTaskState<T_CONTEXT>(taskScheduler)
+        where T_CONTEXT : class
     {
-        public Func<T_GAMECONTEXT, T_RETURN> Func { get; } = func;
+        public Func<T_CONTEXT, T_RETURN> Func { get; } = func;
 
         public T_RETURN? ReturnValue { set; get; }
 
@@ -18,7 +18,7 @@ namespace Maple.MonoGameAssistant.HookTask
 
         protected override void ExecuteImp()
         {
-            ReturnValue = Func.Invoke(GameContext);
+            ReturnValue = Func.Invoke(Context);
         }
     }
 
