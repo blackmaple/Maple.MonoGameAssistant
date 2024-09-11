@@ -7,17 +7,19 @@ using Maple.MonoGameAssistant.HotKey.Abstractions;
 using Maple.MonoGameAssistant.Model;
 using Maple.MonoGameAssistant.UITask;
 using Maple.MonoGameAssistant.UnityCore.UnityEngine;
+using Maple.MonoGameAssistant.WinApi;
 using Microsoft.Extensions.Logging;
 
 namespace Maple.MonoGameAssistant.GameContext
 {
-    public abstract class GameService<T_CONTEXT>(
-           ILogger<GameService<T_CONTEXT>> logger,
+    public abstract class GameContextService<T_CONTEXT>(
+           ILogger<GameContextService<T_CONTEXT>> logger,
            MonoRuntimeContext runtimeContext,
            MonoTaskScheduler monoTaskScheduler,
            MonoGameSettings gameSettings,
            HookWinMsgFactory hookWinMsgFactory)
-        : IWinMsgNotifyService,
+        : IGameContextService,
+        IWinMsgNotifyService,
         IHookTaskScheduler<T_CONTEXT>,
         IMonoTaskScheduler<T_CONTEXT>,
         IUITaskScheduler<T_CONTEXT>,
@@ -32,19 +34,23 @@ namespace Maple.MonoGameAssistant.GameContext
         public MonoRuntimeContext RuntimeContext { get; } = runtimeContext;
         public MonoGameSettings GameSettings { get; } = gameSettings;
         public TaskScheduler Scheduler { get; } = monoTaskScheduler;
-
-        public required T_CONTEXT GameContext { get; set; }
-        public required UnityEngineContext? UnityEngineContext { get; set; }
         public IHookWinMsgService Hook { get; } = hookWinMsgFactory.Create();
 
-        List<GameSwitchDisplayDTO> ListGameSwitch { get; } = new List<GameSwitchDisplayDTO>(32);
+        public required T_CONTEXT Context { get; set; }
+        public required UnityEngineContext? UnityEngineContext { get; set; }
+        public required GameSwitchDisplayDTO[] ListGameSwitch { get; set; }
 
         #endregion
 
         #region Host Service
 
+ 
 
-        public async ValueTask LoadService()
+        public ValueTask StopAsync()
+        {
+            return ValueTask.CompletedTask;
+        }
+        public async ValueTask StartAsync()
         {
             using (this.Logger.Running())
             {
@@ -81,8 +87,8 @@ namespace Maple.MonoGameAssistant.GameContext
             {
                 using (this.RuntimeContext.CreateAttachContext())
                 {
-                    this.GameContext = this.LoadGameContext();
-                    this.Logger.LogInformation("LoadGameContext=>{ver}=>{api}", this.GameContext.TypeVersion, this.GameContext.ApiVersion);
+                    this.Context = this.LoadGameContext();
+                    this.Logger.LogInformation("LoadGameContext=>{ver}=>{api}", this.Context.TypeVersion, this.Context.ApiVersion);
                     this.UnityEngineContext = this.TryLoadUnityEngineContext();
                     this.Logger.LogInformation("LoadUnityEngineContext=>{load}=>{ver}=>{api}",
                         this.UnityEngineContext is not null,
@@ -111,7 +117,7 @@ namespace Maple.MonoGameAssistant.GameContext
             => [];
         private void LoadListGameSwitch()
         {
-            this.ListGameSwitch.AddRange(this.InitListGameSwitch());
+            this.ListGameSwitch = this.InitListGameSwitch();
         }
 
         protected GameSwitchDisplayDTO? FindGameSwitch(string objectId)
@@ -134,7 +140,7 @@ namespace Maple.MonoGameAssistant.GameContext
                 var open = false;
                 if (this.GameSettings.TryGetOpenUrl(out var url))
                 {
-                    open = WinApi.RunBrowser(url);
+                    open = WindowsRuntime.RunBrowser(url);
                 }
                 this.Logger.LogInformation("{method}=>{url}=>{open}", nameof(TryAutoOpenUrl), url, open);
                 return open;
@@ -337,7 +343,7 @@ namespace Maple.MonoGameAssistant.GameContext
         public virtual ValueTask<GameSessionInfoDTO> GetSessionInfoAsync()
         {
 
-            var api = this.GameContext is not null ? this.GameContext.ApiVersion : "???";
+            var api = this.Context is not null ? this.Context.ApiVersion : "???";
             var data = this.GameSettings.GetGameSessionInfo(api);
             return ValueTask.FromResult(data);
         }
@@ -420,6 +426,8 @@ namespace Maple.MonoGameAssistant.GameContext
                 }
             }
         }
+
+       
 
         #endregion
     }

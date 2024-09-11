@@ -4,7 +4,7 @@ using System.Runtime.CompilerServices;
 namespace Maple.MonoGameAssistant.Core
 {
 
-    internal class MonoRuntimeFactory(ILoggerFactory loggerFactory)
+    public sealed class MonoRuntimeFactory(ILoggerFactory loggerFactory)
     {
         IMonoRuntiemProvider? MonoRuntimeService { get; set; }
         MonoRuntimeApi RuntimeApi { get; } = new MonoRuntimeApi(loggerFactory.CreateLogger<MonoRuntimeApi>());

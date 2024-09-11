@@ -74,9 +74,6 @@ namespace Maple.MonoGameAssistant.Core
 
 
 
-        public static IServiceCollection AddMonoTaskScheduler(this IServiceCollection serviceDescriptors)
-        {
-            return serviceDescriptors.AddSingleton<MonoTaskScheduler>();
-        }
+      
     }
 }
