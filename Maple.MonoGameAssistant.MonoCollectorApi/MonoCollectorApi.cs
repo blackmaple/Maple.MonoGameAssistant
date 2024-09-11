@@ -1,6 +1,6 @@
-﻿using Maple.MonoGameAssistant.Model;
+﻿using Maple.MonoGameAssistant.Core;
+using Maple.MonoGameAssistant.Model;
 using Maple.MonoGameAssistant.MonoTask;
-using Maple.MonoGameAssistant.TaskSchedulerCore;
 
 namespace Maple.MonoGameAssistant.MonoCollectorApi
 {

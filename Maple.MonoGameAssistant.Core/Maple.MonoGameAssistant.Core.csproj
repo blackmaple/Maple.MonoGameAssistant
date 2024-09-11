@@ -13,6 +13,12 @@
 
 	</PropertyGroup>
 
+	<ItemGroup>
+	  <Compile Remove="Properties\**" />
+	  <EmbeddedResource Remove="Properties\**" />
+	  <None Remove="Properties\**" />
+	</ItemGroup>
+
 	
 
  
@@ -30,10 +36,6 @@
 	  <ProjectReference Include="..\Maple.MonoGameAssistant.Common\Maple.MonoGameAssistant.Common.csproj" />
 	  <ProjectReference Include="..\Maple.MonoGameAssistant.Model\Maple.MonoGameAssistant.Model.csproj" />
 	  <ProjectReference Include="..\Maple.MonoGameAssistant.MonoCollector\Maple.MonoGameAssistant.MonoCollector.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="Properties\" />
 	</ItemGroup>
 
 

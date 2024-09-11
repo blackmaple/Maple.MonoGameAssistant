@@ -86,7 +86,7 @@ namespace Maple.MonoGameAssistant.Core
         }
 
         #region IMonoRuntiemProvider->MonoDomains
-        public MonoRuntimeAttachContext CreateAttachContext() => new(this);
+        //public MonoRuntimeAttachContext CreateAttachContext() => new(this);
         public PMonoThread AttachThread() => this.RuntiemProvider.MonoAttachThread(this.RootDomain);
         public void DetachThread(PMonoThread pMonoThread) => this.RuntiemProvider.MonoDetachThread(pMonoThread);
 
