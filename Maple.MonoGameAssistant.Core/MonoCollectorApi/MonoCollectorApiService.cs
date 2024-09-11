@@ -1,13 +1,12 @@
 ﻿using Maple.MonoGameAssistant.Core;
 using Maple.MonoGameAssistant.Model;
-using Maple.MonoGameAssistant.MonoTask;
 
-namespace Maple.MonoGameAssistant.MonoCollectorApi
+namespace Maple.MonoGameAssistant.Core
 {
     public sealed class MonoCollectorApiService(MonoRuntimeContext runtimeContext, MonoTaskScheduler taskScheduler)
         : IMonoTaskScheduler<MonoRuntimeContext>
     {
-        public MonoRuntimeContext GameContext { get; } = runtimeContext;
+        public MonoRuntimeContext Context { get; } = runtimeContext;
         public TaskScheduler Scheduler { get; } = taskScheduler;
 
         public Task<MonoImageInfoDTO[]> EnumMonoImagesAsync()

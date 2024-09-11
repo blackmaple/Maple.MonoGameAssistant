@@ -41,10 +41,10 @@
         }
     }
 
-    internal class UITaskState<T_GAMECONTEXT>(T_GAMECONTEXT gameContext) : UITaskState
-        where T_GAMECONTEXT : class
+    internal class UITaskState<T_CONTEXT>(T_CONTEXT context) : UITaskState
+        where T_CONTEXT : class
     {
-        public T_GAMECONTEXT GameContext { get; } = gameContext;
+        public T_CONTEXT Context { get; } = context;
 
         protected override void ExecuteImp()
         {

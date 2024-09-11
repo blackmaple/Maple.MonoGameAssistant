@@ -1,5 +1,4 @@
 ﻿using Maple.MonoGameAssistant.Common;
-using Maple.MonoGameAssistant.TaskSchedulerCore;
 using System.Runtime.Versioning;
 
 namespace Maple.MonoGameAssistant.HookTask
@@ -11,52 +10,52 @@ namespace Maple.MonoGameAssistant.HookTask
     public static class HookTaskSchedulerExtensions
     {
 
-        public static async Task<T_RETURN> HookTaskAsync<T_GAMECONTEXT, T_RETURN>(this IHookTaskScheduler<T_GAMECONTEXT> taskScheduler, Func<T_GAMECONTEXT, T_RETURN> func)
-            where T_GAMECONTEXT : class
+        public static async Task<T_RETURN> HookTaskAsync<T_CONTEXT, T_RETURN>(this IHookTaskScheduler<T_CONTEXT> taskScheduler, Func<T_CONTEXT, T_RETURN> func)
+            where T_CONTEXT : class
         {
-            var hookState = new HookTaskState_Func<T_GAMECONTEXT, T_RETURN>(taskScheduler, func);
+            var hookState = new HookTaskState_Func<T_CONTEXT, T_RETURN>(taskScheduler, func);
             if (await Task.Factory.StartNew(SendExecUnmanagedCode, hookState).ConfigureAwait(false))
             {
                 return hookState.ReturnValue!;
             }
-            return TaskStateException.Throw<T_RETURN>($"EXEC ERROR {nameof(SendExecUnmanagedCode)}");
+            return HookTaskStateException.Throw<T_RETURN>($"EXEC ERROR {nameof(SendExecUnmanagedCode)}");
 
         }
 
-        public static async Task<T_RETURN> HookTaskAsync<T_GAMECONTEXT, T_ARGS, T_RETURN>(this IHookTaskScheduler<T_GAMECONTEXT> taskScheduler, Func<T_GAMECONTEXT, T_ARGS, T_RETURN> func, T_ARGS args)
-            where T_GAMECONTEXT : class
+        public static async Task<T_RETURN> HookTaskAsync<T_CONTEXT, T_ARGS, T_RETURN>(this IHookTaskScheduler<T_CONTEXT> taskScheduler, Func<T_CONTEXT, T_ARGS, T_RETURN> func, T_ARGS args)
+            where T_CONTEXT : class
             where T_ARGS : notnull
         {
-            var hookState = new HookTaskState_FuncArgs<T_GAMECONTEXT, T_ARGS, T_RETURN>(taskScheduler, func, args);
+            var hookState = new HookTaskState_FuncArgs<T_CONTEXT, T_ARGS, T_RETURN>(taskScheduler, func, args);
             if (await Task.Factory.StartNew(SendExecUnmanagedCode, hookState).ConfigureAwait(false))
             {
                 return hookState.ReturnValue!;
             }
-            return TaskStateException.Throw<T_RETURN>($"EXEC ERROR {nameof(SendExecUnmanagedCode)}");
+            return HookTaskStateException.Throw<T_RETURN>($"EXEC ERROR {nameof(SendExecUnmanagedCode)}");
         }
 
-        public static async Task<bool> HookTaskAsync<T_GAMECONTEXT>(this IHookTaskScheduler<T_GAMECONTEXT> taskScheduler, Action<T_GAMECONTEXT> action)
-            where T_GAMECONTEXT : class
+        public static async Task<bool> HookTaskAsync<T_CONTEXT>(this IHookTaskScheduler<T_CONTEXT> taskScheduler, Action<T_CONTEXT> action)
+            where T_CONTEXT : class
         {
-            var hookState = new HookTaskState_Action<T_GAMECONTEXT>(taskScheduler, action);
+            var hookState = new HookTaskState_Action<T_CONTEXT>(taskScheduler, action);
             if (await Task.Factory.StartNew(SendExecUnmanagedCode, hookState))
             {
                 return true;
             }
-            return TaskStateException.Throw<bool>($"EXEC ERROR {nameof(SendExecUnmanagedCode)}");
+            return HookTaskStateException.Throw<bool>($"EXEC ERROR {nameof(SendExecUnmanagedCode)}");
 
         }
 
-        public static async Task<bool> HookTaskAsync<T_GAMECONTEXT, T_ARGS>(this IHookTaskScheduler<T_GAMECONTEXT> taskScheduler, Action<T_GAMECONTEXT, T_ARGS> action, T_ARGS args)
-            where T_GAMECONTEXT : class
+        public static async Task<bool> HookTaskAsync<T_CONTEXT, T_ARGS>(this IHookTaskScheduler<T_CONTEXT> taskScheduler, Action<T_CONTEXT, T_ARGS> action, T_ARGS args)
+            where T_CONTEXT : class
             where T_ARGS : notnull
         {
-            var hookState = new HookTaskState_ActionArgs<T_GAMECONTEXT, T_ARGS>(taskScheduler, action, args);
+            var hookState = new HookTaskState_ActionArgs<T_CONTEXT, T_ARGS>(taskScheduler, action, args);
             if (await Task.Factory.StartNew(SendExecUnmanagedCode, hookState))
             {
                 return true;
             }
-            return TaskStateException.Throw<bool>($"EXEC ERROR {nameof(SendExecUnmanagedCode)}");
+            return HookTaskStateException.Throw<bool>($"EXEC ERROR {nameof(SendExecUnmanagedCode)}");
 
         }
 

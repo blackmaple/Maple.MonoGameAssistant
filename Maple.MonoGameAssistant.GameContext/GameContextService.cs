@@ -1,24 +1,30 @@
 ﻿using Maple.MonoGameAssistant.Common;
 using Maple.MonoGameAssistant.Core;
 using Maple.MonoGameAssistant.GameDTO;
+using Maple.MonoGameAssistant.HookTask;
 using Maple.MonoGameAssistant.HotKey;
+using Maple.MonoGameAssistant.HotKey.Abstractions;
 using Maple.MonoGameAssistant.Model;
-using Maple.MonoGameAssistant.UnityCore;
+using Maple.MonoGameAssistant.UITask;
 using Maple.MonoGameAssistant.UnityCore.UnityEngine;
+using Maple.MonoGameAssistant.WinApi;
 using Microsoft.Extensions.Logging;
-using System.Collections.Concurrent;
-namespace Maple.GameContext
+
+namespace Maple.MonoGameAssistant.GameContext
 {
-    public abstract class GameService<T_GAMECONTEXT>(
-        ILogger logger,
-        MonoRuntimeContext runtimeContext,
-        MonoGameSettings gameSettings)
-         : IMapleGameService, IWinMsgNotifyService,
-        IUnityTaskScheduler<T_GAMECONTEXT>,
-        IMonoTaskScheduler<T_GAMECONTEXT>,
-        IUITaskScheduler<T_GAMECONTEXT>,
+    public abstract class GameContextService<T_CONTEXT>(
+           ILogger<GameContextService<T_CONTEXT>> logger,
+           MonoRuntimeContext runtimeContext,
+           MonoTaskScheduler monoTaskScheduler,
+           MonoGameSettings gameSettings,
+           HookWinMsgFactory hookWinMsgFactory)
+        : IGameContextService,
+        IWinMsgNotifyService,
+        IHookTaskScheduler<T_CONTEXT>,
+        IMonoTaskScheduler<T_CONTEXT>,
+        IUITaskScheduler<T_CONTEXT>,
         IGameWebApiControllers
-        where T_GAMECONTEXT : MonoCollectorContext
+        where T_CONTEXT : MonoCollectorContext
     {
 
         #region props
@@ -27,23 +33,24 @@ namespace Maple.GameContext
         public ILogger Logger { get; } = logger;
         public MonoRuntimeContext RuntimeContext { get; } = runtimeContext;
         public MonoGameSettings GameSettings { get; } = gameSettings;
-        public MonoTaskScheduler Scheduler { get; } = new MonoTaskScheduler(runtimeContext);
+        public TaskScheduler Scheduler { get; } = monoTaskScheduler;
+        public IHookWinMsgService Hook { get; } = hookWinMsgFactory.Create();
 
-
-        public required T_GAMECONTEXT GameContext { get; set; }
+        public required T_CONTEXT Context { get; set; }
         public required UnityEngineContext? UnityEngineContext { get; set; }
-        public required HookWinMsgService Hook { set; get; }
-        public required GameSwitchDisplayDTO[] ListGameSwitch { set; get; }
+        public required GameSwitchDisplayDTO[] ListGameSwitch { get; set; }
+
         #endregion
 
         #region Host Service
 
-        public ValueTask DestroyService()
+ 
+
+        public ValueTask StopAsync()
         {
-            this.Scheduler.Dispose();
             return ValueTask.CompletedTask;
         }
-        public async ValueTask LoadService()
+        public async ValueTask StartAsync()
         {
             using (this.Logger.Running())
             {
@@ -80,8 +87,8 @@ namespace Maple.GameContext
             {
                 using (this.RuntimeContext.CreateAttachContext())
                 {
-                    this.GameContext = this.LoadGameContext();
-                    this.Logger.LogInformation("LoadGameContext=>{ver}=>{api}", this.GameContext.TypeVersion, this.GameContext.ApiVersion);
+                    this.Context = this.LoadGameContext();
+                    this.Logger.LogInformation("LoadGameContext=>{ver}=>{api}", this.Context.TypeVersion, this.Context.ApiVersion);
                     this.UnityEngineContext = this.TryLoadUnityEngineContext();
                     this.Logger.LogInformation("LoadUnityEngineContext=>{load}=>{ver}=>{api}",
                         this.UnityEngineContext is not null,
@@ -92,7 +99,7 @@ namespace Maple.GameContext
             }
 
         }
-        protected abstract T_GAMECONTEXT LoadGameContext();
+        protected abstract T_CONTEXT LoadGameContext();
         protected virtual UnityEngineContext? LoadUnityEngineContext() => UnityEngineContext.LoadUnityContext(this.RuntimeContext, this.Logger);
         protected UnityEngineContext? TryLoadUnityEngineContext()
         {
@@ -108,10 +115,11 @@ namespace Maple.GameContext
         }
         protected virtual GameSwitchDisplayDTO[] InitListGameSwitch()
             => [];
-        protected void LoadListGameSwitch()
+        private void LoadListGameSwitch()
         {
-            this.ListGameSwitch = InitListGameSwitch();
+            this.ListGameSwitch = this.InitListGameSwitch();
         }
+
         protected GameSwitchDisplayDTO? FindGameSwitch(string objectId)
             => this.ListGameSwitch.Where(p => p.ObjectId == objectId).FirstOrDefault();
 
@@ -119,9 +127,8 @@ namespace Maple.GameContext
 
         protected virtual void HookWindowMessage()
         {
-            using (this.Logger.Running(nameof(HookWinMsgExtensions.CreateHookWinMsgService)))
+            using (this.Logger.Running())
             {
-                this.Hook = HookWinMsgExtensions.CreateHookWinMsgService();
                 var hookStatus = this.Hook.SetHook(this);
                 this.Logger.LogInformation("HookWindowMessage=>{hookStatus}", hookStatus);
             }
@@ -133,7 +140,7 @@ namespace Maple.GameContext
                 var open = false;
                 if (this.GameSettings.TryGetOpenUrl(out var url))
                 {
-                    open = WinApi.RunBrowser(url);
+                    open = WindowsRuntime.RunBrowser(url);
                 }
                 this.Logger.LogInformation("{method}=>{url}=>{open}", nameof(TryAutoOpenUrl), url, open);
                 return open;
@@ -336,7 +343,7 @@ namespace Maple.GameContext
         public virtual ValueTask<GameSessionInfoDTO> GetSessionInfoAsync()
         {
 
-            var api = this.GameContext is not null ? this.GameContext.ApiVersion : "???";
+            var api = this.Context is not null ? this.Context.ApiVersion : "???";
             var data = this.GameSettings.GetGameSessionInfo(api);
             return ValueTask.FromResult(data);
         }
@@ -419,6 +426,8 @@ namespace Maple.GameContext
                 }
             }
         }
+
+       
 
         #endregion
     }

@@ -2,11 +2,11 @@
 
 namespace Maple.MonoGameAssistant.UITask
 {
-    internal class UITaskState_Func<T_GAMECONTEXT, T_RETURN>(T_GAMECONTEXT gameContext, Func<T_GAMECONTEXT, T_RETURN> func)
-        : UITaskState<T_GAMECONTEXT>(gameContext)
-        where T_GAMECONTEXT : class
+    internal class UITaskState_Func<T_CONTEXT, T_RETURN>(T_CONTEXT gameContext, Func<T_CONTEXT, T_RETURN> func)
+        : UITaskState<T_CONTEXT>(gameContext)
+        where T_CONTEXT : class
     {
-        public Func<T_GAMECONTEXT, T_RETURN> Func { get; } = func;
+        public Func<T_CONTEXT, T_RETURN> Func { get; } = func;
 
         public T_RETURN? ReturnValue { set; get; }
 
@@ -18,7 +18,7 @@ namespace Maple.MonoGameAssistant.UITask
 
         protected override void ExecuteImp()
         {
-            this.ReturnValue = this.Func.Invoke(this.GameContext);
+            this.ReturnValue = this.Func.Invoke(this.Context);
         }
     }
 
