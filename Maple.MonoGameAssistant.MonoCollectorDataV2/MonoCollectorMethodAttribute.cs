@@ -25,8 +25,5 @@ namespace Maple.MonoGameAssistant.MonoCollectorDataV2
         }
     }
 
-    class CallConvSuppressGCTransition
-    {
 
-    }
 }

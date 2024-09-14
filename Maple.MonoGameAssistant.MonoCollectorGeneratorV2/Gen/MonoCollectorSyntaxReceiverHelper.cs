@@ -1371,9 +1371,14 @@ namespace Maple.MonoGameAssistant.MonoCollectorGeneratorV2
 
             if (suppressGCTransition)
             {
-                yield return nameof(Maple.MonoGameAssistant.MonoCollectorDataV2.CallConvSuppressGCTransition).Substring(MonoCollecotrConvString.DisplayName_CallConv.Length);
+                yield return nameof(CallConvSuppressGCTransition).Substring(MonoCollecotrConvString.DisplayName_CallConv.Length);
             }
         }
+        class CallConvSuppressGCTransition
+        {
+
+        }
+
         static string GetCallConvs(this AttributeData attributeData)
         {
             var suppressGCTransition = attributeData.GetAttributeValue_NamedArgs(nameof(MonoCollectorCallConvsAttribute.SuppressGCTransition), true);

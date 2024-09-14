@@ -6,36 +6,51 @@
 		<Nullable>enable</Nullable>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 		<LangVersion>preview</LangVersion>
-		<PublishAot>true</PublishAot>
-		<IsAotCompatible>true</IsAotCompatible>
 
+		<!--<PublishAot>true</PublishAot>
+		<IsAotCompatible>true</IsAotCompatible>-->
 
+		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+		<Title>Maple.MonoGameAssistant.Core</Title>
+		<RepositoryUrl>https://github.com/blackmaple/Maple.MonoGameAssistant</RepositoryUrl>
+		<PackageLicenseFile>LICENSE</PackageLicenseFile>
+		<PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
+		<Description>Maple.MonoGameAssistant.Core</Description>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<PackageTags>mono;unity;game;maple</PackageTags>
+		<Version>1.0.0-rc</Version>
 
 	</PropertyGroup>
 
+
 	<ItemGroup>
-	  <Compile Remove="Properties\**" />
-	  <EmbeddedResource Remove="Properties\**" />
-	  <None Remove="Properties\**" />
+		<None Include="..\LICENSE" Link="LICENSE">
+			<PackagePath>\</PackagePath>
+			<Pack>True</Pack>
+		</None>
+		<None Include="..\README.md" Link="README.md">
+			<PackagePath>\</PackagePath>
+			<Pack>True</Pack>
+		</None>
 	</ItemGroup>
 
-	
 
- 
+
+
 
 
 
 	<ItemGroup>
-	  <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="9.0.0-preview.7.24405.7" />
-	  <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.0-preview.7.24405.7" />
-	  <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="9.0.0-preview.7.24405.7" />
-	  <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.0-preview.7.24405.7" />
+		<PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="9.0.0-rc.1.24431.7" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.0-rc.1.24431.7" />
+		<PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="9.0.0-rc.1.24431.7" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.0-rc.1.24431.7" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\Maple.MonoGameAssistant.Common\Maple.MonoGameAssistant.Common.csproj" />
-	  <ProjectReference Include="..\Maple.MonoGameAssistant.Model\Maple.MonoGameAssistant.Model.csproj" />
-	  <ProjectReference Include="..\Maple.MonoGameAssistant.MonoCollector\Maple.MonoGameAssistant.MonoCollector.csproj" />
+		<ProjectReference Include="..\Maple.MonoGameAssistant.Common\Maple.MonoGameAssistant.Common.csproj" />
+		<ProjectReference Include="..\Maple.MonoGameAssistant.Model\Maple.MonoGameAssistant.Model.csproj" />
+		<ProjectReference Include="..\Maple.MonoGameAssistant.MonoCollector\Maple.MonoGameAssistant.MonoCollector.csproj" />
 	</ItemGroup>
 
 

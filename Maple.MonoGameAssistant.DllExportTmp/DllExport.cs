@@ -1,6 +1,4 @@
-﻿using Maple.MonoGameAssistant.Common;
-using Maple.MonoGameAssistant.DllHijackData;
-using Maple.MonoGameAssistant.Logger;
+﻿using Maple.MonoGameAssistant.Logger;
 using Maple.MonoGameAssistant.WinApi;
 using Microsoft.Extensions.Logging;
 using System.Runtime.CompilerServices;
@@ -14,8 +12,8 @@ namespace Maple.MonoGameAssistant.DllExportTmp
 		<AdditionalFiles Include="..\Maple.MonoGameAssistant.DllExportTmp\WinHttp.Api" Link="GameDllExport\WinHttp.Api" />
 	</ItemGroup>
      */
-    
-//    [DllHijack("WinHttp.Api", true, "WinHttp.dll")] 
+
+    //    [DllHijack("WinHttp.Api", true, "WinHttp.dll")] 
     public static partial class DllExport
     {
         private static ILogger Logger { get; } = MonoGameLoggerExtensions.DefaultProvider.CreateLogger(typeof(DllExport).FullName ?? nameof(DllExport));

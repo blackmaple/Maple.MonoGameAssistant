@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Net;
+﻿using System.Diagnostics.CodeAnalysis;
 using System.Net.NetworkInformation;
 using System.Runtime.CompilerServices;
-using System.Runtime.Versioning;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Maple.MonoGameAssistant.Model
 {

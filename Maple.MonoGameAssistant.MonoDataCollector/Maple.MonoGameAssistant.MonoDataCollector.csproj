@@ -30,10 +30,6 @@
 
   </PropertyGroup>
 
-  <ItemGroup>
-    <None Remove="appsettings.json" />
-  </ItemGroup>
-
 	<ItemGroup>
 		<ProjectReference Include="..\Maple.MonoGameAssistant.Core\Maple.MonoGameAssistant.Core.csproj" />
 		<ProjectReference Include="..\Maple.MonoGameAssistant.GameContext\Maple.MonoGameAssistant.GameContext.csproj" />
@@ -50,18 +46,6 @@
 		<ProjectReference Include="..\Maple.MonoGameAssistant.MonoCollectorDataV2\Maple.MonoGameAssistant.MonoCollectorDataV2.csproj" />
 		<ProjectReference Include="..\Maple.MonoGameAssistant.MonoCollector\Maple.MonoGameAssistant.MonoCollector.csproj" />
 		<ProjectReference Include="..\Maple.MonoGameAssistant.MonoCollectorGeneratorV2\Maple.MonoGameAssistant.MonoCollectorGeneratorV2.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" PrivateAssets="all" />
-	</ItemGroup>
-	
-	<ItemGroup>
-		<Compile Include="..\Maple.MonoGameAssistant.DllExportTmp\DllExport.cs" Link="GameDllExport\DllExport.cs" />
-		<AdditionalFiles Include="..\Maple.MonoGameAssistant.DllExportTmp\WinHttp.Api" Link="GameDllExport\WinHttp.Api" />
-		<Content Include="appsettings.json">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		  <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-		  <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-		</Content>
-		<ProjectReference Include="..\Maple.MonoGameAssistant.DllHijackData\Maple.MonoGameAssistant.DllHijackData.csproj" />
-		<ProjectReference Include="..\Maple.MonoGameAssistant.DllHijackGenerator\Maple.MonoGameAssistant.DllHijackGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" PrivateAssets="all" />
 	</ItemGroup>
  
 
