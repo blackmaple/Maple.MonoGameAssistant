@@ -43,7 +43,7 @@ namespace Maple.MonoGameAssistant.WinForm
         static ViewMainForm ConfigService()
         {
             ServiceCollection services = new();
-            services.AddLogging(p => p.AddOnlyMonoLogger());
+            services.AddLogging(p => p.AddOnlyMonoGameLogger());
             services.AddGameContextService();
 
             services.AddSingleton<ViewMainForm>();

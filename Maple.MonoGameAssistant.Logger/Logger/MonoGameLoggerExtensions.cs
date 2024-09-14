@@ -4,19 +4,19 @@ using Microsoft.Extensions.Logging;
 
 namespace Maple.MonoGameAssistant.Logger
 {
-    public static class MonoLoggerExtensions
+    public static class MonoGameLoggerExtensions
     {
-        public static MonoLoggerProvider DefaultProvider { get; } = new MonoLoggerProvider();
+        public static MonoGameLoggerProvider DefaultProvider { get; } = new MonoGameLoggerProvider();
 
-        public static IServiceCollection AddMonoLogger(this IServiceCollection services)
+        public static IServiceCollection AddMonoGameLogger(this IServiceCollection services)
         {
-            services.TryAddEnumerable(ServiceDescriptor.Singleton<ILoggerProvider, MonoLoggerProvider>());
+            services.TryAddEnumerable(ServiceDescriptor.Singleton<ILoggerProvider, MonoGameLoggerProvider>());
             return services;
         }
 
-        public static ILoggingBuilder AddMonoLogger(this ILoggingBuilder builder)
+        public static ILoggingBuilder AddMonoGameLogger(this ILoggingBuilder builder)
         {
-            builder.Services.AddMonoLogger();
+            builder.Services.AddMonoGameLogger();
             return builder;
         }
 
@@ -27,11 +27,11 @@ namespace Maple.MonoGameAssistant.Logger
             return builder;
         }
 
-        public static ILoggingBuilder AddOnlyMonoLogger(this ILoggingBuilder builder)
+        public static ILoggingBuilder AddOnlyMonoGameLogger(this ILoggingBuilder builder)
         {
             builder.ClearProviders();
             builder.AddSystemFilter();
-            builder.AddMonoLogger();
+            builder.AddMonoGameLogger();
             return builder;
         }
     }

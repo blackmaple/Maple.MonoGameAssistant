@@ -16,10 +16,10 @@ typeof(MonoCollectorMember),
 typeof(MonoRuntimeContext),
 typeof(MonoCollectorClassInfo)
 )]
-    internal partial class MonoDataCollectorContext : MonoCollectorContext
+    internal partial class MonoDataCollectorContext 
     {
-        public MonoDataCollectorContext(MonoRuntimeContext runtimeContext, EnumMonoCollectorTypeVersion typeVersion, ILogger logger, string apiVer = "202407222030") : base(runtimeContext, typeVersion, logger, apiVer)
-        {
-        }
+        //public MonoDataCollectorContext(MonoRuntimeContext runtimeContext, EnumMonoCollectorTypeVersion typeVersion, ILogger logger, string apiVer = "202407222030") : base(runtimeContext, typeVersion, logger, apiVer)
+        //{
+        //}
     }
 }

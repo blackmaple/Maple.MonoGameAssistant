@@ -10,7 +10,7 @@
 	  <PublishAot>true</PublishAot>
 	  <IsAotCompatible>true</IsAotCompatible>
 	  <OutputType>Library</OutputType>
-	  <AssemblyName>winhttp</AssemblyName>
+	  <AssemblyName>MonoDataCollector</AssemblyName>
 
 
 	  <DebuggerSupport>false</DebuggerSupport>
@@ -36,9 +36,12 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\Maple.MonoGameAssistant.Core\Maple.MonoGameAssistant.Core.csproj" />
+		<ProjectReference Include="..\Maple.MonoGameAssistant.GameContext\Maple.MonoGameAssistant.GameContext.csproj" />
 		<ProjectReference Include="..\Maple.MonoGameAssistant.GameDTO\Maple.MonoGameAssistant.GameDTO.csproj" />
+		<ProjectReference Include="..\Maple.MonoGameAssistant.HookTask\Maple.MonoGameAssistant.HookTask.csproj" />
 		<ProjectReference Include="..\Maple.MonoGameAssistant.HotKey\Maple.MonoGameAssistant.HotKey.csproj" />
 		<ProjectReference Include="..\Maple.MonoGameAssistant.Logger\Maple.MonoGameAssistant.Logger.csproj" />
+		<ProjectReference Include="..\Maple.MonoGameAssistant.UITask\Maple.MonoGameAssistant.UITask.csproj" />
 		<ProjectReference Include="..\Maple.MonoGameAssistant.UnityCore\Maple.MonoGameAssistant.UnityCore.csproj" />
 		<ProjectReference Include="..\Maple.MonoGameAssistant.WebApi\Maple.MonoGameAssistant.WebApi.csproj" />
 	</ItemGroup>
@@ -68,7 +71,7 @@
 	<Target Name="PostPublishActions" AfterTargets="Publish">
 		<PropertyGroup>
 			<Time>$([System.DateTime]::Now.ToString("yyyyMMddHHmmss"))</Time>
-			<TargetDir>C:\Program Files (x86)\Steam\steamapps\common\Cat Quest III Demo\</TargetDir>
+			<TargetDir>C:\Program Files (x86)\Steam\steamapps\common\Yaoling Mythical Journey\</TargetDir>
 			<PublishDllPath>$(PublishDir)$(AssemblyName).dll</PublishDllPath>
 			<TargetFileName>$(AssemblyName).dll</TargetFileName>
 			<BackupFileName>$(AssemblyName).dll.bak_$(Time)</BackupFileName>

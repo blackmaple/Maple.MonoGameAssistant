@@ -10,20 +10,20 @@ namespace Maple.MonoGameAssistant.Logger
     /// <summary>
     /// 简单的一个日志
     /// </summary>
-    public sealed class MonoLogger : ILogger
+    public sealed class MonoGameLogger : ILogger
     {
-        public static ILogger Default { get; } = MonoLoggerExtensions.DefaultProvider.CreateLogger(typeof(MonoLogger).FullName ?? nameof(MonoLogger));
+        public static ILogger Default { get; } = MonoGameLoggerExtensions.DefaultProvider.CreateLogger(typeof(MonoGameLogger).FullName ?? nameof(MonoGameLogger));
 
         #region Imp
         string Category { get; }
         string FilePath { get; }
 
-        public MonoLogger(string category = nameof(MonoLogger))
+        public MonoGameLogger(string category = nameof(MonoGameLogger))
         {
             Category = category;
 
             var path = AppContext.BaseDirectory;
-            path = Path.Combine(path, nameof(MonoLogger));
+            path = Path.Combine(path, nameof(MonoGameLogger));
             if (Directory.Exists(path) == false)
             {
                 Directory.CreateDirectory(path);
@@ -74,7 +74,7 @@ namespace Maple.MonoGameAssistant.Logger
 
         public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception? exception, Func<TState, Exception?, string> formatter)
         {
-            StringBuilder sb = MonoLoggerProvider.StringBuilderPool.Get();
+            StringBuilder sb = MonoGameLoggerProvider.StringBuilderPool.Get();
             try
             {
                 sb.Append($"{DateTime.Now:yyyy-MM-dd HH:mm:ss.ffff}-");
@@ -86,7 +86,7 @@ namespace Maple.MonoGameAssistant.Logger
             }
             finally
             {
-                MonoLoggerProvider.StringBuilderPool.Return(sb);
+                MonoGameLoggerProvider.StringBuilderPool.Return(sb);
             }
         }
         #endregion

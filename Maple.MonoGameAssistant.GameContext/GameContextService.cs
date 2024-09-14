@@ -13,7 +13,7 @@ using Microsoft.Extensions.Logging;
 namespace Maple.MonoGameAssistant.GameContext
 {
     public abstract class GameContextService<T_CONTEXT>(
-           ILogger<GameContextService<T_CONTEXT>> logger,
+           ILogger logger,
            MonoRuntimeContext runtimeContext,
            MonoTaskScheduler monoTaskScheduler,
            MonoGameSettings gameSettings,
@@ -22,8 +22,7 @@ namespace Maple.MonoGameAssistant.GameContext
         IWinMsgNotifyService,
         IHookTaskScheduler<T_CONTEXT>,
         IMonoTaskScheduler<T_CONTEXT>,
-        IUITaskScheduler<T_CONTEXT>,
-        IGameWebApiControllers
+        IUITaskScheduler<T_CONTEXT>
         where T_CONTEXT : MonoCollectorContext
     {
 

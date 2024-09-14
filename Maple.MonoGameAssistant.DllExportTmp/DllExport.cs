@@ -1,6 +1,7 @@
 ﻿using Maple.MonoGameAssistant.Common;
 using Maple.MonoGameAssistant.DllHijackData;
 using Maple.MonoGameAssistant.Logger;
+using Maple.MonoGameAssistant.WinApi;
 using Microsoft.Extensions.Logging;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -17,7 +18,7 @@ namespace Maple.MonoGameAssistant.DllExportTmp
 //    [DllHijack("WinHttp.Api", true, "WinHttp.dll")] 
     public static partial class DllExport
     {
-        private static ILogger Logger { get; } = MonoLoggerExtensions.DefaultProvider.CreateLogger(typeof(DllExport).FullName ?? nameof(DllExport));
+        private static ILogger Logger { get; } = MonoGameLoggerExtensions.DefaultProvider.CreateLogger(typeof(DllExport).FullName ?? nameof(DllExport));
 
         private static nint GetModuleHandle(bool system, string dll)
         {
@@ -45,10 +46,10 @@ namespace Maple.MonoGameAssistant.DllExportTmp
             }
             var code = (nint)_func;
             var codeSize = 32;
-            WinApi.VirtualProtect(code, (nuint)codeSize, WinApi.EnumVirtualProtectType.PAGE_EXECUTE_READWRITE, out var lpflOldProtect);
+            WindowsRuntime.VirtualProtect(code, (nuint)codeSize, WindowsRuntime.EnumVirtualProtectType.PAGE_EXECUTE_READWRITE, out var lpflOldProtect);
 
             Cpu_Jmp_Addr((nuint)code, codeSize, (nuint)ptr_func);
-            WinApi.VirtualProtect(code, (nuint)codeSize, lpflOldProtect, out var _);
+            WindowsRuntime.VirtualProtect(code, (nuint)codeSize, lpflOldProtect, out var _);
         }
         private static unsafe int Cpu_Jmp_Addr(nuint pCode, int length, nuint addr)
         {

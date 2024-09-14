@@ -86,9 +86,24 @@ namespace Maple.MonoGameAssistant.Core
         }
 
         #region IMonoRuntiemProvider->MonoDomains
-        //public MonoRuntimeAttachContext CreateAttachContext() => new(this);
+        public MonoContextHandle CreateAttachContext() => new(this);
         public PMonoThread AttachThread() => this.RuntiemProvider.MonoAttachThread(this.RootDomain);
         public void DetachThread(PMonoThread pMonoThread) => this.RuntiemProvider.MonoDetachThread(pMonoThread);
+
+        public ref struct MonoContextHandle(MonoRuntimeContext runtimeContext) : IDisposable
+        {
+            PMonoThread _PMonoThread = runtimeContext.AttachThread();
+
+            public void Dispose()
+            {
+                var tmp = _PMonoThread;
+                _PMonoThread = default;
+                if (tmp.Valid())
+                {
+                    runtimeContext.DetachThread(tmp);
+                }
+            }
+        }
 
         #endregion
 
@@ -610,7 +625,7 @@ namespace Maple.MonoGameAssistant.Core
 
         public IEnumerable<MonoImageInfoDTO> EnumMonoImages()
         {
-       
+
             var listAsm = this.RuntiemProvider.EnumMonoAssemblies(this.RootDomain);
             var listImage = this.RuntiemProvider.EnumMonoImages(listAsm);
 

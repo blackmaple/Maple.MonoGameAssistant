@@ -1,20 +1,38 @@
-﻿using Maple.GameContext;
-using Maple.MonoGameAssistant.Common;
+﻿using Maple.MonoGameAssistant.WebApi;
+using Maple.MonoGameAssistant.WinApi;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using Maple.MonoGameAssistant.GameContext;
+using Maple.MonoGameAssistant.UITask;
+using Maple.MonoGameAssistant.HookTask;
 
 namespace Maple.MonoGameAssistant.MonoDataCollector
 {
-    internal class MonoDataCollectorWebApiService()
-     : GameWebApi<MonoDataCollectorWebApiService, MonoDataCollectorService, MonoDataCollectorContext>("MonoDataCollector")
+    internal static class MonoDataCollectorExtensions
     {
+        internal static async Task RunWebApiServiceAsync(int millisecondsDelay = 8000)
+        {
+            var webapp = WebApiServiceExtensions.AsRunWebApiService(p =>
+              {
+                  p.GameName = "MonoDataCollector";
+                  p.QQ = "0";
+              }, services =>
+              {
+                  services.UseGameContextService<MonoDataCollectorService>();
+              });
+
+            //延迟启动
+            await Task.Delay(millisecondsDelay).ConfigureAwait(false);
+            await webapp.RunAsync().ConfigureAwait(false);
+
+        }
+
 
         [ModuleInitializer]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "CA2255:不应在库中使用 “ModuleInitializer” 属性", Justification = "<挂起>")]
         public static void Initializer()
         {
-            //DllHijackExport.LoadApis();
-            Initializer(8000);
+            _ = RunWebApiServiceAsync();
         }
 
         /// <summary>

@@ -4,10 +4,11 @@ using System.Runtime.CompilerServices;
 namespace Maple.MonoGameAssistant.Core
 {
 
-    public sealed class MonoRuntimeFactory(ILoggerFactory loggerFactory)
+    public sealed class MonoRuntimeFactory(ILogger<MonoRuntimeFactory> logger )
     {
         IMonoRuntiemProvider? MonoRuntimeService { get; set; }
-        MonoRuntimeApi RuntimeApi { get; } = new MonoRuntimeApi(loggerFactory.CreateLogger<MonoRuntimeApi>());
+        ILogger Logger { get; } = logger;
+        MonoRuntimeApi RuntimeApi { get; } = new MonoRuntimeApi(logger);
 
 
 
@@ -47,14 +48,14 @@ namespace Maple.MonoGameAssistant.Core
 
         MonoRuntiemProvider_MONO GetMonoRuntime_MONO()
         {
-            ILogger logger = loggerFactory.CreateLogger<MonoRuntiemProvider_MONO>();
-            return new MonoRuntiemProvider_MONO(logger, this.RuntimeApi);
+         
+            return new MonoRuntiemProvider_MONO(this.Logger, this.RuntimeApi);
         }
 
         MonoRuntiemProvider_IL2CPP GetMonoRuntime_IL2CPP()
         {
-            ILogger logger = loggerFactory.CreateLogger<MonoRuntiemProvider_IL2CPP>();
-            return new MonoRuntiemProvider_IL2CPP(logger, this.RuntimeApi);
+        
+            return new MonoRuntiemProvider_IL2CPP(this.Logger, this.RuntimeApi);
         }
 
         IMonoRuntiemProvider GetMonoRuntime_ERROR()

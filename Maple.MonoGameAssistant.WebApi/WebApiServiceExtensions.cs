@@ -1,118 +1,18 @@
-﻿using Maple.MonoGameAssistant.Common;
-using Maple.MonoGameAssistant.Core;
+﻿using Maple.MonoGameAssistant.Core;
 using Maple.MonoGameAssistant.GameDTO;
-using Maple.MonoGameAssistant.Logger;
 using Maple.MonoGameAssistant.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.AspNetCore.StaticFiles;
-using Microsoft.Extensions.DependencyInjection;
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using System.IO.Compression;
-using System.Net;
 
 namespace Maple.MonoGameAssistant.WebApi
 {
-    //public class WebApiBaseService
-    //{
-
-    //    WebApplicationBuilder SlimBuilder { get; }
-    //    IServiceCollection ServiceDescriptors => SlimBuilder.Services;
-    //    MonoGameSettings Settings { get; }
-
-
-
-
-
-
-
-    //    private void ConfigureMonoGameService<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] T_GameService>()
-    //          where T_GameService : class, IMapleGameService, IGameWebApiControllers
-    //    {
-    //        this.ServiceDescriptors.AddLogging(p => p.AddOnlyMonoLogger());
-    //        this.ServiceDescriptors.AddSingleton<IGameWebApiControllers>(p => p.GetRequiredService<T_GameService>());
-
-    //    }
-
-
-    //    private WebApplication ConfigureWebApplication()
-    //    {
-    //        var app = SlimBuilder.Build();
-    //        app.UseResponseCompression();
-    //        app.UseTryCatchService();
-
-    //        app.UseStaticFiles();
-    //        app.UseStaticFiles(new StaticFileOptions()
-    //        {
-    //            ContentTypeProvider = new FileExtensionContentTypeProvider(new Dictionary<string, string>
-    //            {
-    //                [".blat"] = "application/octet-stream",
-    //                [".dll"] = "application/octet-stream",
-    //                [".webcil"] = "application/octet-stream",
-    //                [".dat"] = "application/octet-stream",
-
-    //                [".wasm"] = "application/wasm",
-
-    //                [".json"] = "application/json",
-
-    //                [".woff"] = "application/font-woff",
-    //                [".woff2"] = "application/font-woff",
-
-    //            }),
-    //            HttpsCompression = Microsoft.AspNetCore.Http.Features.HttpsCompressionMode.Compress,
-    //        });
-
-
-    //        app.UseCors();
-
-    //        UseWebApi(app);
-
-    //        return app;
-    //    }
-
-    //    internal Task RunAsync<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] T_GameService>()
-    //        where T_GameService : class, IMapleGameService, IGameWebApiControllers
-    //    {
-    //        this.ConfigureListenNamedPipe();
-    //        this.ConfigureListenIP();
-    //        this.ConfigureMonoGameService<T_GameService>();
-    //        this.ConfigureHttpService();
-    //        var app = this.ConfigureWebApplication();
-    //        return app.RunAsync();
-
-    //    }
-
-    //    public async Task LazyRunAsync<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] T_GameService>(int millisecondsDelay = 2500)
-    //        where T_GameService : class, IMapleGameService, IGameWebApiControllers
-    //    {
-    //        var logger = MonoLoggerExtensions.DefaultProvider.CreateLogger(typeof(T_GameService).FullName ?? typeof(T_GameService).Name);
-    //        using (logger.Running())
-    //        {
-    //            try
-    //            {
-    //                //     logger.LogInformation("port=>{p}", this.Settings.Port.ToString());
-    //                await Task.Delay(millisecondsDelay).ConfigureAwait(false);
-    //                await this.RunAsync<T_GameService>().ConfigureAwait(false);
-    //            }
-    //            catch (Exception ex)
-    //            {
-    //                logger.Error(ex);
-    //            }
-    //        }
-    //    }
-
-
-
-
-
-    //}
-
-
     public static class WebApiServiceExtensions
     {
 
-        public static WebApplication AddWebApiService(
+        public static WebApplication AsRunWebApiService(
             Action<MonoGameSettings> actionGameSettings,
             Action<IServiceCollection> actionAddServices)
         {

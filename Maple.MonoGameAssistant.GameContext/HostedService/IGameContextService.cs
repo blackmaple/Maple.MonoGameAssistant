@@ -1,6 +1,8 @@
-﻿namespace Maple.MonoGameAssistant.GameContext
+﻿using Maple.MonoGameAssistant.GameDTO;
+
+namespace Maple.MonoGameAssistant.GameContext
 {
-    public interface IGameContextService
+    public interface IGameContextService: IGameWebApiControllers
     {
         ValueTask StartAsync();
         ValueTask StopAsync();
