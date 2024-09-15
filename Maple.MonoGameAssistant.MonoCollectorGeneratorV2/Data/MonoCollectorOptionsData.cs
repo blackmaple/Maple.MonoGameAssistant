@@ -3,10 +3,9 @@ using System.Collections.Generic;
 
 namespace Maple.MonoGameAssistant.MonoCollectorGeneratorV2
 {
- 
 
 
-    public class MonoCollectorOptionsData
+    internal class MonoCollectorOptionsData
     {
         //public MonoCollectorVersionData VersionData { set; get; }
 

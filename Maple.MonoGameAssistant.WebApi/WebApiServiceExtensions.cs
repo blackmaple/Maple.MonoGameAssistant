@@ -154,7 +154,7 @@ namespace Maple.MonoGameAssistant.WebApi
                 return data.GetOk();
             });
 
-            if (settings.Http)
+            if (!settings.Http)
             {
                 return;
             }

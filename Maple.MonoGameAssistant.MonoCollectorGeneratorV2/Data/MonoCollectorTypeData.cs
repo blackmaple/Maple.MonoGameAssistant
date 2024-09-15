@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Maple.MonoGameAssistant.MonoCollectorGeneratorV2
 {
-    public class MonoCollectorTypeData
+    internal class MonoCollectorTypeData
     {
 
         public EnumMonoCollectorTypeVersion Ver { get; set; }

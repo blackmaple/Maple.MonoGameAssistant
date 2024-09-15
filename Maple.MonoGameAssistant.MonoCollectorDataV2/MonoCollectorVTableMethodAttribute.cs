@@ -7,7 +7,12 @@ namespace Maple.MonoGameAssistant.MonoCollectorDataV2
     /// 仅支持virtual
     /// </summary>
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-    public class MonoCollectorVTableMethodAttribute : Attribute
+#if SOURCE_GEN
+    internal
+#else 
+    public
+#endif   
+        class MonoCollectorVTableMethodAttribute : Attribute
     {
         public int MethodOffset { get; }
 

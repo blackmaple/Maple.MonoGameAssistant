@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Maple.MonoGameAssistant.MonoCollectorGeneratorV2
 {
-    public class MonoCollectorVersionData
+    internal class MonoCollectorVersionData
     {
         public string CustomClassNamespace { set; get; }
         public string CustomClassName { set; get; }

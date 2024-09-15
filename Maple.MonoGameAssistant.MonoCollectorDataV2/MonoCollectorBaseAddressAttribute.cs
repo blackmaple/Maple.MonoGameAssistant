@@ -8,7 +8,12 @@ namespace Maple.MonoGameAssistant.MonoCollectorDataV2
     /// 通过基址+偏移获取方法地址或属性值
     /// </summary>
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-    public class MonoCollectorBaseAddressAttribute : MonoCollectorCallConvsAttribute
+#if SOURCE_GEN
+    internal
+#else 
+    public
+#endif     
+        class MonoCollectorBaseAddressAttribute : MonoCollectorCallConvsAttribute
     {
         public string Module { get; }
         public int BaseOffset { get; }
@@ -31,7 +36,12 @@ namespace Maple.MonoGameAssistant.MonoCollectorDataV2
     }
 
     [AttributeUsage(AttributeTargets.All)]
-    public class MonoCollectorCallConvsAttribute : Attribute
+#if SOURCE_GEN
+    internal
+#else 
+    public
+#endif  
+    class MonoCollectorCallConvsAttribute : Attribute
     {
         public Type[] CallConvs { set; get; }
         public bool SuppressGCTransition { set; get; } = true;

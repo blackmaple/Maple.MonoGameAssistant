@@ -8,7 +8,12 @@ namespace Maple.MonoGameAssistant.MonoCollectorDataV2
     /// </summary>
     [Description("内部使用...")]
     [AttributeUsage(AttributeTargets.Field, AllowMultiple = false, Inherited = false)]
-    public class MonoCollectorPropertyAttribute : Attribute
+#if SOURCE_GEN
+    internal
+#else 
+    public
+#endif    
+        class MonoCollectorPropertyAttribute : Attribute
     {
         public string EntryPoint { set; get; }
 

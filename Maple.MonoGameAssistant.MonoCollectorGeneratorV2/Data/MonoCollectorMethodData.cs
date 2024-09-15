@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Maple.MonoGameAssistant.MonoCollectorGeneratorV2
 {
-    public class MonoCollectorMethodData
+    internal class MonoCollectorMethodData
     {
         public string EntryPoint { set; get; }
         public string MethodName { set; get; }

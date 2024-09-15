@@ -5,7 +5,12 @@ using System.Text;
 
 namespace Maple.MonoGameAssistant.MonoCollectorDataV2
 {
-    public class MonoCollecotrClassSettings
+#if SOURCE_GEN
+    internal
+#else 
+    public
+#endif
+        class MonoCollecotrClassSettings
     {
         public byte[] Utf8ImageName { set; get; }
         public string ImageName { set; get; }

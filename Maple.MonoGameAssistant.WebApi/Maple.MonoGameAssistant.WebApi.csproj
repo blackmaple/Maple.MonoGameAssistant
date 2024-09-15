@@ -23,7 +23,7 @@
 		<Description>Maple.MonoGameAssistant.WebApi</Description>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<PackageTags>mono;unity;game;maple</PackageTags>
-		<Version>1.0.0-rc</Version>
+		<Version>1.0.1-rc</Version>
 
 	</PropertyGroup>
 

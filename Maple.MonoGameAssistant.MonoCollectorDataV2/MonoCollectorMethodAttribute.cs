@@ -8,7 +8,12 @@ namespace Maple.MonoGameAssistant.MonoCollectorDataV2
     /// virtual的方法请使用MonoCollectorVTableAttribute 查询虚表找函数
     /// </summary>
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-    public class MonoCollectorMethodAttribute : Attribute
+#if SOURCE_GEN
+    internal
+#else 
+    public
+#endif
+        class MonoCollectorMethodAttribute : Attribute
     {
         public string EntryPoint { get; }
 

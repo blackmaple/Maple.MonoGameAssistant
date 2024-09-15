@@ -3,7 +3,12 @@
 namespace Maple.MonoGameAssistant.MonoCollectorDataV2
 {
     [AttributeUsage(AttributeTargets.Constructor | AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-    public class MonoCollectorFlagAttribute : Attribute
+#if SOURCE_GEN
+    internal
+#else 
+    public
+#endif 
+        class MonoCollectorFlagAttribute : Attribute
     {
         public MonoCollectorFlagAttribute(EnumMonoCollectorFlag flag)
         {
@@ -13,7 +18,13 @@ namespace Maple.MonoGameAssistant.MonoCollectorDataV2
         public EnumMonoCollectorFlag Flag { get; }
 
     }
-    public enum EnumMonoCollectorFlag
+
+#if SOURCE_GEN
+    internal
+#else 
+    public
+#endif
+        enum EnumMonoCollectorFlag
     {
         None,
         ContextCtor,

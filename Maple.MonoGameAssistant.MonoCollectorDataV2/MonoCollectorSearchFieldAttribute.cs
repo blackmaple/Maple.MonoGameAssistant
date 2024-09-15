@@ -3,7 +3,13 @@
 namespace Maple.MonoGameAssistant.MonoCollectorDataV2
 {
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = true, Inherited = true)]
-    public partial class MonoCollectorSearchFieldAttribute : Attribute
+
+#if SOURCE_GEN
+    internal
+#else 
+    public
+#endif
+        partial class MonoCollectorSearchFieldAttribute : Attribute
     {
         public Type FieldType { get; }
         public string EntryPoint { get; }

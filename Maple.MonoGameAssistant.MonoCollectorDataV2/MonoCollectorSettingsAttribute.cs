@@ -6,7 +6,13 @@ namespace Maple.MonoGameAssistant.MonoCollectorDataV2
     /// Class标记
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
-    public class MonoCollectorSettingsAttribute : Attribute
+
+#if SOURCE_GEN
+    internal
+#else 
+    public
+#endif
+        class MonoCollectorSettingsAttribute : Attribute
     {
         public byte[] Const_ImageName { set; get; }
         public byte[] Const_Namespace { set; get; }

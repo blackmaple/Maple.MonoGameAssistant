@@ -2,7 +2,12 @@
 
 namespace Maple.MonoGameAssistant.MonoCollectorDataV2
 {
-    public enum EnumMonoCollectorTypeVersion
+#if SOURCE_GEN
+    internal
+#else 
+    public
+#endif
+        enum EnumMonoCollectorTypeVersion
     {
         MONO = 0,
         IL2CPP = 1,

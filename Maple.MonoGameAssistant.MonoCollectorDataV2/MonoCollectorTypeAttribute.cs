@@ -4,7 +4,14 @@ namespace Maple.MonoGameAssistant.MonoCollectorDataV2
 {
 
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = true, Inherited = true)]
-    public class MonoCollectorTypeAttribute : Attribute
+
+#if SOURCE_GEN
+    internal
+#else 
+    public
+#endif
+
+        class MonoCollectorTypeAttribute : Attribute
     {
         public Type ClassType { set; get; }
 

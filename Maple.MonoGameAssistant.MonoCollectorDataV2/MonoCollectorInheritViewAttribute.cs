@@ -9,10 +9,15 @@ namespace Maple.MonoGameAssistant.MonoCollectorDataV2
     /// </summary>
     [Description("内部使用")]
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = true, Inherited = false)]
-    public class MonoCollectorInheritViewAttribute : Attribute
+#if SOURCE_GEN
+    internal
+#else 
+    public
+#endif     
+        class MonoCollectorInheritViewAttribute : Attribute
     {
 
-        public Type BaseClass{ get; }
+        public Type BaseClass { get; }
 
         //public bool OnlyAsRef { set; get; } = false;
 

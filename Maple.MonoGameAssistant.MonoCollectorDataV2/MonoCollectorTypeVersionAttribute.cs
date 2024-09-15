@@ -4,7 +4,13 @@ namespace Maple.MonoGameAssistant.MonoCollectorDataV2
 {
     [Obsolete("remove...")]
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = true, Inherited = false)]
-    public sealed class MonoCollectorTypeVersionAttribute : Attribute
+
+#if SOURCE_GEN
+    internal
+#else 
+    public
+#endif
+        sealed class MonoCollectorTypeVersionAttribute : Attribute
     {
         public Type ClassType { get; }
         public EnumMonoCollectorTypeVersion Ver { get; } = EnumMonoCollectorTypeVersion.APP;

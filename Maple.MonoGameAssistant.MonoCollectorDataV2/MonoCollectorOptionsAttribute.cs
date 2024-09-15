@@ -6,7 +6,12 @@ namespace Maple.MonoGameAssistant.MonoCollectorDataV2
     /// 源生成器对象配置器
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
-    public class MonoCollectorOptionsAttribute : Attribute
+#if SOURCE_GEN
+    internal
+#else 
+    public
+#endif
+        class MonoCollectorOptionsAttribute : Attribute
     {
 
         public Type MonoCollectorContext { get; }

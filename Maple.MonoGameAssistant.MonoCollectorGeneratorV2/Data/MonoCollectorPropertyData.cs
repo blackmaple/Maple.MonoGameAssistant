@@ -1,6 +1,6 @@
 ﻿namespace Maple.MonoGameAssistant.MonoCollectorGeneratorV2
 {
-    public class MonoCollectorPropertyData
+    internal class MonoCollectorPropertyData
     {
         public string EntryPoint { set; get; }
 
