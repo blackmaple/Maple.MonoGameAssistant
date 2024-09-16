@@ -4,15 +4,17 @@
 
 0.  描述
 
-      -  dotNet8 + AOT + Blazor 写了一个 Unity Game 通用修改器框架 只支持WinX64
-
+      -  dotNet9 + AOT + Blazor 写了一个 Unity Game 通用修改器框架
+      -  x86
+      -  x86_64
+        
 1.  要求
 
     -  一个VS2022
-    -  一个DotNet8 SDK 需要安装AOT
-    -  Unity编译的X64游戏(MONO&IL2CPP)
+    -  一个DotNet9(rc1) SDK 需要安装AOT
+    -  Unity编译的X64游戏(MONO&IL2CPP) Demo
           -  [Bloomtown A Different Story Demo](https://github.com/blackmaple/Maple.Bloomtown)
-          -  [崛起力量: 测试英雄 试玩版](https://github.com/blackmaple/Maple.HeroTest)
+          -  [妖之乡](https://github.com/blackmaple/Maple.Ghostmon)
 
 2.  参考
      
@@ -21,79 +23,58 @@
     -  [BepInEx](https://github.com/BepInEx/BepInEx)
     -  [MASA.Blazor](https://github.com/masastack/MASA.Blazor)
      
+## NuGet
+[NuGet](https://www.nuget.org/profiles/BlackMaple)
 
-## 项目文件
+## 项目参考
+ 
+  - *项目描述*
+      |      projectName                                           |      desc                                                      |   status   |
+      |------------------------------------------------------------|----------------------------------------------------------------|------------|            
+      |      Maple.MonoGameAssistant.Common                        | 常用帮助类                                                      |    ✔      |
+      |      Maple.MonoGameAssistant.Logger                        | 简单的日志实现                                                   |    ✔      |
+      |      Maple.MonoGameAssistant.DllExportTmp                  | winhttp劫持模板                                                      |    remove*     |
+      |      Maple.MonoGameAssistant.DllHijackData                 | winhttp劫持数据                                                      |    remove*      |
+      |      Maple.MonoGameAssistant.DllHijackGenerator            | winhttp劫持源生成器                                                      |                                                    remove*      |
+      |      Maple.MonoGameAssistant.MonoCollector                 | MONOAPI&源生成器所需的公用代码1                                    |    ✔      |
+      |      Maple.MonoGameAssistant.MonoCollectorDataV2           | MONOAPI&源生成器所需的公用代码2                                    |    ✔      |
+      |      Maple.MonoGameAssistant.MonoCollectorGeneratorV2      | 源生成器-对MONOAPI生产类似元数据转成C#代码                              |    ✔      |
+      |      Maple.MonoGameAssistant.Core                          | 利用MONOAPI收集类似元数据的项目 参考了CheatEngine中的实现                        |    ✔      |
+      |      Maple.MonoGameAssistant.Model                         | 元数据模型                                                                  |    ✔      |
+      |      Maple.MonoGameAssistant.UnityCore                     | 对Unity常用类	                                                      |    ✔      |
+      |      Maple.MonoGameAssistant.GameCore                      | GameWebApi项目通信的Http                                             |  ✔ |
+      |      Maple.MonoGameAssistant.GameDTO                       | GameWebApi传输模型                                                  |   ✔  |
+      |      Maple.MonoGameAssistant.GameShared                    | BlazorUI项目共享 用了MASA的UI                                      |  ✔  |
+      |      Maple.MonoGameAssistant.GameSSR                       | SSR调试用                                                              |   ✔  |
+      |      Maple.MonoGameAssistant.GameWASM                      | WASM发布用 调试卡成🐕                                                  |   ✔  |
+      |      Maple.MonoGameAssistant.WebApi                        | MONOAPI的服务端采用了管道通信(基于HTTP)(参考CE)& GameCheat服务端实现  |   ✔  |
+      |      Maple.MonoGameAssistant.GameContext                   | Windows-游戏修改器继承基类                                            |   ✔  |
+      |      Maple.MonoGameAssistant.HookTask                      | Windows-HOOK WIN MSG 在主线程上执行自定义代码                          |   ✔  |
+      |      Maple.MonoGameAssistant.HotKey                        | Windows-HOOK WIN MSG 按键通知                                            |   ✔  |
+      |      Maple.MonoGameAssistant.HotKey.Abstractions           | 消息按键通知接口                                                        |   ✔  |
+      |      Maple.MonoGameAssistant.UITask                        | Windows-WIN TIMER 在主线程上执行自定义代码                               |   ✔  |
+      |      Maple.MonoGameAssistant.WinApi                        | Windows-WIN32API                                                        |   ✔  |
 
-1.  Common
 
-      ###
-      |  project                          |  desc                                                                                            |  status  |
-      |  -------------------------------  |  ----------------------------------------------------------------------------------------------  |  ------  |
-      |  [Maple.MonoGameAssistant.Common](https://github.com/blackmaple/Maple.MonoGameAssistant/tree/main/Maple.MonoGameAssistant.Common)    |  公有辅助类&winapi  | ✔ |
-      |  [Maple.MonoGameAssistant.HotKey](https://github.com/blackmaple/Maple.MonoGameAssistant/tree/main/Maple.MonoGameAssistant.HotKey)    |  HOOK WIN MSG & 执行自定义消息 | ✔  |
-      |  [Maple.MonoGameAssistant.Logger](https://github.com/blackmaple/Maple.MonoGameAssistant/tree/main/Maple.MonoGameAssistant.Logger)    |  简单的日志 实现ILogger        |  ✔  |
-    
-2.  Generator
 
-      ###
-      |  project                          |  desc                                                                                            |  status  |
-      |  -------------------------------  |  ----------------------------------------------------------------------------------------------  |  ------  |
-      |  [Maple.MonoGameAssistant.DllExportTmp](https://github.com/blackmaple/Maple.MonoGameAssistant/tree/main/Maple.MonoGameAssistant.DllExportTmp)|  WINHTTP.DLL劫持的实现 依赖源生成器  |  ✔  |
-      |  [Maple.MonoGameAssistant.DllHijackData](https://github.com/blackmaple/Maple.MonoGameAssistant/tree/main/Maple.MonoGameAssistant.DllHijackData)|  DLL劫持源生成器所需的公用代码  |  ✔  |
-      |  [Maple.MonoGameAssistant.DllHijackGenerator](https://github.com/blackmaple/Maple.MonoGameAssistant/tree/main/Maple.MonoGameAssistant.DllHijackGenerator)|  DLL劫持源生成器实现  |  ✔  |
-      |  [Maple.MonoGameAssistant.MonoCollector](https://github.com/blackmaple/Maple.MonoGameAssistant/tree/main/Maple.MonoGameAssistant.MonoCollector)| MONOAPI&源生成器所需的公用代码1 |  ✔  |
-      |  [Maple.MonoGameAssistant.MonoCollectorDataV2](https://github.com/blackmaple/Maple.MonoGameAssistant/tree/main/Maple.MonoGameAssistant.MonoCollectorDataV2)*API*|   MONOAPI&源生成器所需的公用代码2  |  ✔  |
-      |  [Maple.MonoGameAssistant.MonoCollectorGeneratorV2](https://github.com/blackmaple/Maple.MonoGameAssistant/tree/main/Maple.MonoGameAssistant.MonoCollectorGeneratorV2)|  源生成器-对MONOAPI生产类似元数据转成C#代码 |  ✔  |
 
-      - *常用API*
-        
-        ###
+    - *备注*
+          -  **`MonoTask` 实现一个TaskScheduler (注意:调用MONOAPI的都需要附加到MONO这个操作) 让函数利用Task调度到一个指定的线程 附加并执行代码后退出附加**
+          -  **`HookTask` 基于HOOK WIN MSG 调度到主线程上执行自定义函数**
+          -  **`UITask`   基于WIN32API SetTimer 调度到主线程上执行自定义函数**
+
+  - *劫持代替项目*
+      [DLLProxy](https://github.com/blackmaple/DLLProxy)
+      [MelonLoader](https://github.com/LavaGang/MelonLoader)
+
+  - *常用API*
        |  Class                                   |  desc                                                                                            |      code      |
        |  -------------------------------         |  ----------------------------------------------------------------------------------------------  |      ----      |
        |  MonoCollectorMethodAttribute            |      对MONOAPI 提供的元数据查找函数地址 支持自定义查找规则                                        |    `[MonoCollectorMethod(Name_Func_ENCODE_TO_JPG, Search = typeof(Search_ImageConversion))]`      |
        |  MonoCollectorPropertyAttribute          |      对MONOAPI 提供的元数据查找class 成员字段 默认按 字段名字查询 以兼容游戏版本                  |    `[MonoCollectorProperty(PropertyName = "Price")]`      |
        |  MonoCollectorStaticPropertyAttribute    |      对MONOAPI 提供的元数据查找class 静态字段 默认按 字段名字查询 以兼容游戏版本                  |    `[MonoCollectorStaticProperty(PropertyName = "Instance")]`      |
 
-3.  MonoCore
-
-      ###
-      |  project                          |  desc                                                                                            |  status  |
-      |  -------------------------------  |  ----------------------------------------------------------------------------------------------  |  ------  |
-      |  [Maple.MonoGameAssistant.Core](https://github.com/blackmaple/Maple.MonoGameAssistant/tree/main/Maple.MonoGameAssistant.Core)  |  利用MONOAPI收集类似元数据的项目 参考了CheatEngine中的实现  |  ✔  |
-      |  [Maple.MonoGameAssistant.Model](https://github.com/blackmaple/Maple.MonoGameAssistant/tree/main/Maple.MonoGameAssistant.Model])  | 元数据模型  |  ✔  |
-      |  [Maple.MonoGameAssistant.UnityCore](https://github.com/blackmaple/Maple.MonoGameAssistant/tree/main/Maple.MonoGameAssistant.UnityCore)*备注*  | 对Unity常用类&MONO线程的Task调度&UnityUI主线程的Task调度(Send UserWinMsg)|  ✔  |
-
-      - *备注*
-          -  **`MonoTask` 实现一个TaskScheduler (注意:调用MONOAPI的都需要附加到MONO这个操作) 让函数利用Task调度到一个指定的线程 附加并执行代码后退出附加( 主要还是附加不退 直接关闭游戏会卡死 )**
-          -  **`UnityTask` 实现一个TaskScheduler (注意:Unity的对象可能需要在UI线程上操作) 让函数利用Task调度到窗口主线程(一般也是UI线程) 利用HOOK WIN MSG 发送了一个UserMsgCode**
-
-4. UI
-    -  GameUI
-
-      ###
-      |  project                          |  desc                                                                                            |  status  |
-      |  -------------------------------  |  ----------------------------------------------------------------------------------------------  |  ------  |
-      |  [Maple.MonoGameAssistant.GameCore](https://github.com/blackmaple/Maple.MonoGameAssistant/tree/main/Maple.MonoGameAssistant.GameCore)  | GameWebApi项目通信的Http   |  ×  |
-      |  [Maple.MonoGameAssistant.GameDTO](https://github.com/blackmaple/Maple.MonoGameAssistant/tree/main/Maple.MonoGameAssistant.GameDTO)  |  GameWebApi传输模型  |   ×  |
-      |  [Maple.MonoGameAssistant.GameShared](https://github.com/blackmaple/Maple.MonoGameAssistant/tree/main/Maple.MonoGameAssistant.GameShared)  |  BlazorUI项目共享 用了MASA的UI  |   ×  |
-      |  [Maple.MonoGameAssistant.GameSSR](https://github.com/blackmaple/Maple.MonoGameAssistant/tree/main/Maple.MonoGameAssistant.GameSSR)  |  SSR调试用  |   ×  |
-      |  [Maple.MonoGameAssistant.GameWASM](https://github.com/blackmaple/Maple.MonoGameAssistant/tree/main/Maple.MonoGameAssistant.GameWASM)  |  WASM发布用 调试卡成🐕  |   ×  |
-
-    -  GameWebApi
-
-      ###
-      |  project                          |  desc                                                                                            |  status  |
-      |  -------------------------------  |  ----------------------------------------------------------------------------------------------  |  ------  |
-      |  [Maple.GameContext](https://github.com/blackmaple/Maple.MonoGameAssistant/tree/main/Maple.GameContext)  | GameCheat的基类 具体使用参考: |  ✔  |
-      |  [Maple.MonoGameAssistant.WebApi](https://github.com/blackmaple/Maple.MonoGameAssistant/tree/main/Maple.MonoGameAssistant.WebApi)  | MONOAPI的服务端采用了管道通信(基于HTTP)(参考CE)& GameCheat服务端实现 |  ✔  |
-          
-    -  MonoDataUI
-
-      ###
-      |  project                          |  desc                                                                                            |  status  |
-      |  -------------------------------  |  ----------------------------------------------------------------------------------------------  |  ------  |
-      |  [Maple.MonoGameAssistant.UILogic](https://github.com/blackmaple/Maple.MonoGameAssistant/tree/main/Maple.MonoGameAssistant.UILogic)  | MONOAPI的客户端采用了管道通信(基于HTTP)(参考CE) |  ✔  |
-      |  [Maple.MonoGameAssistant.WinForm](https://github.com/blackmaple/Maple.MonoGameAssistant/tree/main/Maple.MonoGameAssistant.WinForm)  | MONOAPI的UI 采用了DEVEXPRESS |  ✔  |
+ 
 
 ***
 
