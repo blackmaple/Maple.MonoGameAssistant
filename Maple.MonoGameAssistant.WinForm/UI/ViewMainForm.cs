@@ -8,6 +8,7 @@ using Maple.MonoGameAssistant.UILogic;
 using Maple.MonoGameAssistant.WinForm.UI;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
@@ -17,8 +18,11 @@ namespace Maple.MonoGameAssistant.WinForm
 {
     public partial class ViewMainForm : ToolbarForm
     {
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public required UIService UIService { get; set; }
         GameContextFactory GameContextFactory => UIService.GameContextFactory;
+
+        
         public ViewMainForm(UIService uIService) : this()
         {
             this.UIService = uIService;

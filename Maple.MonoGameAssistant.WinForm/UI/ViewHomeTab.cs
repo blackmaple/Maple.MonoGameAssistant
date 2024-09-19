@@ -16,7 +16,9 @@ namespace Maple.MonoGameAssistant.WinForm
 {
     public partial class ViewHomeTab : DevExpress.XtraEditors.XtraForm
     {
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public required ViewMainForm ViewMainForm { set; get; }
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public required UIService UIService { set; get; }
         GameContextFactory GameContextFactory => UIService.GameContextFactory;
         UIBindingList<UIProcessInfo> BindListProcess { get; } = [];

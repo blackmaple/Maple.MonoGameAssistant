@@ -24,10 +24,13 @@ namespace Maple.MonoGameAssistant.WinForm.UI
 {
     public partial class ViewGameTab : DevExpress.XtraEditors.XtraForm
     {
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public required GameCodeContext GameCodeContext { set; get; }
 
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public required ViewMainForm ViewMainForm { set; get; }
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public required UIService UIService { set; get; }
         //  GameContextFactory GameContextFactory => UIService.GameContextFactory;
 

@@ -20,6 +20,7 @@
 		<ProjectReference Include="..\Maple.MonoGameAssistant.Common\Maple.MonoGameAssistant.Common.csproj" />
 		<ProjectReference Include="..\Maple.MonoGameAssistant.Logger\Maple.MonoGameAssistant.Logger.csproj" />
 		<ProjectReference Include="..\Maple.MonoGameAssistant.UILogic\Maple.MonoGameAssistant.UILogic.csproj" />
+		<ProjectReference Include="..\Maple.MonoGameAssistant.WinApi\Maple.MonoGameAssistant.WinApi.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
