@@ -136,7 +136,7 @@ namespace Maple.MonoGameAssistant.GameCore
         }
         public Task<MonoResultDTO<GameCharacterEquipmentDTO>> UpdateCharacterEquipmentAsync(GameSessionInfoDTO gameSessionInfo, GameCharacterDisplayDTO gameCharacterDisplay, string oldEquip, string newEquip)
         {
-            return this.TrySendAsync<GameCharacterObjectDTO, GameCharacterEquipmentDTO>("game/UpdateCharacterEquipment", new GameCharacterModifyDTO() { Session = gameSessionInfo.ObjectId, CharacterId = gameCharacterDisplay.ObjectId, CharacterCategory = gameCharacterDisplay.DisplayCategory, ModifyObject = oldEquip, NewValue = newEquip });
+            return this.TrySendAsync<GameCharacterModifyDTO, GameCharacterEquipmentDTO>("game/UpdateCharacterEquipment", new GameCharacterModifyDTO() { Session = gameSessionInfo.ObjectId, CharacterId = gameCharacterDisplay.ObjectId, CharacterCategory = gameCharacterDisplay.DisplayCategory, ModifyObject = oldEquip, NewValue = newEquip });
         }
         #endregion
 

@@ -1,10 +1,9 @@
 using Maple.MonoGameAssistant.GameCore;
+using Maple.MonoGameAssistant.GameShared;
 using Maple.MonoGameAssistant.GameShared.Service;
 using Maple.MonoGameAssistant.GameSSR;
-using Maple.MonoGameAssistant.GameShared;
 using Masa.Blazor;
 using Masa.Blazor.Presets;
-using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
