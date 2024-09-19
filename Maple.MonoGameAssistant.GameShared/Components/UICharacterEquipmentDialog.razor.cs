@@ -20,12 +20,13 @@ namespace Maple.MonoGameAssistant.GameShared.Components
 
 
         private bool Loading { set; get; } = false;
-        private async Task OnUpdateCharacterEquipment()
+        private async Task OnUpdateCharacterEquipment(GameEquipmentInfoDTO selectedData, bool remove)
         {
             try
             {
                 this.Loading = true;
-                await Task.Delay(5000);
+                await this.Core.OnUpdateCharacterEquipment(CharacterDisplay, selectedData, remove);
+              
             }
             finally
             {

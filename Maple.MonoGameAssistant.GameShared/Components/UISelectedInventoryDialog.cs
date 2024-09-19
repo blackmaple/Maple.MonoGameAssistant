@@ -6,7 +6,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Maple.MonoGameAssistant.GameShared.Components
 {
-    public partial class UISelectedSkillDialog
+    public partial class UISelectedInventoryDialog
     {
         [Inject]
         [NotNull]
@@ -15,31 +15,31 @@ namespace Maple.MonoGameAssistant.GameShared.Components
         private string? SearchContent { set; get; }
 
         [Parameter, EditorRequired, NotNull]
-        public List<GameSkillDisplayDTO>? ListSkill_All { get; set; }
-        public List<GameSkillDisplayDTO> ListSkill_Search { get; set; } = [];
+        public List<GameInventoryDisplayDTO>? ListItem_All { get; set; }
+        public List<GameInventoryDisplayDTO> ListItem_Search { get; set; } = [];
 
         protected override void OnParametersSet()
         {
             base.OnParametersSet();
-            ListSkill_Search.AddRange(ListSkill_All);
+            ListItem_Search.AddRange(ListItem_All);
         }
         private void OnSearch()
         {
-            this.ListSkill_Search.Clear();
-            IEnumerable<GameSkillDisplayDTO> searchDatas = this.ListSkill_All;
+            this.ListItem_Search.Clear();
+            IEnumerable<GameInventoryDisplayDTO> searchDatas = this.ListItem_All;
 
             if (string.IsNullOrEmpty(SearchContent) == false)
             {
                 searchDatas = searchDatas.Where(p => p.ContainsGameDisplay(SearchContent, p.DisplayCategory));
             }
-            this.ListSkill_Search.AddRange(searchDatas);
+            this.ListItem_Search.AddRange(searchDatas);
         }
 
-        public async Task OnSelectedData(GameSkillDisplayDTO skillDisplayDTO)
+        public async Task OnSelectedData(GameInventoryDisplayDTO  inventoryDisplayDTO)
         {
-            if (await this.Core.PopupService.ConfirmAsync("Add Skill", $"Add Skill:{skillDisplayDTO.DisplayName}", AlertTypes.Warning))
+            if (await this.Core.PopupService.ConfirmAsync($"Add {inventoryDisplayDTO.DisplayCategory}", $"Add {inventoryDisplayDTO.DisplayCategory}:{inventoryDisplayDTO.DisplayName}", AlertTypes.Warning))
             {
-                await this.ClosePopupAsync(skillDisplayDTO);
+                await this.ClosePopupAsync(inventoryDisplayDTO);
             }
         }
 
