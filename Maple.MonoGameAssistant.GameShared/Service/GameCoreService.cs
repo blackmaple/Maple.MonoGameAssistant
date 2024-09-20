@@ -524,15 +524,15 @@ namespace Maple.MonoGameAssistant.GameShared.Service
             {
                 return;
             }
-            MonoResultDTO<GameCharacterSkillDTO> dto;
+
             if (remove)
             {
-                var dialog = await this.PopupService.ConfirmAsync("Remove Skill", $"Remove Skill:{selectedData.DisplayName}", AlertTypes.Warning);
+                var dialog = await this.PopupService.ConfirmAsync($"Remove {selectedData.DisplayCategory}", $"Remove {selectedData.DisplayCategory}:{selectedData.DisplayName}", AlertTypes.Warning);
                 if (false == dialog)
                 {
                     return;
                 }
-                dto = await this.Http.UpdateCharacterSkillAsync(this.GameSessionInfo, characterDisplayDTO, selectedData.ObjectId, string.Empty);
+                var dto = await this.Http.UpdateCharacterSkillAsync(this.GameSessionInfo, characterDisplayDTO, selectedData.DisplayCategory, selectedData.ObjectId, string.Empty);
                 if (false == dto.TryGet(out var _))
                 {
                     await this.ShowErrorAsync(dto.MSG);
@@ -561,7 +561,7 @@ namespace Maple.MonoGameAssistant.GameShared.Service
                 }
 
 
-                dto = await this.Http.UpdateCharacterSkillAsync(this.GameSessionInfo, characterDisplayDTO, selectedData.ObjectId, newSkill.ObjectId);
+                var dto = await this.Http.UpdateCharacterSkillAsync(this.GameSessionInfo, characterDisplayDTO, selectedData.DisplayCategory, selectedData.ObjectId, newSkill.ObjectId);
                 if (false == dto.TryGet(out _))
                 {
                     await this.ShowErrorAsync(dto.MSG);
@@ -588,15 +588,14 @@ namespace Maple.MonoGameAssistant.GameShared.Service
             {
                 return;
             }
-            MonoResultDTO<GameCharacterEquipmentDTO> dto;
             if (remove)
             {
-                var dialog = await this.PopupService.ConfirmAsync("Remove Equipment", $"Remove Equipment:{selectedData.DisplayName}", AlertTypes.Warning);
+                var dialog = await this.PopupService.ConfirmAsync($"Remove {selectedData.DisplayCategory}", $"Remove {selectedData.DisplayCategory}:{selectedData.DisplayName}", AlertTypes.Warning);
                 if (false == dialog)
                 {
                     return;
                 }
-                dto = await this.Http.UpdateCharacterEquipmentAsync(this.GameSessionInfo, characterDisplayDTO, selectedData.ObjectId, string.Empty);
+                var dto = await this.Http.UpdateCharacterEquipmentAsync(this.GameSessionInfo, characterDisplayDTO, selectedData.DisplayCategory, selectedData.ObjectId, string.Empty);
                 if (false == dto.TryGet(out var _))
                 {
                     await this.ShowErrorAsync(dto.MSG);
@@ -625,7 +624,7 @@ namespace Maple.MonoGameAssistant.GameShared.Service
                 }
 
 
-                dto = await this.Http.UpdateCharacterEquipmentAsync(this.GameSessionInfo, characterDisplayDTO, selectedData.ObjectId, newInventory.ObjectId);
+                var dto = await this.Http.UpdateCharacterEquipmentAsync(this.GameSessionInfo, characterDisplayDTO, selectedData.DisplayCategory, selectedData.ObjectId, newInventory.ObjectId);
                 if (false == dto.TryGet(out var _))
                 {
                     await this.ShowErrorAsync(dto.MSG);

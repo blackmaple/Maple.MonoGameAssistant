@@ -118,25 +118,25 @@ namespace Maple.MonoGameAssistant.GameCore
         }
         public Task<MonoResultDTO<GameCharacterStatusDTO>> UpdateCharacterStatusAsync(GameSessionInfoDTO gameSessionInfo, GameCharacterDisplayDTO gameCharacterDisplay, GameSwitchDisplayDTO gameValueInfo)
         {
-            return this.TrySendAsync<GameCharacterModifyDTO, GameCharacterStatusDTO>("game/UpdateCharacterStatus", new GameCharacterModifyDTO() { Session = gameSessionInfo.ObjectId, CharacterId = gameCharacterDisplay.ObjectId , CharacterCategory = gameCharacterDisplay.DisplayCategory,   ModifyObject = gameValueInfo.ObjectId, NewValue = gameValueInfo.ContentValue });
+            return this.TrySendAsync<GameCharacterModifyDTO, GameCharacterStatusDTO>("game/UpdateCharacterStatus", new GameCharacterModifyDTO() { Session = gameSessionInfo.ObjectId, CharacterId = gameCharacterDisplay.ObjectId, CharacterCategory = gameCharacterDisplay.DisplayCategory, ModifyCategory = gameValueInfo.DisplayCategory, ModifyObject = gameValueInfo.ObjectId, NewValue = gameValueInfo.ContentValue });
         }
 
         public Task<MonoResultDTO<GameCharacterSkillDTO>> GetCharacterSkillAsync(GameSessionInfoDTO gameSessionInfo, GameCharacterDisplayDTO gameCharacterDisplay)
         {
             return this.TrySendAsync<GameCharacterObjectDTO, GameCharacterSkillDTO>("game/GetCharacterSkill", new GameCharacterObjectDTO() { Session = gameSessionInfo.ObjectId, CharacterId = gameCharacterDisplay.ObjectId, CharacterCategory = gameCharacterDisplay.DisplayCategory });
         }
-        public Task<MonoResultDTO<GameCharacterSkillDTO>> UpdateCharacterSkillAsync(GameSessionInfoDTO gameSessionInfo, GameCharacterDisplayDTO gameCharacterDisplay, string oldSkill, string newSkill)
+        public Task<MonoResultDTO<GameCharacterSkillDTO>> UpdateCharacterSkillAsync(GameSessionInfoDTO gameSessionInfo, GameCharacterDisplayDTO gameCharacterDisplay, string? modifyCategory, string oldSkill, string newSkill)
         {
-            return this.TrySendAsync<GameCharacterModifyDTO, GameCharacterSkillDTO>("game/UpdateCharacterSkill", new GameCharacterModifyDTO() { Session = gameSessionInfo.ObjectId, CharacterId = gameCharacterDisplay.ObjectId, CharacterCategory = gameCharacterDisplay.DisplayCategory, ModifyObject = oldSkill, NewValue = newSkill });
+            return this.TrySendAsync<GameCharacterModifyDTO, GameCharacterSkillDTO>("game/UpdateCharacterSkill", new GameCharacterModifyDTO() { Session = gameSessionInfo.ObjectId, CharacterId = gameCharacterDisplay.ObjectId, CharacterCategory = gameCharacterDisplay.DisplayCategory, ModifyCategory = modifyCategory, ModifyObject = oldSkill, NewValue = newSkill });
         }
 
         public Task<MonoResultDTO<GameCharacterEquipmentDTO>> GetCharacterEquipmentAsync(GameSessionInfoDTO gameSessionInfo, GameCharacterDisplayDTO gameCharacterDisplay)
         {
             return this.TrySendAsync<GameCharacterObjectDTO, GameCharacterEquipmentDTO>("game/GetCharacterEquipment", new GameCharacterObjectDTO() { Session = gameSessionInfo.ObjectId, CharacterId = gameCharacterDisplay.ObjectId, CharacterCategory = gameCharacterDisplay.DisplayCategory });
         }
-        public Task<MonoResultDTO<GameCharacterEquipmentDTO>> UpdateCharacterEquipmentAsync(GameSessionInfoDTO gameSessionInfo, GameCharacterDisplayDTO gameCharacterDisplay, string oldEquip, string newEquip)
+        public Task<MonoResultDTO<GameCharacterEquipmentDTO>> UpdateCharacterEquipmentAsync(GameSessionInfoDTO gameSessionInfo, GameCharacterDisplayDTO gameCharacterDisplay, string? modifyCategory, string oldEquip, string newEquip)
         {
-            return this.TrySendAsync<GameCharacterModifyDTO, GameCharacterEquipmentDTO>("game/UpdateCharacterEquipment", new GameCharacterModifyDTO() { Session = gameSessionInfo.ObjectId, CharacterId = gameCharacterDisplay.ObjectId, CharacterCategory = gameCharacterDisplay.DisplayCategory, ModifyObject = oldEquip, NewValue = newEquip });
+            return this.TrySendAsync<GameCharacterModifyDTO, GameCharacterEquipmentDTO>("game/UpdateCharacterEquipment", new GameCharacterModifyDTO() { Session = gameSessionInfo.ObjectId, CharacterId = gameCharacterDisplay.ObjectId, CharacterCategory = gameCharacterDisplay.DisplayCategory, ModifyCategory = modifyCategory, ModifyObject = oldEquip, NewValue = newEquip });
         }
         #endregion
 

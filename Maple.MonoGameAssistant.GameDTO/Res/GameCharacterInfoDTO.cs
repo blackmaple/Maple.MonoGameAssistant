@@ -54,13 +54,13 @@ namespace Maple.MonoGameAssistant.GameDTO
     /// <summary>
     /// 装备信息
     /// </summary>
-    public class GameEquipmentInfoDTO : GameDisplayDTO
+    public class GameEquipmentInfoDTO : GameObjectDisplayDTO
     { 
 
-        /// <summary>
-        /// 装备分类
-        /// </summary>
-        public string? DisplayCategory { set; get; }
+        ///// <summary>
+        ///// 装备分类
+        ///// </summary>
+        //public string? DisplayCategory { set; get; }
 
         /// <summary>
         /// 装备属性
@@ -69,19 +69,6 @@ namespace Maple.MonoGameAssistant.GameDTO
 
 
         public bool CanWrite { set; get; }
-    }
-
-
-    /// <summary>
-    /// 人物技能
-    /// </summary>
-    public class GameCharacterSkillDTO : GameUniqueIndexDTO
-    {
-        /// <summary>
-        /// 技能集合
-        /// </summary>
-        public GameSkillInfoDTO[]? SkillInfos { set; get; }
-
     }
 
  

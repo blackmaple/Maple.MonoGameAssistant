@@ -2,15 +2,15 @@
 
 namespace Maple.MonoGameAssistant.GameDTO
 {
-    public class GameSkillInfoDTO : GameDisplayDTO
+    public class GameSkillInfoDTO : GameObjectDisplayDTO
     {
 
 
 
-        /// <summary>
-        /// 技能类型
-        /// </summary>
-        public string? DisplayCategory { set; get; }
+        ///// <summary>
+        ///// 技能类型
+        ///// </summary>
+        //public string? DisplayCategory { set; get; }
 
         /// <summary>
         /// 技能属性

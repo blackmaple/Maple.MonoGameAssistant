@@ -4,7 +4,7 @@ namespace Maple.MonoGameAssistant.GameDTO
 {
     public class GameCharacterModifyDTO : GameCharacterObjectDTO
     {
-        // public string? ModifyCategory { set; get; }
+        public string? ModifyCategory { set; get; }
         public string? ModifyObject { set; get; }
         public string? NewValue { set; get; }
 
