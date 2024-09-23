@@ -10,7 +10,7 @@
 	  <PublishAot>true</PublishAot>
 	  <IsAotCompatible>true</IsAotCompatible>
 	  <OutputType>Library</OutputType>
-	  <AssemblyName>MonoDataCollector</AssemblyName>
+	  <AssemblyName>Maple</AssemblyName>
 
 
 	  <DebuggerSupport>false</DebuggerSupport>
