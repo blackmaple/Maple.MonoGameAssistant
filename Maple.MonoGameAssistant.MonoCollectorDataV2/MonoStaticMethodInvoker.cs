@@ -5,7 +5,12 @@ using System.Text;
 
 namespace Maple.MonoGameAssistant.MonoCollectorDataV2
 {
-    public readonly struct MonoStaticMethodInvoker
+#if SOURCE_GEN
+    internal
+#else 
+    public
+#endif
+        readonly struct MonoStaticMethodInvoker
     {
         public readonly IntPtr MonoMethod;
         public readonly IntPtr PtrMethod;

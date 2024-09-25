@@ -1,0 +1,80 @@
+﻿@inherits Masa.Blazor.Popup.Components.PopupComponentBase
+
+<MDialog Value="Visible" Fullscreen>
+    <MCard Tile>
+        <MToolbar >
+            <MTextField Label="SearchContent"
+                        @bind-Value="@SearchContent"
+                        Color="primary"
+                        TValue="string"
+                        Clearable
+                        HideDetails="true"
+                        AppendOuterIcon="mdi-magnify"
+                        OnAppendOuterClick="()=>this.OnSearch()"
+                        OnClearClick="()=>this.OnSearch()"
+                        OnEnter="()=>this.OnSearch()">
+            </MTextField>
+
+            <MButton  Icon OnClick="()=>this.ClosePopupAsync(default)">
+                <MIcon>mdi-close</MIcon>
+            </MButton>
+        </MToolbar>
+
+        <MCardText>
+            <UIDynamicHeight PX="100px">
+                <MVirtualScroll OverscanCount="2" ItemSize="64" Items="ListItem_Search"  >
+                    <ItemContent>
+                        <MListItem Dense>
+                            <MListItemAvatar Tile Size="36">
+                                <MImage Src="@context.DisplayImage">
+                                    <PlaceholderContent>
+                                        <MIcon>mdi-border-none-variant</MIcon>
+                                    </PlaceholderContent>
+                                </MImage>
+                            </MListItemAvatar>
+
+
+                            <MListItemContent>
+                                <MListItemTitle>
+                                    <span>@context.ToDisplayName()</span>
+                                    <MChip XSmall Outlined Color="green">
+                                        @context.DisplayCategory
+                                    </MChip>
+
+                                </MListItemTitle>
+                                <MListItemSubtitle>@context.ToDisplayDesc()</MListItemSubtitle>
+                                <MChipGroup ShowArrows="true">
+                                    @{
+                                        var datas = context.ItemAttributes.GetItemAttributes(true).ToArray();
+                                        if (datas.Any())
+                                        {
+
+                                            @foreach (var item in datas)
+                                            {
+                                                <MChip XSmall Outlined>
+                                                    <span>@item.DisplayName:</span>@item.DisplayValue
+                                                </MChip>
+                                            }
+
+                                        }
+                                    }
+                                </MChipGroup>
+                            </MListItemContent>
+                            <MListItemAction>
+                                <MButtonGroup Rounded Group>
+                                    <MButton OnClick="()=>this.OnSelectedData(context)">
+                                        <MIcon Color="orange darken-4">mdi-smart-card-outline</MIcon>
+                                    </MButton>
+                                </MButtonGroup>
+                            </MListItemAction>
+                        </MListItem>
+
+                        <MDivider></MDivider>
+                    </ItemContent>
+                </MVirtualScroll>
+            </UIDynamicHeight>
+
+        </MCardText>
+    </MCard>
+
+</MDialog>

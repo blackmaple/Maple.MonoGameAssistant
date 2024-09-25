@@ -1,8 +1,5 @@
-﻿using Maple.MonoGameAssistant.Common;
-using Maple.MonoGameAssistant.Logger;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using System.Diagnostics;
-using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 

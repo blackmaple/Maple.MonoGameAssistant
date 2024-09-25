@@ -2,7 +2,7 @@
 
 namespace Maple.MonoGameAssistant.Core
 {
-
+    [Obsolete("remove...")]
     public struct MonoRuntimeAttachContext(MonoRuntimeContext runtimeContext) : IDisposable
     {
         public MonoRuntimeContext RuntimeContext { get; } = runtimeContext;

@@ -10,11 +10,11 @@ namespace Maple.MonoGameAssistant.DllHijackGenerator
 {
     public static class DllHijackGeneratorHelper
     {
-        public static void LogInfo(this GeneratorExecutionContext context, string info)
-        {
-            context.ReportDiagnostic(Diagnostic.Create(DllHijackException.V1Info, Location.None, $"DllHijackGenerator=>{info}"));
+        //public static void LogInfo(this GeneratorExecutionContext context, string info)
+        //{
+        //    context.ReportDiagnostic(Diagnostic.Create(DllHijackException.V1Info, Location.None, $"DllHijackGenerator=>{info}"));
 
-        }
+        //}
         static IEnumerable<string> ReadAllApi(this AdditionalText additionalText)
         {
             var file = new FileInfo(additionalText.Path);

@@ -1,6 +1,7 @@
 ﻿using Maple.MonoGameAssistant.Common;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Buffers;
 using System.Diagnostics;
 using System.Globalization;
 using System.Runtime.CompilerServices;
@@ -24,17 +25,22 @@ namespace Maple.MonoGameAssistant.Core
         {
             var listMonoDomain = new List<PMonoDomain>(256);
             using var ref_listMonoDomain = new MapleObjectUnmanaged_Ref(listMonoDomain);
+
             this.Runtime.MONO_DOMAIN_FOREACH.Invoke(&CalbackMonoDomainFunc, new(ref_listMonoDomain));
             return listMonoDomain;
 
-            unsafe static void CalbackMonoDomainFunc(PMonoDomain pMonoDomain, PMonoUserData pUserData)
+        }
+
+        [UnmanagedCallersOnly(CallConvs = [typeof(CallConvCdecl)])]
+        static unsafe void CalbackMonoDomainFunc(PMonoDomain pMonoDomain, PMonoUserData pUserData)
+        {
+            if (MapleObjectUnmanaged_Ref.TryGet<List<PMonoDomain>>(pUserData, out var list))
             {
-                if (MapleObjectUnmanaged_Ref.TryGet<List<PMonoDomain>>(pUserData, out var list))
-                {
-                    list.Add(pMonoDomain);
-                }
+                list.Add(pMonoDomain);
             }
         }
+
+
         public virtual PMonoDomain GetMonoRootDomain()
         {
             return this.Runtime.MONO_GET_ROOT_DOMAIN.Invoke();
@@ -55,10 +61,12 @@ namespace Maple.MonoGameAssistant.Core
         {
             var listMonoAssembly = new List<PMonoAssembly>(256);
             using var ref_listMonoAssembly = new MapleObjectUnmanaged_Ref(listMonoAssembly);
-            this.Runtime.MONO_ASSEMBLY_FOREACH.Invoke(&CalbackMonoAssemblyFunc, new(ref_listMonoAssembly));
+            PMonoUserData pUserData = new(ref_listMonoAssembly);
+            this.Runtime.MONO_ASSEMBLY_FOREACH.Invoke(&CalbackMonoAssemblyFunc, pUserData);
             return listMonoAssembly;
 
 
+            [UnmanagedCallersOnly(CallConvs = [typeof(CallConvCdecl)])]
             unsafe static void CalbackMonoAssemblyFunc(PMonoAssembly pMonoAssembly, PMonoUserData pUserData)
             {
                 if (MapleObjectUnmanaged_Ref.TryGet<List<PMonoAssembly>>(pUserData, out var list))
@@ -67,8 +75,9 @@ namespace Maple.MonoGameAssistant.Core
                 }
             }
 
-        }
 
+
+        }
         #endregion
 
         #region MonoImages
@@ -502,7 +511,7 @@ namespace Maple.MonoGameAssistant.Core
             return true;
         }
 
-        public virtual T_STRUCT GetMonoStaticFieldValue<T_STRUCT>(PMonoDomain pMonoDomain, PMonoClass pMonoClass, PMonoField pMonoField)
+        public virtual unsafe T_STRUCT GetMonoStaticFieldValue<T_STRUCT>(PMonoDomain pMonoDomain, PMonoClass pMonoClass, PMonoField pMonoField)
             where T_STRUCT : unmanaged
         {
             var pMonoVirtualTable = this.GetMonoVirtualTable(pMonoDomain, pMonoClass);
@@ -517,7 +526,10 @@ namespace Maple.MonoGameAssistant.Core
                 //T_STRUCT ref_data = this.Runtime.MONO_FIELD_STATIC_GET_VALUE.Invoke<T_STRUCT>(pMonoVirtualTable, pMonoField);
                 //return ref_data;
             }
-            T_STRUCT ref_data = this.Runtime.MONO_FIELD_STATIC_GET_VALUE.Invoke<T_STRUCT>(pMonoVirtualTable, pMonoField);
+
+
+            
+            T_STRUCT ref_data = this.Runtime.MONO_FIELD_STATIC_GET_VALUE.Invoke2<T_STRUCT>(pMonoVirtualTable, pMonoField);
             return ref_data;
 
 
@@ -607,7 +619,7 @@ namespace Maple.MonoGameAssistant.Core
         {
             return this.Runtime.MONO_GCHANDLE_NEW.Invoke(pMonoObject, pinned);
         }
- 
+
 
         public PMonoObject MonoGCHandleTarget(REF_MONO_GC_HANDLE gchandle)
         {

@@ -23,7 +23,10 @@ namespace Maple.MonoGameAssistant.Core
         public string? ToString(int readSize)
             => this.GetString(readSize);
 
-
+        public override int GetHashCode()
+        {
+            return _ptr.GetHashCode();
+        }
         //public static bool operator ==(PMonoString l, PMonoString r)
         //{
         //    return l._ptr == r._ptr;

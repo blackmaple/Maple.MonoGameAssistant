@@ -17,12 +17,12 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
     [MonoCollectorType(typeof(Sprite))]
     [MonoCollectorType(typeof(Texture2D))]
     [MonoCollectorType(typeof(RenderTexture))]
-    // [MonoCollectorType(typeof(Graphics))]
-    // [MonoCollectorType(typeof(Material))]
+    //[MonoCollectorType(typeof(Graphics))]
+    //[MonoCollectorType(typeof(Material))]
 
     //[MonoCollectorTypeVersion(typeof(UnityEngineContext_MONO), EnumMonoCollectorTypeVersion.Ver_MONO)]
     //[MonoCollectorTypeVersion(typeof(UnityEngineContext_IL2CPP), EnumMonoCollectorTypeVersion.Ver_IL2CPP)]
-    // [MonoCollectorType(typeof(ImageConversion), Ver = EnumMonoCollectorTypeVersion.Ver_IL2CPP)]
+    //[MonoCollectorType(typeof(ImageConversion))]
     public partial class UnityEngineContext
     {
         protected UnityPlayerNativeMethodSetting NativeMethodSetting { get; } = new UnityPlayerNativeMethodSetting();
@@ -101,15 +101,22 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
             {
                 return default;
             }
-
             UnityPlayerNativeMethodSetting.GET_TEXTURE_RECT_INJECTED(pSprite, out var ref_Rect);
-  //          this.Logger.LogInformation("{x}/{y}/{h}/{w}", ref_Rect.m_XMin, ref_Rect.m_YMin, ref_Rect.m_Height, ref_Rect.m_Width);
-
             var pDestTexture2D = this.Texture2D.New<Ptr_Texture2D>(false);
             CopyToTexture2D2(pSrcTexture2D, pDestTexture2D, ref_Rect);
             return NativeMethodSetting.EncodeToPng(pDestTexture2D);
         }
 
+
+        public static UnityEngineContext? LoadUnityContext(MonoRuntimeContext runtimeContext, ILogger logger)
+        {
+            return runtimeContext.RuntimeType switch
+            {
+                EnumMonoRuntimeType.MONO => new UnityEngineContext_MONO(runtimeContext, logger),
+                EnumMonoRuntimeType.IL2CPP => new UnityEngineContext_MONO(runtimeContext, logger),
+                _ => default
+            };
+        }
     }
 
     public sealed partial class UnityEngineContext_MONO : UnityEngineContext
@@ -117,6 +124,8 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
         public UnityEngineContext_MONO(MonoRuntimeContext runtimeContext, ILogger logger) : base(runtimeContext, EnumMonoCollectorTypeVersion.MONO, logger, "202407222110")
         {
             //用MONO 编译的GAME 获取到UnityPlayer.dll 函数地址偏移不一样 需要根据每个游戏修改
+            //UnityEngine.ImageConversion::EncodeToPNG
+            //UnityEngine.Graphics::Blit2
             this.NativeMethodSetting.LoadNativeMethod_MONO(offset_encode_to_png: 0x217030, offset_blit2: 0x878C0);
         }
     }
@@ -131,5 +140,7 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
 
 
     }
+
+
 
 }

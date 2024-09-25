@@ -1,10 +1,9 @@
 using Maple.MonoGameAssistant.GameCore;
+using Maple.MonoGameAssistant.GameShared;
 using Maple.MonoGameAssistant.GameShared.Service;
 using Maple.MonoGameAssistant.GameSSR;
-using Maple.MonoGameAssistant.GameShared;
 using Masa.Blazor;
 using Masa.Blazor.Presets;
-using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,7 +26,7 @@ builder.Services.AddMasaBlazor(p =>
     });
 });
 
-builder.Services.AddHttpClient<GameHttpClientService>(p => p.BaseAddress = new Uri("http://localhost:49009/"))
+builder.Services.AddHttpClient<GameHttpClientService>(p => p.BaseAddress = new Uri("http://localhost:34982/"))
     .ConfigurePrimaryHttpMessageHandler(p => new HttpClientHandler() { AutomaticDecompression = System.Net.DecompressionMethods.Brotli });
 
 builder.Services.AddScoped<GameCoreService>();

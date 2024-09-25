@@ -2,6 +2,7 @@
 using DevExpress.XtraEditors.Controls;
 using Maple.MonoGameAssistant.Common;
 using Maple.MonoGameAssistant.Model;
+using Maple.MonoGameAssistant.WinApi;
 using System.Data;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
@@ -70,10 +71,10 @@ namespace Maple.MonoGameAssistant.WinForm
         static bool TryGetProcessMainModule(Process process, [MaybeNullWhen(false)] out ProcessModule module)
         {
             module = default;
-            var handle = WinApi.OpenProcess(WinApi.PROCESS_QUERY_INFORMATION | WinApi.PROCESS_VM_READ, false, process.Id);
+            var handle = WindowsRuntime.OpenProcess(WindowsRuntime.PROCESS_QUERY_INFORMATION | WindowsRuntime.PROCESS_VM_READ, false, process.Id);
             if (handle != nint.Zero)
             {
-                WinApi.CloseHandle(handle);
+                WindowsRuntime.CloseHandle(handle);
                 module = process.MainModule;
             }
             return module is not null;

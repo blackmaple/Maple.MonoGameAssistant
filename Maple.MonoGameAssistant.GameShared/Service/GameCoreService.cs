@@ -75,13 +75,16 @@ namespace Maple.MonoGameAssistant.GameShared.Service
             }
             this.GameSessionInfo = gameSession;
 
-            await this.GetListCurrencyDisplayAsync();
-            await this.GetListInventoryDisplayAsync();
-            await this.GetListCharacterDisplayAsync();
-            await this.GetListMonsterDisplayAsync();
-            await this.GetListSkillDisplayAsync();
-            await this.GetListSwitchDisplayAsync();
-
+            var task0 = this.GetListCurrencyDisplayAsync();
+            var task1 = this.GetListInventoryDisplayAsync();
+            var task2 = this.GetListCharacterDisplayAsync();
+            var task3 = this.GetListMonsterDisplayAsync();
+            var task4 = this.GetListSkillDisplayAsync();
+            var task5 = this.GetListSwitchDisplayAsync();
+            await foreach (var task in Task.WhenEach(task0, task1, task2, task3, task4, task5))
+            {
+                await task;
+            }
             return EnumGameServiceStatus.OK;
         }
 
@@ -574,15 +577,15 @@ namespace Maple.MonoGameAssistant.GameShared.Service
             {
                 return;
             }
-            MonoResultDTO<GameCharacterSkillDTO> dto;
+
             if (remove)
             {
-                var dialog = await this.PopupService.ConfirmAsync("Remove Skill", $"Remove Skill:{selectedData.DisplayName}", AlertTypes.Warning);
+                var dialog = await this.PopupService.ConfirmAsync($"Remove {selectedData.DisplayCategory}", $"Remove {selectedData.DisplayCategory}:{selectedData.DisplayName}", AlertTypes.Warning);
                 if (false == dialog)
                 {
                     return;
                 }
-                dto = await this.Http.UpdateCharacterSkillAsync(this.GameSessionInfo, characterDisplayDTO, selectedData.ObjectId, string.Empty);
+                var dto = await this.Http.UpdateCharacterSkillAsync(this.GameSessionInfo, characterDisplayDTO, selectedData.DisplayCategory, selectedData.ObjectId, string.Empty);
                 if (false == dto.TryGet(out var _))
                 {
                     await this.ShowErrorAsync(dto.MSG);
@@ -611,7 +614,7 @@ namespace Maple.MonoGameAssistant.GameShared.Service
                 }
 
 
-                dto = await this.Http.UpdateCharacterSkillAsync(this.GameSessionInfo, characterDisplayDTO, selectedData.ObjectId, newSkill.ObjectId);
+                var dto = await this.Http.UpdateCharacterSkillAsync(this.GameSessionInfo, characterDisplayDTO, selectedData.DisplayCategory, selectedData.ObjectId, newSkill.ObjectId);
                 if (false == dto.TryGet(out _))
                 {
                     await this.ShowErrorAsync(dto.MSG);
@@ -630,6 +633,70 @@ namespace Maple.MonoGameAssistant.GameShared.Service
             }
 
         }
+
+
+        public async ValueTask OnUpdateCharacterEquipment(GameCharacterDisplayDTO characterDisplayDTO, GameEquipmentInfoDTO? selectedData, bool remove)
+        {
+            if (this.GameSessionInfo is null || selectedData is null)
+            {
+                return;
+            }
+            if (remove)
+            {
+                var dialog = await this.PopupService.ConfirmAsync($"Remove {selectedData.DisplayCategory}", $"Remove {selectedData.DisplayCategory}:{selectedData.DisplayName}", AlertTypes.Warning);
+                if (false == dialog)
+                {
+                    return;
+                }
+                var dto = await this.Http.UpdateCharacterEquipmentAsync(this.GameSessionInfo, characterDisplayDTO, selectedData.DisplayCategory, selectedData.ObjectId, string.Empty);
+                if (false == dto.TryGet(out var _))
+                {
+                    await this.ShowErrorAsync(dto.MSG);
+                    return;
+                }
+
+                selectedData.ObjectId = string.Empty;
+                selectedData.DisplayName = string.Empty;
+                selectedData.DisplayDesc = string.Empty;
+                selectedData.DisplayImage = string.Empty;
+                selectedData.EquipmentAttributes = default;
+
+            }
+            else
+            {
+
+                if (await PopupService.OpenAsync(typeof(UISelectedInventoryDialog),
+                   new Dictionary<string, object?>()
+                   {
+                       [nameof(UISelectedInventoryDialog.ListItem_All)] =
+                       this.ListInventory_All.Where(p => p.DisplayCategory == selectedData.DisplayCategory).ToList()
+                   }
+                    ) is not GameInventoryDisplayDTO newInventory)
+                {
+                    return;
+                }
+
+
+                var dto = await this.Http.UpdateCharacterEquipmentAsync(this.GameSessionInfo, characterDisplayDTO, selectedData.DisplayCategory, selectedData.ObjectId, newInventory.ObjectId);
+                if (false == dto.TryGet(out var _))
+                {
+                    await this.ShowErrorAsync(dto.MSG);
+                    return;
+                }
+
+                selectedData.ObjectId = newInventory.ObjectId;
+                selectedData.DisplayName = newInventory.DisplayName;
+                selectedData.DisplayDesc = newInventory.DisplayDesc;
+                selectedData.DisplayImage = newInventory.DisplayImage;
+                selectedData.DisplayCategory = newInventory.DisplayCategory;
+                selectedData.EquipmentAttributes = default;
+
+
+
+            }
+
+        }
+
         #endregion
 
         #region Switch

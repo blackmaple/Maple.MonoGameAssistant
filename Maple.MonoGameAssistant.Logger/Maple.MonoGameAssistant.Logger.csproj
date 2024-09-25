@@ -1,17 +1,36 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>net8.0</TargetFramework>
+		<TargetFramework>net9.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+		<LangVersion>preview</LangVersion>
 
-		<PublishAot>true</PublishAot>
-		<IsAotCompatible>true</IsAotCompatible>
+		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+		<Title>Maple.MonoGameAssistant.Logger</Title>
+		<RepositoryUrl>https://github.com/blackmaple/Maple.MonoGameAssistant</RepositoryUrl>
+		<PackageLicenseFile>LICENSE</PackageLicenseFile>
+		<PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
+		<Description>Maple.MonoGameAssistant.Logger</Description>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<PackageTags>mono;unity;game;maple</PackageTags>
+		<Version>1.0.0-rc</Version>
 
 	</PropertyGroup>
+
 	<ItemGroup>
-		<PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0" />
-		<PackageReference Include="Microsoft.Extensions.ObjectPool" Version="8.0.7" />
+		<None Include="..\..\Maple.MonoGameAssistant\LICENSE" Link="LICENSE">
+			<PackagePath>\</PackagePath>
+			<Pack>True</Pack>
+		</None>
+		<None Include="..\..\Maple.MonoGameAssistant\README.md" Link="README.md">
+			<PackagePath>\</PackagePath>
+			<Pack>True</Pack>
+		</None>
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Extensions.Logging" Version="9.0.0-rc.1.24431.7" />
+		<PackageReference Include="Microsoft.Extensions.ObjectPool" Version="9.0.0-rc.1.24452.1" />
 	</ItemGroup>
 </Project>

@@ -3,7 +3,7 @@ using System;
 
 namespace Maple.MonoGameAssistant.MonoCollectorGeneratorV2
 {
-    public class MonoCollectorGeneratorV2Exception : Exception
+    internal class MonoCollectorGeneratorV2Exception : Exception
     {
 
         public static readonly DiagnosticDescriptor V2Error =

@@ -89,6 +89,7 @@ namespace Maple.MonoGameAssistant.MonoCollectorGeneratorV2
         #endregion
 
         #region MonoCollectorOptionsAttribute获取源生成器需要的对象
+        [Obsolete("remove...")]
         public static MonoCollectorOptionsData GetMonoCollectorOptionsData(this AttributeData genOptions, ISymbol classSymbol)
         {
             var collectorOptionsData = genOptions.CreateMonoCollectorOptionsData();
@@ -101,13 +102,32 @@ namespace Maple.MonoGameAssistant.MonoCollectorGeneratorV2
             return collectorOptionsData;
         }
 
+        /// <summary>
+        /// 只获取MONOCOLLECTOR的配置参数
+        /// </summary>
+        /// <param name="genOptions"></param>
+        /// <param name="classSymbol"></param>
+        /// <returns></returns>
+        public static MonoCollectorOptionsData GetMonoCollectorOptionsData_NET9(this AttributeData genOptions, ISymbol classSymbol)
+        {
+            var collectorOptionsData = genOptions.CreateMonoCollectorOptionsData();
+            collectorOptionsData.CustomClassName = classSymbol.Name;
+            collectorOptionsData.CustomClassNamespace = classSymbol.ContainingNamespace.ToDisplayString();
+            collectorOptionsData.CustomClassFullName = classSymbol.ToDisplayString();
+
+            //   collectorOptionsData.VersionDatas.AddRange(GetMonoCollectorVersionData(classSymbol));
+
+            return collectorOptionsData;
+        }
+
+        [Obsolete("remove...")]
         static IEnumerable<MonoCollectorVersionData> GetMonoCollectorVersionData(ISymbol classSymbol)
         {
 
             List<MonoCollectorTypeData> listTypeData = new List<MonoCollectorTypeData>(256);
             List<MonoCollectorVersionData> versionDatas = new List<MonoCollectorVersionData>(256)
             {
-                classSymbol.CreateMonoCollectorVersionData(EnumMonoCollectorTypeVersion.Game)
+                classSymbol.CreateMonoCollectorVersionData(EnumMonoCollectorTypeVersion.APP)
             };
 
             foreach (var att in classSymbol.GetAttributes())
@@ -689,6 +709,7 @@ namespace Maple.MonoGameAssistant.MonoCollectorGeneratorV2
         #endregion
 
         #region MonoCollectorTypeVersionAttribute获取需要处理的Class 
+        [Obsolete("remove...")]
         static MonoCollectorVersionData CreateMonoCollectorVersionData(this AttributeData attributeData)
         {
             if (false == attributeData.TryGetAttributeValue_CtorArgs(0, out INamedTypeSymbol classSymbol))
@@ -701,7 +722,22 @@ namespace Maple.MonoGameAssistant.MonoCollectorGeneratorV2
             }
             return classSymbol.CreateMonoCollectorVersionData(typeVersion);
         }
-        static MonoCollectorVersionData CreateMonoCollectorVersionData(this ISymbol classSymbol, EnumMonoCollectorTypeVersion typeVersion = EnumMonoCollectorTypeVersion.Game)
+        static MonoCollectorVersionData CreateMonoCollectorVersionData(this ISymbol classSymbol, EnumMonoCollectorTypeVersion typeVersion = EnumMonoCollectorTypeVersion.APP)
+        {
+
+            var className = classSymbol.Name;
+            var classNamespace = classSymbol.ContainingNamespace.ToDisplayString();
+            var classFullName = classSymbol.ToDisplayString();
+
+            return new MonoCollectorVersionData()
+            {
+                CustomClassName = className,
+                CustomClassNamespace = classNamespace,
+                CustomClassFullName = classFullName,
+                Ver = typeVersion,
+            };
+        }
+        public static MonoCollectorVersionData CreateMonoCollectorVersionData_NET9(this ISymbol classSymbol, EnumMonoCollectorTypeVersion typeVersion = EnumMonoCollectorTypeVersion.APP)
         {
 
             var className = classSymbol.Name;
@@ -720,7 +756,7 @@ namespace Maple.MonoGameAssistant.MonoCollectorGeneratorV2
         #endregion
 
         #region MonoCollectorTypeAttribute获取需要处理的Class->MonoCollectorSettingsAttribute获取Class信息
-        static MonoCollectorTypeData CreateMonoCollectorTypeData(this AttributeData genType)
+        public static MonoCollectorTypeData CreateMonoCollectorTypeData(this AttributeData genType)
         {
             if (false == genType.TryGetAttributeValue_CtorArgs(0, out INamedTypeSymbol namedTypeSymbol))
             {
@@ -731,9 +767,33 @@ namespace Maple.MonoGameAssistant.MonoCollectorGeneratorV2
             {
                 throw new MonoCollectorGeneratorV2Exception($"ERROR {namedTypeSymbol.ToDisplayString()}=>{nameof(namedTypeSymbol.IsGenericType)}");
             }
-            var ver = genType.GetAttributeValue_NamedArgs(nameof(MonoCollectorTypeAttribute.Ver), EnumMonoCollectorTypeVersion.Game);
+            var ver = genType.GetAttributeValue_NamedArgs(nameof(MonoCollectorTypeAttribute.Ver), EnumMonoCollectorTypeVersion.APP);
             return namedTypeSymbol.GetTypeClassSettings(ver);
         }
+        public static MonoCollectorTypeData CreateMonoCollectorTypeData_NET9(this ISymbol symbol)
+        {
+            if (!(symbol is INamedTypeSymbol namedTypeSymbol))
+            {
+                throw new MonoCollectorGeneratorV2Exception($"ERROR {symbol.ToDisplayString()} IS NOT {nameof(INamedTypeSymbol)}");
+            }
+            return namedTypeSymbol.GetTypeClassSettings(EnumMonoCollectorTypeVersion.APP);
+        }
+
+        public static MonoCollectorTypeData CreateMonoCollectorTypeSettings_NET9(this AttributeData genType)
+        {
+            if (false == genType.TryGetAttributeValue_CtorArgs(0, out INamedTypeSymbol namedTypeSymbol))
+            {
+                throw new MonoCollectorGeneratorV2Exception($"NOT FOUND {nameof(MonoCollectorTypeAttribute)}.{nameof(MonoCollectorTypeAttribute.ClassType)}");
+            }
+            //排除泛型
+            if (namedTypeSymbol.IsGenericType)
+            {
+                throw new MonoCollectorGeneratorV2Exception($"ERROR {namedTypeSymbol.ToDisplayString()}=>{nameof(namedTypeSymbol.IsGenericType)}");
+            }
+            var ver = genType.GetAttributeValue_NamedArgs(nameof(MonoCollectorTypeAttribute.Ver), EnumMonoCollectorTypeVersion.APP);
+            return namedTypeSymbol.GetTypeClassSettings_NET9(ver);
+        }
+
         static IEnumerable<MonoCollectorTypeData> EnumCurrContextTypeClasses(this AttributeData[] genTypes)
         {
             foreach (var genType in genTypes)
@@ -742,7 +802,7 @@ namespace Maple.MonoGameAssistant.MonoCollectorGeneratorV2
             }
 
         }
-        static MonoCollectorTypeData GetTypeClassSettings(this INamedTypeSymbol namedTypeSymbol, EnumMonoCollectorTypeVersion ver = EnumMonoCollectorTypeVersion.Game)
+        static MonoCollectorTypeData GetTypeClassSettings(this INamedTypeSymbol namedTypeSymbol, EnumMonoCollectorTypeVersion ver = EnumMonoCollectorTypeVersion.APP)
         {
             var classAtts = namedTypeSymbol.GetAttributes();
             var classGenType = classAtts.Where(p => p.AttributeClass.ToDisplayString() == typeof(MonoCollectorSettingsAttribute).FullName).FirstOrDefault()
@@ -768,23 +828,24 @@ namespace Maple.MonoGameAssistant.MonoCollectorGeneratorV2
             string const_ClassName = default;
             string utf8_ClassName = default;
 
-            var const_TypeToken = 0U;
-            if (classGenType.ConstructorArguments.Length == 2)
-            {
-                if (false == classGenType.TryGetAttributeValue_CtorArgs(1, out const_TypeToken))
-                {
-                    const_TypeToken = classGenType.GetAttributeValue_NamedArgs(nameof(MonoCollectorSettingsAttribute.Const_TypeToken), const_TypeToken);
-                }
-                if (const_TypeToken == default)
-                {
-                    throw new MonoCollectorGeneratorV2Exception($"NOT FOUND {namedTypeSymbol.ToDisplayString()}=>{nameof(MonoCollectorSettingsAttribute)}.{nameof(MonoCollectorSettingsAttribute.Const_TypeToken)}");
-                }
+            //var const_TypeToken = 0U;
+            //if (classGenType.ConstructorArguments.Length == 2)
+            //{
+            //    if (false == classGenType.TryGetAttributeValue_CtorArgs(1, out const_TypeToken))
+            //    {
+            //        const_TypeToken = classGenType.GetAttributeValue_NamedArgs(nameof(MonoCollectorSettingsAttribute.Const_TypeToken), const_TypeToken);
+            //    }
+            //    if (const_TypeToken == default)
+            //    {
+            //        throw new MonoCollectorGeneratorV2Exception($"NOT FOUND {namedTypeSymbol.ToDisplayString()}=>{nameof(MonoCollectorSettingsAttribute)}.{nameof(MonoCollectorSettingsAttribute.Const_TypeToken)}");
+            //    }
 
-                utf8_ClassName = utf8_Namespace = Array.Empty<byte>().ArrayDisplay();
+            //    utf8_ClassName = utf8_Namespace = Array.Empty<byte>().ArrayDisplay();
 
 
-            }
-            else if (classGenType.ConstructorArguments.Length == 3)
+            //}
+            //else
+            if (classGenType.ConstructorArguments.Length == 3)
             {
                 if (false == classGenType.TryGetAttributeValue_CtorArgs<ImmutableArray<TypedConstant>>(1, out var arr_Namespace))
                 {
@@ -890,7 +951,7 @@ namespace Maple.MonoGameAssistant.MonoCollectorGeneratorV2
                 Const_ClassName = const_ClassName,
                 Utf8_ClassName = utf8_ClassName,
 
-                Const_TypeToken = const_TypeToken,
+                //        Const_TypeToken = const_TypeToken,
 
                 StaticFieldDatas = staticFieldDatas,
                 PropertyDatas = propertyDatas,
@@ -899,6 +960,151 @@ namespace Maple.MonoGameAssistant.MonoCollectorGeneratorV2
                 InheritViewDatas = inheritViewDatas,
 
                 VTableDatas = ptrVTableDatas,
+            };
+
+        }
+        static MonoCollectorTypeData GetTypeClassSettings_NET9(this INamedTypeSymbol namedTypeSymbol, EnumMonoCollectorTypeVersion ver = EnumMonoCollectorTypeVersion.APP)
+        {
+            var classAtts = namedTypeSymbol.GetAttributes();
+            var classGenType = classAtts.Where(p => p.AttributeClass.ToDisplayString() == typeof(MonoCollectorSettingsAttribute).FullName).FirstOrDefault()
+            ?? throw new MonoCollectorGeneratorV2Exception($"NOT FOUND {namedTypeSymbol.ToDisplayString()}=>{nameof(MonoCollectorSettingsAttribute)}.{nameof(MonoCollectorSettingsAttribute)}");
+
+
+            string const_ImageName = default;
+            string utf8_ImageName = default;
+
+            if (false == classGenType.TryGetAttributeValue_CtorArgs<ImmutableArray<TypedConstant>>(0, out var arr_ImageName))
+            {
+                throw new MonoCollectorGeneratorV2Exception($"NOT FOUND {namedTypeSymbol.ToDisplayString()}=>{nameof(MonoCollectorSettingsAttribute)}.{nameof(MonoCollectorSettingsAttribute.Const_ImageName)}");
+
+            }
+            var buffer_ImageName = arr_ImageName.ReadImmutableArray<byte>().ToArray();
+            utf8_ImageName = buffer_ImageName.ArrayDisplay();
+            const_ImageName = Encoding.UTF8.GetString(buffer_ImageName);
+
+
+            string const_Namespace = default;
+            string utf8_Namespace = default;
+
+            string const_ClassName = default;
+            string utf8_ClassName = default;
+
+            //   var const_TypeToken = 0U;
+            if (classGenType.ConstructorArguments.Length == 3)
+            {
+                if (false == classGenType.TryGetAttributeValue_CtorArgs<ImmutableArray<TypedConstant>>(1, out var arr_Namespace))
+                {
+                    throw new MonoCollectorGeneratorV2Exception($"NOT FOUND {namedTypeSymbol.ToDisplayString()}=>{nameof(MonoCollectorSettingsAttribute)}.{nameof(MonoCollectorSettingsAttribute.Const_Namespace)}");
+
+                }
+                var buffer_Namespace = arr_Namespace.ReadImmutableArray<byte>().ToArray();
+                utf8_Namespace = buffer_Namespace.ArrayDisplay();
+                const_Namespace = Encoding.UTF8.GetString(buffer_Namespace);
+
+                if (false == classGenType.TryGetAttributeValue_CtorArgs<ImmutableArray<TypedConstant>>(2, out var arr_ClassName))
+                {
+                    throw new MonoCollectorGeneratorV2Exception($"NOT FOUND {namedTypeSymbol.ToDisplayString()}=>{nameof(MonoCollectorSettingsAttribute)}.{nameof(MonoCollectorSettingsAttribute.Const_ClassName)}");
+                }
+                var buffer_ClassName = arr_ClassName.ReadImmutableArray<byte>().ToArray();
+                utf8_ClassName = buffer_ClassName.ArrayDisplay();
+                const_ClassName = Encoding.UTF8.GetString(buffer_ClassName);
+
+            }
+            else
+            {
+                throw new MonoCollectorGeneratorV2Exception($"Error {namedTypeSymbol.ToDisplayString()}=>{nameof(MonoCollectorSettingsAttribute)}.{nameof(MonoCollectorSettingsAttribute)}");
+            }
+
+
+            var nameSpace = namedTypeSymbol.ContainingNamespace.ToDisplayString();
+            var className = namedTypeSymbol.Name;
+            var classFullName = namedTypeSymbol.ToDisplayString();
+            //  var declaredAccessibility = namedTypeSymbol.DeclaredAccessibility == Accessibility.Public ? MonoCollecotrConvString.DisplayName_public : MonoCollecotrConvString.DisplayName_internal;
+
+            var staticClassName = $"{MonoCollecotrConvString.DisplayName_StaticHeader}{className}";
+            var refClassName = $"{MonoCollecotrConvString.DisplayName_RefHeader}{className}";
+            var ptrClassName = $"{MonoCollecotrConvString.DisplayName_PtrHeader}{className}";
+            var vtableClassName = $"{MonoCollecotrConvString.DisplayName_VTableHeader}{className}";
+            //Debug.WriteLine($"{nameSpace}.{className}");
+
+
+
+            //var staticFieldDatas = namedTypeSymbol.EnumCurrClassStaticFieldDatas(staticClassName).ToArray();
+            //var propertyDatas = namedTypeSymbol.EnumCurrClassPropertyDatas(refClassName).ToArray();
+            //var ptrClass = namedTypeSymbol.FindCurrClassNestedPtrClass(ptrClassName);
+            //var ptrClassFullName = ptrClass is null ? $"{classFullName}.{ptrClassName}" : ptrClass.ToDisplayString();
+
+
+            //var staticFieldDatas = new List<MonoCollectorStaticPropertyData>();
+            //var propertyDatas = new List<MonoCollectorPropertyData>();
+            //var ptrVTableDatas = new List<MonoCollectorPtrVTableData>();
+            //INamedTypeSymbol ptrClass = default;
+
+            //foreach (var member in namedTypeSymbol.GetMembers())
+            //{
+            //    if (member is INamedTypeSymbol typeSymbol && typeSymbol.IsValueType)
+            //    {
+            //        staticFieldDatas.AddRange(EnumCurrClassStaticFieldDatas(typeSymbol, staticClassName));
+            //        EnumCurrClassRefClassDatas(typeSymbol, refClassName, (prop) =>
+            //        {
+            //            propertyDatas.Add(prop);
+            //        }, (vtable) =>
+            //        {
+            //            ptrVTableDatas.Add(vtable);
+            //        });
+            //        if (ptrClass is null)
+            //        {
+            //            ptrClass = FindCurrClassNestedPtrClass(typeSymbol, ptrClassName);
+            //        }
+            //    }
+            //}
+
+            //EnumMonoCollectorFieldDatas(classAtts, s =>
+            //{
+            //    staticFieldDatas.Add(s);
+            //}, p => propertyDatas.Add(p));
+
+
+            //var ptrClassFullName = ptrClass is null ? $"{classFullName}.{ptrClassName}" : ptrClass.ToDisplayString();
+            //var methodDatas = namedTypeSymbol.EnumCurrClassMethodDatas(ptrClassFullName).ToArray();
+            ////var baseClassesInfo = .ToArray();
+            ////var baseMethodDatas = baseClassesInfo.Where(p => p.onlyAsRef == false).Select(p => p.baseClassSymbol).EnumBaseClassMethodDatas(ptrClassName);
+            ////var allMethodDatas = SortMonoCollectorMethodDatas(methodDatas, baseMethodDatas);
+
+
+            //var inheritViewDatas = namedTypeSymbol.EnumCurrClassInheritViewDatas(namedTypeSymbol.GetBaseClasses()).ToArray();
+
+            //add search files
+
+            return new MonoCollectorTypeData()
+            {
+                Ver = ver,
+
+                NameSpace = nameSpace,
+                ClassName = className,
+                ClassFullName = classFullName,
+                PtrClassName = ptrClassName,
+                RefClassName = refClassName,
+                VTableClassName = vtableClassName,
+
+                Const_ImageName = const_ImageName,
+                Utf8_ImageName = utf8_ImageName,
+
+                Const_Namespace = const_Namespace,
+                Utf8_Namespace = utf8_Namespace,
+
+                Const_ClassName = const_ClassName,
+                Utf8_ClassName = utf8_ClassName,
+
+                //       Const_TypeToken = const_TypeToken,
+
+                //        StaticFieldDatas = staticFieldDatas,
+                //        PropertyDatas = propertyDatas,
+                //         MethodDatas = methodDatas,
+
+                //         InheritViewDatas = inheritViewDatas,
+
+                //          VTableDatas = ptrVTableDatas,
             };
 
         }
@@ -936,7 +1142,7 @@ namespace Maple.MonoGameAssistant.MonoCollectorGeneratorV2
                 {
                     if (isStatic)
                     {
-                        staticFunc(new MonoCollectorStaticPropertyData() 
+                        staticFunc(new MonoCollectorStaticPropertyData()
                         {
                             ReturnType = retType,
                             PropertyName = propName,
@@ -1165,9 +1371,14 @@ namespace Maple.MonoGameAssistant.MonoCollectorGeneratorV2
 
             if (suppressGCTransition)
             {
-                yield return nameof(Maple.MonoGameAssistant.MonoCollectorDataV2.CallConvSuppressGCTransition).Substring(MonoCollecotrConvString.DisplayName_CallConv.Length);
+                yield return nameof(CallConvSuppressGCTransition).Substring(MonoCollecotrConvString.DisplayName_CallConv.Length);
             }
         }
+        class CallConvSuppressGCTransition
+        {
+
+        }
+
         static string GetCallConvs(this AttributeData attributeData)
         {
             var suppressGCTransition = attributeData.GetAttributeValue_NamedArgs(nameof(MonoCollectorCallConvsAttribute.SuppressGCTransition), true);

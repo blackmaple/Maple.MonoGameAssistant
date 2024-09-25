@@ -32,75 +32,76 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
 
 
 
-        public readonly unsafe partial struct Const_RenderTexture
-        {
+        //public readonly unsafe partial struct Const_RenderTexture
+        //{
 
 
 
-            /// <summary>
-            /// class System.String objectIsNullMessage "The Object you want to instantiate is null."
-            /// </summary>
-            /// public nint OBJECT_IS_NULL_MESSAGE=>"The Object you want to instantiate is null.";
+        //    /// <summary>
+        //    /// class System.String objectIsNullMessage "The Object you want to instantiate is null."
+        //    /// </summary>
+        //    /// public nint OBJECT_IS_NULL_MESSAGE=>"The Object you want to instantiate is null.";
 
 
-            /// <summary>
-            /// class System.String cloneDestroyedMessage "Instantiate failed because the clone was destroyed during creati"
-            /// </summary>
-            /// public nint CLONE_DESTROYED_MESSAGE=>"Instantiate failed because the clone was destroyed during creati";
+        //    /// <summary>
+        //    /// class System.String cloneDestroyedMessage "Instantiate failed because the clone was destroyed during creati"
+        //    /// </summary>
+        //    /// public nint CLONE_DESTROYED_MESSAGE=>"Instantiate failed because the clone was destroyed during creati";
 
-        }
-
-
-        [StructLayout(LayoutKind.Explicit)]
-        public readonly unsafe partial struct Static_RenderTexture
-        {
+        //}
 
 
-
-            /// <summary>
-            /// struct 0x0 System.Int32 GenerateAllMips
-            /// </summary>
-            [FieldOffset(0x0)]
-            public readonly System.Int32 GenerateAllMips;
-
-
-            /// <summary>
-            /// struct 0x0 System.Int32 OffsetOfInstanceIDInCPlusPlusObject
-            /// </summary>
-            [FieldOffset(0x0)]
-            public readonly System.Int32 OffsetOfInstanceIDInCPlusPlusObject;
-
-        }
-
-
-        [StructLayout(LayoutKind.Explicit)]
-        public readonly unsafe partial struct Ref_RenderTexture
-        {
-
-
-            /// <summary>
-            /// REF_MONO_OBJECT._vtable
-            /// </summary>
-            [MarshalAs(UnmanagedType.SysInt)]
-            [FieldOffset(0)]
-            public readonly nint _vtable;
-
-            /// <summary>
-            /// REF_MONO_OBJECT._synchronisation
-            /// </summary>
-            [MarshalAs(UnmanagedType.SysInt)]
-            [FieldOffset(8)]
-            public readonly nint _synchronisation;
+        //[StructLayout(LayoutKind.Explicit)]
+        //public readonly unsafe partial struct Static_RenderTexture
+        //{
 
 
 
-            /// <summary>
-            /// struct 0x10 System.IntPtr m_CachedPtr
-            /// </summary>
-            [FieldOffset(0x10)]
-            public readonly System.IntPtr m_CachedPtr;
+        //    /// <summary>
+        //    /// struct 0x0 System.Int32 GenerateAllMips
+        //    /// </summary>
+        //    [FieldOffset(0x0)]
+        //    public readonly System.Int32 GenerateAllMips;
 
-        }
+
+        //    /// <summary>
+        //    /// struct 0x0 System.Int32 OffsetOfInstanceIDInCPlusPlusObject
+        //    /// </summary>
+        //    [FieldOffset(0x0)]
+        //    public readonly System.Int32 OffsetOfInstanceIDInCPlusPlusObject;
+
+        //}
+
+
+        //[StructLayout(LayoutKind.Explicit)]
+        //public readonly unsafe partial struct Ref_RenderTexture
+        //{
+
+
+        //    /// <summary>
+        //    /// REF_MONO_OBJECT._vtable
+        //    /// </summary>
+        //    [MarshalAs(UnmanagedType.SysInt)]
+        //    [FieldOffset(0)]
+        //    public readonly nint _vtable;
+
+        //    /// <summary>
+        //    /// REF_MONO_OBJECT._synchronisation
+        //    /// </summary>
+        //    [MarshalAs(UnmanagedType.SysInt)]
+        //    [FieldOffset(8)]
+        //    public readonly nint _synchronisation;
+
+
+
+        //    /// <summary>
+        //    /// struct 0x10 System.IntPtr m_CachedPtr
+        //    /// </summary>
+        //    [FieldOffset(0x10)]
+        //    public readonly System.IntPtr m_CachedPtr;
+
+        //}
+
         [StructLayout(LayoutKind.Sequential)]
         public readonly unsafe partial struct Ptr_RenderTexture(nint ptr)
         {
@@ -118,11 +119,11 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
             [System.Runtime.CompilerServices.MethodImplAttribute(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
             public bool Valid() => _ptr != nint.Zero;
 
-            [System.Runtime.CompilerServices.MethodImplAttribute(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-            public ref Ref_RenderTexture AsRef()
-            {
-                return ref Unsafe.AsRef<Ref_RenderTexture>(_ptr.ToPointer());
-            }
+            //[System.Runtime.CompilerServices.MethodImplAttribute(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+            //public ref Ref_RenderTexture AsRef()
+            //{
+            //    return ref Unsafe.AsRef<Ref_RenderTexture>(_ptr.ToPointer());
+            //}
         }
 
     }
@@ -283,7 +284,7 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
         /// static  UnityEngine.RenderTexture get_active()
         /// </summary>
         /// <returns>class UnityEngine.RenderTexture</returns>
-        [MonoGameAssistant.MonoCollectorDataV2.MonoCollectorMethod(Name_Func_GET_ACTIVE)]
+        [MonoGameAssistant.MonoCollectorDataV2.MonoCollectorMethod(Name_Func_GET_ACTIVE, CallConvs = [typeof(CallConvCdecl)])]
         static extern nint GET_ACTIVE();
 
 
@@ -972,7 +973,7 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
         /// </summary>
         /// <param name="temp">class UnityEngine.RenderTexture</param>
         /// <returns>struct System.Void</returns>
-        [MonoGameAssistant.MonoCollectorDataV2.MonoCollectorMethod(Name_Func_RELEASE_TEMPORARY)]
+        [MonoGameAssistant.MonoCollectorDataV2.MonoCollectorMethod(Name_Func_RELEASE_TEMPORARY, CallConvs = [typeof(CallConvCdecl)])]
         static extern void RELEASE_TEMPORARY(nint temp);
 
 
@@ -999,7 +1000,7 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
         /// </summary>
         /// <param name="value">class UnityEngine.RenderTexture</param>
         /// <returns>struct System.Void</returns>
-        [MonoGameAssistant.MonoCollectorDataV2.MonoCollectorMethod(Name_Func_SET_ACTIVE)]
+        [MonoGameAssistant.MonoCollectorDataV2.MonoCollectorMethod(Name_Func_SET_ACTIVE, CallConvs = [typeof(CallConvCdecl)])]
         static extern void SET_ACTIVE(nint value);
 
 
@@ -1693,7 +1694,7 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
         ///   System.Int32 get_height()
         /// </summary>
         /// <returns>struct System.Int32</returns>
-        [MonoGameAssistant.MonoCollectorDataV2.MonoCollectorMethod(Name_Func_GET_HEIGHT)]
+        [MonoGameAssistant.MonoCollectorDataV2.MonoCollectorMethod(Name_Func_GET_HEIGHT, CallConvs = [typeof(CallConvCdecl)])]
         extern System.Int32 GET_HEIGHT_00();
 
 
@@ -1710,7 +1711,7 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
         ///   System.Int32 get_width()
         /// </summary>
         /// <returns>struct System.Int32</returns>
-        [MonoGameAssistant.MonoCollectorDataV2.MonoCollectorMethod(Name_Func_GET_WIDTH)]
+        [MonoGameAssistant.MonoCollectorDataV2.MonoCollectorMethod(Name_Func_GET_WIDTH, CallConvs = [typeof(CallConvCdecl)])]
         extern System.Int32 GET_WIDTH_00();
 
 
@@ -1873,7 +1874,7 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
         /// <param name="format">enum UnityEngine.RenderTextureFormat</param>
         /// <param name="readWrite">enum UnityEngine.RenderTextureReadWrite</param>
         /// <returns>class UnityEngine.RenderTexture</returns>
-        [MonoGameAssistant.MonoCollectorDataV2.MonoCollectorMethod(Name_Func_GET_TEMPORARY, Search = typeof(Search_RenderTexture))]
+        [MonoGameAssistant.MonoCollectorDataV2.MonoCollectorMethod(Name_Func_GET_TEMPORARY, Search = typeof(Search_RenderTexture), CallConvs = [typeof(CallConvCdecl)])]
         static extern RenderTexture.Ptr_RenderTexture GET_TEMPORARY_0A(System.Int32 width, System.Int32 height, System.Int32 depthBuffer, UnityEngine.RenderTextureFormat format, UnityEngine.RenderTextureReadWrite readWrite);
 
 

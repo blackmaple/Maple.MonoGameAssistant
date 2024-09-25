@@ -3,17 +3,25 @@
 namespace Maple.MonoGameAssistant.MonoCollectorDataV2
 {
     /// <summary>
-    /// Class标记/Const_TypeToken暂只支持Mono编译
+    /// Class标记
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
-    public class MonoCollectorSettingsAttribute : Attribute
+
+#if SOURCE_GEN
+    internal
+#else 
+    public
+#endif
+        class MonoCollectorSettingsAttribute : Attribute
     {
         public byte[] Const_ImageName { set; get; }
         public byte[] Const_Namespace { set; get; }
         public byte[] Const_ClassName { set; get; }
+
+        [Obsolete("remove...", true)]
         public uint Const_TypeToken { set; get; }
 
-        [Obsolete("游戏更新导致token变动;不推荐使用")]
+        [Obsolete("游戏更新导致token变动;不推荐使用", true)]
         public MonoCollectorSettingsAttribute(byte[] const_imageName, uint const_TypeToken)
         {
 

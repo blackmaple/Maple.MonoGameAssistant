@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Net;
+﻿using System.Diagnostics.CodeAnalysis;
 using System.Net.NetworkInformation;
 using System.Runtime.CompilerServices;
-using System.Runtime.Versioning;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Maple.MonoGameAssistant.Model
 {
@@ -65,6 +58,8 @@ namespace Maple.MonoGameAssistant.Model
         /// </summary>
         public string? GameResource { set; get; }
 
+
+        public string? QQ { set; get; }
         public bool TryGetRandomPort(out int port)
         {
             port = this.Port;
@@ -214,7 +209,7 @@ namespace Maple.MonoGameAssistant.Model
             return localFullFile.Replace(rootPath, this.BaseAddress).Replace(@"\", @"/");
         }
 
-        public GameSessionInfoDTO GetGameSessionInfo(string? ver =default)
+        public GameSessionInfoDTO GetGameSessionInfo(string? ver = default)
         {
             return new GameSessionInfoDTO()
             {
@@ -222,7 +217,8 @@ namespace Maple.MonoGameAssistant.Model
                 ObjectId = Environment.ProcessId.ToString(),
                 DisplayName = this.GameName,
                 DisplayDesc = string.Empty,
-                ApiVer = ver
+                ApiVer = ver,
+                QQ = this.QQ,
             };
         }
     }

@@ -27,6 +27,10 @@ namespace Maple.MonoGameAssistant.GameDTO
             set => NewValue = value.ToString();
         }
 
-
+        public int ThrowIfRemove(int old)
+        {
+            var add = InventoryCount - old;
+            return add > 0 ? add : GameException.Throw<int>("REMOVE ERROR");
+        }
     }
 }

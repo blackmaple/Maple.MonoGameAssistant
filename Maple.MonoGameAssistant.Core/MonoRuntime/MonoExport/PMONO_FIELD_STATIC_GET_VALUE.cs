@@ -37,6 +37,14 @@ namespace Maple.MonoGameAssistant.Core
         //    return ref Unsafe.As<byte, T_STRUCT>(ref ref_buffer);
         //}
 
+        /// <summary>
+        /// x86 error?
+        /// </summary>
+        /// <typeparam name="T_STRUCT"></typeparam>
+        /// <param name="pMonoVirtualTable"></param>
+        /// <param name="pMonoField"></param>
+        /// <returns></returns>
+        [Obsolete("Call x86 monoapi stackalloc error", true)]
         [SkipLocalsInit]
         public readonly T_STRUCT Invoke<T_STRUCT>(PMonoVirtualTable pMonoVirtualTable, PMonoField pMonoField)
             where T_STRUCT : struct
@@ -51,6 +59,22 @@ namespace Maple.MonoGameAssistant.Core
             return Unsafe.As<byte, T_STRUCT>(ref ref_buffer);
         }
 
+        public readonly T_STRUCT Invoke2<T_STRUCT>(PMonoVirtualTable pMonoVirtualTable, PMonoField pMonoField)
+            where T_STRUCT : struct
+        {
+            var size = Unsafe.SizeOf<T_STRUCT>();
+            using var memoryOwner = MemoryPool<byte>.Shared.Rent(size);
+            var buffer = memoryOwner.Memory.Span;
+            ref var ref_buffer = ref MemoryMarshal.GetReference(buffer);
+            fixed (void* pBuffer = &ref_buffer)
+            {
+                Invoke(pMonoVirtualTable, pMonoField, pBuffer);
+            }
+            return Unsafe.As<byte, T_STRUCT>(ref ref_buffer);
+
+        }
+
+
         public readonly void Invoke_Buffer(PMonoVirtualTable pMonoVirtualTable, PMonoField pMonoField, Span<byte> buffer)
         {
             ref var ref_buffer = ref MemoryMarshal.GetReference(buffer);
@@ -59,7 +83,7 @@ namespace Maple.MonoGameAssistant.Core
             {
                 Invoke(pMonoVirtualTable, pMonoField, pBuffer);
             }
-             
+
         }
     }
 

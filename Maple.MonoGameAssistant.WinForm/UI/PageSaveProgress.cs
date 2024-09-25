@@ -18,9 +18,12 @@ namespace Maple.MonoGameAssistant.WinForm.UI
 {
     public partial class PageSaveProgress : DevExpress.XtraEditors.XtraUserControl
     {
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public required GameCodeContext GameCodeContext { set; get; }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public required ViewMainForm ViewMainForm { set; get; }
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public required UIService UIService { set; get; }
         //GameContextFactory GameContextFactory => UIService.GameContextFactory;
 
@@ -159,6 +162,7 @@ namespace Maple.MonoGameAssistant.WinForm.UI
 
         #endregion
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public required string SelectedPath { set; get; }
 
 

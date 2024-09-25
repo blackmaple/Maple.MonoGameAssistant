@@ -1,6 +1,6 @@
 ﻿namespace Maple.MonoGameAssistant.MonoCollectorGeneratorV2
 {
-    public class MonoCollectorInheritViewData
+    internal class MonoCollectorInheritViewData
     {
         public string DerivedClassName { set; get; }
         public string DerivedPtrClassFullName { set; get; }

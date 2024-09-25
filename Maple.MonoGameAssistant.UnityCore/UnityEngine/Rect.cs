@@ -15,7 +15,7 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
     /// [System.IEquatable<UnityEngine.Rect>]=>[System.IFormattable]
     /// </summary>
     //[Maple.MonoGameAssistant.MonoCollectorDataV2.MonoCollectorSettingsAttribute([85, 110, 105, 116, 121, 69, 110, 103, 105, 110, 101, 46, 67, 111, 114, 101, 77, 111, 100, 117, 108, 101, 46, 100, 108, 108], 0x02000072U)]
-    [Maple.MonoGameAssistant.MonoCollectorDataV2.MonoCollectorSettingsAttribute([85, 110, 105, 116, 121, 69, 110, 103, 105, 110, 101, 46, 67, 111, 114, 101, 77, 111, 100, 117, 108, 101, 46, 100, 108, 108], [85, 110, 105, 116, 121, 69, 110, 103, 105, 110, 101], [82, 101, 99, 116])]
+    //[Maple.MonoGameAssistant.MonoCollectorDataV2.MonoCollectorSettingsAttribute([85, 110, 105, 116, 121, 69, 110, 103, 105, 110, 101, 46, 67, 111, 114, 101, 77, 111, 100, 117, 108, 101, 46, 100, 108, 108], [85, 110, 105, 116, 121, 69, 110, 103, 105, 110, 101], [82, 101, 99, 116])]
     public partial class Rect
     {
         //public const string Const_ImageName = "UnityEngine.CoreModule.dll";
@@ -36,7 +36,7 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
 
 
 
-        [StructLayout(LayoutKind.Explicit)]
+        [StructLayout(LayoutKind.Sequential)]
         public unsafe partial struct Ref_Rect
         {
 
@@ -47,28 +47,32 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
             /// <summary>
             /// struct 0x10 System.Single m_XMin
             /// </summary>
-            [FieldOffset(0x0)]
+            //[FieldOffset(0x0)]
+            [MarshalAs( UnmanagedType.R4)]
             public System.Single m_XMin;
 
 
             /// <summary>
             /// struct 0x14 System.Single m_YMin
             /// </summary>
-            [FieldOffset(0x4)]
+            //[FieldOffset(0x4)]
+            [MarshalAs(UnmanagedType.R4)]
             public System.Single m_YMin;
 
 
             /// <summary>
             /// struct 0x18 System.Single m_Width
             /// </summary>
-            [FieldOffset(0x8)]
+            // [FieldOffset(0x8)]
+            [MarshalAs(UnmanagedType.R4)]
             public System.Single m_Width;
 
 
             /// <summary>
             /// struct 0x1C System.Single m_Height
             /// </summary>
-            [FieldOffset(0xC)]
+            //[FieldOffset(0xC)]
+            [MarshalAs(UnmanagedType.R4)]
             public System.Single m_Height;
 
         }

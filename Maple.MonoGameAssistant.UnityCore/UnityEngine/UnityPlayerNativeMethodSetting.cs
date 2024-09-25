@@ -1,4 +1,5 @@
 ﻿using Maple.MonoGameAssistant.Core;
+using System.Text;
 using static Maple.MonoGameAssistant.UnityCore.UnityEngine.Texture2D;
 
 namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
@@ -10,7 +11,8 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
         /// </summary>
         readonly unsafe partial struct Ptr_Func_ENCODE_TO_PNG(nint ptr)
         {
-            readonly delegate* unmanaged[SuppressGCTransition]<Maple.MonoGameAssistant.UnityCore.UnityEngine.Texture2D.Ptr_Texture2D, Maple.MonoGameAssistant.Core.PMonoArray<byte>> _func = (delegate* unmanaged[SuppressGCTransition]<Maple.MonoGameAssistant.UnityCore.UnityEngine.Texture2D.Ptr_Texture2D, Maple.MonoGameAssistant.Core.PMonoArray<byte>>)ptr;
+            readonly delegate* unmanaged[Cdecl, SuppressGCTransition]<Maple.MonoGameAssistant.UnityCore.UnityEngine.Texture2D.Ptr_Texture2D, Maple.MonoGameAssistant.Core.PMonoArray<byte>> _func
+                = (delegate* unmanaged[Cdecl, SuppressGCTransition]<Maple.MonoGameAssistant.UnityCore.UnityEngine.Texture2D.Ptr_Texture2D, Maple.MonoGameAssistant.Core.PMonoArray<byte>>)ptr;
 
             public static implicit operator Ptr_Func_ENCODE_TO_PNG(nint ptr) => new(ptr);
 
@@ -34,7 +36,7 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
         /// </summary>
         readonly unsafe partial struct Ptr_Func_BLIT2(nint ptr)
         {
-            readonly delegate* unmanaged[SuppressGCTransition]<nint, nint, void> _func = (delegate* unmanaged[SuppressGCTransition]<nint, nint, void>)ptr;
+            readonly delegate* unmanaged[Cdecl, SuppressGCTransition]<nint, nint, void> _func = (delegate* unmanaged[Cdecl, SuppressGCTransition]<nint, nint, void>)ptr;
 
             public static implicit operator Ptr_Func_BLIT2(nint ptr) => new(ptr);
 
@@ -60,7 +62,8 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
         /// <param name="ptr"></param>
         readonly unsafe partial struct Ptr_Func_GET_RECT_INJECTED(nint ptr)
         {
-            readonly delegate* unmanaged[SuppressGCTransition]<Maple.MonoGameAssistant.UnityCore.UnityEngine.Sprite.Ptr_Sprite, out Maple.MonoGameAssistant.UnityCore.UnityEngine.Rect.Ref_Rect, void> _func = (delegate* unmanaged[SuppressGCTransition]<Maple.MonoGameAssistant.UnityCore.UnityEngine.Sprite.Ptr_Sprite, out Maple.MonoGameAssistant.UnityCore.UnityEngine.Rect.Ref_Rect, void>)ptr;
+            readonly delegate* unmanaged[Cdecl, SuppressGCTransition]<Maple.MonoGameAssistant.UnityCore.UnityEngine.Sprite.Ptr_Sprite, out Maple.MonoGameAssistant.UnityCore.UnityEngine.Rect.Ref_Rect, void> _func
+                = (delegate* unmanaged[Cdecl, SuppressGCTransition]<Maple.MonoGameAssistant.UnityCore.UnityEngine.Sprite.Ptr_Sprite, out Maple.MonoGameAssistant.UnityCore.UnityEngine.Rect.Ref_Rect, void>)ptr;
 
             public static implicit operator Ptr_Func_GET_RECT_INJECTED(nint ptr) => new(ptr);
 
@@ -80,7 +83,8 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
 
         readonly unsafe partial struct Ptr_Func_GET_TEXTURE_RECT_INJECTED(nint ptr)
         {
-            readonly delegate* unmanaged[SuppressGCTransition]<Maple.MonoGameAssistant.UnityCore.UnityEngine.Sprite.Ptr_Sprite, out Maple.MonoGameAssistant.UnityCore.UnityEngine.Rect.Ref_Rect, void> _func = (delegate* unmanaged[SuppressGCTransition]<Maple.MonoGameAssistant.UnityCore.UnityEngine.Sprite.Ptr_Sprite, out Maple.MonoGameAssistant.UnityCore.UnityEngine.Rect.Ref_Rect, void>)ptr;
+            readonly delegate* unmanaged[Cdecl, SuppressGCTransition]<Maple.MonoGameAssistant.UnityCore.UnityEngine.Sprite.Ptr_Sprite, out Maple.MonoGameAssistant.UnityCore.UnityEngine.Rect.Ref_Rect, void> _func
+                = (delegate* unmanaged[Cdecl, SuppressGCTransition]<Maple.MonoGameAssistant.UnityCore.UnityEngine.Sprite.Ptr_Sprite, out Maple.MonoGameAssistant.UnityCore.UnityEngine.Rect.Ref_Rect, void>)ptr;
 
             public static implicit operator Ptr_Func_GET_TEXTURE_RECT_INJECTED(nint ptr) => new(ptr);
 
@@ -104,6 +108,14 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
             Func_ENCODE_TO_PNG = pUnityPlayer + offset_encode_to_png;
             Func_BLIT2 = pUnityPlayer + offset_blit2;
         }
+        public void LoadNativeMethod_MONO(in UnityNativeMethodOffset nativeMethodOffset)
+        {
+            var pUnityPlayer = MonoCollectorMember.GetModuleBaseAddress("UnityPlayer.dll");
+            Func_ENCODE_TO_PNG = pUnityPlayer + nativeMethodOffset.Func_ENCODE_TO_PNG;
+            Func_BLIT2 = pUnityPlayer + nativeMethodOffset.Func_BLIT2;
+            Func_GET_RECT_INJECTED = pUnityPlayer + nativeMethodOffset.Func_GET_RECT_INJECTED;
+            Func_GET_TEXTURE_RECT_INJECTED = pUnityPlayer + nativeMethodOffset.Func_GET_TEXTURE_RECT_INJECTED;
+        }
         public void LoadNativeMethod_IL2CPP(MonoRuntimeContext runtimeContext,
             string signature_encode_to_png = "UnityEngine.ImageConversion::EncodeToPNG(UnityEngine.Texture2D)",
             string signature_encode_blit2 = "UnityEngine.Graphics::Blit2(UnityEngine.Texture,UnityEngine.RenderTexture)",
@@ -116,6 +128,28 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
             Func_GET_TEXTURE_RECT_INJECTED = runtimeContext.GetInternalCall<Ptr_Func_GET_TEXTURE_RECT_INJECTED>(signature_get_texture_rect_injected);
 
         }
+
+
+        public string DebugOutput()
+        {
+            StringBuilder sb = new();
+            sb.AppendLine($"Func_ENCODE_TO_PNG:{Func_ENCODE_TO_PNG.ToString()}");
+            sb.AppendLine($"Func_BLIT2:{Func_BLIT2.ToString()}");
+            sb.AppendLine($"Func_GET_RECT_INJECTED:{Func_GET_RECT_INJECTED.ToString()}");
+            sb.AppendLine($"Func_GET_TEXTURE_RECT_INJECTED:{Func_GET_TEXTURE_RECT_INJECTED.ToString()}");
+            return sb.ToString();
+        }
     }
 
+
+    public struct UnityNativeMethodOffset
+    {
+        public int Func_ENCODE_TO_PNG { set; get; }
+        public int Func_BLIT2 { set; get; }
+        public int Func_GET_RECT_INJECTED { set; get; }
+        public int Func_GET_TEXTURE_RECT_INJECTED { set; get; }
+
+
+
+    }
 }

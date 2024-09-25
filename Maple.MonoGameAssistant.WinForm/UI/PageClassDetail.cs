@@ -18,7 +18,9 @@ namespace Maple.MonoGameAssistant.WinForm
 {
     public partial class PageClassDetail : DevExpress.XtraEditors.XtraUserControl
     {
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool LoadServer { set; get; } = true;
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public GameClassInfo? SelectedGameClassInfo { get; set; }
         UIBindingList<GameMethodInfo> BindListMethod { get; } = [];
         UIBindingList<GameParentClassInfo> BindListParentClass { get; } = [];

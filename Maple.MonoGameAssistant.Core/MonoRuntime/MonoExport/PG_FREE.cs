@@ -27,18 +27,14 @@ namespace Maple.MonoGameAssistant.Core
         public PG_FREE(nint ptr) : this((delegate* unmanaged[Cdecl, SuppressGCTransition]<PMonoObject, void>)ptr) { }
         public static bool TryCreate(nint hModule, string name, out PG_FREE func)
         {
-            var address = WinApi.GetProcAddress(hModule, common);
-            if (address != nint.Zero)
+
+            if (NativeLibrary.TryGetExport(hModule, common, out var address) 
+                || NativeLibrary.TryGetExport(hModule, name, out address))
             {
                 func = new(address);
                 return true;
             }
-            address = WinApi.GetProcAddress(hModule, name);
-            if (address != nint.Zero)
-            {
-                func = new(address);
-                return true;
-            }
+            
             func = new(&Free);
             return true;
 

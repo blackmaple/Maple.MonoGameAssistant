@@ -3,7 +3,12 @@ using System.Runtime.CompilerServices;
 
 namespace Maple.MonoGameAssistant.MonoCollectorDataV2
 {
-    public partial class MonoCollecotrConvString
+#if SOURCE_GEN
+    internal
+#else 
+    public
+#endif
+        partial class MonoCollecotrConvString
     {
 
         //public static int DisplayName_ValueTypeOffsetFix { get; } = IntPtr.Size + IntPtr.Size;
