@@ -4,48 +4,68 @@
     <BuildType Name="Local" />
     <BuildType Name="Release" />
   </Configurations>
-  <Folder Name="/UI/MonoDataUI/">
-    <Project Path="Maple.MonoGameAssistant.UILogic\Maple.MonoGameAssistant.UILogic.csproj" />
-    <Project Path="Maple.MonoGameAssistant.WinForm\Maple.MonoGameAssistant.WinForm.csproj" />
-  </Folder>
-  <Folder Name="/UI/GameWebAPI/">
-    <Project Path="Maple.GameContext\Maple.GameContext.csproj">
-      <Configuration Solution="Local|*" Project="Debug|*" />
-    </Project>
-    <Project Path="Maple.MonoGameAssistant.WebApi\Maple.MonoGameAssistant.WebApi.csproj" />
-  </Folder>
-  <Folder Name="/UI/GameUI/">
-    <Project Path="Maple.MonoGameAssistant.GameCore\Maple.MonoGameAssistant.GameCore.csproj" />
-    <Project Path="Maple.MonoGameAssistant.GameDTO\Maple.MonoGameAssistant.GameDTO.csproj" />
-    <Project Path="Maple.MonoGameAssistant.GameShared\Maple.MonoGameAssistant.GameShared.csproj">
-      <Configuration Solution="Local|*" Project="Debug|*" />
-    </Project>
-    <Project Path="Maple.MonoGameAssistant.GameSSR\Maple.MonoGameAssistant.GameSSR.csproj">
-      <Configuration Solution="Local|*" Project="Debug|*" />
-    </Project>
-    <Project Path="Maple.MonoGameAssistant.GameWASM\Maple.MonoGameAssistant.GameWASM.csproj">
-      <Configuration Solution="Local|*" Project="Debug|*" />
-    </Project>
-  </Folder>
-  <Folder Name="/UI/" />
-  <Folder Name="/MonoCore/">
-    <Project Path="Maple.MonoGameAssistant.Core\Maple.MonoGameAssistant.Core.csproj" />
-    <Project Path="Maple.MonoGameAssistant.Model\Maple.MonoGameAssistant.Model.csproj" />
-    <Project Path="Maple.MonoGameAssistant.UnityCore\Maple.MonoGameAssistant.UnityCore.csproj" />
-  </Folder>
-  <Folder Name="/Generator/DllHijackGenerator/">
-    <Project Path="Maple.MonoGameAssistant.DllExportTmp\Maple.MonoGameAssistant.DllExportTmp.csproj" />
-    <Project Path="Maple.MonoGameAssistant.DllHijackData\Maple.MonoGameAssistant.DllHijackData.csproj" />
-    <Project Path="Maple.MonoGameAssistant.DllHijackGenerator\Maple.MonoGameAssistant.DllHijackGenerator.csproj" />
+  <Folder Name="/Common/">
+    <Project Path="Maple.MonoGameAssistant.Common\Maple.MonoGameAssistant.Common.csproj" />
+    <Project Path="Maple.MonoGameAssistant.Logger\Maple.MonoGameAssistant.Logger.csproj" />
   </Folder>
   <Folder Name="/Generator/">
     <Project Path="Maple.MonoGameAssistant.MonoCollectorDataV2\Maple.MonoGameAssistant.MonoCollectorDataV2.csproj" />
     <Project Path="Maple.MonoGameAssistant.MonoCollectorGeneratorV2\Maple.MonoGameAssistant.MonoCollectorGeneratorV2.csproj" />
     <Project Path="Maple.MonoGameAssistant.MonoCollector\Maple.MonoGameAssistant.MonoCollector.csproj" />
   </Folder>
-  <Folder Name="/Common/">
-    <Project Path="Maple.MonoGameAssistant.Common\Maple.MonoGameAssistant.Common.csproj" />
-    <Project Path="Maple.MonoGameAssistant.HotKey\Maple.MonoGameAssistant.HotKey.csproj" />
-    <Project Path="Maple.MonoGameAssistant.Logger\Maple.MonoGameAssistant.Logger.csproj" />
+  <Folder Name="/Generator/DllHijackGenerator/">
+    <Project Path="Maple.MonoGameAssistant.DllExportTmp\Maple.MonoGameAssistant.DllExportTmp.csproj" />
+    <Project Path="Maple.MonoGameAssistant.DllHijackData\Maple.MonoGameAssistant.DllHijackData.csproj" />
+    <Project Path="Maple.MonoGameAssistant.DllHijackGenerator\Maple.MonoGameAssistant.DllHijackGenerator.csproj" />
   </Folder>
+  <Folder Name="/MonoCore/">
+    <Project Path="Maple.MonoGameAssistant.Core\Maple.MonoGameAssistant.Core.csproj" />
+    <Project Path="Maple.MonoGameAssistant.Model\Maple.MonoGameAssistant.Model.csproj" />
+    <Project Path="Maple.MonoGameAssistant.UnityCore\Maple.MonoGameAssistant.UnityCore.csproj" />
+  </Folder>
+  <Folder Name="/UI/" />
+  <Folder Name="/UI/GameUI/">
+    <Project Path="Maple.MonoGameAssistant.GameCore\Maple.MonoGameAssistant.GameCore.csproj" />
+    <Project Path="Maple.MonoGameAssistant.GameDTO\Maple.MonoGameAssistant.GameDTO.csproj" />
+    <Project Path="Maple.MonoGameAssistant.GameShared\Maple.MonoGameAssistant.GameShared.csproj">
+      <BuildType Solution="Local|*" Project="Debug" />
+    </Project>
+    <Project Path="Maple.MonoGameAssistant.GameSSR\Maple.MonoGameAssistant.GameSSR.csproj">
+      <BuildType Solution="Local|*" Project="Debug" />
+    </Project>
+    <Project Path="Maple.MonoGameAssistant.GameWASM\Maple.MonoGameAssistant.GameWASM.csproj">
+      <BuildType Solution="Local|*" Project="Debug" />
+    </Project>
+  </Folder>
+  <Folder Name="/UI/GameWebAPI/">
+    <Project Path="Maple.MonoGameAssistant.WebApi\Maple.MonoGameAssistant.WebApi.csproj" />
+  </Folder>
+  <Folder Name="/UI/MonoDataUI/">
+    <Project Path="Maple.MonoGameAssistant.MonoDataCollector\Maple.MonoGameAssistant.MonoDataCollector.csproj" Type="C#">
+      <BuildType Solution="Local|*" Project="Debug" />
+    </Project>
+    <Project Path="Maple.MonoGameAssistant.UILogic\Maple.MonoGameAssistant.UILogic.csproj" />
+    <Project Path="Maple.MonoGameAssistant.WinForm\Maple.MonoGameAssistant.WinForm.csproj" />
+  </Folder>
+  <Folder Name="/Windows/">
+    <Project Path="Maple.MonoGameAssistant.GameContext\Maple.MonoGameAssistant.GameContext.csproj" Type="C#">
+      <BuildType Solution="Local|*" Project="Debug" />
+    </Project>
+    <Project Path="Maple.MonoGameAssistant.HookTask\Maple.MonoGameAssistant.HookTask.csproj" Type="C#">
+      <BuildType Solution="Local|*" Project="Debug" />
+    </Project>
+    <Project Path="Maple.MonoGameAssistant.HotKey.Abstractions\Maple.MonoGameAssistant.HotKey.Abstractions.csproj" Type="C#">
+      <BuildType Solution="Local|*" Project="Debug" />
+    </Project>
+    <Project Path="Maple.MonoGameAssistant.HotKey\Maple.MonoGameAssistant.HotKey.csproj" />
+    <Project Path="Maple.MonoGameAssistant.UITask\Maple.MonoGameAssistant.UITask.csproj" Type="C#">
+      <BuildType Solution="Local|*" Project="Debug" />
+    </Project>
+    <Project Path="Maple.MonoGameAssistant.WinApi\Maple.MonoGameAssistant.WinApi.csproj" Type="C#">
+      <BuildType Solution="Local|*" Project="Debug" />
+    </Project>
+  </Folder>
+  <Properties Name="Visual Studio">
+    <Property Name="OpenWith" Value="Visual Studio Version 17" />
+  </Properties>
 </Solution>
