@@ -1,5 +1,22 @@
 ﻿@page "/"
 @page "/index"
-<UIMainTabs></UIMainTabs>
+@if (Status == EnumGameServiceStatus.OK)
+{
+    <UIMainTabs/>
+}
+else if (Status == EnumGameServiceStatus.Init)
+{
+    <MSkeletonLoader Class="mx-auto"
+                     Type="card-avatar,paragraph,actions">
+    </MSkeletonLoader>
+}
+else
+{
+    <MButton Block Color="primary" OnClick="()=>LoadServiceDataAsync()">
+        <MIcon>mdi-cached</MIcon>
+        <span>Try</span>
+    </MButton>
+
+}
 
  

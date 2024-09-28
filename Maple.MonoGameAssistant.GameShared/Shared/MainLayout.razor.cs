@@ -9,31 +9,22 @@ namespace Maple.MonoGameAssistant.GameShared.Shared
     public partial class MainLayout
     {
         [NotNull]
+        public StringNumber? NavTab { set; get; } = UIMainTabs.Tab_Default;
+        public EnumGameServiceStatus Status { set; get; } = EnumGameServiceStatus.Init;
+
+        [NotNull]
         [Inject]
         public GameCoreService? Core { set; get; }
-        [NotNull]
-        public StringNumber? NavTab { set; get; } = UIMainTabs.Tab_Default;
-
-
-        public EnumGameServiceStatus Status { set; get; }
-
-        protected override async Task OnInitializedAsync()
-        {
-            await base.OnInitializedAsync();
-            await LoadServiceDataAsync();
-        }
-
-        public async Task LoadServiceDataAsync()
-        {
-            Status = EnumGameServiceStatus.Init;
-            Status = await this.Core.OnInitializedAsync();
-        }
-
         public async Task LoadGameResourceAsync()
         {
             await this.Core.LoadGameResourceAsync();
         }
 
+        public void UppdateNavTabs(EnumGameServiceStatus status)
+        {
+            this.Status = status;
+            this.StateHasChanged();
+        }
 
 
     }

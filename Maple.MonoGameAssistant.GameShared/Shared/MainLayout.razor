@@ -2,7 +2,7 @@
 <PageTitle>@Core.GameName</PageTitle>
 <MApp>
 
-    <MSystemBar App  >
+    <MSystemBar App>
         <MAppBarNavIcon OnClick="()=>LoadGameResourceAsync()">
             <MIcon>mdi-gamepad-variant-outline</MIcon>
         </MAppBarNavIcon>
@@ -15,27 +15,10 @@
 
 
     <MMain>
-        <CascadingValue Value="@NavTab">
+        <CascadingValue Value="@this">
             <MContainer Fluid>
                 <MErrorHandler>
-                    @if (Status == EnumGameServiceStatus.OK)
-                    {
-                        @Body
-                    }
-                    else if (Status == EnumGameServiceStatus.Init)
-                    {
-                        <MSkeletonLoader Class="mx-auto"
-                                         Type="card-avatar,paragraph,actions">
-                        </MSkeletonLoader>
-                    }
-                    else
-                    {
-                        <MButton Block Color="primary" OnClick="()=>LoadServiceDataAsync()">
-                            <MIcon>mdi-cached</MIcon>
-                            <span>Try</span>
-                        </MButton>
-
-                    }
+                    @Body
                 </MErrorHandler>
             </MContainer>
         </CascadingValue>
@@ -44,7 +27,7 @@
     <MFooter Rounded="true">
         @if (Status == EnumGameServiceStatus.OK)
         {
-            <MBottomNavigation @bind-Value="@NavTab" Grow Color="teal" App >
+            <MBottomNavigation @bind-Value="@NavTab" Grow Color="teal" App>
                 <MButton Value="UIMainTabs.Tab_Currency">
                     <span>Currency</span>
                     <MIcon> mdi-currency-twd</MIcon>
@@ -98,7 +81,6 @@
                 </MMenu>
             </MBottomNavigation>
         }
-
     </MFooter>
 </MApp>
 

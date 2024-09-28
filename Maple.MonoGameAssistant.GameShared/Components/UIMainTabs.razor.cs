@@ -1,3 +1,4 @@
+using Maple.MonoGameAssistant.GameShared.Shared;
 using Masa.Blazor;
 using Microsoft.AspNetCore.Components;
 using System.Diagnostics.CodeAnalysis;
@@ -15,10 +16,17 @@ namespace Maple.MonoGameAssistant.GameShared.Components
         public static StringNumber Tab_Quest { get; } = 60;
         public static StringNumber Tab_Skill { get; } = 70;
 
-
         [NotNull]
         [CascadingParameter]
-        public StringNumber? NavTab { set; get; } = 0;
+        public MainLayout? Main { set; get; }
+
+
+        [NotNull]
+        public StringNumber? NavTab
+        {
+            get => Main.NavTab;
+            set => Main.NavTab = value;
+        }
 
     }
 }
