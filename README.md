@@ -33,9 +33,6 @@
       |------------------------------------------------------------|----------------------------------------------------------------|------------|            
       |      Maple.MonoGameAssistant.Common                        | 常用帮助类                                                      |    ✔      |
       |      Maple.MonoGameAssistant.Logger                        | 简单的日志实现                                                   |    ✔      |
-      |      Maple.MonoGameAssistant.DllExportTmp                  | winhttp劫持模板                                                      |    remove*     |
-      |      Maple.MonoGameAssistant.DllHijackData                 | winhttp劫持数据                                                      |    remove*      |
-      |      Maple.MonoGameAssistant.DllHijackGenerator            | winhttp劫持源生成器                                                      |                                                    remove*      |
       |      Maple.MonoGameAssistant.MonoCollector                 | MONOAPI&源生成器所需的公用代码1                                    |    ✔      |
       |      Maple.MonoGameAssistant.MonoCollectorDataV2           | MONOAPI&源生成器所需的公用代码2                                    |    ✔      |
       |      Maple.MonoGameAssistant.MonoCollectorGeneratorV2      | 源生成器-对MONOAPI生产类似元数据转成C#代码                              |    ✔      |
@@ -54,19 +51,42 @@
       |      Maple.MonoGameAssistant.HotKey.Abstractions           | 消息按键通知接口                                                        |   ✔  |
       |      Maple.MonoGameAssistant.UITask                        | Windows-WIN TIMER 在主线程上执行自定义代码                               |   ✔  |
       |      Maple.MonoGameAssistant.WinApi                        | Windows-WIN32API                                                        |   ✔  |
+      |      Maple.MonoGameAssistant.DllProxyStaticLib             | Windows-DllProxy C++的静态库 可以让C# AOT 链接                           |   ✔  | 
 
 
 
-
-    - *备注*
-          -  **`MonoTask` 实现一个TaskScheduler (注意:调用MONOAPI的都需要附加到MONO这个操作) 让函数利用Task调度到一个指定的线程 附加并执行代码后退出附加**
-          -  **`HookTask` 基于HOOK WIN MSG 调度到主线程上执行自定义函数**
-          -  **`UITask`   基于WIN32API SetTimer 调度到主线程上执行自定义函数**
+  - *备注*
+      - **MonoTask 实现一个TaskScheduler (注意:调用MONOAPI的都需要附加到MONO这个操作) 让函数利用Task调度到一个指定的线程 附加并执行代码后退出附加**
+      - **HookTask 基于HOOK WIN MSG 调度到主线程上执行自定义函数**
+      - **UITask 基于WIN32API SetTimer 调度到主线程上执行自定义函数**
 
   - *劫持代替项目*
-      [DLLProxy](https://github.com/blackmaple/DLLProxy)
-      [MelonLoader](https://github.com/LavaGang/MelonLoader)
+      - [DLLProxy](https://github.com/blackmaple/DLLProxy) 
+      - [MelonLoader](https://github.com/LavaGang/MelonLoader)
+      - [Maple.MonoGameAssistant.DllProxyStaticLib](https://github.com/blackmaple/Maple.MonoGameAssistant/tree/main/Maple.MonoGameAssistant.DllProxyStaticLib)
+    
+```xml
+ <ItemGroup>
+      <!--add static lib-->
+      <NativeLibrary Include="Lib\Maple.MonoGameAssistant.DllProxyStaticLib.lib" />
+</ItemGroup>
+```
 
+```C#
+ [UnmanagedCallersOnly(CallConvs = [typeof(CallConvStdcall),typeof(CallConvSuppressGCTransition)], EntryPoint = nameof(DllMain))]
+ [return: MarshalAs(UnmanagedType.Bool)]
+ public static bool DllMain(nint hModule, uint ul_reason_for_call, nint lpReserved)
+ {
+     return InitDllMain(hModule, ul_reason_for_call, lpReserved);
+ }
+
+
+ [UnmanagedCallConv(CallConvs = [typeof(CallConvStdcall), typeof(CallConvSuppressGCTransition)])]
+ [LibraryImport("*")]
+ [return: MarshalAs(UnmanagedType.Bool)]
+ public static partial bool InitDllMain(nint hModule, uint ul_reason_for_call, nint lpReserved);
+```
+    
   - *常用API*
        |  Class                                   |  desc                                                                                            |      code      |
        |  -------------------------------         |  ----------------------------------------------------------------------------------------------  |      ----      |
