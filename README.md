@@ -13,7 +13,7 @@
     -  一个VS2022
     -  一个DotNet9(rc1) SDK 需要安装AOT
     -  Unity编译的X64游戏(MONO&IL2CPP) Demo
-          -  [Bloomtown A Different Story Demo](https://github.com/blackmaple/Maple.Bloomtown)
+          -  [Bloomtown A Different Story](https://github.com/blackmaple/Maple.Bloomtown)
           -  [妖之乡](https://github.com/blackmaple/Maple.Ghostmon)
 
 2.  参考
@@ -67,7 +67,6 @@
     
 ```xml
  <ItemGroup>
-      <!--add static lib-->
       <NativeLibrary Include="Lib\Maple.MonoGameAssistant.DllProxyStaticLib.lib" />
 </ItemGroup>
 ```
