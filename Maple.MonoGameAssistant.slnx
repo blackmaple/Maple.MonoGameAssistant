@@ -1,8 +1,8 @@
 <Solution>
   <Configurations>
-    <BuildType Name="Debug" />
-    <BuildType Name="Local" />
-    <BuildType Name="Release" />
+    <Platform Name="Any CPU" />
+    <Platform Name="x64" />
+    <Platform Name="x86" />
   </Configurations>
   <Folder Name="/Common/">
     <Project Path="Maple.MonoGameAssistant.Common\Maple.MonoGameAssistant.Common.csproj" />
@@ -27,43 +27,26 @@
   <Folder Name="/UI/GameUI/">
     <Project Path="Maple.MonoGameAssistant.GameCore\Maple.MonoGameAssistant.GameCore.csproj" />
     <Project Path="Maple.MonoGameAssistant.GameDTO\Maple.MonoGameAssistant.GameDTO.csproj" />
-    <Project Path="Maple.MonoGameAssistant.GameShared\Maple.MonoGameAssistant.GameShared.csproj">
-      <BuildType Solution="Local|*" Project="Debug" />
-    </Project>
-    <Project Path="Maple.MonoGameAssistant.GameSSR\Maple.MonoGameAssistant.GameSSR.csproj">
-      <BuildType Solution="Local|*" Project="Debug" />
-    </Project>
-    <Project Path="Maple.MonoGameAssistant.GameWASM\Maple.MonoGameAssistant.GameWASM.csproj">
-      <BuildType Solution="Local|*" Project="Debug" />
-    </Project>
+    <Project Path="Maple.MonoGameAssistant.GameShared\Maple.MonoGameAssistant.GameShared.csproj" />
+    <Project Path="Maple.MonoGameAssistant.GameSSR\Maple.MonoGameAssistant.GameSSR.csproj" />
+    <Project Path="Maple.MonoGameAssistant.GameWASM\Maple.MonoGameAssistant.GameWASM.csproj" />
   </Folder>
   <Folder Name="/UI/GameWebAPI/">
     <Project Path="Maple.MonoGameAssistant.WebApi\Maple.MonoGameAssistant.WebApi.csproj" />
   </Folder>
   <Folder Name="/UI/MonoDataUI/">
-    <Project Path="Maple.MonoGameAssistant.MonoDataCollector\Maple.MonoGameAssistant.MonoDataCollector.csproj" Type="C#">
-      <BuildType Solution="Local|*" Project="Debug" />
-    </Project>
+    <Project Path="Maple.MonoGameAssistant.MonoDataCollector\Maple.MonoGameAssistant.MonoDataCollector.csproj" Type="C#" />
     <Project Path="Maple.MonoGameAssistant.UILogic\Maple.MonoGameAssistant.UILogic.csproj" />
     <Project Path="Maple.MonoGameAssistant.WinForm\Maple.MonoGameAssistant.WinForm.csproj" />
   </Folder>
   <Folder Name="/Windows/">
-    <Project Path="Maple.MonoGameAssistant.GameContext\Maple.MonoGameAssistant.GameContext.csproj" Type="C#">
-      <BuildType Solution="Local|*" Project="Debug" />
-    </Project>
-    <Project Path="Maple.MonoGameAssistant.HookTask\Maple.MonoGameAssistant.HookTask.csproj" Type="C#">
-      <BuildType Solution="Local|*" Project="Debug" />
-    </Project>
-    <Project Path="Maple.MonoGameAssistant.HotKey.Abstractions\Maple.MonoGameAssistant.HotKey.Abstractions.csproj" Type="C#">
-      <BuildType Solution="Local|*" Project="Debug" />
-    </Project>
+    <Project Path="Maple.MonoGameAssistant.GameContext\Maple.MonoGameAssistant.GameContext.csproj" Type="C#" />
+    <Project Path="Maple.MonoGameAssistant.HookTask\Maple.MonoGameAssistant.HookTask.csproj" Type="C#" />
+    <Project Path="Maple.MonoGameAssistant.HotKey.Abstractions\Maple.MonoGameAssistant.HotKey.Abstractions.csproj" Type="C#" />
     <Project Path="Maple.MonoGameAssistant.HotKey\Maple.MonoGameAssistant.HotKey.csproj" />
-    <Project Path="Maple.MonoGameAssistant.UITask\Maple.MonoGameAssistant.UITask.csproj" Type="C#">
-      <BuildType Solution="Local|*" Project="Debug" />
-    </Project>
-    <Project Path="Maple.MonoGameAssistant.WinApi\Maple.MonoGameAssistant.WinApi.csproj" Type="C#">
-      <BuildType Solution="Local|*" Project="Debug" />
-    </Project>
+    <Project Path="Maple.MonoGameAssistant.UITask\Maple.MonoGameAssistant.UITask.csproj" Type="C#" />
+    <Project Path="Maple.MonoGameAssistant.WinApi\Maple.MonoGameAssistant.WinApi.csproj" Type="C#" />
+    <Project Path="Maple.MonoGameAssistant.DllProxyStaticLib\Maple.MonoGameAssistant.DllProxyStaticLib.vcxproj" />
   </Folder>
   <Properties Name="Visual Studio">
     <Property Name="OpenWith" Value="Visual Studio Version 17" />
