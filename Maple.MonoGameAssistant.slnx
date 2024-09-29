@@ -13,11 +13,6 @@
     <Project Path="Maple.MonoGameAssistant.MonoCollectorGeneratorV2\Maple.MonoGameAssistant.MonoCollectorGeneratorV2.csproj" />
     <Project Path="Maple.MonoGameAssistant.MonoCollector\Maple.MonoGameAssistant.MonoCollector.csproj" />
   </Folder>
-  <Folder Name="/Generator/DllHijackGenerator/">
-    <Project Path="Maple.MonoGameAssistant.DllExportTmp\Maple.MonoGameAssistant.DllExportTmp.csproj" />
-    <Project Path="Maple.MonoGameAssistant.DllHijackData\Maple.MonoGameAssistant.DllHijackData.csproj" />
-    <Project Path="Maple.MonoGameAssistant.DllHijackGenerator\Maple.MonoGameAssistant.DllHijackGenerator.csproj" />
-  </Folder>
   <Folder Name="/MonoCore/">
     <Project Path="Maple.MonoGameAssistant.Core\Maple.MonoGameAssistant.Core.csproj" />
     <Project Path="Maple.MonoGameAssistant.Model\Maple.MonoGameAssistant.Model.csproj" />
