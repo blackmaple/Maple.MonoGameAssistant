@@ -30,7 +30,9 @@
     <Project Path="Maple.MonoGameAssistant.WebApi\Maple.MonoGameAssistant.WebApi.csproj" />
   </Folder>
   <Folder Name="/UI/MonoDataUI/">
-    <Project Path="Maple.MonoGameAssistant.MonoDataCollector\Maple.MonoGameAssistant.MonoDataCollector.csproj" Type="C#" />
+    <Project Path="Maple.MonoGameAssistant.MonoDataCollector\Maple.MonoGameAssistant.MonoDataCollector.csproj" Type="C#">
+      <BuildDependency Project="Maple.MonoGameAssistant.DllProxyStaticLib\Maple.MonoGameAssistant.DllProxyStaticLib.vcxproj" />
+    </Project>
     <Project Path="Maple.MonoGameAssistant.UILogic\Maple.MonoGameAssistant.UILogic.csproj" />
     <Project Path="Maple.MonoGameAssistant.WinForm\Maple.MonoGameAssistant.WinForm.csproj" />
   </Folder>

@@ -8,7 +8,7 @@ using Maple.MonoGameAssistant.HookTask;
 
 namespace Maple.MonoGameAssistant.MonoDataCollector
 {
-    internal static class MonoDataCollectorExtensions
+    internal static partial class MonoDataCollectorExtensions
     {
         internal static async Task RunWebApiServiceAsync(int millisecondsDelay = 8000)
         {
@@ -42,26 +42,18 @@ namespace Maple.MonoGameAssistant.MonoDataCollector
         /// <param name="ul_reason_for_call"></param>
         /// <param name="lpReserved"></param>
         /// <returns></returns>
-        [UnmanagedCallersOnly(CallConvs = [typeof(CallConvStdcall)], EntryPoint = nameof(DllMain))]
+        [UnmanagedCallersOnly(CallConvs = [typeof(CallConvStdcall), typeof(CallConvSuppressGCTransition)], EntryPoint = nameof(DllMain))]
         [return: MarshalAs(UnmanagedType.Bool)]
-        public static bool DllMain(nint hModule, [MarshalAs(UnmanagedType.U4)] EnumReasonForCall ul_reason_for_call, nint lpReserved)
+        public static bool DllMain(nint hModule, uint ul_reason_for_call, nint lpReserved)
         {
-            switch (ul_reason_for_call)
-            {
-                case EnumReasonForCall.DLL_PROCESS_ATTACH:
-                    {
-                        break;
-                    }
-                case EnumReasonForCall.DLL_THREAD_ATTACH:
-                case EnumReasonForCall.DLL_THREAD_DETACH:
-                case EnumReasonForCall.DLL_PROCESS_DETACH:
-                    {
-                        break;
-                    }
-
-            }
-            return true;
+            return InitDllMain(hModule, ul_reason_for_call, lpReserved);
         }
+
+
+        [UnmanagedCallConv(CallConvs = [typeof(CallConvStdcall), typeof(CallConvSuppressGCTransition)])]
+        [LibraryImport("*")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static partial bool InitDllMain(nint hModule, uint ul_reason_for_call, nint lpReserved);
 
     }
 
