@@ -73,6 +73,29 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
             RenderTexture.Ptr_RenderTexture.RELEASE_TEMPORARY(pRenderTexture);
 
         }
+        private void CopyToTexture2D3(Ptr_Texture2D pSrc, Ptr_Texture2D pDest, in Rect.Ref_Rect ref_Rect)
+        {
+            var texture2D_width = pSrc.GET_WIDTH();
+            var texture2D_height = pSrc.GET_HEIGHT();
+
+            var pRenderTexture = RenderTexture.Ptr_RenderTexture.GET_TEMPORARY_0A(texture2D_width, texture2D_height, 0, RenderTextureFormat.Default, RenderTextureReadWrite.Linear);
+            // Graphics.Ptr_Graphics.BLIT_02(pSrc, pRenderTexture, defMaterial);
+            NativeMethodSetting.BLIT2(pSrc, pRenderTexture);
+
+            var previous = RenderTexture.Ptr_RenderTexture.GET_ACTIVE();
+            RenderTexture.Ptr_RenderTexture.SET_ACTIVE(pRenderTexture);
+
+            var w = (int)ref_Rect.m_Width;
+            var h = (int)ref_Rect.m_Height;
+
+            pDest.CTOR_08(w, h);
+            pDest.READ_PIXELS_01(ref_Rect, 0, 0);
+            pDest.APPLY_02();
+
+            RenderTexture.Ptr_RenderTexture.SET_ACTIVE(previous);
+            RenderTexture.Ptr_RenderTexture.RELEASE_TEMPORARY(pRenderTexture);
+
+        }
 
         public PMonoArray<byte> ReadSprite2Png(Ptr_Sprite pSprite)
         {
@@ -87,7 +110,7 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
             }
             var pDestTexture2D = this.Texture2D.New<Ptr_Texture2D>(false);
             CopyToTexture2D(pSrcTexture2D, pDestTexture2D);
-            return NativeMethodSetting.EncodeToPng(pDestTexture2D);
+            return NativeMethodSetting.Texture2D_ENCODE_TO_PNG(pDestTexture2D);
         }
 
         public PMonoArray<byte> ReadSprite2Png2(Ptr_Sprite pSprite)
@@ -104,9 +127,25 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
             UnityPlayerNativeMethodSetting.GET_TEXTURE_RECT_INJECTED(pSprite, out var ref_Rect);
             var pDestTexture2D = this.Texture2D.New<Ptr_Texture2D>(false);
             CopyToTexture2D2(pSrcTexture2D, pDestTexture2D, ref_Rect);
-            return NativeMethodSetting.EncodeToPng(pDestTexture2D);
+            return NativeMethodSetting.Texture2D_ENCODE_TO_PNG(pDestTexture2D);
         }
 
+        public PMonoArray<byte> ReadSprite2Png3(Ptr_Sprite pSprite)
+        {
+            if (false == pSprite.Valid())
+            {
+                return default;
+            }
+            var pSrcTexture2D = pSprite.GET_TEXTURE();
+            if (false == pSrcTexture2D.Valid())
+            {
+                return default;
+            }
+            UnityPlayerNativeMethodSetting.GET_TEXTURE_RECT_INJECTED(pSprite, out var ref_Rect);
+            var pDestTexture2D = this.Texture2D.New<Ptr_Texture2D>(false);
+            CopyToTexture2D3(pSrcTexture2D, pDestTexture2D, ref_Rect);
+            return NativeMethodSetting.Texture2D_ENCODE_TO_PNG(pDestTexture2D);
+        }
 
         public static UnityEngineContext? LoadUnityContext(MonoRuntimeContext runtimeContext, ILogger logger)
         {
