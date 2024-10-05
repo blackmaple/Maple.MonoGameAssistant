@@ -16,7 +16,7 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
     /// 
     /// </summary>
     //[Maple.MonoGameAssistant.MonoCollectorDataV2.MonoCollectorSettingsAttribute([85, 110, 105, 116, 121, 69, 110, 103, 105, 110, 101, 46, 67, 111, 114, 101, 77, 111, 100, 117, 108, 101, 46, 100, 108, 108], 0x0200014FU)]
-    [Maple.MonoGameAssistant.MonoCollectorDataV2.MonoCollectorSettingsAttribute([85, 110, 105, 116, 121, 69, 110, 103, 105, 110, 101, 46, 67, 111, 114, 101, 77, 111, 100, 117, 108, 101, 46, 100, 108, 108], [85, 110, 105, 116, 121, 69, 110, 103, 105, 110, 101], [83, 112, 114, 105, 116, 101])]
+    //[Maple.MonoGameAssistant.MonoCollectorDataV2.MonoCollectorSettingsAttribute([85, 110, 105, 116, 121, 69, 110, 103, 105, 110, 101, 46, 67, 111, 114, 101, 77, 111, 100, 117, 108, 101, 46, 100, 108, 108], [85, 110, 105, 116, 121, 69, 110, 103, 105, 110, 101], [83, 112, 114, 105, 116, 101])]
     //[Maple.MonoGameAssistant.Core.MonoCollectorSearchField<Ptr_Sprite>("_vtable", "VTable", IsReadOnly = false)]
     //[Maple.MonoGameAssistant.MonoCollectorDataV2.MonoCollectorSearchField(typeof(Ptr_Sprite), "_synchronisation", "Synchronisation", true)]
     public partial class Sprite
@@ -444,7 +444,7 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
         ///   UnityEngine.Texture2D get_texture()
         /// </summary>
         /// <returns>class UnityEngine.Texture2D</returns>
-        [MonoCollectorMethod(Name_Func_GET_TEXTURE,  CallConvs = [typeof(CallConvCdecl)])]
+        [MonoCollectorMethod(Name_Func_GET_TEXTURE, CallConvs = [typeof(CallConvCdecl)])]
         public extern UnityEngine.Texture2D.Ptr_Texture2D GET_TEXTURE();
 
 
@@ -1633,6 +1633,63 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
         /// 
         /// 
         /// }
+
+    }
+
+
+
+    partial class Sprite(Maple.MonoGameAssistant.Core.MonoCollectorContext collectorContext, Maple.MonoGameAssistant.MonoCollector.MonoCollectorClassInfo classInfo) : Maple.MonoGameAssistant.Core.MonoCollectorMember(collectorContext, classInfo)
+    {
+
+        public Maple.MonoGameAssistant.UnityCore.UnityEngine.Sprite.Ptr_Sprite New(bool execDefCtor)
+            => New<Maple.MonoGameAssistant.UnityCore.UnityEngine.Sprite.Ptr_Sprite>(execDefCtor);
+
+        public Maple.MonoGameAssistant.UnityCore.UnityEngine.Sprite.Ptr_Sprite Ctor()
+            => Ctor<Maple.MonoGameAssistant.UnityCore.UnityEngine.Sprite.Ptr_Sprite>();
+
+        public Maple.MonoGameAssistant.UnityCore.UnityEngine.Sprite.Ptr_Sprite IsFrom(Maple.MonoGameAssistant.Core.PMonoObject pMonoObject)
+            => IsFrom<Maple.MonoGameAssistant.UnityCore.UnityEngine.Sprite.Ptr_Sprite>(pMonoObject);
+
+        public Maple.MonoGameAssistant.UnityCore.UnityEngine.Sprite.Ptr_Sprite IsFrom(nint pObj)
+            => IsFrom<Maple.MonoGameAssistant.UnityCore.UnityEngine.Sprite.Ptr_Sprite>(pObj);
+
+
+
+
+        internal readonly unsafe partial struct Ptr_Func_GET_TEXTURE(nint ptr)
+        {
+            readonly delegate* unmanaged[Cdecl, SuppressGCTransition]<Maple.MonoGameAssistant.UnityCore.UnityEngine.Sprite.Ptr_Sprite, Maple.MonoGameAssistant.UnityCore.UnityEngine.Texture2D.Ptr_Texture2D> _func = (delegate* unmanaged[Cdecl, SuppressGCTransition]<Maple.MonoGameAssistant.UnityCore.UnityEngine.Sprite.Ptr_Sprite, Maple.MonoGameAssistant.UnityCore.UnityEngine.Texture2D.Ptr_Texture2D>)ptr;
+
+            public static implicit operator Ptr_Func_GET_TEXTURE(nint ptr) => new(ptr);
+
+            public override string ToString()
+            {
+                return ((nint)((void*)_func)).ToString("X8");
+            }
+
+            [System.Runtime.CompilerServices.MethodImplAttribute(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+            public Maple.MonoGameAssistant.UnityCore.UnityEngine.Texture2D.Ptr_Texture2D Invoke(Maple.MonoGameAssistant.UnityCore.UnityEngine.Sprite.Ptr_Sprite __this__) => _func(__this__);
+        }
+
+        internal static Ptr_Func_GET_TEXTURE Func_GET_TEXTURE;
+
+        readonly unsafe partial struct Ptr_Sprite
+        {
+            [System.Runtime.CompilerServices.MethodImplAttribute(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+            public Maple.MonoGameAssistant.UnityCore.UnityEngine.Texture2D.Ptr_Texture2D GET_TEXTURE() => Func_GET_TEXTURE.Invoke(this);
+        }
+
+
+
+
+        protected sealed override void InitMember()
+        {
+
+            Func_GET_TEXTURE = GetMethodPointer("get_texture");
+
+
+        }
+
 
     }
 }

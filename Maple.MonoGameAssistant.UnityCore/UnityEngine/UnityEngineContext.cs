@@ -8,24 +8,121 @@ using static Maple.MonoGameAssistant.UnityCore.UnityEngine.Texture2D;
 namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
 {
 
-    [MonoCollectorOptions(
-    typeof(MonoCollectorContext),
-    typeof(MonoCollectorMember),
-    typeof(MonoRuntimeContext),
-    typeof(MonoCollectorClassInfo)
-    )]
-    [MonoCollectorType(typeof(Sprite))]
-    [MonoCollectorType(typeof(Texture2D))]
-    [MonoCollectorType(typeof(RenderTexture))]
+    //[MonoCollectorOptions(
+    //typeof(MonoCollectorContext),
+    //typeof(MonoCollectorMember),
+    //typeof(MonoRuntimeContext),
+    //typeof(MonoCollectorClassInfo)
+    //)]
+    //[MonoCollectorType(typeof(Sprite))]
+    //[MonoCollectorType(typeof(Texture2D))]
+    //[MonoCollectorType(typeof(RenderTexture))]
     //[MonoCollectorType(typeof(Graphics))]
     //[MonoCollectorType(typeof(Material))]
 
     //[MonoCollectorTypeVersion(typeof(UnityEngineContext_MONO), EnumMonoCollectorTypeVersion.Ver_MONO)]
     //[MonoCollectorTypeVersion(typeof(UnityEngineContext_IL2CPP), EnumMonoCollectorTypeVersion.Ver_IL2CPP)]
     //[MonoCollectorType(typeof(ImageConversion))]
-    public partial class UnityEngineContext
+    public partial class UnityEngineContext: Maple.MonoGameAssistant.Core.MonoCollectorContext
     {
-        protected UnityPlayerNativeMethodSetting NativeMethodSetting { get; } = new UnityPlayerNativeMethodSetting();
+
+
+        //Maple.MonoGameAssistant.MonoCollectorDataV2.MonoCollecotrClassSettings Settings_Sprite { get; } = new Maple.MonoGameAssistant.MonoCollectorDataV2.MonoCollecotrClassSettings
+        //{
+        //    Utf8ImageName = [85, 110, 105, 116, 121, 69, 110, 103, 105, 110, 101, 46, 67, 111, 114, 101, 77, 111, 100, 117, 108, 101, 46, 100, 108, 108],
+        //    ImageName = "UnityEngine.CoreModule.dll",
+
+        //    Utf8Namespace = [85, 110, 105, 116, 121, 69, 110, 103, 105, 110, 101],
+        //    Namespace = "UnityEngine",
+
+        //    Utf8ClassName = [83, 112, 114, 105, 116, 101],
+        //    ClassName = "Sprite",
+
+
+        //};
+        //public Maple.MonoGameAssistant.UnityCore.UnityEngine.Sprite Sprite { get; }
+
+        //Maple.MonoGameAssistant.MonoCollectorDataV2.MonoCollecotrClassSettings Settings_Texture2D { get; } = new Maple.MonoGameAssistant.MonoCollectorDataV2.MonoCollecotrClassSettings
+        //{
+        //    Utf8ImageName = [85, 110, 105, 116, 121, 69, 110, 103, 105, 110, 101, 46, 67, 111, 114, 101, 77, 111, 100, 117, 108, 101, 46, 100, 108, 108],
+        //    ImageName = "UnityEngine.CoreModule.dll",
+
+        //    Utf8Namespace = [85, 110, 105, 116, 121, 69, 110, 103, 105, 110, 101],
+        //    Namespace = "UnityEngine",
+
+        //    Utf8ClassName = [84, 101, 120, 116, 117, 114, 101, 50, 68],
+        //    ClassName = "Texture2D",
+
+
+        //};
+        //public Maple.MonoGameAssistant.UnityCore.UnityEngine.Texture2D Texture2D { get; }
+
+        //Maple.MonoGameAssistant.MonoCollectorDataV2.MonoCollecotrClassSettings Settings_RenderTexture { get; } = new Maple.MonoGameAssistant.MonoCollectorDataV2.MonoCollecotrClassSettings
+        //{
+        //    Utf8ImageName = [85, 110, 105, 116, 121, 69, 110, 103, 105, 110, 101, 46, 67, 111, 114, 101, 77, 111, 100, 117, 108, 101, 46, 100, 108, 108],
+        //    ImageName = "UnityEngine.CoreModule.dll",
+
+        //    Utf8Namespace = [85, 110, 105, 116, 121, 69, 110, 103, 105, 110, 101],
+        //    Namespace = "UnityEngine",
+
+        //    Utf8ClassName = [82, 101, 110, 100, 101, 114, 84, 101, 120, 116, 117, 114, 101],
+        //    ClassName = "RenderTexture",
+
+
+        //};
+        //public Maple.MonoGameAssistant.UnityCore.UnityEngine.RenderTexture RenderTexture { get; }
+
+        //Maple.MonoGameAssistant.MonoCollectorDataV2.MonoCollecotrClassSettings Settings_Graphics { get; } = new Maple.MonoGameAssistant.MonoCollectorDataV2.MonoCollecotrClassSettings
+        //{
+        //    Utf8ImageName = [85, 110, 105, 116, 121, 69, 110, 103, 105, 110, 101, 46, 67, 111, 114, 101, 77, 111, 100, 117, 108, 101, 46, 100, 108, 108],
+        //    ImageName = "UnityEngine.CoreModule.dll",
+
+        //    Utf8Namespace = [85, 110, 105, 116, 121, 69, 110, 103, 105, 110, 101],
+        //    Namespace = "UnityEngine",
+
+        //    Utf8ClassName = [71, 114, 97, 112, 104, 105, 99, 115],
+        //    ClassName = "Graphics",
+
+
+        //};
+        //public Maple.MonoGameAssistant.UnityCore.UnityEngine.Graphics Graphics { get; }
+
+        //Maple.MonoGameAssistant.MonoCollectorDataV2.MonoCollecotrClassSettings Settings_ImageConversion { get; } = new Maple.MonoGameAssistant.MonoCollectorDataV2.MonoCollecotrClassSettings
+        //{
+        //    Utf8ImageName = [85, 110, 105, 116, 121, 69, 110, 103, 105, 110, 101, 46, 73, 109, 97, 103, 101, 67, 111, 110, 118, 101, 114, 115, 105, 111, 110, 77, 111, 100, 117, 108, 101, 46, 100, 108, 108],
+        //    ImageName = "UnityEngine.ImageConversionModule.dll",
+
+        //    Utf8Namespace = [85, 110, 105, 116, 121, 69, 110, 103, 105, 110, 101],
+        //    Namespace = "UnityEngine",
+
+        //    Utf8ClassName = [73, 109, 97, 103, 101, 67, 111, 110, 118, 101, 114, 115, 105, 111, 110],
+        //    ClassName = "ImageConversion",
+
+
+        //};
+        //public Maple.MonoGameAssistant.UnityCore.UnityEngine.ImageConversion ImageConversion { get; }
+
+        public UnityEngineContext(Maple.MonoGameAssistant.Core.MonoRuntimeContext runtimeContext, Maple.MonoGameAssistant.MonoCollectorDataV2.EnumMonoCollectorTypeVersion typeVersion, Microsoft.Extensions.Logging.ILogger logger, string apiVer) : base(runtimeContext, typeVersion, logger, apiVer)
+        {
+
+           // Sprite = new Maple.MonoGameAssistant.UnityCore.UnityEngine.Sprite(this, GetClassInfo(Settings_Sprite));
+           this.GetClassInfo
+            Sprite.Func_GET_TEXTURE = this.RuntimeContext("get_texture");
+
+            //Texture2D = new Maple.MonoGameAssistant.UnityCore.UnityEngine.Texture2D(this, GetClassInfo(Settings_Texture2D));
+
+            //RenderTexture = new Maple.MonoGameAssistant.UnityCore.UnityEngine.RenderTexture(this, GetClassInfo(Settings_RenderTexture));
+
+
+            //Graphics = new Maple.MonoGameAssistant.UnityCore.UnityEngine.Graphics(this, GetClassInfo(Settings_Graphics));
+
+            //ImageConversion = new Maple.MonoGameAssistant.UnityCore.UnityEngine.ImageConversion(this, GetClassInfo(Settings_ImageConversion));
+        }
+
+
+
+
+
 
         private void CopyToTexture2D(Ptr_Texture2D pSrc, Ptr_Texture2D pDest)
         {
@@ -165,7 +262,7 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
             //用MONO 编译的GAME 获取到UnityPlayer.dll 函数地址偏移不一样 需要根据每个游戏修改
             //UnityEngine.ImageConversion::EncodeToPNG
             //UnityEngine.Graphics::Blit2
-            this.NativeMethodSetting.LoadNativeMethod_MONO(offset_encode_to_png: 0x217030, offset_blit2: 0x878C0);
+            //this.NativeMethodSetting.LoadNativeMethod_MONO(offset_encode_to_png: 0x217030, offset_blit2: 0x878C0);
         }
     }
 
@@ -173,7 +270,7 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
     {
         public UnityEngineContext_IL2CPP(MonoRuntimeContext runtimeContext, ILogger logger) : base(runtimeContext, EnumMonoCollectorTypeVersion.IL2CPP, logger, "202407222110")
         {
-            this.NativeMethodSetting.LoadNativeMethod_IL2CPP(runtimeContext);
+            //this.NativeMethodSetting.LoadNativeMethod_IL2CPP(runtimeContext);
         }
 
 

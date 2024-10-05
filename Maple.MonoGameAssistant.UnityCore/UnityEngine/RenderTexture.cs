@@ -15,7 +15,7 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
     /// 
     /// </summary>
     //[Maple.MonoGameAssistant.MonoCollectorDataV2.MonoCollectorSettingsAttribute([85, 110, 105, 116, 121, 69, 110, 103, 105, 110, 101, 46, 67, 111, 114, 101, 77, 111, 100, 117, 108, 101, 46, 100, 108, 108], 0x020000C0U)]
-    [Maple.MonoGameAssistant.MonoCollectorDataV2.MonoCollectorSettingsAttribute([85, 110, 105, 116, 121, 69, 110, 103, 105, 110, 101, 46, 67, 111, 114, 101, 77, 111, 100, 117, 108, 101, 46, 100, 108, 108], [85, 110, 105, 116, 121, 69, 110, 103, 105, 110, 101], [82, 101, 110, 100, 101, 114, 84, 101, 120, 116, 117, 114, 101])]
+    //[Maple.MonoGameAssistant.MonoCollectorDataV2.MonoCollectorSettingsAttribute([85, 110, 105, 116, 121, 69, 110, 103, 105, 110, 101, 46, 67, 111, 114, 101, 77, 111, 100, 117, 108, 101, 46, 100, 108, 108], [85, 110, 105, 116, 121, 69, 110, 103, 105, 110, 101], [82, 101, 110, 100, 101, 114, 84, 101, 120, 116, 117, 114, 101])]
     public partial class RenderTexture
     {
         //public const string Const_ImageName = "UnityEngine.CoreModule.dll";
@@ -2872,4 +2872,183 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
 
     }
 
+    partial class RenderTexture(Maple.MonoGameAssistant.Core.MonoCollectorContext collectorContext, Maple.MonoGameAssistant.MonoCollector.MonoCollectorClassInfo classInfo) : Maple.MonoGameAssistant.Core.MonoCollectorMember(collectorContext, classInfo)
+    {
+
+        public Maple.MonoGameAssistant.UnityCore.UnityEngine.RenderTexture.Ptr_RenderTexture New(bool execDefCtor)
+            => New<Maple.MonoGameAssistant.UnityCore.UnityEngine.RenderTexture.Ptr_RenderTexture>(execDefCtor);
+
+        public Maple.MonoGameAssistant.UnityCore.UnityEngine.RenderTexture.Ptr_RenderTexture Ctor()
+            => Ctor<Maple.MonoGameAssistant.UnityCore.UnityEngine.RenderTexture.Ptr_RenderTexture>();
+
+        public Maple.MonoGameAssistant.UnityCore.UnityEngine.RenderTexture.Ptr_RenderTexture IsFrom(Maple.MonoGameAssistant.Core.PMonoObject pMonoObject)
+            => IsFrom<Maple.MonoGameAssistant.UnityCore.UnityEngine.RenderTexture.Ptr_RenderTexture>(pMonoObject);
+
+        public Maple.MonoGameAssistant.UnityCore.UnityEngine.RenderTexture.Ptr_RenderTexture IsFrom(nint pObj)
+            => IsFrom<Maple.MonoGameAssistant.UnityCore.UnityEngine.RenderTexture.Ptr_RenderTexture>(pObj);
+
+
+
+
+        readonly unsafe partial struct Ptr_Func_GET_ACTIVE(nint ptr)
+        {
+            readonly delegate* unmanaged[Cdecl, SuppressGCTransition]<nint> _func = (delegate* unmanaged[Cdecl, SuppressGCTransition]<nint>)ptr;
+
+            public static implicit operator Ptr_Func_GET_ACTIVE(nint ptr) => new(ptr);
+
+            public override string ToString()
+            {
+                return ((nint)((void*)_func)).ToString("X8");
+            }
+
+            [System.Runtime.CompilerServices.MethodImplAttribute(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+            public nint Invoke() => _func();
+        }
+
+        static Ptr_Func_GET_ACTIVE Func_GET_ACTIVE;
+
+        readonly unsafe partial struct Ptr_RenderTexture
+        {
+            [System.Runtime.CompilerServices.MethodImplAttribute(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+            public static nint GET_ACTIVE() => Func_GET_ACTIVE.Invoke();
+        }
+
+        readonly unsafe partial struct Ptr_Func_RELEASE_TEMPORARY(nint ptr)
+        {
+            readonly delegate* unmanaged[Cdecl, SuppressGCTransition]<nint, void> _func = (delegate* unmanaged[Cdecl, SuppressGCTransition]<nint, void>)ptr;
+
+            public static implicit operator Ptr_Func_RELEASE_TEMPORARY(nint ptr) => new(ptr);
+
+            public override string ToString()
+            {
+                return ((nint)((void*)_func)).ToString("X8");
+            }
+
+            [System.Runtime.CompilerServices.MethodImplAttribute(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+            public void Invoke(nint temp) => _func(temp);
+        }
+
+        static Ptr_Func_RELEASE_TEMPORARY Func_RELEASE_TEMPORARY;
+
+        readonly unsafe partial struct Ptr_RenderTexture
+        {
+            [System.Runtime.CompilerServices.MethodImplAttribute(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+            public static void RELEASE_TEMPORARY(nint temp) => Func_RELEASE_TEMPORARY.Invoke(temp);
+        }
+
+        readonly unsafe partial struct Ptr_Func_SET_ACTIVE(nint ptr)
+        {
+            readonly delegate* unmanaged[Cdecl, SuppressGCTransition]<nint, void> _func = (delegate* unmanaged[Cdecl, SuppressGCTransition]<nint, void>)ptr;
+
+            public static implicit operator Ptr_Func_SET_ACTIVE(nint ptr) => new(ptr);
+
+            public override string ToString()
+            {
+                return ((nint)((void*)_func)).ToString("X8");
+            }
+
+            [System.Runtime.CompilerServices.MethodImplAttribute(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+            public void Invoke(nint value) => _func(value);
+        }
+
+        static Ptr_Func_SET_ACTIVE Func_SET_ACTIVE;
+
+        readonly unsafe partial struct Ptr_RenderTexture
+        {
+            [System.Runtime.CompilerServices.MethodImplAttribute(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+            public static void SET_ACTIVE(nint value) => Func_SET_ACTIVE.Invoke(value);
+        }
+
+        readonly unsafe partial struct Ptr_Func_GET_HEIGHT_00(nint ptr)
+        {
+            readonly delegate* unmanaged[Cdecl, SuppressGCTransition]<Maple.MonoGameAssistant.UnityCore.UnityEngine.RenderTexture.Ptr_RenderTexture, int> _func = (delegate* unmanaged[Cdecl, SuppressGCTransition]<Maple.MonoGameAssistant.UnityCore.UnityEngine.RenderTexture.Ptr_RenderTexture, int>)ptr;
+
+            public static implicit operator Ptr_Func_GET_HEIGHT_00(nint ptr) => new(ptr);
+
+            public override string ToString()
+            {
+                return ((nint)((void*)_func)).ToString("X8");
+            }
+
+            [System.Runtime.CompilerServices.MethodImplAttribute(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+            public int Invoke(Maple.MonoGameAssistant.UnityCore.UnityEngine.RenderTexture.Ptr_RenderTexture __this__) => _func(__this__);
+        }
+
+        static Ptr_Func_GET_HEIGHT_00 Func_GET_HEIGHT_00;
+
+        readonly unsafe partial struct Ptr_RenderTexture
+        {
+            [System.Runtime.CompilerServices.MethodImplAttribute(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+            public int GET_HEIGHT_00() => Func_GET_HEIGHT_00.Invoke(this);
+        }
+
+        readonly unsafe partial struct Ptr_Func_GET_WIDTH_00(nint ptr)
+        {
+            readonly delegate* unmanaged[Cdecl, SuppressGCTransition]<Maple.MonoGameAssistant.UnityCore.UnityEngine.RenderTexture.Ptr_RenderTexture, int> _func = (delegate* unmanaged[Cdecl, SuppressGCTransition]<Maple.MonoGameAssistant.UnityCore.UnityEngine.RenderTexture.Ptr_RenderTexture, int>)ptr;
+
+            public static implicit operator Ptr_Func_GET_WIDTH_00(nint ptr) => new(ptr);
+
+            public override string ToString()
+            {
+                return ((nint)((void*)_func)).ToString("X8");
+            }
+
+            [System.Runtime.CompilerServices.MethodImplAttribute(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+            public int Invoke(Maple.MonoGameAssistant.UnityCore.UnityEngine.RenderTexture.Ptr_RenderTexture __this__) => _func(__this__);
+        }
+
+        static Ptr_Func_GET_WIDTH_00 Func_GET_WIDTH_00;
+
+        readonly unsafe partial struct Ptr_RenderTexture
+        {
+            [System.Runtime.CompilerServices.MethodImplAttribute(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+            public int GET_WIDTH_00() => Func_GET_WIDTH_00.Invoke(this);
+        }
+
+        readonly unsafe partial struct Ptr_Func_GET_TEMPORARY_0A(nint ptr)
+        {
+            readonly delegate* unmanaged[Cdecl, SuppressGCTransition]<int, int, int, Maple.MonoGameAssistant.UnityCore.UnityEngine.RenderTextureFormat, Maple.MonoGameAssistant.UnityCore.UnityEngine.RenderTextureReadWrite, Maple.MonoGameAssistant.UnityCore.UnityEngine.RenderTexture.Ptr_RenderTexture> _func = (delegate* unmanaged[Cdecl, SuppressGCTransition]<int, int, int, Maple.MonoGameAssistant.UnityCore.UnityEngine.RenderTextureFormat, Maple.MonoGameAssistant.UnityCore.UnityEngine.RenderTextureReadWrite, Maple.MonoGameAssistant.UnityCore.UnityEngine.RenderTexture.Ptr_RenderTexture>)ptr;
+
+            public static implicit operator Ptr_Func_GET_TEMPORARY_0A(nint ptr) => new(ptr);
+
+            public override string ToString()
+            {
+                return ((nint)((void*)_func)).ToString("X8");
+            }
+
+            [System.Runtime.CompilerServices.MethodImplAttribute(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+            public Maple.MonoGameAssistant.UnityCore.UnityEngine.RenderTexture.Ptr_RenderTexture Invoke(int width, int height, int depthBuffer, Maple.MonoGameAssistant.UnityCore.UnityEngine.RenderTextureFormat format, Maple.MonoGameAssistant.UnityCore.UnityEngine.RenderTextureReadWrite readWrite) => _func(width, height, depthBuffer, format, readWrite);
+        }
+
+        static Ptr_Func_GET_TEMPORARY_0A Func_GET_TEMPORARY_0A;
+
+        readonly unsafe partial struct Ptr_RenderTexture
+        {
+            [System.Runtime.CompilerServices.MethodImplAttribute(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+            public static Maple.MonoGameAssistant.UnityCore.UnityEngine.RenderTexture.Ptr_RenderTexture GET_TEMPORARY_0A(int width, int height, int depthBuffer, Maple.MonoGameAssistant.UnityCore.UnityEngine.RenderTextureFormat format, Maple.MonoGameAssistant.UnityCore.UnityEngine.RenderTextureReadWrite readWrite) => Func_GET_TEMPORARY_0A.Invoke(width, height, depthBuffer, format, readWrite);
+        }
+
+
+
+
+        protected sealed override void InitMember()
+        {
+
+            Func_GET_ACTIVE = GetMethodPointer("get_active");
+
+            Func_RELEASE_TEMPORARY = GetMethodPointer("ReleaseTemporary");
+
+            Func_SET_ACTIVE = GetMethodPointer("set_active");
+
+            Func_GET_HEIGHT_00 = GetMethodPointer("get_height");
+
+            Func_GET_WIDTH_00 = GetMethodPointer("get_width");
+
+            Func_GET_TEMPORARY_0A = GetMethodPointer("GetTemporary", Maple.MonoGameAssistant.UnityCore.UnityEngine.RenderTexture.Search_RenderTexture.GET_TEMPORARY_0A);
+
+
+        }
+
+
+    }
 }

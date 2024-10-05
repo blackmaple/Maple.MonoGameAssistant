@@ -11,7 +11,7 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
     /// 
     /// </summary>
     //[Maple.MonoGameAssistant.MonoCollectorDataV2.MonoCollectorSettingsAttribute([85, 110, 105, 116, 121, 69, 110, 103, 105, 110, 101, 46, 67, 111, 114, 101, 77, 111, 100, 117, 108, 101, 46, 100, 108, 108], 0x020000B6U)]
-    [Maple.MonoGameAssistant.MonoCollectorDataV2.MonoCollectorSettingsAttribute([85, 110, 105, 116, 121, 69, 110, 103, 105, 110, 101, 46, 67, 111, 114, 101, 77, 111, 100, 117, 108, 101, 46, 100, 108, 108], [85, 110, 105, 116, 121, 69, 110, 103, 105, 110, 101], [84, 101, 120, 116, 117, 114, 101, 50, 68])]
+   // [Maple.MonoGameAssistant.MonoCollectorDataV2.MonoCollectorSettingsAttribute([85, 110, 105, 116, 121, 69, 110, 103, 105, 110, 101, 46, 67, 111, 114, 101, 77, 111, 100, 117, 108, 101, 46, 100, 108, 108], [85, 110, 105, 116, 121, 69, 110, 103, 105, 110, 101], [84, 101, 120, 116, 117, 114, 101, 50, 68])]
     public partial class Texture2D
     {
         //public const string Const_ImageName = "UnityEngine.CoreModule.dll";
@@ -2969,4 +2969,183 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
 
     }
 
+    partial class Texture2D(Maple.MonoGameAssistant.Core.MonoCollectorContext collectorContext, Maple.MonoGameAssistant.MonoCollector.MonoCollectorClassInfo classInfo) : Maple.MonoGameAssistant.Core.MonoCollectorMember(collectorContext, classInfo)
+    {
+
+        public Maple.MonoGameAssistant.UnityCore.UnityEngine.Texture2D.Ptr_Texture2D New(bool execDefCtor)
+            => New<Maple.MonoGameAssistant.UnityCore.UnityEngine.Texture2D.Ptr_Texture2D>(execDefCtor);
+
+        public Maple.MonoGameAssistant.UnityCore.UnityEngine.Texture2D.Ptr_Texture2D Ctor()
+            => Ctor<Maple.MonoGameAssistant.UnityCore.UnityEngine.Texture2D.Ptr_Texture2D>();
+
+        public Maple.MonoGameAssistant.UnityCore.UnityEngine.Texture2D.Ptr_Texture2D IsFrom(Maple.MonoGameAssistant.Core.PMonoObject pMonoObject)
+            => IsFrom<Maple.MonoGameAssistant.UnityCore.UnityEngine.Texture2D.Ptr_Texture2D>(pMonoObject);
+
+        public Maple.MonoGameAssistant.UnityCore.UnityEngine.Texture2D.Ptr_Texture2D IsFrom(nint pObj)
+            => IsFrom<Maple.MonoGameAssistant.UnityCore.UnityEngine.Texture2D.Ptr_Texture2D>(pObj);
+
+
+
+
+        readonly unsafe partial struct Ptr_Func_GET_HEIGHT(nint ptr)
+        {
+            readonly delegate* unmanaged[Cdecl, SuppressGCTransition]<Maple.MonoGameAssistant.UnityCore.UnityEngine.Texture2D.Ptr_Texture2D, int> _func = (delegate* unmanaged[Cdecl, SuppressGCTransition]<Maple.MonoGameAssistant.UnityCore.UnityEngine.Texture2D.Ptr_Texture2D, int>)ptr;
+
+            public static implicit operator Ptr_Func_GET_HEIGHT(nint ptr) => new(ptr);
+
+            public override string ToString()
+            {
+                return ((nint)((void*)_func)).ToString("X8");
+            }
+
+            [System.Runtime.CompilerServices.MethodImplAttribute(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+            public int Invoke(Maple.MonoGameAssistant.UnityCore.UnityEngine.Texture2D.Ptr_Texture2D __this__) => _func(__this__);
+        }
+
+        static Ptr_Func_GET_HEIGHT Func_GET_HEIGHT;
+
+        readonly unsafe partial struct Ptr_Texture2D
+        {
+            [System.Runtime.CompilerServices.MethodImplAttribute(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+            public int GET_HEIGHT() => Func_GET_HEIGHT.Invoke(this);
+        }
+
+        readonly unsafe partial struct Ptr_Func_GET_WIDTH(nint ptr)
+        {
+            readonly delegate* unmanaged[Cdecl, SuppressGCTransition]<Maple.MonoGameAssistant.UnityCore.UnityEngine.Texture2D.Ptr_Texture2D, int> _func = (delegate* unmanaged[Cdecl, SuppressGCTransition]<Maple.MonoGameAssistant.UnityCore.UnityEngine.Texture2D.Ptr_Texture2D, int>)ptr;
+
+            public static implicit operator Ptr_Func_GET_WIDTH(nint ptr) => new(ptr);
+
+            public override string ToString()
+            {
+                return ((nint)((void*)_func)).ToString("X8");
+            }
+
+            [System.Runtime.CompilerServices.MethodImplAttribute(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+            public int Invoke(Maple.MonoGameAssistant.UnityCore.UnityEngine.Texture2D.Ptr_Texture2D __this__) => _func(__this__);
+        }
+
+        static Ptr_Func_GET_WIDTH Func_GET_WIDTH;
+
+        readonly unsafe partial struct Ptr_Texture2D
+        {
+            [System.Runtime.CompilerServices.MethodImplAttribute(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+            public int GET_WIDTH() => Func_GET_WIDTH.Invoke(this);
+        }
+
+        readonly unsafe partial struct Ptr_Func_CTOR_07(nint ptr)
+        {
+            readonly delegate* unmanaged[Cdecl, SuppressGCTransition]<Maple.MonoGameAssistant.UnityCore.UnityEngine.Texture2D.Ptr_Texture2D, int, int, Maple.MonoGameAssistant.UnityCore.UnityEngine.TextureFormat, bool, void> _func = (delegate* unmanaged[Cdecl, SuppressGCTransition]<Maple.MonoGameAssistant.UnityCore.UnityEngine.Texture2D.Ptr_Texture2D, int, int, Maple.MonoGameAssistant.UnityCore.UnityEngine.TextureFormat, bool, void>)ptr;
+
+            public static implicit operator Ptr_Func_CTOR_07(nint ptr) => new(ptr);
+
+            public override string ToString()
+            {
+                return ((nint)((void*)_func)).ToString("X8");
+            }
+
+            [System.Runtime.CompilerServices.MethodImplAttribute(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+            public void Invoke(Maple.MonoGameAssistant.UnityCore.UnityEngine.Texture2D.Ptr_Texture2D __this__, int width, int height, Maple.MonoGameAssistant.UnityCore.UnityEngine.TextureFormat textureFormat, bool mipChain) => _func(__this__, width, height, textureFormat, mipChain);
+        }
+
+        static Ptr_Func_CTOR_07 Func_CTOR_07;
+
+        readonly unsafe partial struct Ptr_Texture2D
+        {
+            [System.Runtime.CompilerServices.MethodImplAttribute(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+            public void CTOR_07(int width, int height, Maple.MonoGameAssistant.UnityCore.UnityEngine.TextureFormat textureFormat, bool mipChain) => Func_CTOR_07.Invoke(this, width, height, textureFormat, mipChain);
+        }
+
+        readonly unsafe partial struct Ptr_Func_CTOR_08(nint ptr)
+        {
+            readonly delegate* unmanaged[Cdecl, SuppressGCTransition]<Maple.MonoGameAssistant.UnityCore.UnityEngine.Texture2D.Ptr_Texture2D, int, int, void> _func = (delegate* unmanaged[Cdecl, SuppressGCTransition]<Maple.MonoGameAssistant.UnityCore.UnityEngine.Texture2D.Ptr_Texture2D, int, int, void>)ptr;
+
+            public static implicit operator Ptr_Func_CTOR_08(nint ptr) => new(ptr);
+
+            public override string ToString()
+            {
+                return ((nint)((void*)_func)).ToString("X8");
+            }
+
+            [System.Runtime.CompilerServices.MethodImplAttribute(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+            public void Invoke(Maple.MonoGameAssistant.UnityCore.UnityEngine.Texture2D.Ptr_Texture2D __this__, int width, int height) => _func(__this__, width, height);
+        }
+
+        static Ptr_Func_CTOR_08 Func_CTOR_08;
+
+        readonly unsafe partial struct Ptr_Texture2D
+        {
+            [System.Runtime.CompilerServices.MethodImplAttribute(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+            public void CTOR_08(int width, int height) => Func_CTOR_08.Invoke(this, width, height);
+        }
+
+        readonly unsafe partial struct Ptr_Func_APPLY_02(nint ptr)
+        {
+            readonly delegate* unmanaged[Cdecl, SuppressGCTransition]<Maple.MonoGameAssistant.UnityCore.UnityEngine.Texture2D.Ptr_Texture2D, void> _func = (delegate* unmanaged[Cdecl, SuppressGCTransition]<Maple.MonoGameAssistant.UnityCore.UnityEngine.Texture2D.Ptr_Texture2D, void>)ptr;
+
+            public static implicit operator Ptr_Func_APPLY_02(nint ptr) => new(ptr);
+
+            public override string ToString()
+            {
+                return ((nint)((void*)_func)).ToString("X8");
+            }
+
+            [System.Runtime.CompilerServices.MethodImplAttribute(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+            public void Invoke(Maple.MonoGameAssistant.UnityCore.UnityEngine.Texture2D.Ptr_Texture2D __this__) => _func(__this__);
+        }
+
+        static Ptr_Func_APPLY_02 Func_APPLY_02;
+
+        readonly unsafe partial struct Ptr_Texture2D
+        {
+            [System.Runtime.CompilerServices.MethodImplAttribute(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+            public void APPLY_02() => Func_APPLY_02.Invoke(this);
+        }
+
+        readonly unsafe partial struct Ptr_Func_READ_PIXELS_01(nint ptr)
+        {
+            readonly delegate* unmanaged[Cdecl, SuppressGCTransition]<Maple.MonoGameAssistant.UnityCore.UnityEngine.Texture2D.Ptr_Texture2D, Maple.MonoGameAssistant.UnityCore.UnityEngine.Rect.Ref_Rect, int, int, void> _func = (delegate* unmanaged[Cdecl, SuppressGCTransition]<Maple.MonoGameAssistant.UnityCore.UnityEngine.Texture2D.Ptr_Texture2D, Maple.MonoGameAssistant.UnityCore.UnityEngine.Rect.Ref_Rect, int, int, void>)ptr;
+
+            public static implicit operator Ptr_Func_READ_PIXELS_01(nint ptr) => new(ptr);
+
+            public override string ToString()
+            {
+                return ((nint)((void*)_func)).ToString("X8");
+            }
+
+            [System.Runtime.CompilerServices.MethodImplAttribute(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+            public void Invoke(Maple.MonoGameAssistant.UnityCore.UnityEngine.Texture2D.Ptr_Texture2D __this__, Maple.MonoGameAssistant.UnityCore.UnityEngine.Rect.Ref_Rect source, int destX, int destY) => _func(__this__, source, destX, destY);
+        }
+
+        static Ptr_Func_READ_PIXELS_01 Func_READ_PIXELS_01;
+
+        readonly unsafe partial struct Ptr_Texture2D
+        {
+            [System.Runtime.CompilerServices.MethodImplAttribute(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+            public void READ_PIXELS_01(Maple.MonoGameAssistant.UnityCore.UnityEngine.Rect.Ref_Rect source, int destX, int destY) => Func_READ_PIXELS_01.Invoke(this, source, destX, destY);
+        }
+
+
+
+
+        protected sealed override void InitMember()
+        {
+
+            Func_GET_HEIGHT = GetMethodPointer("get_height");
+
+            Func_GET_WIDTH = GetMethodPointer("get_width");
+
+            Func_CTOR_07 = GetMethodPointer(".ctor", Maple.MonoGameAssistant.UnityCore.UnityEngine.Texture2D.Search_Texture2D.CTOR_07);
+
+            Func_CTOR_08 = GetMethodPointer(".ctor", Maple.MonoGameAssistant.UnityCore.UnityEngine.Texture2D.Search_Texture2D.CTOR_08);
+
+            Func_APPLY_02 = GetMethodPointer("Apply", Maple.MonoGameAssistant.UnityCore.UnityEngine.Texture2D.Search_Texture2D.APPLY_02);
+
+            Func_READ_PIXELS_01 = GetMethodPointer("ReadPixels", Maple.MonoGameAssistant.UnityCore.UnityEngine.Texture2D.Search_Texture2D.READ_PIXELS_01);
+
+
+        }
+
+
+    }
 }

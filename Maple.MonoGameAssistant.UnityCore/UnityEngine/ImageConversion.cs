@@ -11,8 +11,8 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
     /// [System.Object]
     /// 
     /// </summary>
-    //[Maple.MonoGameAssistant.MonoCollectorDataV2.MonoCollectorSettingsAttribute([85, 110, 105, 116, 121, 69, 110, 103, 105, 110, 101, 46, 73, 109, 97, 103, 101, 67, 111, 110, 118, 101, 114, 115, 105, 111, 110, 77, 111, 100, 117, 108, 101, 46, 100, 108, 108], 0x02000002U)]
-    //[Maple.MonoGameAssistant.MonoCollectorDataV2.MonoCollectorSettingsAttribute([85, 110, 105, 116, 121, 69, 110, 103, 105, 110, 101, 46, 73, 109, 97, 103, 101, 67, 111, 110, 118, 101, 114, 115, 105, 111, 110, 77, 111, 100, 117, 108, 101, 46, 100, 108, 108], [85, 110, 105, 116, 121, 69, 110, 103, 105, 110, 101], [73, 109, 97, 103, 101, 67, 111, 110, 118, 101, 114, 115, 105, 111, 110])]
+   // [Maple.MonoGameAssistant.MonoCollectorDataV2.MonoCollectorSettingsAttribute([85, 110, 105, 116, 121, 69, 110, 103, 105, 110, 101, 46, 73, 109, 97, 103, 101, 67, 111, 110, 118, 101, 114, 115, 105, 111, 110, 77, 111, 100, 117, 108, 101, 46, 100, 108, 108], 0x02000002U)]
+   // [Maple.MonoGameAssistant.MonoCollectorDataV2.MonoCollectorSettingsAttribute([85, 110, 105, 116, 121, 69, 110, 103, 105, 110, 101, 46, 73, 109, 97, 103, 101, 67, 111, 110, 118, 101, 114, 115, 105, 111, 110, 77, 111, 100, 117, 108, 101, 46, 100, 108, 108], [85, 110, 105, 116, 121, 69, 110, 103, 105, 110, 101], [73, 109, 97, 103, 101, 67, 111, 110, 118, 101, 114, 115, 105, 111, 110])]
     public partial class ImageConversion
     {
         //public const string Const_ImageName = "UnityEngine.ImageConversionModule.dll";
@@ -91,8 +91,8 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
         /// </summary>
         /// <param name="tex">class UnityEngine.Texture2D</param>
         /// <returns>class System.Byte[]</returns>
-        [MonoCollectorBaseAddress("UnityPlayer.dll", 0xAFFB90, RealTime = false, CallConvs = [typeof(CallConvCdecl)])]
-        static unsafe extern PMonoArray<byte> ENCODE_TO_PNG2(UnityEngine.Texture2D.Ptr_Texture2D tex);
+        //[MonoCollectorBaseAddress("UnityPlayer.dll", 0xAFFB90, RealTime = false, CallConvs = [typeof(CallConvCdecl)])]
+        //static unsafe extern PMonoArray<byte> ENCODE_TO_PNG2(UnityEngine.Texture2D.Ptr_Texture2D tex);
 
 
 
@@ -193,6 +193,86 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
             /// 
             /// 
         }
+
+    }
+
+    partial class ImageConversion(Maple.MonoGameAssistant.Core.MonoCollectorContext collectorContext, Maple.MonoGameAssistant.MonoCollector.MonoCollectorClassInfo classInfo) : Maple.MonoGameAssistant.Core.MonoCollectorMember(collectorContext, classInfo)
+    {
+
+        public Maple.MonoGameAssistant.UnityCore.UnityEngine.ImageConversion.Ptr_ImageConversion New(bool execDefCtor)
+            => New<Maple.MonoGameAssistant.UnityCore.UnityEngine.ImageConversion.Ptr_ImageConversion>(execDefCtor);
+
+        public Maple.MonoGameAssistant.UnityCore.UnityEngine.ImageConversion.Ptr_ImageConversion Ctor()
+            => Ctor<Maple.MonoGameAssistant.UnityCore.UnityEngine.ImageConversion.Ptr_ImageConversion>();
+
+        public Maple.MonoGameAssistant.UnityCore.UnityEngine.ImageConversion.Ptr_ImageConversion IsFrom(Maple.MonoGameAssistant.Core.PMonoObject pMonoObject)
+            => IsFrom<Maple.MonoGameAssistant.UnityCore.UnityEngine.ImageConversion.Ptr_ImageConversion>(pMonoObject);
+
+        public Maple.MonoGameAssistant.UnityCore.UnityEngine.ImageConversion.Ptr_ImageConversion IsFrom(nint pObj)
+            => IsFrom<Maple.MonoGameAssistant.UnityCore.UnityEngine.ImageConversion.Ptr_ImageConversion>(pObj);
+
+
+
+
+        readonly unsafe partial struct Ptr_Func_ENCODE_TO_PNG(nint ptr)
+        {
+            readonly delegate* unmanaged[Cdecl, SuppressGCTransition]<Maple.MonoGameAssistant.UnityCore.UnityEngine.Texture2D.Ptr_Texture2D, Maple.MonoGameAssistant.Core.PMonoArray<byte>> _func = (delegate* unmanaged[Cdecl, SuppressGCTransition]<Maple.MonoGameAssistant.UnityCore.UnityEngine.Texture2D.Ptr_Texture2D, Maple.MonoGameAssistant.Core.PMonoArray<byte>>)ptr;
+
+            public static implicit operator Ptr_Func_ENCODE_TO_PNG(nint ptr) => new(ptr);
+
+            public override string ToString()
+            {
+                return ((nint)((void*)_func)).ToString("X8");
+            }
+
+            [System.Runtime.CompilerServices.MethodImplAttribute(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+            public Maple.MonoGameAssistant.Core.PMonoArray<byte> Invoke(Maple.MonoGameAssistant.UnityCore.UnityEngine.Texture2D.Ptr_Texture2D tex) => _func(tex);
+        }
+
+        static Ptr_Func_ENCODE_TO_PNG Func_ENCODE_TO_PNG;
+
+        readonly unsafe partial struct Ptr_ImageConversion
+        {
+            [System.Runtime.CompilerServices.MethodImplAttribute(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+            public static Maple.MonoGameAssistant.Core.PMonoArray<byte> ENCODE_TO_PNG(Maple.MonoGameAssistant.UnityCore.UnityEngine.Texture2D.Ptr_Texture2D tex) => Func_ENCODE_TO_PNG.Invoke(tex);
+        }
+
+        //readonly unsafe partial struct Ptr_Func_ENCODE_TO_JPG_01(nint ptr)
+        //{
+        //    readonly delegate* unmanaged[Cdecl, SuppressGCTransition]<nint, nint> _func = (delegate* unmanaged[Cdecl, SuppressGCTransition]<nint, nint>)ptr;
+
+        //    public static implicit operator Ptr_Func_ENCODE_TO_JPG_01(nint ptr) => new(ptr);
+
+        //    public override string ToString()
+        //    {
+        //        return ((nint)((void*)_func)).ToString("X8");
+        //    }
+
+        //    [System.Runtime.CompilerServices.MethodImplAttribute(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        //    public nint Invoke(nint tex) => _func(tex);
+        //}
+
+        //static Ptr_Func_ENCODE_TO_JPG_01 Func_ENCODE_TO_JPG_01;
+
+        //readonly unsafe partial struct Ptr_ImageConversion
+        //{
+        //    [System.Runtime.CompilerServices.MethodImplAttribute(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        //    public static nint ENCODE_TO_JPG_01(nint tex) => Func_ENCODE_TO_JPG_01.Invoke(tex);
+        //}
+
+
+
+
+        protected sealed override void InitMember()
+        {
+
+            Func_ENCODE_TO_PNG = GetMethodPointer("EncodeToPNG");
+
+            //Func_ENCODE_TO_JPG_01 = GetMethodPointer("EncodeToJPG", Maple.MonoGameAssistant.UnityCore.UnityEngine.ImageConversion.Search_ImageConversion.ENCODE_TO_JPG_01);
+
+
+        }
+
 
     }
 

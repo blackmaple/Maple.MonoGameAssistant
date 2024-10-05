@@ -550,4 +550,59 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
 
     }
 
+    partial class Graphics(Maple.MonoGameAssistant.Core.MonoCollectorContext collectorContext, Maple.MonoGameAssistant.MonoCollector.MonoCollectorClassInfo classInfo) : Maple.MonoGameAssistant.Core.MonoCollectorMember(collectorContext, classInfo)
+    {
+
+        public Maple.MonoGameAssistant.UnityCore.UnityEngine.Graphics.Ptr_Graphics New(bool execDefCtor)
+            => New<Maple.MonoGameAssistant.UnityCore.UnityEngine.Graphics.Ptr_Graphics>(execDefCtor);
+
+        public Maple.MonoGameAssistant.UnityCore.UnityEngine.Graphics.Ptr_Graphics Ctor()
+            => Ctor<Maple.MonoGameAssistant.UnityCore.UnityEngine.Graphics.Ptr_Graphics>();
+
+        public Maple.MonoGameAssistant.UnityCore.UnityEngine.Graphics.Ptr_Graphics IsFrom(Maple.MonoGameAssistant.Core.PMonoObject pMonoObject)
+            => IsFrom<Maple.MonoGameAssistant.UnityCore.UnityEngine.Graphics.Ptr_Graphics>(pMonoObject);
+
+        public Maple.MonoGameAssistant.UnityCore.UnityEngine.Graphics.Ptr_Graphics IsFrom(nint pObj)
+            => IsFrom<Maple.MonoGameAssistant.UnityCore.UnityEngine.Graphics.Ptr_Graphics>(pObj);
+
+
+
+
+        readonly unsafe partial struct Ptr_Func_BLIT_02(nint ptr)
+        {
+            readonly delegate* unmanaged[Cdecl, SuppressGCTransition]<nint, nint, nint, void> _func = (delegate* unmanaged[Cdecl, SuppressGCTransition]<nint, nint, nint, void>)ptr;
+
+            public static implicit operator Ptr_Func_BLIT_02(nint ptr) => new(ptr);
+
+            public override string ToString()
+            {
+                return ((nint)((void*)_func)).ToString("X8");
+            }
+
+            [System.Runtime.CompilerServices.MethodImplAttribute(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+            public void Invoke(nint source, nint dest, nint mat) => _func(source, dest, mat);
+        }
+
+        static Ptr_Func_BLIT_02 Func_BLIT_02;
+
+        readonly unsafe partial struct Ptr_Graphics
+        {
+            [System.Runtime.CompilerServices.MethodImplAttribute(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+            public static void BLIT_02(nint source, nint dest, nint mat) => Func_BLIT_02.Invoke(source, dest, mat);
+        }
+
+
+
+
+        protected sealed override void InitMember()
+        {
+
+            Func_BLIT_02 = GetMethodPointer("Blit", Maple.MonoGameAssistant.UnityCore.UnityEngine.Graphics.Search_Graphics.BLIT_02);
+
+
+        }
+
+
+    }
+
 }
