@@ -34,6 +34,21 @@ namespace Maple.MonoGameAssistant.Core
         [MonoCollectorFlag(EnumMonoCollectorFlag.InitMember)]
         protected virtual void InitMember() { }
 
+        protected bool TryGetMethodPointer(Func<MonoMethodInfoDTO, bool> math, out MonoMethodPointer methodPointer)
+        {
+            Unsafe.SkipInit(out methodPointer);
+            if (this.ClassInfo.MethodInfos.TryGetFirstMethodInfo(math, out var methodInfoDTO))
+            {
+                methodPointer = this.RuntimeContext.RuntiemProvider.GetMonoMethodAddress(methodInfoDTO.Pointer);
+                return methodPointer.Valid();
+            }
+            return false;
+        }
+
+        protected bool TryGetMethodPointer(string methodName, out MonoMethodPointer methodPointer)
+            => TryGetMethodPointer(p => p.Name == methodName,out methodPointer);
+
+
         [MonoCollectorFlag(EnumMonoCollectorFlag.GetMethodPointer)]
         protected nint GetMethodPointer(string methodName, Func<MonoMethodInfoDTO, bool> math)
         {
@@ -44,7 +59,6 @@ namespace Maple.MonoGameAssistant.Core
                 return MonoCollectorObjectException.Throw<MonoMethodPointer>(errMsg);
             }
             var addr = this.RuntimeContext.RuntiemProvider.GetMonoMethodAddress(methodInfoDTO.Pointer);
-            //   this.Logger.LogInformation("methodName:{methodName}=>methodInfoDTO:{methodInfoDTO.Pointer}=>addr:{addr}", methodName, methodInfoDTO.Pointer.ToString("X8"), addr.ToString());
             if (addr.Valid() == false)
             {
                 var errMsg = $"{this.GetType().FullName}.{nameof(GetMethodPointer)}:ERROR {methodName} ADDRESS";
@@ -54,6 +68,8 @@ namespace Maple.MonoGameAssistant.Core
 
             return addr;
         }
+
+
 
         [MonoCollectorFlag(EnumMonoCollectorFlag.GetMethodPointer)]
         protected nint GetMethodPointer(string methodName) => GetMethodPointer(methodName, (p) => p.Name == methodName);
@@ -143,7 +159,7 @@ namespace Maple.MonoGameAssistant.Core
             var pMonoClass = pMonoObject.MonoClass;
             if (pMonoClass == this.ClassInfo.ClassInfoDTO.Pointer)
             {
-               return pMonoObject.To<T_MonoObject>();
+                return pMonoObject.To<T_MonoObject>();
             }
             return default;
         }

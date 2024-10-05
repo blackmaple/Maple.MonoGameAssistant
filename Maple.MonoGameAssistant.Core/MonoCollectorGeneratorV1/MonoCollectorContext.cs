@@ -4,6 +4,7 @@ using Maple.MonoGameAssistant.MonoCollector;
 using Maple.MonoGameAssistant.MonoCollectorDataV2;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 using static Maple.MonoGameAssistant.Core.MonoRuntimeContext;
 
 namespace Maple.MonoGameAssistant.Core
@@ -11,10 +12,10 @@ namespace Maple.MonoGameAssistant.Core
 
     public abstract class MonoCollectorContext
     {
-        public MonoRuntimeContext RuntimeContext { get; }  
-        public EnumMonoCollectorTypeVersion TypeVersion { get; } 
+        public MonoRuntimeContext RuntimeContext { get; }
+        public EnumMonoCollectorTypeVersion TypeVersion { get; }
 
-        public ILogger Logger { get; }  
+        public ILogger Logger { get; }
         public string ApiVersion { get; }
 
         internal MonoImageInfoDTO[] ImageInfoDTOs { get; }
@@ -27,6 +28,17 @@ namespace Maple.MonoGameAssistant.Core
             this.Logger = logger;
             this.ApiVersion = apiVer;
             this.ImageInfoDTOs = [.. runtimeContext.EnumMonoImages()];
+        }
+
+        protected bool TryGetClassInfo(MonoCollecotrClassSettings classSettings, [MaybeNullWhen(false)] out MonoCollectorClassInfo classInfo)
+        {
+            Unsafe.SkipInit(out classInfo);
+            if (this.ImageInfoDTOs.TryGetFirstImageInfo(classSettings.Utf8ImageName, out var imageInfoDTO)
+               && this.RuntimeContext.TryGetFirstClassInfo(imageInfoDTO, classSettings, out classInfo))
+            {
+                return true;
+            }
+            return false;
         }
 
         [MonoCollectorFlag(EnumMonoCollectorFlag.GetClassInfo)]
