@@ -8,6 +8,11 @@ namespace Maple.MonoGameAssistant.Core
     {
         [MarshalAs(UnmanagedType.SysInt)]
         nint _ptr = ptr;
+        public static implicit operator nint(PDelegatePointer ptr) => ptr._ptr;
+        public static implicit operator PDelegatePointer(nint ptr) => new(ptr);
+        public static implicit operator bool(PDelegatePointer pointer) => pointer.Valid();
+
+        public readonly bool Valid() => _ptr != IntPtr.Zero;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public T_Delegate GetDelegate<T_Delegate>()

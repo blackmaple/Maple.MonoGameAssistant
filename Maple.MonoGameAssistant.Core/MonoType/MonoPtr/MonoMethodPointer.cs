@@ -12,6 +12,8 @@ namespace Maple.MonoGameAssistant.Core
         readonly nint _ptr = ptr;
         public static implicit operator nint(MonoMethodPointer ptr) => ptr._ptr;
         public static implicit operator MonoMethodPointer(nint ptr) => new(ptr);
+        public static implicit operator bool(MonoMethodPointer ptr) => ptr.Valid();
+
         public override string ToString()
         {
             return _ptr.ToString("X8");

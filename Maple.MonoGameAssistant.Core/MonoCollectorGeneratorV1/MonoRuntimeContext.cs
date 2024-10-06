@@ -146,6 +146,10 @@ namespace Maple.MonoGameAssistant.Core
             var pMethod = this.RuntiemProvider.GetInternalCall(signature);
             return Unsafe.As<PDelegatePointer, T_METHOD>(ref pMethod);
         }
+        public PDelegatePointer GetInternalCall(string signature)
+        {
+            return this.RuntiemProvider.GetInternalCall(signature);
+        }
 
         public MonoGCHandle<T_STRUCT> CreateMonoGCHandle<T_STRUCT>(T_STRUCT pMonoObject)
            where T_STRUCT : unmanaged

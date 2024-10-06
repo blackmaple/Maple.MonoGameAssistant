@@ -439,7 +439,7 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
         /// public  extern System.Single GET_SPRITE_ATLAS_TEXTURE_SCALE ();
 
 
-        const string Name_Func_GET_TEXTURE = "get_texture";
+        public const string Name_Func_GET_TEXTURE = "get_texture";
         /// <summary>
         ///   UnityEngine.Texture2D get_texture()
         /// </summary>
@@ -659,13 +659,14 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
         /// public  extern UnityEngine.Rect GET_TEXTURE_RECT ();
 
 
-        /// const string Name_Func_GET_TEXTURE_RECT_INJECTED = "GetTextureRect_Injected";
+        public const string Name_Func_GET_TEXTURE_RECT_INJECTED = "GetTextureRect_Injected";
         /// <summary>
         ///   System.Void GetTextureRect_Injected(UnityEngine.Rect& ret)
         /// </summary>
         /// <param name="ret">struct UnityEngine.Rect&</param>
         /// <returns>struct System.Void</returns>
-        /// public  extern void GET_TEXTURE_RECT_INJECTED (UnityEngine.Rect& ret);
+        [MonoCollectorMethod(Name_Func_GET_TEXTURE_RECT_INJECTED, CallConvs = [typeof(CallConvCdecl)])]
+        public extern void GET_TEXTURE_RECT_INJECTED(out Rect.Ref_Rect ret);
 
 
         /// const string Name_Func_GET_TEXTURE_RECT_OFFSET = "GetTextureRectOffset";
@@ -1636,8 +1637,6 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
 
     }
 
-
-
     partial class Sprite(Maple.MonoGameAssistant.Core.MonoCollectorContext collectorContext, Maple.MonoGameAssistant.MonoCollector.MonoCollectorClassInfo classInfo) : Maple.MonoGameAssistant.Core.MonoCollectorMember(collectorContext, classInfo)
     {
 
@@ -1656,7 +1655,7 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
 
 
 
-        internal readonly unsafe partial struct Ptr_Func_GET_TEXTURE(nint ptr)
+        readonly unsafe partial struct Ptr_Func_GET_TEXTURE(nint ptr)
         {
             readonly delegate* unmanaged[Cdecl, SuppressGCTransition]<Maple.MonoGameAssistant.UnityCore.UnityEngine.Sprite.Ptr_Sprite, Maple.MonoGameAssistant.UnityCore.UnityEngine.Texture2D.Ptr_Texture2D> _func = (delegate* unmanaged[Cdecl, SuppressGCTransition]<Maple.MonoGameAssistant.UnityCore.UnityEngine.Sprite.Ptr_Sprite, Maple.MonoGameAssistant.UnityCore.UnityEngine.Texture2D.Ptr_Texture2D>)ptr;
 
@@ -1671,7 +1670,7 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
             public Maple.MonoGameAssistant.UnityCore.UnityEngine.Texture2D.Ptr_Texture2D Invoke(Maple.MonoGameAssistant.UnityCore.UnityEngine.Sprite.Ptr_Sprite __this__) => _func(__this__);
         }
 
-        internal static Ptr_Func_GET_TEXTURE Func_GET_TEXTURE;
+        static Ptr_Func_GET_TEXTURE Func_GET_TEXTURE;
 
         readonly unsafe partial struct Ptr_Sprite
         {
@@ -1679,17 +1678,45 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
             public Maple.MonoGameAssistant.UnityCore.UnityEngine.Texture2D.Ptr_Texture2D GET_TEXTURE() => Func_GET_TEXTURE.Invoke(this);
         }
 
-
-
-
-        protected sealed override void InitMember()
+        readonly unsafe partial struct Ptr_Func_GET_TEXTURE_RECT_INJECTED(nint ptr)
         {
+            readonly delegate* unmanaged[Cdecl, SuppressGCTransition]<Maple.MonoGameAssistant.UnityCore.UnityEngine.Sprite.Ptr_Sprite, out Maple.MonoGameAssistant.UnityCore.UnityEngine.Rect.Ref_Rect, void> _func = (delegate* unmanaged[Cdecl, SuppressGCTransition]<Maple.MonoGameAssistant.UnityCore.UnityEngine.Sprite.Ptr_Sprite, out Maple.MonoGameAssistant.UnityCore.UnityEngine.Rect.Ref_Rect, void>)ptr;
 
-            Func_GET_TEXTURE = GetMethodPointer("get_texture");
+            public static implicit operator Ptr_Func_GET_TEXTURE_RECT_INJECTED(nint ptr) => new(ptr);
 
+            public override string ToString()
+            {
+                return ((nint)((void*)_func)).ToString("X8");
+            }
 
+            [System.Runtime.CompilerServices.MethodImplAttribute(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+            public void Invoke(Maple.MonoGameAssistant.UnityCore.UnityEngine.Sprite.Ptr_Sprite __this__, out Maple.MonoGameAssistant.UnityCore.UnityEngine.Rect.Ref_Rect ret) => _func(__this__, out ret);
+        }
+
+        static Ptr_Func_GET_TEXTURE_RECT_INJECTED Func_GET_TEXTURE_RECT_INJECTED;
+
+        readonly unsafe partial struct Ptr_Sprite
+        {
+            [System.Runtime.CompilerServices.MethodImplAttribute(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+            public void GET_TEXTURE_RECT_INJECTED(out Maple.MonoGameAssistant.UnityCore.UnityEngine.Rect.Ref_Rect ret) => Func_GET_TEXTURE_RECT_INJECTED.Invoke(this, out ret);
         }
 
 
+
+
+        //protected sealed override void InitMember()
+        //{
+        //    //Func_GET_TEXTURE = GetMethodPointer("get_texture");
+        //    //Func_GET_TEXTURE_RECT_INJECTED = GetMethodPointer("GetTextureRect_Injected");
+        //}
+
     }
+
+    partial class Sprite
+    {
+        public static void Set_Func_GET_TEXTURE(nint addr) => Func_GET_TEXTURE = addr;
+        public static void Set_Func_GET_TEXTURE_RECT_INJECTED(nint addr) => Func_GET_TEXTURE_RECT_INJECTED = addr;
+
+    }
+
 }

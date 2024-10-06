@@ -34,66 +34,21 @@ namespace Maple.MonoGameAssistant.Core
         [MonoCollectorFlag(EnumMonoCollectorFlag.InitMember)]
         protected virtual void InitMember() { }
 
-        protected bool TryGetMethodPointer(Func<MonoMethodInfoDTO, bool> math, out MonoMethodPointer methodPointer)
-        {
-            Unsafe.SkipInit(out methodPointer);
-            if (this.ClassInfo.MethodInfos.TryGetFirstMethodInfo(math, out var methodInfoDTO))
-            {
-                methodPointer = this.RuntimeContext.RuntiemProvider.GetMonoMethodAddress(methodInfoDTO.Pointer);
-                return methodPointer.Valid();
-            }
-            return false;
-        }
 
-        protected bool TryGetMethodPointer(string methodName, out MonoMethodPointer methodPointer)
-            => TryGetMethodPointer(p => p.Name == methodName,out methodPointer);
 
 
         [MonoCollectorFlag(EnumMonoCollectorFlag.GetMethodPointer)]
         protected nint GetMethodPointer(string methodName, Func<MonoMethodInfoDTO, bool> math)
-        {
-            if (false == ClassInfo.MethodInfos.TryGetFirstMethodInfo(math, out var methodInfoDTO))
-            {
-                var errMsg = $"{this.GetType().FullName}.{nameof(GetMethodPointer)}:NOT FOUND {methodName}";
-                this.Logger.Error(errMsg);
-                return MonoCollectorObjectException.Throw<MonoMethodPointer>(errMsg);
-            }
-            var addr = this.RuntimeContext.RuntiemProvider.GetMonoMethodAddress(methodInfoDTO.Pointer);
-            if (addr.Valid() == false)
-            {
-                var errMsg = $"{this.GetType().FullName}.{nameof(GetMethodPointer)}:ERROR {methodName} ADDRESS";
-                this.Logger.Error(errMsg);
-                return MonoCollectorObjectException.Throw<MonoMethodPointer>(errMsg);
-            }
-
-            return addr;
-        }
-
-
-
+            => this.CollectorContext.GetMethodPointer(this.ClassInfo, methodName, math);
         [MonoCollectorFlag(EnumMonoCollectorFlag.GetMethodPointer)]
         protected nint GetMethodPointer(string methodName) => GetMethodPointer(methodName, (p) => p.Name == methodName);
 
 
+
+
         [MonoCollectorFlag(EnumMonoCollectorFlag.GetStaticMethodInvoker)]
         protected MonoStaticMethodInvoker GetStaticMethodInvoker(string methodName, Func<MonoMethodInfoDTO, bool> math)
-        {
-            if (false == ClassInfo.MethodInfos.TryGetFirstMethodInfo(math, out var methodInfoDTO))
-            {
-                var errMsg = $"{this.GetType().FullName}.{nameof(GetStaticMethodInvoker)}:NOT FOUND {methodName}";
-                this.Logger.Error(errMsg);
-                return MonoCollectorObjectException.Throw<MonoStaticMethodInvoker>(errMsg);
-            }
-            var addr = this.RuntimeContext.RuntiemProvider.GetMonoMethodAddress(methodInfoDTO.Pointer);
-            //   this.Logger.LogInformation("methodName:{methodName}=>methodInfoDTO:{methodInfoDTO.Pointer}=>addr:{addr}", methodName, methodInfoDTO.Pointer.ToString("X8"), addr.ToString());
-            if (addr.Valid() == false)
-            {
-                var errMsg = $"{this.GetType().FullName}.{nameof(GetStaticMethodInvoker)}:ERROR {methodName} ADDRESS";
-                this.Logger.Error(errMsg);
-                return MonoCollectorObjectException.Throw<MonoStaticMethodInvoker>(errMsg);
-            }
-            return new MonoStaticMethodInvoker(methodInfoDTO.Pointer, addr);
-        }
+            => this.CollectorContext.GetStaticMethodInvoker(this.ClassInfo, methodName, math);
 
         [MonoCollectorFlag(EnumMonoCollectorFlag.GetStaticMethodInvoker)]
         protected MonoStaticMethodInvoker GetStaticMethodInvoker(string methodName)
@@ -135,7 +90,6 @@ namespace Maple.MonoGameAssistant.Core
                 }
             }
             return default;
-
         }
 
         [MonoCollectorFlag(EnumMonoCollectorFlag.Ctor)]
@@ -201,16 +155,7 @@ namespace Maple.MonoGameAssistant.Core
 
         [MonoCollectorFlag(EnumMonoCollectorFlag.GetMemberFieldOffset)]
         public int GetMemberFieldOffset(string? fieldName)
-        {
-            var memberInfo = this.ClassInfo.GetFirstMemberFieldInfo(fieldName);
-            if (memberInfo is null)
-            {
-                var errMsg = $"{this.GetType().FullName}.{nameof(GetMemberFieldOffset)}:NOT FOUND {fieldName}";
-                this.Logger.Error(errMsg);
-                return MonoCollectorObjectException.Throw<int>(errMsg);
-            }
-            return memberInfo.Offset;
-        }
+            => this.CollectorContext.GetMemberFieldOffset(this.ClassInfo, fieldName);
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

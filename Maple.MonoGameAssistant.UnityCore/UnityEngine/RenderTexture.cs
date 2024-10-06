@@ -279,7 +279,7 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
         /// public  extern void GENERATE_MIPS ();
 
 
-        const string Name_Func_GET_ACTIVE = "get_active";
+        public const string Name_Func_GET_ACTIVE = "get_active";
         /// <summary>
         /// static  UnityEngine.RenderTexture get_active()
         /// </summary>
@@ -967,7 +967,7 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
         /// public  extern void RELEASE ();
 
 
-        const string Name_Func_RELEASE_TEMPORARY = "ReleaseTemporary";
+        public const string Name_Func_RELEASE_TEMPORARY = "ReleaseTemporary";
         /// <summary>
         /// static  System.Void ReleaseTemporary(UnityEngine.RenderTexture temp)
         /// </summary>
@@ -994,7 +994,7 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
         /// public  extern void RESOLVE_AA_TO (nint rt);
 
 
-        const string Name_Func_SET_ACTIVE = "set_active";
+        public const string Name_Func_SET_ACTIVE = "set_active";
         /// <summary>
         /// static  System.Void set_active(UnityEngine.RenderTexture value)
         /// </summary>
@@ -1689,7 +1689,7 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
         /// public  extern UnityEngine.Experimental.Rendering.GraphicsFormat GET_GRAPHICS_FORMAT_01 ();
 
 
-        const string Name_Func_GET_HEIGHT = "get_height";
+        public const string Name_Func_GET_HEIGHT = "get_height";
         /// <summary>
         ///   System.Int32 get_height()
         /// </summary>
@@ -1706,7 +1706,7 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
         /// public  extern System.Int32 GET_HEIGHT_01 ();
 
 
-        const string Name_Func_GET_WIDTH = "get_width";
+        public const string Name_Func_GET_WIDTH = "get_width";
         /// <summary>
         ///   System.Int32 get_width()
         /// </summary>
@@ -1864,7 +1864,7 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
         /// public static extern nint GET_TEMPORARY_09 (System.Int32 width,System.Int32 height,System.Int32 depthBuffer,UnityEngine.RenderTextureFormat format,UnityEngine.RenderTextureReadWrite readWrite,System.Int32 antiAliasing);
 
 
-        const string Name_Func_GET_TEMPORARY = "GetTemporary";
+        public const string Name_Func_GET_TEMPORARY = "GetTemporary";
         /// <summary>
         /// static  UnityEngine.RenderTexture GetTemporary(System.Int32 width,System.Int32 height,System.Int32 depthBuffer,UnityEngine.RenderTextureFormat format,UnityEngine.RenderTextureReadWrite readWrite)
         /// </summary>
@@ -3031,24 +3031,35 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
 
 
 
-        protected sealed override void InitMember()
-        {
+        //protected sealed override void InitMember()
+        //{
 
-            Func_GET_ACTIVE = GetMethodPointer("get_active");
+        //    Func_GET_ACTIVE = GetMethodPointer("get_active");
 
-            Func_RELEASE_TEMPORARY = GetMethodPointer("ReleaseTemporary");
+        //    Func_RELEASE_TEMPORARY = GetMethodPointer("ReleaseTemporary");
 
-            Func_SET_ACTIVE = GetMethodPointer("set_active");
+        //    Func_SET_ACTIVE = GetMethodPointer("set_active");
 
-            Func_GET_HEIGHT_00 = GetMethodPointer("get_height");
+        //    Func_GET_HEIGHT_00 = GetMethodPointer("get_height");
 
-            Func_GET_WIDTH_00 = GetMethodPointer("get_width");
+        //    Func_GET_WIDTH_00 = GetMethodPointer("get_width");
 
-            Func_GET_TEMPORARY_0A = GetMethodPointer("GetTemporary", Maple.MonoGameAssistant.UnityCore.UnityEngine.RenderTexture.Search_RenderTexture.GET_TEMPORARY_0A);
+        //    Func_GET_TEMPORARY_0A = GetMethodPointer("GetTemporary", Maple.MonoGameAssistant.UnityCore.UnityEngine.RenderTexture.Search_RenderTexture.GET_TEMPORARY_0A);
 
 
-        }
+        //}
 
+
+    }
+
+    partial class RenderTexture
+    {
+        public static void Set_Func_GET_ACTIVE(nint addr) => Func_GET_ACTIVE = addr;
+        public static void Set_Func_RELEASE_TEMPORARY(nint addr) => Func_RELEASE_TEMPORARY = addr;
+        public static void Set_Func_SET_ACTIVE(nint addr) => Func_SET_ACTIVE = addr;
+        public static void Set_Func_GET_HEIGHT_00(nint addr) => Func_GET_HEIGHT_00 = addr;
+        public static void Set_Func_GET_WIDTH_00(nint addr) => Func_GET_WIDTH_00 = addr;
+        public static void Set_Func_GET_TEMPORARY_0A(nint addr) => Func_GET_TEMPORARY_0A = addr;
 
     }
 }

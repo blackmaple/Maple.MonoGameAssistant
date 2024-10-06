@@ -16,8 +16,7 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
     /// 
     /// </summary>
     //[Maple.MonoGameAssistant.MonoCollectorDataV2.MonoCollectorSettingsAttribute([85, 110, 105, 116, 121, 69, 110, 103, 105, 110, 101, 46, 67, 111, 114, 101, 77, 111, 100, 117, 108, 101, 46, 100, 108, 108], 0x02000080U)]
-    //[Maple.MonoGameAssistant.MonoCollectorDataV2.MonoCollectorSettingsAttribute([85, 110, 105, 116, 121, 69, 110, 103, 105, 110, 101, 46, 67, 111, 114, 101, 77, 111, 100, 117, 108, 101, 46, 100, 108, 108], [85, 110, 105, 116, 121, 69, 110, 103, 105, 110, 101], [71, 114, 97, 112, 104, 105, 99, 115])]
-
+    [Maple.MonoGameAssistant.MonoCollectorDataV2.MonoCollectorSettingsAttribute([85, 110, 105, 116, 121, 69, 110, 103, 105, 110, 101, 46, 67, 111, 114, 101, 77, 111, 100, 117, 108, 101, 46, 100, 108, 108], [85, 110, 105, 116, 121, 69, 110, 103, 105, 110, 101], [71, 114, 97, 112, 104, 105, 99, 115])]
     public partial class Graphics
     {
         //public const string Const_ImageName = "UnityEngine.CoreModule.dll";
@@ -116,14 +115,15 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
         /// public static extern void .CCTOR ();
 
 
-        /// const string Name_Func_BLIT2 = "Blit2";
+        public const string Name_Func_BLIT2 = "Blit2";
         /// <summary>
         /// static  System.Void Blit2(UnityEngine.Texture source,UnityEngine.RenderTexture dest)
         /// </summary>
         /// <param name="source">class UnityEngine.Texture</param>
         /// <param name="dest">class UnityEngine.RenderTexture</param>
         /// <returns>struct System.Void</returns>
-        /// public static extern void BLIT2 (nint source,nint dest);
+        [MonoCollectorMethod(Name_Func_BLIT2, CallConvs = [typeof(CallConvCdecl)])]
+        public static extern void BLIT2(nint source, nint dest);
 
 
         /// const string Name_Func_COPY_TEXTURE_REGION = "CopyTexture_Region";
@@ -319,7 +319,7 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
         /// public static extern void BLIT_01 (nint source,nint dest,nint mat,System.Int32 pass);
 
 
-        const string Name_Func_BLIT = "Blit";
+        ///const string Name_Func_BLIT = "Blit";
         /// <summary>
         /// static  System.Void Blit(UnityEngine.Texture source,UnityEngine.RenderTexture dest,UnityEngine.Material mat)
         /// </summary>
@@ -327,8 +327,8 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
         /// <param name="dest">class UnityEngine.RenderTexture</param>
         /// <param name="mat">class UnityEngine.Material</param>
         /// <returns>struct System.Void</returns>
-        [MonoGameAssistant.MonoCollectorDataV2.MonoCollectorMethod(Name_Func_BLIT, Search = typeof(Search_Graphics), CallConvs = [typeof(CallConvCdecl)])]
-        static extern void BLIT_02(nint source, nint dest, nint mat);
+        ///[MonoGameAssistant.MonoCollectorDataV2.MonoCollectorMethod(Name_Func_BLIT, Search = typeof(Search_Graphics), CallConvs = [typeof(CallConvCdecl)])]
+        ///static extern void BLIT_02(nint source, nint dest, nint mat);
 
 
         /// const string Name_Func_COPY_TEXTURE = "CopyTexture";
@@ -440,8 +440,8 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
             /// <summary>
             /// static  System.Void Blit(UnityEngine.Texture source, UnityEngine.RenderTexture dest)
             /// </summary>
-            public static bool BLIT_00(Maple.MonoGameAssistant.Model.MonoMethodInfoDTO monoMethodInfoDTO)
-                => Maple.MonoGameAssistant.MonoCollector.MonoCollectorExtensions.SearchMonoMethodInfo(monoMethodInfoDTO, "Blit", "UnityEngine.Texture", "UnityEngine.RenderTexture");
+            ///public static bool BLIT_00(Maple.MonoGameAssistant.Model.MonoMethodInfoDTO monoMethodInfoDTO)
+            ///    => Maple.MonoGameAssistant.MonoCollector.MonoCollectorExtensions.SearchMonoMethodInfo(monoMethodInfoDTO, "Blit", "UnityEngine.Texture", "UnityEngine.RenderTexture");
             ///     
             ///  
             /// 
@@ -568,11 +568,11 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
 
 
 
-        readonly unsafe partial struct Ptr_Func_BLIT_02(nint ptr)
+        readonly unsafe partial struct Ptr_Func_BLIT2(nint ptr)
         {
-            readonly delegate* unmanaged[Cdecl, SuppressGCTransition]<nint, nint, nint, void> _func = (delegate* unmanaged[Cdecl, SuppressGCTransition]<nint, nint, nint, void>)ptr;
+            readonly delegate* unmanaged[Cdecl, SuppressGCTransition]<nint, nint, void> _func = (delegate* unmanaged[Cdecl, SuppressGCTransition]<nint, nint, void>)ptr;
 
-            public static implicit operator Ptr_Func_BLIT_02(nint ptr) => new(ptr);
+            public static implicit operator Ptr_Func_BLIT2(nint ptr) => new(ptr);
 
             public override string ToString()
             {
@@ -580,15 +580,15 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
             }
 
             [System.Runtime.CompilerServices.MethodImplAttribute(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-            public void Invoke(nint source, nint dest, nint mat) => _func(source, dest, mat);
+            public void Invoke(nint source, nint dest) => _func(source, dest);
         }
 
-        static Ptr_Func_BLIT_02 Func_BLIT_02;
+        static Ptr_Func_BLIT2 Func_BLIT2;
 
         readonly unsafe partial struct Ptr_Graphics
         {
             [System.Runtime.CompilerServices.MethodImplAttribute(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-            public static void BLIT_02(nint source, nint dest, nint mat) => Func_BLIT_02.Invoke(source, dest, mat);
+            public static void BLIT2(nint source, nint dest) => Func_BLIT2.Invoke(source, dest);
         }
 
 
@@ -597,7 +597,7 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
         protected sealed override void InitMember()
         {
 
-            Func_BLIT_02 = GetMethodPointer("Blit", Maple.MonoGameAssistant.UnityCore.UnityEngine.Graphics.Search_Graphics.BLIT_02);
+            Func_BLIT2 = GetMethodPointer("Blit2");
 
 
         }
@@ -605,4 +605,8 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
 
     }
 
+    partial class Graphics
+    {
+        public static void Set_Func_BLIT2(nint addr) => Func_BLIT2 = addr;
+    }
 }

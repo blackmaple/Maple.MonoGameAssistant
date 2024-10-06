@@ -11,7 +11,7 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
     /// 
     /// </summary>
     //[Maple.MonoGameAssistant.MonoCollectorDataV2.MonoCollectorSettingsAttribute([85, 110, 105, 116, 121, 69, 110, 103, 105, 110, 101, 46, 67, 111, 114, 101, 77, 111, 100, 117, 108, 101, 46, 100, 108, 108], 0x020000B6U)]
-   // [Maple.MonoGameAssistant.MonoCollectorDataV2.MonoCollectorSettingsAttribute([85, 110, 105, 116, 121, 69, 110, 103, 105, 110, 101, 46, 67, 111, 114, 101, 77, 111, 100, 117, 108, 101, 46, 100, 108, 108], [85, 110, 105, 116, 121, 69, 110, 103, 105, 110, 101], [84, 101, 120, 116, 117, 114, 101, 50, 68])]
+    //[Maple.MonoGameAssistant.MonoCollectorDataV2.MonoCollectorSettingsAttribute([85, 110, 105, 116, 121, 69, 110, 103, 105, 110, 101, 46, 67, 111, 114, 101, 77, 111, 100, 117, 108, 101, 46, 100, 108, 108], [85, 110, 105, 116, 121, 69, 110, 103, 105, 110, 101], [84, 101, 120, 116, 117, 114, 101, 50, 68])]
     public partial class Texture2D
     {
         //public const string Const_ImageName = "UnityEngine.CoreModule.dll";
@@ -419,7 +419,7 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
         /// public static extern nint GET_GRAY_TEXTURE ();
 
 
-        const string Name_Func_GET_HEIGHT = "get_height";
+        public const string Name_Func_GET_HEIGHT = "get_height";
         /// <summary>
         ///   System.Int32 get_height()
         /// </summary>
@@ -605,7 +605,7 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
         /// public static extern nint GET_WHITE_TEXTURE ();
 
 
-        const string Name_Func_GET_WIDTH = "get_width";
+        public const string Name_Func_GET_WIDTH = "get_width";
         /// <summary>
         ///   System.Int32 get_width()
         /// </summary>
@@ -993,7 +993,7 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
         /// public  extern void READ_PIXELS_IMPL (UnityEngine.Rect source,System.Int32 destX,System.Int32 destY,System.Boolean recalculateMipMaps);
 
 
-        /// const string Name_Func_READ_PIXELS_IMPL_INJECTED = "ReadPixelsImpl_Injected";
+        public const string Name_Func_READ_PIXELS_IMPL_INJECTED = "ReadPixelsImpl_Injected";
         /// <summary>
         ///   System.Void ReadPixelsImpl_Injected(UnityEngine.Rect& source,System.Int32 destX,System.Int32 destY,System.Boolean recalculateMipMaps)
         /// </summary>
@@ -1002,7 +1002,8 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
         /// <param name="destY">struct System.Int32</param>
         /// <param name="recalculateMipMaps">struct System.Boolean</param>
         /// <returns>struct System.Void</returns>
-        /// public  extern void READ_PIXELS_IMPL_INJECTED (UnityEngine.Rect& source,System.Int32 destX,System.Int32 destY,System.Boolean recalculateMipMaps);
+        [MonoCollectorMethod(Name_Func_READ_PIXELS_IMPL_INJECTED, CallConvs = [typeof(CallConvCdecl)])]
+        public extern void READ_PIXELS_IMPL_INJECTED(in UnityEngine.Rect.Ref_Rect source, System.Int32 destX, System.Int32 destY, System.Boolean recalculateMipMaps);
 
 
         /// const string Name_Func_RESIZE_IMPL = "ResizeImpl";
@@ -1423,7 +1424,7 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
         /// public  extern void .CTOR_06 (System.Int32 width,System.Int32 height,UnityEngine.TextureFormat textureFormat,System.Boolean mipChain,System.Boolean linear);
 
 
-        const string Name_Func_CTOR = ".ctor";
+        public const string Name_Func_CTOR = ".ctor";
         /// <summary>
         ///   System.Void .ctor(System.Int32 width,System.Int32 height,UnityEngine.TextureFormat textureFormat,System.Boolean mipChain)
         /// </summary>
@@ -1432,8 +1433,8 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
         /// <param name="textureFormat">enum UnityEngine.TextureFormat</param>
         /// <param name="mipChain">struct System.Boolean</param>
         /// <returns>struct System.Void</returns>
-        [MonoCollectorMethod(Name_Func_CTOR, Search = typeof(Search_Texture2D), CallConvs = [typeof(CallConvCdecl)])]
-        public extern void CTOR_07(System.Int32 width, System.Int32 height, UnityEngine.TextureFormat textureFormat, System.Boolean mipChain);
+        ///[MonoCollectorMethod(Name_Func_CTOR, Search = typeof(Search_Texture2D), CallConvs = [typeof(CallConvCdecl)])]
+        ///public extern void CTOR_07(System.Int32 width, System.Int32 height, UnityEngine.TextureFormat textureFormat, System.Boolean mipChain);
 
 
         /// <summary>
@@ -1481,7 +1482,7 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
         /// public  extern void APPLY_01 (System.Boolean updateMipmaps);
 
 
-        const string Name_Func_APPLY = "Apply";
+        public const string Name_Func_APPLY = "Apply";
         /// <summary>
         ///   System.Void Apply()
         /// </summary>
@@ -1932,7 +1933,7 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
         /// public  extern void READ_PIXELS_00 (UnityEngine.Rect source,System.Int32 destX,System.Int32 destY,System.Boolean recalculateMipMaps);
 
 
-        const string Name_Func_READ_PIXELS = "ReadPixels";
+        ///const string Name_Func_READ_PIXELS = "ReadPixels";
         /// <summary>
         ///   System.Void ReadPixels(UnityEngine.Rect source,System.Int32 destX,System.Int32 destY)
         /// </summary>
@@ -1940,8 +1941,8 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
         /// <param name="destX">struct System.Int32</param>
         /// <param name="destY">struct System.Int32</param>
         /// <returns>struct System.Void</returns>
-        [MonoCollectorMethod(Name_Func_READ_PIXELS, Search = typeof(Search_Texture2D), CallConvs = [typeof(CallConvCdecl)])]
-        extern void READ_PIXELS_01(UnityEngine.Rect.Ref_Rect source, System.Int32 destX, System.Int32 destY);
+        ///[MonoCollectorMethod(Name_Func_READ_PIXELS, Search = typeof(Search_Texture2D), CallConvs = [typeof(CallConvCdecl)])]
+        ///extern void READ_PIXELS_01(UnityEngine.Rect.Ref_Rect source, System.Int32 destX, System.Int32 destY);
 
 
         /// const string Name_Func_RESIZE = "Resize";
@@ -2249,8 +2250,8 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
             /// <summary>
             ///   System.Void .ctor(System.Int32 width, System.Int32 height, UnityEngine.TextureFormat textureFormat, System.Boolean mipChain)
             /// </summary>
-            public static bool CTOR_07(Maple.MonoGameAssistant.Model.MonoMethodInfoDTO monoMethodInfoDTO)
-                => Maple.MonoGameAssistant.MonoCollector.MonoCollectorExtensions.SearchMonoMethodInfo(monoMethodInfoDTO, ".ctor", "System.Int32", "System.Int32", "UnityEngine.TextureFormat", "System.Boolean");
+            ///public static bool CTOR_07(Maple.MonoGameAssistant.Model.MonoMethodInfoDTO monoMethodInfoDTO)
+            ///    => Maple.MonoGameAssistant.MonoCollector.MonoCollectorExtensions.SearchMonoMethodInfo(monoMethodInfoDTO, ".ctor", "System.Int32", "System.Int32", "UnityEngine.TextureFormat", "System.Boolean");
             ///     
             ///  
             /// 
@@ -3033,11 +3034,11 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
             public int GET_WIDTH() => Func_GET_WIDTH.Invoke(this);
         }
 
-        readonly unsafe partial struct Ptr_Func_CTOR_07(nint ptr)
+        readonly unsafe partial struct Ptr_Func_READ_PIXELS_IMPL_INJECTED(nint ptr)
         {
-            readonly delegate* unmanaged[Cdecl, SuppressGCTransition]<Maple.MonoGameAssistant.UnityCore.UnityEngine.Texture2D.Ptr_Texture2D, int, int, Maple.MonoGameAssistant.UnityCore.UnityEngine.TextureFormat, bool, void> _func = (delegate* unmanaged[Cdecl, SuppressGCTransition]<Maple.MonoGameAssistant.UnityCore.UnityEngine.Texture2D.Ptr_Texture2D, int, int, Maple.MonoGameAssistant.UnityCore.UnityEngine.TextureFormat, bool, void>)ptr;
+            readonly delegate* unmanaged[Cdecl, SuppressGCTransition]<Maple.MonoGameAssistant.UnityCore.UnityEngine.Texture2D.Ptr_Texture2D, in Maple.MonoGameAssistant.UnityCore.UnityEngine.Rect.Ref_Rect, int, int, bool, void> _func = (delegate* unmanaged[Cdecl, SuppressGCTransition]<Maple.MonoGameAssistant.UnityCore.UnityEngine.Texture2D.Ptr_Texture2D, in Maple.MonoGameAssistant.UnityCore.UnityEngine.Rect.Ref_Rect, int, int, bool, void>)ptr;
 
-            public static implicit operator Ptr_Func_CTOR_07(nint ptr) => new(ptr);
+            public static implicit operator Ptr_Func_READ_PIXELS_IMPL_INJECTED(nint ptr) => new(ptr);
 
             public override string ToString()
             {
@@ -3045,15 +3046,15 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
             }
 
             [System.Runtime.CompilerServices.MethodImplAttribute(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-            public void Invoke(Maple.MonoGameAssistant.UnityCore.UnityEngine.Texture2D.Ptr_Texture2D __this__, int width, int height, Maple.MonoGameAssistant.UnityCore.UnityEngine.TextureFormat textureFormat, bool mipChain) => _func(__this__, width, height, textureFormat, mipChain);
+            public void Invoke(Maple.MonoGameAssistant.UnityCore.UnityEngine.Texture2D.Ptr_Texture2D __this__, in Maple.MonoGameAssistant.UnityCore.UnityEngine.Rect.Ref_Rect source, int destX, int destY, bool recalculateMipMaps) => _func(__this__, in source, destX, destY, recalculateMipMaps);
         }
 
-        static Ptr_Func_CTOR_07 Func_CTOR_07;
+        static Ptr_Func_READ_PIXELS_IMPL_INJECTED Func_READ_PIXELS_IMPL_INJECTED;
 
         readonly unsafe partial struct Ptr_Texture2D
         {
             [System.Runtime.CompilerServices.MethodImplAttribute(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-            public void CTOR_07(int width, int height, Maple.MonoGameAssistant.UnityCore.UnityEngine.TextureFormat textureFormat, bool mipChain) => Func_CTOR_07.Invoke(this, width, height, textureFormat, mipChain);
+            public void READ_PIXELS_IMPL_INJECTED(in Maple.MonoGameAssistant.UnityCore.UnityEngine.Rect.Ref_Rect source, int destX, int destY, bool recalculateMipMaps) => Func_READ_PIXELS_IMPL_INJECTED.Invoke(this, in source, destX, destY, recalculateMipMaps);
         }
 
         readonly unsafe partial struct Ptr_Func_CTOR_08(nint ptr)
@@ -3102,50 +3103,36 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
             public void APPLY_02() => Func_APPLY_02.Invoke(this);
         }
 
-        readonly unsafe partial struct Ptr_Func_READ_PIXELS_01(nint ptr)
-        {
-            readonly delegate* unmanaged[Cdecl, SuppressGCTransition]<Maple.MonoGameAssistant.UnityCore.UnityEngine.Texture2D.Ptr_Texture2D, Maple.MonoGameAssistant.UnityCore.UnityEngine.Rect.Ref_Rect, int, int, void> _func = (delegate* unmanaged[Cdecl, SuppressGCTransition]<Maple.MonoGameAssistant.UnityCore.UnityEngine.Texture2D.Ptr_Texture2D, Maple.MonoGameAssistant.UnityCore.UnityEngine.Rect.Ref_Rect, int, int, void>)ptr;
-
-            public static implicit operator Ptr_Func_READ_PIXELS_01(nint ptr) => new(ptr);
-
-            public override string ToString()
-            {
-                return ((nint)((void*)_func)).ToString("X8");
-            }
-
-            [System.Runtime.CompilerServices.MethodImplAttribute(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-            public void Invoke(Maple.MonoGameAssistant.UnityCore.UnityEngine.Texture2D.Ptr_Texture2D __this__, Maple.MonoGameAssistant.UnityCore.UnityEngine.Rect.Ref_Rect source, int destX, int destY) => _func(__this__, source, destX, destY);
-        }
-
-        static Ptr_Func_READ_PIXELS_01 Func_READ_PIXELS_01;
-
-        readonly unsafe partial struct Ptr_Texture2D
-        {
-            [System.Runtime.CompilerServices.MethodImplAttribute(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-            public void READ_PIXELS_01(Maple.MonoGameAssistant.UnityCore.UnityEngine.Rect.Ref_Rect source, int destX, int destY) => Func_READ_PIXELS_01.Invoke(this, source, destX, destY);
-        }
 
 
 
+        //protected sealed override void InitMember()
+        //{
 
-        protected sealed override void InitMember()
-        {
+        //    Func_GET_HEIGHT = GetMethodPointer("get_height");
 
-            Func_GET_HEIGHT = GetMethodPointer("get_height");
+        //    Func_GET_WIDTH = GetMethodPointer("get_width");
 
-            Func_GET_WIDTH = GetMethodPointer("get_width");
+        //    Func_READ_PIXELS_IMPL_INJECTED = GetMethodPointer("ReadPixelsImpl_Injected");
 
-            Func_CTOR_07 = GetMethodPointer(".ctor", Maple.MonoGameAssistant.UnityCore.UnityEngine.Texture2D.Search_Texture2D.CTOR_07);
+        //    Func_CTOR_08 = GetMethodPointer(".ctor", Maple.MonoGameAssistant.UnityCore.UnityEngine.Texture2D.Search_Texture2D.CTOR_08);
 
-            Func_CTOR_08 = GetMethodPointer(".ctor", Maple.MonoGameAssistant.UnityCore.UnityEngine.Texture2D.Search_Texture2D.CTOR_08);
-
-            Func_APPLY_02 = GetMethodPointer("Apply", Maple.MonoGameAssistant.UnityCore.UnityEngine.Texture2D.Search_Texture2D.APPLY_02);
-
-            Func_READ_PIXELS_01 = GetMethodPointer("ReadPixels", Maple.MonoGameAssistant.UnityCore.UnityEngine.Texture2D.Search_Texture2D.READ_PIXELS_01);
+        //    Func_APPLY_02 = GetMethodPointer("Apply", Maple.MonoGameAssistant.UnityCore.UnityEngine.Texture2D.Search_Texture2D.APPLY_02);
 
 
-        }
+        //}
 
+
+    }
+
+
+    partial class Texture2D
+    {
+        public static void Set_Func_GET_HEIGHT(nint addr) => Func_GET_HEIGHT = addr;
+        public static void Set_Func_GET_WIDTH(nint addr) => Func_GET_WIDTH = addr;
+        public static void Set_Func_READ_PIXELS_IMPL_INJECTED(nint addr) => Func_READ_PIXELS_IMPL_INJECTED = addr;
+        public static void Set_Func_CTOR_08(nint addr) => Func_CTOR_08 = addr;
+        public static void Set_Func_APPLY_02(nint addr) => Func_APPLY_02 = addr;
 
     }
 }
