@@ -37,13 +37,13 @@
     <Project Path="Maple.MonoGameAssistant.WinForm\Maple.MonoGameAssistant.WinForm.csproj" />
   </Folder>
   <Folder Name="/Windows/">
+    <Project Path="Maple.MonoGameAssistant.DllProxyStaticLib\Maple.MonoGameAssistant.DllProxyStaticLib.vcxproj" />
     <Project Path="Maple.MonoGameAssistant.GameContext\Maple.MonoGameAssistant.GameContext.csproj" Type="C#" />
     <Project Path="Maple.MonoGameAssistant.HookTask\Maple.MonoGameAssistant.HookTask.csproj" Type="C#" />
     <Project Path="Maple.MonoGameAssistant.HotKey.Abstractions\Maple.MonoGameAssistant.HotKey.Abstractions.csproj" Type="C#" />
     <Project Path="Maple.MonoGameAssistant.HotKey\Maple.MonoGameAssistant.HotKey.csproj" />
     <Project Path="Maple.MonoGameAssistant.UITask\Maple.MonoGameAssistant.UITask.csproj" Type="C#" />
     <Project Path="Maple.MonoGameAssistant.WinApi\Maple.MonoGameAssistant.WinApi.csproj" Type="C#" />
-    <Project Path="Maple.MonoGameAssistant.DllProxyStaticLib\Maple.MonoGameAssistant.DllProxyStaticLib.vcxproj" />
   </Folder>
   <Properties Name="Visual Studio">
     <Property Name="OpenWith" Value="Visual Studio Version 17" />
