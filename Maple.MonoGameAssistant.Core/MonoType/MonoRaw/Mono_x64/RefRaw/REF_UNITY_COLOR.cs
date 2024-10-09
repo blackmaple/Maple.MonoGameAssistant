@@ -1,6 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace Maple.MonoGameAssistant.RawDotNet
+namespace Maple.MonoGameAssistant.Core
 {
     [StructLayout(LayoutKind.Sequential)]
     public struct REF_UNITY_COLOR
