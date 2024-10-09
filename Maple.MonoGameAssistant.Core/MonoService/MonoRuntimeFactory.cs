@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Maple.MonoGameAssistant.Common;
+using Microsoft.Extensions.Logging;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 namespace Maple.MonoGameAssistant.Core
@@ -27,7 +28,9 @@ namespace Maple.MonoGameAssistant.Core
         [MethodImpl(MethodImplOptions.Synchronized)]
         public bool TryCreateMonoRuntime([MaybeNullWhen(false)] out IMonoRuntiemProvider monoRuntiemProvider, out EnumMonoRuntimeType runtimeType)
         {
+         
             var init = this.RuntimeApi.TryLoadMonoRuntimeApi();
+          
             if (init)
             {
                 this.MonoRuntimeService ??= RuntimeApi switch
@@ -39,6 +42,7 @@ namespace Maple.MonoGameAssistant.Core
             }
             monoRuntiemProvider = this.MonoRuntimeService;
             runtimeType = this.RuntimeApi.RuntimeType;
+        
             return init;
 
 

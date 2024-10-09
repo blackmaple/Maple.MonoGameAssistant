@@ -18,7 +18,7 @@ namespace Maple.MonoGameAssistant.Core
 
 
         #region Init RT
-        static readonly string[] Static_DLL_Files = ["mono-2.0-bdwgc.dll", "GameAssembly.dll"];
+        static readonly string[] Static_DLL_Files = ["mono-2.0-bdwgc.dll", "GameAssembly.dll", "libil2cpp.so"];
         static IEnumerable<nint> GetCurrentProcessModuleHandles()
         {
             //加载默认的DLL
