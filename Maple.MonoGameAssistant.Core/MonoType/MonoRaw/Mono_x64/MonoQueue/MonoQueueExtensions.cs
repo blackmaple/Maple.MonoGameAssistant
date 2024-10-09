@@ -1,6 +1,4 @@
-﻿using Maple.MonoGameAssistant.RawDotNet;
-using System.Runtime.CompilerServices;
-using System.Threading;
+﻿using System.Runtime.CompilerServices;
 
 namespace Maple.MonoGameAssistant.Core
 {

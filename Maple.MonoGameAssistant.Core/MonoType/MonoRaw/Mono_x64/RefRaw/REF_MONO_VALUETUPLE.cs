@@ -1,6 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace Maple.MonoGameAssistant.RawDotNet
+namespace Maple.MonoGameAssistant.Core
 {
     [StructLayout(LayoutKind.Sequential)]
     public readonly unsafe partial struct REF_MONO_VALUETUPLE<TITEM1, TITEM2>
