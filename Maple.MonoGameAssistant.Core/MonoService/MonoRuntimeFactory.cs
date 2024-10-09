@@ -1,17 +1,16 @@
 ﻿using Microsoft.Extensions.Logging;
 using System.Diagnostics.CodeAnalysis;
-using System.Runtime.CompilerServices;
 namespace Maple.MonoGameAssistant.Core
 {
 
-    public sealed class MonoRuntimeFactory(ILogger<MonoRuntimeFactory> logger)
+    public sealed class MonoRuntimeFactory(ILogger<MonoRuntimeFactory> logger, MonoRuntimeModuleView runtimeModuleView)
     {
         Lock LockObject { get; } = new Lock();
 
         IMonoRuntiemProvider? MonoRuntimeService { get; set; }
         ILogger Logger { get; } = logger;
-        MonoRuntimeApi RuntimeApi { get; } = new MonoRuntimeApi(logger);
-
+        MonoRuntimeApi RuntimeApi { get; } = new MonoRuntimeApi(logger, runtimeModuleView);
+        
 
         public bool CreateMonoRuntime(out EnumMonoRuntimeType runtimeType)
         {
