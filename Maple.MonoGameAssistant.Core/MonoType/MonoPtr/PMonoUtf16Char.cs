@@ -18,6 +18,10 @@ namespace Maple.MonoGameAssistant.Core
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override string? ToString()
         {
+            if(false == Valid())
+            {
+                return default;
+            }
             return Marshal.PtrToStringUni(_ptr);
         }
     }

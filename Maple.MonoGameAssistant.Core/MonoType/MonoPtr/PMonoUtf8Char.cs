@@ -28,7 +28,7 @@ namespace Maple.MonoGameAssistant.Core
         {
             if (false == Valid())
             {
-                return [];
+                return default;
             }
             var span = MemoryMarshal.CreateReadOnlySpanFromNullTerminated((byte*)_ptr);
             return span;
@@ -36,6 +36,10 @@ namespace Maple.MonoGameAssistant.Core
 
         public string? GetRawString()
         {
+            if (false == Valid())
+            {
+                return default;
+            }
             return Encoding.UTF8.GetString(this.AsReadOnlySpan());
         }
 

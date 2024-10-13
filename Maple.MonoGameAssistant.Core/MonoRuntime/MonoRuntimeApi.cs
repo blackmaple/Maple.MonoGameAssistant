@@ -35,7 +35,10 @@ namespace Maple.MonoGameAssistant.Core
             using var process = Process.GetCurrentProcess();
             foreach (ProcessModule m in process.Modules)
             {
-                yield return m.BaseAddress;
+                using (m)
+                {
+                    yield return m.BaseAddress;
+                }
             }
 
         }
