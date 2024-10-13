@@ -33,6 +33,8 @@
 	<ItemGroup>
 		<NativeLibrary Include="..\x64\Release\Maple.MonoGameAssistant.DllProxyStaticLib.lib" />
 		<LinkerArg Include="/LTCG" />
+		<LinkerArg Include="/MAP" />
+
 	</ItemGroup>
 
 	<ItemGroup>

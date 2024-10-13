@@ -48,4 +48,7 @@
   <Properties Name="Visual Studio">
     <Property Name="OpenWith" Value="Visual Studio Version 17" />
   </Properties>
+  <Folder Name="/Android/">
+    <Project Path="Maple.MonoGameAssistant.AndroidCore\Maple.MonoGameAssistant.AndroidCore.csproj" Type="C#" />
+  </Folder>
 </Solution>

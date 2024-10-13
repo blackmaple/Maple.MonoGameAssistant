@@ -17,10 +17,17 @@ namespace Maple.MonoGameAssistant.Core
 
         //nint MONO_METHOD_GET_PARAM_NAMES (void *method, const char **names)
         //typedef void* (__cdecl *MONO_METHOD_GET_PARAM_NAMES)(void *method, const char **names);
-        readonly delegate* unmanaged[Cdecl, SuppressGCTransition]<PMonoMethod, ref PMonoUtf8Char, PMonoObject> _func = (delegate* unmanaged[Cdecl, SuppressGCTransition]<PMonoMethod, ref PMonoUtf8Char, PMonoObject>)ptr;
+        readonly delegate* unmanaged[Cdecl, SuppressGCTransition]<PMonoMethod, ref nint, PMonoObject> _func 
+            = (delegate* unmanaged[Cdecl, SuppressGCTransition]<PMonoMethod, ref nint, PMonoObject>)ptr;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public readonly PMonoObject Invoke(PMonoMethod pMonoMethod, ref PMonoUtf8Char pMonoUtf8Chars) => _func(pMonoMethod, ref pMonoUtf8Chars);
+        public readonly PMonoObject Invoke(PMonoMethod pMonoMethod, ref PMonoUtf8Char pMonoUtf8Chars)
+        {
+            nint tmp = pMonoUtf8Chars;
+            var obj = _func(pMonoMethod, ref tmp);
+
+            return obj;
+        }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public readonly PMonoObject Invoke(PMonoMethod pMonoMethod, in Span<PMonoUtf8Char> pMonoUtf8Chars)
