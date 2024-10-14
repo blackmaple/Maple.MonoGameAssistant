@@ -39,17 +39,29 @@
 
 
 	<ItemGroup>
-	  <Folder Include="JNI\Value\" />
-	  <Folder Include="JNI\Reference\" />
-	  <Folder Include="JNI\Primitive\" />
-	  <Folder Include="JNI\RawTyep\" />
+		<Folder Include="JNI\Value\" />
+		<Folder Include="JNI\Reference\" />
+		<Folder Include="JNI\Primitive\" />
+		<Folder Include="JNI\RawTyep\" />
 	</ItemGroup>
- 
+
+	<!--<PropertyGroup >
+
+		<CppCompilerAndLinker>clang.cmd</CppCompilerAndLinker>
+
+		<NdkHost  >windows-x86_64</NdkHost>
+
+	<ObjCopyName Condition="'$(ObjCopyName)' == ''">"$(NDK_ROOT)\toolchains\llvm\prebuilt\$(NdkHost)\bin\llvm-objcopy"</ObjCopyName>
+
+	</PropertyGroup>-->
+
+<!--
+dotnet publish -r linux-bionic-arm64 -p:DisableUnsupportedError=true -p:PublishAotUsingRuntimePack=true
+-->
 
 
 
 
- 
 
 
 </Project>
