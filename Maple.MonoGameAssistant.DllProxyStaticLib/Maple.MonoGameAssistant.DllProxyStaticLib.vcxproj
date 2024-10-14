@@ -27,7 +27,7 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{387edf65-9b50-4d1d-832d-777411a112b1}</ProjectGuid>
+    <ProjectGuid>{0EAA3E52-AC22-40E8-D136-3A22CDD982A8}</ProjectGuid>
     <RootNamespace>MapleMonoGameAssistantDllProxyStaticLib</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
