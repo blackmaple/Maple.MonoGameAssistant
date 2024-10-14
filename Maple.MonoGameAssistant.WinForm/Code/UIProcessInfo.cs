@@ -71,13 +71,22 @@ namespace Maple.MonoGameAssistant.WinForm
         static bool TryGetProcessMainModule(Process process, [MaybeNullWhen(false)] out ProcessModule module)
         {
             module = default;
-            var handle = WindowsRuntime.OpenProcess(WindowsRuntime.PROCESS_QUERY_INFORMATION | WindowsRuntime.PROCESS_VM_READ, false, process.Id);
-            if (handle != nint.Zero)
+            try
             {
-                WindowsRuntime.CloseHandle(handle);
-                module = process.MainModule;
+               
+                var handle = WindowsRuntime.OpenProcess(WindowsRuntime.PROCESS_QUERY_INFORMATION | WindowsRuntime.PROCESS_VM_READ, false, process.Id);
+                if (handle != nint.Zero)
+                {
+                    WindowsRuntime.CloseHandle(handle);
+                    module = process.MainModule;
+                }
+                return module is not null;
             }
-            return module is not null;
+            catch
+            {
+
+            }
+            return default;
         }
     }
 

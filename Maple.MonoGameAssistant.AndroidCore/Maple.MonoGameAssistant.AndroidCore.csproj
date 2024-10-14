@@ -35,6 +35,15 @@
 	<ItemGroup>
 		<ProjectReference Include="..\Maple.MonoGameAssistant.Core\Maple.MonoGameAssistant.Core.csproj" />
 	</ItemGroup>
+
+
+
+	<ItemGroup>
+	  <Folder Include="JNI\Value\" />
+	  <Folder Include="JNI\Reference\" />
+	  <Folder Include="JNI\Primitive\" />
+	  <Folder Include="JNI\RawTyep\" />
+	</ItemGroup>
  
 
 

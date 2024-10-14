@@ -17,10 +17,11 @@ namespace Maple.MonoGameAssistant.Core
 
         //nint MONO_CLASS_GET_METHODS (void *klass, void *iter)
         //typedef void* (__cdecl *MONO_CLASS_GET_METHODS)(void *klass, void *iter);
-        readonly delegate* unmanaged[Cdecl, SuppressGCTransition]<PMonoClass, ref PMonoIterator, PMonoMethod> _func = (delegate* unmanaged[Cdecl, SuppressGCTransition]<PMonoClass, ref PMonoIterator, PMonoMethod>)ptr;
+        readonly delegate* unmanaged[Cdecl, SuppressGCTransition]<PMonoClass, PMonoAddress, PMonoMethod> _func
+            = (delegate* unmanaged[Cdecl, SuppressGCTransition]<PMonoClass, PMonoAddress, PMonoMethod>)ptr;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public readonly PMonoMethod Invoke(PMonoClass pMonoClass, ref PMonoIterator iter) => _func(pMonoClass, ref iter);
+        public readonly PMonoMethod Invoke(PMonoClass pMonoClass, ref PMonoIterator iter) => _func(pMonoClass, iter.AsPointer());
 
 
     }

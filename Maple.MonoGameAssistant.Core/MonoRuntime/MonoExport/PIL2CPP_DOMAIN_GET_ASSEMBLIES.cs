@@ -17,16 +17,18 @@ namespace Maple.MonoGameAssistant.Core
 
         //uint* IL2CPP_DOMAIN_GET_ASSEMBLIES (void * domain, SIZE_T *size)
         //typedef UINT_PTR* (__cdecl *IL2CPP_DOMAIN_GET_ASSEMBLIES)(void * domain, SIZE_T *size);
-        readonly delegate* unmanaged[Cdecl, SuppressGCTransition]<PMonoDomain, out nuint, ref PMonoAssembly> _func = (delegate* unmanaged[Cdecl, SuppressGCTransition]<PMonoDomain, out nuint, ref PMonoAssembly>)ptr;
+        readonly delegate* unmanaged[Cdecl, SuppressGCTransition]<PMonoDomain, PMonoAddress, PMonoObject> _func
+            = (delegate* unmanaged[Cdecl, SuppressGCTransition]<PMonoDomain, PMonoAddress, PMonoObject>)ptr;
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public readonly ref PMonoAssembly Invoke(PMonoDomain pMonoDomain, out nuint size) => ref _func(pMonoDomain, out size);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public readonly ReadOnlySpan<PMonoAssembly> Invoke(PMonoDomain pMonoDomain)
         {
-            ref var pMonoAssembly = ref _func(pMonoDomain, out var size);
-            return MemoryMarshal.CreateReadOnlySpan(ref pMonoAssembly, (int)(uint)size);
+            nuint size = nuint.Zero;
+            ref var ref_size = ref size;
+            var pMonoAssembly = _func(pMonoDomain, ref_size.ToPointer());
+            ref var ref_MonoAssembly = ref pMonoAssembly.To<PMonoAssembly>();
+            return MemoryMarshal.CreateReadOnlySpan(ref ref_MonoAssembly, (int)(uint)size);
         }
 
 
