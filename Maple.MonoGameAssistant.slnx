@@ -50,5 +50,7 @@
   </Properties>
   <Folder Name="/Android/">
     <Project Path="Maple.MonoGameAssistant.AndroidCore\Maple.MonoGameAssistant.AndroidCore.csproj" Type="C#" />
+    <Project Path="Maple.MonoGameAssistant.AndroidJNI\Maple.MonoGameAssistant.AndroidJNI.csproj" Type="C#" />
+    <Project Path="Maple.MonoGameAssistant.AndroidModel\Maple.MonoGameAssistant.AndroidModel.csproj" Type="C#" />
   </Folder>
 </Solution>
