@@ -3,6 +3,8 @@ using Maple.MonoGameAssistant.AndroidCore.JNI.Opaque;
 using Maple.MonoGameAssistant.AndroidCore.JNI.Primitive;
 using Maple.MonoGameAssistant.AndroidCore.JNI.Reference;
 using Maple.MonoGameAssistant.AndroidCore.JNI.Reference.Array;
+using Maple.MonoGameAssistant.AndroidModel;
+using System;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text.Json.Nodes;
@@ -20,6 +22,7 @@ namespace Maple.MonoGameAssistant.AndroidCore.JNI.Value
     //                    jsize);
 
 
+    [StructLayout(LayoutKind.Sequential)]
     internal readonly unsafe struct Ptr_Func_FindClass(nint ptr)
     {
         /// <summary>
@@ -162,10 +165,33 @@ namespace Maple.MonoGameAssistant.AndroidCore.JNI.Value
 
     //jint(*EnsureLocalCapacity)(JNIEnv*, jint);
 
-    //jobject(*AllocObject)(JNIEnv*, jclass);
-    //jobject(*NewObject)(JNIEnv*, jclass, jmethodID, ...);
-    //jobject(*NewObjectV)(JNIEnv*, jclass, jmethodID, va_list);
-    //jobject(*NewObjectA)(JNIEnv*, jclass, jmethodID, const jvalue*);
+    [StructLayout(LayoutKind.Sequential)]
+    internal unsafe readonly struct Ptr_Func_AllocObject(nint ptr)
+    {
+        /// <summary>
+        ///         //jobject(*AllocObject)(JNIEnv*, jclass);
+        /// </summary>
+        readonly delegate* unmanaged[Cdecl, SuppressGCTransition]<PTR_JNI_ENV, JCLASS, JOBJECT> _ptr =
+            (delegate* unmanaged[Cdecl, SuppressGCTransition]<PTR_JNI_ENV, JCLASS, JOBJECT>)ptr;
+        public JOBJECT Invoke(PTR_JNI_ENV @this, JCLASS obj)
+            => _ptr(@this, obj);
+    }
+
+
+    [StructLayout(LayoutKind.Sequential)]
+    internal unsafe readonly struct Ptr_Func_NewObjectA(nint ptr)
+    {
+        /// <summary>
+        ///             //jobject(*NewObject)(JNIEnv*, jclass, jmethodID, ...);
+        /// //jobject(*NewObjectV)(JNIEnv*, jclass, jmethodID, va_list);
+        /// //jobject(*NewObjectA)(JNIEnv*, jclass, jmethodID, const jvalue*);
+        /// </summary>
+        readonly delegate* unmanaged[Cdecl, SuppressGCTransition]<PTR_JNI_ENV, JCLASS, JMETHODID, JVALUE_ARRAY, JOBJECT> _ptr =
+            (delegate* unmanaged[Cdecl, SuppressGCTransition]<PTR_JNI_ENV, JCLASS, JMETHODID, JVALUE_ARRAY, JOBJECT>)ptr;
+        public JOBJECT Invoke(PTR_JNI_ENV @this, JCLASS obj, JMETHODID methodId, JVALUE_ARRAY args)
+            => _ptr(@this, obj, methodId, args);
+    }
+
 
     //jclass(*GetObjectClass)(JNIEnv*, jobject);
     //jboolean(*IsInstanceOf)(JNIEnv*, jobject, jclass);
@@ -187,6 +213,7 @@ namespace Maple.MonoGameAssistant.AndroidCore.JNI.Value
     //jobject(*CallObjectMethod)(JNIEnv*, jobject, jmethodID, ...);
     //jobject(*CallObjectMethodV)(JNIEnv*, jobject, jmethodID, va_list);
     //jobject(*CallObjectMethodA)(JNIEnv*, jobject, jmethodID, const jvalue*);
+    [StructLayout(LayoutKind.Sequential)]
     readonly unsafe struct Ptr_Func_CallObjectMethodA(nint ptr)
     {
         readonly delegate* unmanaged[Cdecl, SuppressGCTransition]<PTR_JNI_ENV, JCLASS, JMETHODID, JVALUE_ARRAY, JOBJECT> _ptr
@@ -201,6 +228,19 @@ namespace Maple.MonoGameAssistant.AndroidCore.JNI.Value
     //jboolean(*CallBooleanMethod)(JNIEnv*, jobject, jmethodID, ...);
     //jboolean(*CallBooleanMethodV)(JNIEnv*, jobject, jmethodID, va_list);
     //jboolean(*CallBooleanMethodA)(JNIEnv*, jobject, jmethodID, const jvalue*);
+    [StructLayout(LayoutKind.Sequential)]
+    readonly unsafe struct Ptr_Func_CallUnmanagedMethodA<T>(nint ptr) where T : unmanaged
+    {
+
+        readonly delegate* unmanaged[Cdecl, SuppressGCTransition]<PTR_JNI_ENV, JCLASS, JMETHODID, JVALUE_ARRAY, T> _ptr
+            = (delegate* unmanaged[Cdecl, SuppressGCTransition]<PTR_JNI_ENV, JCLASS, JMETHODID, JVALUE_ARRAY, T>)ptr;
+
+        public T Invoke(PTR_JNI_ENV @this, JCLASS classObj, JMETHODID method, JVALUE_ARRAY args)
+            => _ptr(@this, classObj, method, args);
+
+
+    }
+
     //jbyte(*CallByteMethod)(JNIEnv*, jobject, jmethodID, ...);
     //jbyte(*CallByteMethodV)(JNIEnv*, jobject, jmethodID, va_list);
     //jbyte(*CallByteMethodA)(JNIEnv*, jobject, jmethodID, const jvalue*);
@@ -225,6 +265,7 @@ namespace Maple.MonoGameAssistant.AndroidCore.JNI.Value
 
     //void (* CallVoidMethod) (JNIEnv*, jobject, jmethodID, ...);
     //void (* CallVoidMethodV) (JNIEnv*, jobject, jmethodID, va_list);
+    [StructLayout(LayoutKind.Sequential)]
     internal readonly unsafe struct Ptr_Func_CallVoidMethodA(nint ptr)
     {
         /// <summary>
@@ -237,18 +278,49 @@ namespace Maple.MonoGameAssistant.AndroidCore.JNI.Value
             => _ptr(@this, classObj, method, args);
     }
 
-    //jobject(*CallNonvirtualObjectMethod)(JNIEnv*, jobject, jclass,
-    //                    jmethodID, ...);
-    //jobject(*CallNonvirtualObjectMethodV)(JNIEnv*, jobject, jclass,
-    //                    jmethodID, va_list);
-    //jobject(*CallNonvirtualObjectMethodA)(JNIEnv*, jobject, jclass,
-    //                    jmethodID, const jvalue*);
+
+    [StructLayout(LayoutKind.Sequential)]
+    internal readonly unsafe struct Ptr_Func_CallNonvirtualObjectMethodA(nint ptr)
+    {
+        /// <summary>
+        ///             //jobject(*CallNonvirtualObjectMethod)(JNIEnv*, jobject, jclass,
+        /// //                    jmethodID, ...);
+        /// //jobject(*CallNonvirtualObjectMethodV)(JNIEnv*, jobject, jclass,
+        /// //                    jmethodID, va_list);
+        /// //jobject(*CallNonvirtualObjectMethodA)(JNIEnv*, jobject, jclass,
+        /// //                    jmethodID, const jvalue*);
+        /// </summary>
+        readonly delegate* unmanaged[Cdecl, SuppressGCTransition]<PTR_JNI_ENV, JOBJECT, JCLASS, JMETHODID, JVALUE_ARRAY, JOBJECT> _ptr
+            = (delegate* unmanaged[Cdecl, SuppressGCTransition]<PTR_JNI_ENV, JOBJECT, JCLASS, JMETHODID, JVALUE_ARRAY, JOBJECT>)ptr;
+
+        public JOBJECT Invoke(PTR_JNI_ENV @this, JOBJECT instance, JCLASS classObj, JMETHODID method, JVALUE_ARRAY args)
+            => _ptr(@this, instance, classObj, method, args);
+    }
+
     //jboolean(*CallNonvirtualBooleanMethod)(JNIEnv*, jobject, jclass,
     //                    jmethodID, ...);
     //jboolean(*CallNonvirtualBooleanMethodV)(JNIEnv*, jobject, jclass,
     //                     jmethodID, va_list);
     //jboolean(*CallNonvirtualBooleanMethodA)(JNIEnv*, jobject, jclass,
     //                     jmethodID, const jvalue*);
+    [StructLayout(LayoutKind.Sequential)]
+    internal readonly unsafe struct Ptr_Func_CallNonvirtualUnmanagedMethodA<T>(nint ptr) where T : unmanaged
+    {
+        /// <summary>
+        ///             //jobject(*CallNonvirtualObjectMethod)(JNIEnv*, jobject, jclass,
+        /// //                    jmethodID, ...);
+        /// //jobject(*CallNonvirtualObjectMethodV)(JNIEnv*, jobject, jclass,
+        /// //                    jmethodID, va_list);
+        /// //jobject(*CallNonvirtualObjectMethodA)(JNIEnv*, jobject, jclass,
+        /// //                    jmethodID, const jvalue*);
+        /// </summary>
+        readonly delegate* unmanaged[Cdecl, SuppressGCTransition]<PTR_JNI_ENV, JOBJECT, JCLASS, JMETHODID, JVALUE_ARRAY, T> _ptr
+            = (delegate* unmanaged[Cdecl, SuppressGCTransition]<PTR_JNI_ENV, JOBJECT, JCLASS, JMETHODID, JVALUE_ARRAY, T>)ptr;
+
+        public T Invoke(PTR_JNI_ENV @this, JOBJECT instance, JCLASS classObj, JMETHODID method, JVALUE_ARRAY args)
+            => _ptr(@this, instance, classObj, method, args);
+    }
+
     //jbyte(*CallNonvirtualByteMethod)(JNIEnv*, jobject, jclass,
     //                    jmethodID, ...);
     //jbyte(*CallNonvirtualByteMethodV)(JNIEnv*, jobject, jclass,
@@ -291,34 +363,116 @@ namespace Maple.MonoGameAssistant.AndroidCore.JNI.Value
     //                    jmethodID, va_list);
     //jdouble(*CallNonvirtualDoubleMethodA)(JNIEnv*, jobject, jclass,
     //                    jmethodID, const jvalue*);
+
     //void (* CallNonvirtualVoidMethod) (JNIEnv*, jobject, jclass,
     //                    jmethodID, ...);
     //void (* CallNonvirtualVoidMethodV) (JNIEnv*, jobject, jclass,
     //                    jmethodID, va_list);
     //void (* CallNonvirtualVoidMethodA) (JNIEnv*, jobject, jclass,
     //                    jmethodID, const jvalue*);
+    [StructLayout(LayoutKind.Sequential)]
+    internal readonly unsafe struct Ptr_Func_CallNonvirtualVoidMethodA(nint ptr)
+    {
+        /// <summary>
+        ///             //jobject(*CallNonvirtualObjectMethod)(JNIEnv*, jobject, jclass,
+        /// //                    jmethodID, ...);
+        /// //jobject(*CallNonvirtualObjectMethodV)(JNIEnv*, jobject, jclass,
+        /// //                    jmethodID, va_list);
+        /// //jobject(*CallNonvirtualObjectMethodA)(JNIEnv*, jobject, jclass,
+        /// //                    jmethodID, const jvalue*);
+        /// </summary>
+        readonly delegate* unmanaged[Cdecl, SuppressGCTransition]<PTR_JNI_ENV, JOBJECT, JCLASS, JMETHODID, JVALUE_ARRAY, void> _ptr
+            = (delegate* unmanaged[Cdecl, SuppressGCTransition]<PTR_JNI_ENV, JOBJECT, JCLASS, JMETHODID, JVALUE_ARRAY, void>)ptr;
 
-    //jfieldID(*GetFieldID)(JNIEnv*, jclass, const char*, const char*);
+        public void Invoke(PTR_JNI_ENV @this, JOBJECT instance, JCLASS classObj, JMETHODID method, JVALUE_ARRAY args)
+            => _ptr(@this, instance, classObj, method, args);
+    }
 
-    //jobject(*GetObjectField)(JNIEnv*, jobject, jfieldID);
-    //jboolean(*GetBooleanField)(JNIEnv*, jobject, jfieldID);
-    //jbyte(*GetByteField)(JNIEnv*, jobject, jfieldID);
-    //jchar(*GetCharField)(JNIEnv*, jobject, jfieldID);
-    //jshort(*GetShortField)(JNIEnv*, jobject, jfieldID);
-    //jint(*GetIntField)(JNIEnv*, jobject, jfieldID);
-    //jlong(*GetLongField)(JNIEnv*, jobject, jfieldID);
-    //jfloat(*GetFloatField)(JNIEnv*, jobject, jfieldID);
-    //jdouble(*GetDoubleField)(JNIEnv*, jobject, jfieldID);
 
-    //void (* SetObjectField) (JNIEnv*, jobject, jfieldID, jobject);
-    //void (* SetBooleanField) (JNIEnv*, jobject, jfieldID, jboolean);
-    //void (* SetByteField) (JNIEnv*, jobject, jfieldID, jbyte);
-    //void (* SetCharField) (JNIEnv*, jobject, jfieldID, jchar);
-    //void (* SetShortField) (JNIEnv*, jobject, jfieldID, jshort);
-    //void (* SetIntField) (JNIEnv*, jobject, jfieldID, jint);
-    //void (* SetLongField) (JNIEnv*, jobject, jfieldID, jlong);
-    //void (* SetFloatField) (JNIEnv*, jobject, jfieldID, jfloat);
-    //void (* SetDoubleField) (JNIEnv*, jobject, jfieldID, jdouble);
+
+
+    [StructLayout(LayoutKind.Sequential)]
+    internal readonly unsafe struct Ptr_Func_GetFieldID(nint ptr)
+    {
+        /// <summary>
+        /// //jfieldID(*GetFieldID)(JNIEnv*, jclass, const char*, const char*);
+        /// </summary>
+        readonly delegate* unmanaged[Cdecl, SuppressGCTransition]<PTR_JNI_ENV, JCLASS, PStringUTF8, PStringUTF8, JFIELDID> _ptr
+            = (delegate* unmanaged[Cdecl, SuppressGCTransition]<PTR_JNI_ENV, JCLASS, PStringUTF8, PStringUTF8, JFIELDID>)ptr;
+
+        public JFIELDID Invoke(PTR_JNI_ENV @this, JCLASS classObj, PStringUTF8 fieldName, PStringUTF8 fieldDesc)
+            => _ptr(@this, classObj, fieldName, fieldDesc);
+    }
+
+
+
+    [StructLayout(LayoutKind.Sequential)]
+    internal readonly unsafe struct Ptr_Func_GetObjectField(nint ptr)
+    {
+        /// <summary>
+        /// //jobject(*GetObjectField)(JNIEnv*, jobject, jfieldID);
+        /// </summary>
+        readonly delegate* unmanaged[Cdecl, SuppressGCTransition]<PTR_JNI_ENV, JOBJECT, JFIELDID, JOBJECT> _ptr
+            = (delegate* unmanaged[Cdecl, SuppressGCTransition]<PTR_JNI_ENV, JOBJECT, JFIELDID, JOBJECT>)ptr;
+
+        public JOBJECT Invoke(PTR_JNI_ENV @this, JOBJECT instance, JFIELDID fieldID)
+            => _ptr(@this, instance, fieldID);
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    internal readonly unsafe struct Ptr_Func_GetUnmanagedField<T>(nint ptr) where T : unmanaged
+    {
+        /// <summary>
+        ///      //jboolean(*GetBooleanField)(JNIEnv*, jobject, jfieldID);
+        /// //jbyte(*GetByteField)(JNIEnv*, jobject, jfieldID);
+        /// //jchar(*GetCharField)(JNIEnv*, jobject, jfieldID);
+        /// //jshort(*GetShortField)(JNIEnv*, jobject, jfieldID);
+        /// //jint(*GetIntField)(JNIEnv*, jobject, jfieldID);
+        /// //jlong(*GetLongField)(JNIEnv*, jobject, jfieldID);
+        /// //jfloat(*GetFloatField)(JNIEnv*, jobject, jfieldID);
+        /// //jdouble(*GetDoubleField)(JNIEnv*, jobject, jfieldID);
+        /// </summary>
+        readonly delegate* unmanaged[Cdecl, SuppressGCTransition]<PTR_JNI_ENV, JOBJECT, JFIELDID, T> _ptr
+            = (delegate* unmanaged[Cdecl, SuppressGCTransition]<PTR_JNI_ENV, JOBJECT, JFIELDID, T>)ptr;
+
+        public T Invoke(PTR_JNI_ENV @this, JOBJECT instance, JFIELDID fieldID)
+            => _ptr(@this, instance, fieldID);
+    }
+
+
+    [StructLayout(LayoutKind.Sequential)]
+    internal readonly unsafe struct Ptr_Func_SetObjectField(nint ptr)
+    {
+        /// <summary>
+        ///     //void (* SetObjectField) (JNIEnv*, jobject, jfieldID, jobject);
+        /// </summary>
+        readonly delegate* unmanaged[Cdecl, SuppressGCTransition]<PTR_JNI_ENV, JOBJECT, JFIELDID, JOBJECT, void> _ptr
+            = (delegate* unmanaged[Cdecl, SuppressGCTransition]<PTR_JNI_ENV, JOBJECT, JFIELDID, JOBJECT, void>)ptr;
+
+        public void Invoke(PTR_JNI_ENV @this, JOBJECT instance, JFIELDID fieldID, JOBJECT arg)
+            => _ptr(@this, instance, fieldID, arg);
+    }
+
+
+    [StructLayout(LayoutKind.Sequential)]
+    internal readonly unsafe struct Ptr_Func_SetUnmanagedField<T>(nint ptr) where T : unmanaged
+    {
+        /// <summary>
+        ///          //void (* SetBooleanField) (JNIEnv*, jobject, jfieldID, jboolean);
+        /// //void (* SetByteField) (JNIEnv*, jobject, jfieldID, jbyte);
+        /// //void (* SetCharField) (JNIEnv*, jobject, jfieldID, jchar);
+        /// //void (* SetShortField) (JNIEnv*, jobject, jfieldID, jshort);
+        /// //void (* SetIntField) (JNIEnv*, jobject, jfieldID, jint);
+        /// //void (* SetLongField) (JNIEnv*, jobject, jfieldID, jlong);
+        /// //void (* SetFloatField) (JNIEnv*, jobject, jfieldID, jfloat);
+        /// //void (* SetDoubleField) (JNIEnv*, jobject, jfieldID, jdouble);
+        /// </summary>
+        readonly delegate* unmanaged[Cdecl, SuppressGCTransition]<PTR_JNI_ENV, JOBJECT, JFIELDID, JOBJECT, void> _ptr
+            = (delegate* unmanaged[Cdecl, SuppressGCTransition]<PTR_JNI_ENV, JOBJECT, JFIELDID, JOBJECT, void>)ptr;
+
+        public void Invoke(PTR_JNI_ENV @this, JOBJECT instance, JFIELDID fieldID, JOBJECT arg)
+            => _ptr(@this, instance, fieldID, arg);
+    }
 
 
     [StructLayout(LayoutKind.Sequential)]
@@ -336,6 +490,7 @@ namespace Maple.MonoGameAssistant.AndroidCore.JNI.Value
 
     //jobject(*CallStaticObjectMethod)(JNIEnv*, jclass, jmethodID, ...);
     //jobject(*CallStaticObjectMethodV)(JNIEnv*, jclass, jmethodID, va_list);
+    [StructLayout(LayoutKind.Sequential)]
     internal readonly unsafe struct Ptr_Func_CallStaticObjectMethodA(nint ptr)
     {
         /// <summary>
@@ -348,6 +503,7 @@ namespace Maple.MonoGameAssistant.AndroidCore.JNI.Value
             => _ptr(@this, classObj, method, args);
     }
 
+    [StructLayout(LayoutKind.Sequential)]
     internal readonly unsafe struct Ptr_Func_CallStaticUnmanagedMethodA<T>(nint ptr)
         where T : unmanaged
     {
@@ -390,6 +546,7 @@ namespace Maple.MonoGameAssistant.AndroidCore.JNI.Value
 
     //void (* CallStaticVoidMethod) (JNIEnv*, jclass, jmethodID, ...);
     //void (* CallStaticVoidMethodV) (JNIEnv*, jclass, jmethodID, va_list);
+    [StructLayout(LayoutKind.Sequential)]
     internal readonly unsafe struct Ptr_Func_CallStaticVoidMethodA(nint ptr)
     {
         /// <summary>
@@ -403,28 +560,89 @@ namespace Maple.MonoGameAssistant.AndroidCore.JNI.Value
     }
 
 
-    //jfieldID(*GetStaticFieldID)(JNIEnv*, jclass, const char*,
-    //                    const char*);
+    [StructLayout(LayoutKind.Sequential)]
+    internal readonly unsafe struct Ptr_Func_GetStaticFieldID(nint ptr)
+    {
+        /// <summary>
+        ///     //jfieldID(*GetStaticFieldID)(JNIEnv*, jclass, const char*,//                    const char*);
+        /// </summary>
+        readonly delegate* unmanaged[Cdecl, SuppressGCTransition]<PTR_JNI_ENV, JCLASS, PStringUTF8, PStringUTF8, JFIELDID> _ptr
+            = (delegate* unmanaged[Cdecl, SuppressGCTransition]<PTR_JNI_ENV, JCLASS, PStringUTF8, PStringUTF8, JFIELDID>)ptr;
 
-    //jobject(*GetStaticObjectField)(JNIEnv*, jclass, jfieldID);
-    //jboolean(*GetStaticBooleanField)(JNIEnv*, jclass, jfieldID);
-    //jbyte(*GetStaticByteField)(JNIEnv*, jclass, jfieldID);
-    //jchar(*GetStaticCharField)(JNIEnv*, jclass, jfieldID);
-    //jshort(*GetStaticShortField)(JNIEnv*, jclass, jfieldID);
-    //jint(*GetStaticIntField)(JNIEnv*, jclass, jfieldID);
-    //jlong(*GetStaticLongField)(JNIEnv*, jclass, jfieldID);
-    //jfloat(*GetStaticFloatField)(JNIEnv*, jclass, jfieldID);
-    //jdouble(*GetStaticDoubleField)(JNIEnv*, jclass, jfieldID);
+        public JFIELDID Invoke(PTR_JNI_ENV @this, JCLASS classObj, PStringUTF8 fieldName, PStringUTF8 fieldDesc)
+            => _ptr(@this, classObj, fieldName, fieldDesc);
+    }
 
-    //void (* SetStaticObjectField) (JNIEnv*, jclass, jfieldID, jobject);
-    //void (* SetStaticBooleanField) (JNIEnv*, jclass, jfieldID, jboolean);
-    //void (* SetStaticByteField) (JNIEnv*, jclass, jfieldID, jbyte);
-    //void (* SetStaticCharField) (JNIEnv*, jclass, jfieldID, jchar);
-    //void (* SetStaticShortField) (JNIEnv*, jclass, jfieldID, jshort);
-    //void (* SetStaticIntField) (JNIEnv*, jclass, jfieldID, jint);
-    //void (* SetStaticLongField) (JNIEnv*, jclass, jfieldID, jlong);
-    //void (* SetStaticFloatField) (JNIEnv*, jclass, jfieldID, jfloat);
-    //void (* SetStaticDoubleField) (JNIEnv*, jclass, jfieldID, jdouble);
+    [StructLayout(LayoutKind.Sequential)]
+    internal readonly unsafe struct Ptr_Func_GetStaticObjectField(nint ptr)
+    {
+        /// <summary>
+        ///     //jobject(*GetStaticObjectField)(JNIEnv*, jclass, jfieldID);
+        /// </summary>
+        readonly delegate* unmanaged[Cdecl, SuppressGCTransition]<PTR_JNI_ENV, JCLASS, JFIELDID, JOBJECT> _ptr
+            = (delegate* unmanaged[Cdecl, SuppressGCTransition]<PTR_JNI_ENV, JCLASS, JFIELDID, JOBJECT>)ptr;
+
+        public JOBJECT Invoke(PTR_JNI_ENV @this, JCLASS classObj, JFIELDID fieldID)
+            => _ptr(@this, classObj, fieldID);
+    }
+
+
+
+    [StructLayout(LayoutKind.Sequential)]
+    internal readonly unsafe struct Ptr_Func_GetStaticUnmanagedField<T>(nint ptr) where T : unmanaged
+    {
+        /// <summary>
+        ///          //jboolean(*GetStaticBooleanField)(JNIEnv*, jclass, jfieldID);
+        /// //jbyte(*GetStaticByteField)(JNIEnv*, jclass, jfieldID);
+        /// //jchar(*GetStaticCharField)(JNIEnv*, jclass, jfieldID);
+        /// //jshort(*GetStaticShortField)(JNIEnv*, jclass, jfieldID);
+        /// //jint(*GetStaticIntField)(JNIEnv*, jclass, jfieldID);
+        /// //jlong(*GetStaticLongField)(JNIEnv*, jclass, jfieldID);
+        /// //jfloat(*GetStaticFloatField)(JNIEnv*, jclass, jfieldID);
+        /// //jdouble(*GetStaticDoubleField)(JNIEnv*, jclass, jfieldID);
+        /// </summary>
+        readonly delegate* unmanaged[Cdecl, SuppressGCTransition]<PTR_JNI_ENV, JCLASS, JFIELDID, T> _ptr
+            = (delegate* unmanaged[Cdecl, SuppressGCTransition]<PTR_JNI_ENV, JCLASS, JFIELDID, T>)ptr;
+
+        public T Invoke(PTR_JNI_ENV @this, JCLASS classObj, JFIELDID fieldID)
+            => _ptr(@this, classObj, fieldID);
+    }
+
+
+    [StructLayout(LayoutKind.Sequential)]
+    internal readonly unsafe struct Ptr_Func_SetStaticObjectField(nint ptr)
+    {
+        /// <summary>
+        ///        //void (* SetStaticObjectField) (JNIEnv*, jclass, jfieldID, jobject);
+        /// </summary>
+        readonly delegate* unmanaged[Cdecl, SuppressGCTransition]<PTR_JNI_ENV, JCLASS, JFIELDID, JOBJECT, void> _ptr
+            = (delegate* unmanaged[Cdecl, SuppressGCTransition]<PTR_JNI_ENV, JCLASS, JFIELDID, JOBJECT, void>)ptr;
+
+        public void Invoke(PTR_JNI_ENV @this, JCLASS classObj, JFIELDID fieldID, JOBJECT arg)
+            => _ptr(@this, classObj, fieldID, arg);
+    }
+
+
+    [StructLayout(LayoutKind.Sequential)]
+    internal readonly unsafe struct Ptr_Func_SetStaticUnmanagedField<T>(nint ptr) where T : unmanaged
+    {
+        /// <summary>
+        ///      //void (* SetStaticBooleanField) (JNIEnv*, jclass, jfieldID, jboolean);
+        ///      //void (* SetStaticByteField) (JNIEnv*, jclass, jfieldID, jbyte);
+        ///      //void (* SetStaticCharField) (JNIEnv*, jclass, jfieldID, jchar);
+        ///      //void (* SetStaticShortField) (JNIEnv*, jclass, jfieldID, jshort);
+        ///      //void (* SetStaticIntField) (JNIEnv*, jclass, jfieldID, jint);
+        ///      //void (* SetStaticLongField) (JNIEnv*, jclass, jfieldID, jlong);
+        ///      //void (* SetStaticFloatField) (JNIEnv*, jclass, jfieldID, jfloat);
+        ///      //void (* SetStaticDoubleField) (JNIEnv*, jclass, jfieldID, jdouble);
+        /// </summary>
+        readonly delegate* unmanaged[Cdecl, SuppressGCTransition]<PTR_JNI_ENV, JCLASS, JFIELDID, T, void> _ptr
+            = (delegate* unmanaged[Cdecl, SuppressGCTransition]<PTR_JNI_ENV, JCLASS, JFIELDID, T, void>)ptr;
+
+        public void Invoke(PTR_JNI_ENV @this, JCLASS classObj, JFIELDID fieldID, T arg)
+            => _ptr(@this, classObj, fieldID, arg);
+    }
+
 
 
     [StructLayout(LayoutKind.Sequential)]
@@ -539,6 +757,7 @@ namespace Maple.MonoGameAssistant.AndroidCore.JNI.Value
 
 
 
+    [StructLayout(LayoutKind.Sequential)]
     internal readonly unsafe struct Ptr_Func_RegisterNatives(nint ptr)
     {
         /// <summary>
@@ -594,6 +813,7 @@ namespace Maple.MonoGameAssistant.AndroidCore.JNI.Value
             => _ptr(@this, obj);
     }
 
+
     [StructLayout(LayoutKind.Sequential)]
     internal unsafe readonly struct Ptr_Func_DeleteWeakGlobalRef(nint ptr)
     {
@@ -605,6 +825,7 @@ namespace Maple.MonoGameAssistant.AndroidCore.JNI.Value
         public void Invoke(PTR_JNI_ENV @this, JWEAK obj)
             => _ptr(@this, obj);
     }
+
 
     [StructLayout(LayoutKind.Sequential)]
     internal unsafe readonly struct Ptr_Func_ExceptionCheck(nint ptr)
@@ -675,177 +896,180 @@ namespace Maple.MonoGameAssistant.AndroidCore.JNI.Value
         internal readonly Ptr_Func_IsSameObject Func_IsSameObject;
         internal readonly Ptr_Func_NewLocalRef Func_NewLocalRef;
         [MarshalAs(UnmanagedType.SysInt)] internal readonly nint EnsureLocalCapacityPointer;
-        [MarshalAs(UnmanagedType.SysInt)] internal readonly nint AllocObjectPointer;
-        [MarshalAs(UnmanagedType.SysInt)] internal readonly nint NewObjectPointer;
-        [MarshalAs(UnmanagedType.SysInt)] internal readonly nint NewObjectVPointer;
-        [MarshalAs(UnmanagedType.SysInt)] internal readonly nint NewObjectAPointer;
+        internal readonly Ptr_Func_AllocObject Func_AllocObject;
+        internal readonly Ptr_Func_NewObjectA Func_NewObject;
+        internal readonly Ptr_Func_NewObjectA Func_NewObjectV;
+        internal readonly Ptr_Func_NewObjectA Func_NewObjectA;
         [MarshalAs(UnmanagedType.SysInt)] internal readonly nint GetObjectClassPointer;
         [MarshalAs(UnmanagedType.SysInt)] internal readonly nint IsInstanceOfPointer;
 
         internal readonly Ptr_Func_GetMethodID Func_GetMethodID;
 
-        [MarshalAs(UnmanagedType.SysInt)] internal readonly nint CallObjectMethodPointer;
-        [MarshalAs(UnmanagedType.SysInt)] internal readonly nint CallObjectMethodVPointer;
-        [MarshalAs(UnmanagedType.SysInt)] internal readonly nint CallObjectMethodAPointer;
-        [MarshalAs(UnmanagedType.SysInt)] internal readonly nint CallBooleanMethodPointer;
-        [MarshalAs(UnmanagedType.SysInt)] internal readonly nint CallBooleanMethodVPointer;
-        [MarshalAs(UnmanagedType.SysInt)] internal readonly nint CallBooleanMethodAPointer;
-        [MarshalAs(UnmanagedType.SysInt)] internal readonly nint CallByteMethodPointer;
-        [MarshalAs(UnmanagedType.SysInt)] internal readonly nint CallByteMethodVPointer;
-        [MarshalAs(UnmanagedType.SysInt)] internal readonly nint CallByteMethodAPointer;
-        [MarshalAs(UnmanagedType.SysInt)] internal readonly nint CallCharMethodPointer;
-        [MarshalAs(UnmanagedType.SysInt)] internal readonly nint CallCharMethodVPointer;
-        [MarshalAs(UnmanagedType.SysInt)] internal readonly nint CallCharMethodAPointer;
-        [MarshalAs(UnmanagedType.SysInt)] internal readonly nint CallShortMethodPointer;
-        [MarshalAs(UnmanagedType.SysInt)] internal readonly nint CallShortMethodVPointer;
-        [MarshalAs(UnmanagedType.SysInt)] internal readonly nint CallShortMethodAPointer;
-        [MarshalAs(UnmanagedType.SysInt)] internal readonly nint CallIntMethodPointer;
-        [MarshalAs(UnmanagedType.SysInt)] internal readonly nint CallIntMethodVPointer;
-        [MarshalAs(UnmanagedType.SysInt)] internal readonly nint CallIntMethodAPointer;
-        [MarshalAs(UnmanagedType.SysInt)] internal readonly nint CallLongMethodPointer;
-        [MarshalAs(UnmanagedType.SysInt)] internal readonly nint CallLongMethodVPointer;
-        [MarshalAs(UnmanagedType.SysInt)] internal readonly nint CallLongMethodAPointer;
-        [MarshalAs(UnmanagedType.SysInt)] internal readonly nint CallFloatMethodPointer;
-        [MarshalAs(UnmanagedType.SysInt)] internal readonly nint CallFloatMethodVPointer;
-        [MarshalAs(UnmanagedType.SysInt)] internal readonly nint CallFloatMethodAPointer;
-        [MarshalAs(UnmanagedType.SysInt)] internal readonly nint CallDoubleMethodPointer;
-        [MarshalAs(UnmanagedType.SysInt)] internal readonly nint CallDoubleMethodVPointer;
-        [MarshalAs(UnmanagedType.SysInt)] internal readonly nint CallDoubleMethodAPointer;
+        internal readonly Ptr_Func_CallObjectMethodA Func_CallObjectMethod;
+        internal readonly Ptr_Func_CallObjectMethodA Func_CallObjectMethodV;
+        internal readonly Ptr_Func_CallObjectMethodA Func_CallObjectMethodA;
+        internal readonly Ptr_Func_CallUnmanagedMethodA<JBOOLEAN> Func_CallBooleanMethod;
+        internal readonly Ptr_Func_CallUnmanagedMethodA<JBOOLEAN> Func_CallBooleanMethodV;
+        internal readonly Ptr_Func_CallUnmanagedMethodA<JBOOLEAN> Func_CallBooleanMethodA;
 
-        /// <summary>
-        /// ???
-        /// </summary>
+        internal readonly Ptr_Func_CallUnmanagedMethodA<JBYTE> Func_CallByteMethod;
+        internal readonly Ptr_Func_CallUnmanagedMethodA<JBYTE> Func_CallByteMethodV;
+        internal readonly Ptr_Func_CallUnmanagedMethodA<JBYTE> Func_CallByteMethodA;
+
+        internal readonly Ptr_Func_CallUnmanagedMethodA<JCHAR> Func_CallCharMethod;
+        internal readonly Ptr_Func_CallUnmanagedMethodA<JCHAR> Func_CallCharMethodV;
+        internal readonly Ptr_Func_CallUnmanagedMethodA<JCHAR> Func_CallCharMethodA;
+
+        internal readonly Ptr_Func_CallUnmanagedMethodA<JSHORT> Func_CallShortMethod;
+        internal readonly Ptr_Func_CallUnmanagedMethodA<JSHORT> Func_CallShortMethodV;
+        internal readonly Ptr_Func_CallUnmanagedMethodA<JSHORT> Func_CallShortMethodA;
+
+        internal readonly Ptr_Func_CallUnmanagedMethodA<JINT> Func_CallIntMethod;
+        internal readonly Ptr_Func_CallUnmanagedMethodA<JINT> Func_CallIntMethodV;
+        internal readonly Ptr_Func_CallUnmanagedMethodA<JINT> Func_CallIntMethodA;
+
+        internal readonly Ptr_Func_CallUnmanagedMethodA<JLONG> Func_CallLongMethod;
+        internal readonly Ptr_Func_CallUnmanagedMethodA<JLONG> Func_CallLongMethodV;
+        internal readonly Ptr_Func_CallUnmanagedMethodA<JLONG> Func_CallLongMethodA;
+
+        internal readonly Ptr_Func_CallUnmanagedMethodA<JFLOAT> Func_CallFloatMethod;
+        internal readonly Ptr_Func_CallUnmanagedMethodA<JFLOAT> Func_CallFloatMethodV;
+        internal readonly Ptr_Func_CallUnmanagedMethodA<JFLOAT> Func_CallFloatMethodA;
+
+        internal readonly Ptr_Func_CallUnmanagedMethodA<JDOUBLE> Func_CallDoubleMethod;
+        internal readonly Ptr_Func_CallUnmanagedMethodA<JDOUBLE> Func_CallDoubleMethodV;
+        internal readonly Ptr_Func_CallUnmanagedMethodA<JDOUBLE> Func_CallDoubleMethodA;
+
         internal readonly Ptr_Func_CallVoidMethodA Func_CallVoidMethod;
-        /// <summary>
-        /// ???
-        /// </summary>
         internal readonly Ptr_Func_CallVoidMethodA Func_CallVoidMethodV;
         internal readonly Ptr_Func_CallVoidMethodA Func_CallVoidMethodA;
 
 
 
-        [MarshalAs(UnmanagedType.SysInt)] internal readonly nint CallNonVirtualObjectMethodPointer;
-        [MarshalAs(UnmanagedType.SysInt)] internal readonly nint CallNonVirtualObjectMethodVPointer;
-        [MarshalAs(UnmanagedType.SysInt)] internal readonly nint CallNonVirtualObjectMethodAPointer;
-        [MarshalAs(UnmanagedType.SysInt)] internal readonly nint CallNonVirtualBooleanMethodPointer;
-        [MarshalAs(UnmanagedType.SysInt)] internal readonly nint CallNonVirtualBooleanMethodVPointer;
-        [MarshalAs(UnmanagedType.SysInt)] internal readonly nint CallNonVirtualBooleanMethodAPointer;
-        [MarshalAs(UnmanagedType.SysInt)] internal readonly nint CallNonVirtualByteMethodPointer;
-        [MarshalAs(UnmanagedType.SysInt)] internal readonly nint CallNonVirtualByteMethodVPointer;
-        [MarshalAs(UnmanagedType.SysInt)] internal readonly nint CallNonVirtualByteMethodAPointer;
-        [MarshalAs(UnmanagedType.SysInt)] internal readonly nint CallNonVirtualCharMethodPointer;
-        [MarshalAs(UnmanagedType.SysInt)] internal readonly nint CallNonVirtualCharMethodVPointer;
-        [MarshalAs(UnmanagedType.SysInt)] internal readonly nint CallNonVirtualCharMethodAPointer;
-        [MarshalAs(UnmanagedType.SysInt)] internal readonly nint CallNonVirtualShortMethodPointer;
-        [MarshalAs(UnmanagedType.SysInt)] internal readonly nint CallNonVirtualShortMethodVPointer;
-        [MarshalAs(UnmanagedType.SysInt)] internal readonly nint CallNonVirtualShortMethodAPointer;
-        [MarshalAs(UnmanagedType.SysInt)] internal readonly nint CallNonVirtualIntMethodPointer;
-        [MarshalAs(UnmanagedType.SysInt)] internal readonly nint CallNonVirtualIntMethodVPointer;
-        [MarshalAs(UnmanagedType.SysInt)] internal readonly nint CallNonVirtualIntMethodAPointer;
-        [MarshalAs(UnmanagedType.SysInt)] internal readonly nint CallNonVirtualLongMethodPointer;
-        [MarshalAs(UnmanagedType.SysInt)] internal readonly nint CallNonVirtualLongMethodVPointer;
-        [MarshalAs(UnmanagedType.SysInt)] internal readonly nint CallNonVirtualLongMethodAPointer;
-        [MarshalAs(UnmanagedType.SysInt)] internal readonly nint CallNonVirtualFloatMethodPointer;
-        [MarshalAs(UnmanagedType.SysInt)] internal readonly nint CallNonVirtualFloatMethodVPointer;
-        [MarshalAs(UnmanagedType.SysInt)] internal readonly nint CallNonVirtualFloatMethodAPointer;
-        [MarshalAs(UnmanagedType.SysInt)] internal readonly nint CallNonVirtualDoubleMethodPointer;
-        [MarshalAs(UnmanagedType.SysInt)] internal readonly nint CallNonVirtualDoubleMethodVPointer;
-        [MarshalAs(UnmanagedType.SysInt)] internal readonly nint CallNonVirtualDoubleMethodAPointer;
-        [MarshalAs(UnmanagedType.SysInt)] internal readonly nint CallNonVirtualVoidMethodPointer;
-        [MarshalAs(UnmanagedType.SysInt)] internal readonly nint CallNonVirtualVoidMethodVPointer;
-        [MarshalAs(UnmanagedType.SysInt)] internal readonly nint CallNonVirtualVoidMethodAPointer;
-        [MarshalAs(UnmanagedType.SysInt)] internal readonly nint GetFieldIdPointer;
-        [MarshalAs(UnmanagedType.SysInt)] internal readonly nint GetObjectFieldPointer;
-        [MarshalAs(UnmanagedType.SysInt)] internal readonly nint GetBooleanFieldPointer;
-        [MarshalAs(UnmanagedType.SysInt)] internal readonly nint GetByteFieldPointer;
-        [MarshalAs(UnmanagedType.SysInt)] internal readonly nint GetCharFieldPointer;
-        [MarshalAs(UnmanagedType.SysInt)] internal readonly nint GetShortFieldPointer;
-        [MarshalAs(UnmanagedType.SysInt)] internal readonly nint GetIntFieldPointer;
-        [MarshalAs(UnmanagedType.SysInt)] internal readonly nint GetLongFieldPointer;
-        [MarshalAs(UnmanagedType.SysInt)] internal readonly nint GetFloatFieldPointer;
-        [MarshalAs(UnmanagedType.SysInt)] internal readonly nint GetDoubleFieldPointer;
-        [MarshalAs(UnmanagedType.SysInt)] internal readonly nint SetObjectFieldPointer;
-        [MarshalAs(UnmanagedType.SysInt)] internal readonly nint SetBooleanFieldPointer;
-        [MarshalAs(UnmanagedType.SysInt)] internal readonly nint SetByteFieldPointer;
-        [MarshalAs(UnmanagedType.SysInt)] internal readonly nint SetCharFieldPointer;
-        [MarshalAs(UnmanagedType.SysInt)] internal readonly nint SetShortFieldPointer;
-        [MarshalAs(UnmanagedType.SysInt)] internal readonly nint SetIntFieldPointer;
-        [MarshalAs(UnmanagedType.SysInt)] internal readonly nint SetLongFieldPointer;
-        [MarshalAs(UnmanagedType.SysInt)] internal readonly nint SetFloatFieldPointer;
-        [MarshalAs(UnmanagedType.SysInt)] internal readonly nint SetDoubleFieldPointer;
+        internal readonly Ptr_Func_CallNonvirtualObjectMethodA Func_CallNonVirtualObjectMethod;
+        internal readonly Ptr_Func_CallNonvirtualObjectMethodA Func_CallNonVirtualObjectMethodV;
+        internal readonly Ptr_Func_CallNonvirtualObjectMethodA Func_CallNonVirtualObjectMethodA;
+
+        internal readonly Ptr_Func_CallNonvirtualUnmanagedMethodA<JBOOLEAN> Func_CallNonVirtualBooleanMethod;
+        internal readonly Ptr_Func_CallNonvirtualUnmanagedMethodA<JBOOLEAN> Func_CallNonVirtualBooleanMethodV;
+        internal readonly Ptr_Func_CallNonvirtualUnmanagedMethodA<JBOOLEAN> Func_CallNonVirtualBooleanMethodA;
+
+        internal readonly Ptr_Func_CallNonvirtualUnmanagedMethodA<JBYTE> Func_CallNonVirtualByteMethod;
+        internal readonly Ptr_Func_CallNonvirtualUnmanagedMethodA<JBYTE> Func_CallNonVirtualByteMethodV;
+        internal readonly Ptr_Func_CallNonvirtualUnmanagedMethodA<JBYTE> Func_CallNonVirtualByteMethodA;
+
+        internal readonly Ptr_Func_CallNonvirtualUnmanagedMethodA<JCHAR> Func_CallNonVirtualCharMethod;
+        internal readonly Ptr_Func_CallNonvirtualUnmanagedMethodA<JCHAR> Func_CallNonVirtualCharMethodV;
+        internal readonly Ptr_Func_CallNonvirtualUnmanagedMethodA<JCHAR> Func_CallNonVirtualCharMethodA;
+
+        internal readonly Ptr_Func_CallNonvirtualUnmanagedMethodA<JSHORT> Func_CallNonVirtualShortMethod;
+        internal readonly Ptr_Func_CallNonvirtualUnmanagedMethodA<JSHORT> Func_CallNonVirtualShortMethodV;
+        internal readonly Ptr_Func_CallNonvirtualUnmanagedMethodA<JSHORT> Func_CallNonVirtualShortMethodA;
+
+        internal readonly Ptr_Func_CallNonvirtualUnmanagedMethodA<JINT> Func_CallNonVirtualIntMethod;
+        internal readonly Ptr_Func_CallNonvirtualUnmanagedMethodA<JINT> Func_CallNonVirtualIntMethodV;
+        internal readonly Ptr_Func_CallNonvirtualUnmanagedMethodA<JINT> Func_CallNonVirtualIntMethodA;
+
+        internal readonly Ptr_Func_CallNonvirtualUnmanagedMethodA<JLONG> Func_CallNonVirtualLongMethod;
+        internal readonly Ptr_Func_CallNonvirtualUnmanagedMethodA<JLONG> Func_CallNonVirtualLongMethodV;
+        internal readonly Ptr_Func_CallNonvirtualUnmanagedMethodA<JLONG> Func_CallNonVirtualLongMethodA;
+
+        internal readonly Ptr_Func_CallNonvirtualUnmanagedMethodA<JFLOAT> Func_CallNonVirtualFloatMethod;
+        internal readonly Ptr_Func_CallNonvirtualUnmanagedMethodA<JFLOAT> Func_CallNonVirtualFloatMethodV;
+        internal readonly Ptr_Func_CallNonvirtualUnmanagedMethodA<JFLOAT> Func_CallNonVirtualFloatMethodA;
+
+        internal readonly Ptr_Func_CallNonvirtualUnmanagedMethodA<JDOUBLE> Func_CallNonVirtualDoubleMethod;
+        internal readonly Ptr_Func_CallNonvirtualUnmanagedMethodA<JDOUBLE> Func_CallNonVirtualDoubleMethodV;
+        internal readonly Ptr_Func_CallNonvirtualUnmanagedMethodA<JDOUBLE> Func_CallNonVirtualDoubleMethodA;
+
+        internal readonly Ptr_Func_CallNonvirtualVoidMethodA Func_CallNonVirtualVoidMethod;
+        internal readonly Ptr_Func_CallNonvirtualVoidMethodA Func_CallNonVirtualVoidMethodV;
+        internal readonly Ptr_Func_CallNonvirtualVoidMethodA Func_CallNonVirtualVoidMethodA;
+
+        internal readonly Ptr_Func_GetFieldID Ptr_Func_GetFieldID;
+
+        internal readonly Ptr_Func_GetObjectField Func_GetObjectField;
+        internal readonly Ptr_Func_GetUnmanagedField<JBOOLEAN> Func_GetBooleanField;
+        internal readonly Ptr_Func_GetUnmanagedField<JBYTE> Func_GetByteField;
+        internal readonly Ptr_Func_GetUnmanagedField<JCHAR> Func_GetCharField;
+        internal readonly Ptr_Func_GetUnmanagedField<JSHORT> Func_GetShortField;
+        internal readonly Ptr_Func_GetUnmanagedField<JINT> Func_GetIntField;
+        internal readonly Ptr_Func_GetUnmanagedField<JLONG> Func_GetLongField;
+        internal readonly Ptr_Func_GetUnmanagedField<JFLOAT> Func_GetFloatField;
+        internal readonly Ptr_Func_GetUnmanagedField<JDOUBLE> Func_GetDoubleField;
+
+        internal readonly Ptr_Func_SetObjectField Func_SetObjectField;
+        internal readonly Ptr_Func_SetUnmanagedField<JBOOLEAN> Func_SetBooleanField;
+        internal readonly Ptr_Func_SetUnmanagedField<JBYTE> Func_SetByteField;
+        internal readonly Ptr_Func_SetUnmanagedField<JCHAR> Func_SetCharField;
+        internal readonly Ptr_Func_SetUnmanagedField<JSHORT> Func_SetShortField;
+        internal readonly Ptr_Func_SetUnmanagedField<JINT> Func_SetIntField;
+        internal readonly Ptr_Func_SetUnmanagedField<JLONG> Func_SetLongField;
+        internal readonly Ptr_Func_SetUnmanagedField<JFLOAT> Func_SetFloatField;
+        internal readonly Ptr_Func_SetUnmanagedField<JDOUBLE> Func_SetDoubleField;
         internal readonly Ptr_Func_GetStaticMethodID Func_GetStaticMethodID;
 
-        /// <summary>
-        /// ???
-        /// </summary>
         internal readonly Ptr_Func_CallStaticObjectMethodA Func_CallStaticObjectMethod;
-        /// <summary>
-        /// ???
-        /// </summary>
         internal readonly Ptr_Func_CallStaticObjectMethodA Func_CallStaticObjectMethodV;
         internal readonly Ptr_Func_CallStaticObjectMethodA Func_CallStaticObjectMethodA;
 
-        internal readonly Ptr_Func_CallStaticUnmanagedMethodA<JBOOLEAN> CallStaticBooleanMethodPointer;
-        internal readonly Ptr_Func_CallStaticUnmanagedMethodA<JBOOLEAN> CallStaticBooleanMethodVPointer;
-        internal readonly Ptr_Func_CallStaticUnmanagedMethodA<JBOOLEAN> CallStaticBooleanMethodAPointer;
+        internal readonly Ptr_Func_CallStaticUnmanagedMethodA<JBOOLEAN> Func_CallStaticBooleanMethod;
+        internal readonly Ptr_Func_CallStaticUnmanagedMethodA<JBOOLEAN> Func_CallStaticBooleanMethodV;
+        internal readonly Ptr_Func_CallStaticUnmanagedMethodA<JBOOLEAN> Func_CallStaticBooleanMethodA;
 
-        internal readonly Ptr_Func_CallStaticUnmanagedMethodA<JBYTE> CallStaticByteMethodPointer;
-        internal readonly Ptr_Func_CallStaticUnmanagedMethodA<JBYTE> CallStaticByteMethodVPointer;
-        internal readonly Ptr_Func_CallStaticUnmanagedMethodA<JBYTE> CallStaticByteMethodAPointer;
+        internal readonly Ptr_Func_CallStaticUnmanagedMethodA<JBYTE> Func_CallStaticByteMethod;
+        internal readonly Ptr_Func_CallStaticUnmanagedMethodA<JBYTE> Func_CallStaticByteMethodV;
+        internal readonly Ptr_Func_CallStaticUnmanagedMethodA<JBYTE> Func_CallStaticByteMethodA;
 
-        internal readonly Ptr_Func_CallStaticUnmanagedMethodA<JCHAR> CallStaticCharMethodPointer;
-        internal readonly Ptr_Func_CallStaticUnmanagedMethodA<JCHAR> CallStaticCharMethodVPointer;
-        internal readonly Ptr_Func_CallStaticUnmanagedMethodA<JCHAR> CallStaticCharMethodAPointer;
+        internal readonly Ptr_Func_CallStaticUnmanagedMethodA<JCHAR> Func_CallStaticCharMethod;
+        internal readonly Ptr_Func_CallStaticUnmanagedMethodA<JCHAR> Func_CallStaticCharMethodV;
+        internal readonly Ptr_Func_CallStaticUnmanagedMethodA<JCHAR> Func_CallStaticCharMethodA;
 
-        internal readonly Ptr_Func_CallStaticUnmanagedMethodA<JSHORT> CallStaticShortMethodPointer;
-        internal readonly Ptr_Func_CallStaticUnmanagedMethodA<JSHORT> CallStaticShortMethodVPointer;
-        internal readonly Ptr_Func_CallStaticUnmanagedMethodA<JSHORT> CallStaticShortMethodAPointer;
+        internal readonly Ptr_Func_CallStaticUnmanagedMethodA<JSHORT> Func_CallStaticShortMethod;
+        internal readonly Ptr_Func_CallStaticUnmanagedMethodA<JSHORT> Func_CallStaticShortMethodV;
+        internal readonly Ptr_Func_CallStaticUnmanagedMethodA<JSHORT> Func_CallStaticShortMethodA;
 
-        internal readonly Ptr_Func_CallStaticUnmanagedMethodA<JINT> CallStaticIntMethodPointer;
-        internal readonly Ptr_Func_CallStaticUnmanagedMethodA<JINT> CallStaticIntMethodVPointer;
-        internal readonly Ptr_Func_CallStaticUnmanagedMethodA<JINT> CallStaticIntMethodAPointer;
+        internal readonly Ptr_Func_CallStaticUnmanagedMethodA<JINT> Func_CallStaticIntMethod;
+        internal readonly Ptr_Func_CallStaticUnmanagedMethodA<JINT> Func_CallStaticIntMethodV;
+        internal readonly Ptr_Func_CallStaticUnmanagedMethodA<JINT> Func_CallStaticIntMethodA;
 
-        internal readonly Ptr_Func_CallStaticUnmanagedMethodA<JLONG> CallStaticLongMethodPointer;
-        internal readonly Ptr_Func_CallStaticUnmanagedMethodA<JLONG> CallStaticLongMethodVPointer;
-        internal readonly Ptr_Func_CallStaticUnmanagedMethodA<JLONG> CallStaticLongMethodAPointer;
+        internal readonly Ptr_Func_CallStaticUnmanagedMethodA<JLONG> Func_CallStaticLongMethod;
+        internal readonly Ptr_Func_CallStaticUnmanagedMethodA<JLONG> Func_CallStaticLongMethodV;
+        internal readonly Ptr_Func_CallStaticUnmanagedMethodA<JLONG> Func_CallStaticLongMethodA;
 
-        internal readonly Ptr_Func_CallStaticUnmanagedMethodA<JFLOAT> CallStaticFloatMethodPointer;
-        internal readonly Ptr_Func_CallStaticUnmanagedMethodA<JFLOAT> CallStaticFloatMethodVPointer;
-        internal readonly Ptr_Func_CallStaticUnmanagedMethodA<JFLOAT> CallStaticFloatMethodAPointer;
+        internal readonly Ptr_Func_CallStaticUnmanagedMethodA<JFLOAT> Func_CallStaticFloatMethod;
+        internal readonly Ptr_Func_CallStaticUnmanagedMethodA<JFLOAT> Func_CallStaticFloatMethodV;
+        internal readonly Ptr_Func_CallStaticUnmanagedMethodA<JFLOAT> Func_CallStaticFloatMethodA;
 
-        internal readonly Ptr_Func_CallStaticUnmanagedMethodA<JDOUBLE> CallStaticDoubleMethodPointer;
-        internal readonly Ptr_Func_CallStaticUnmanagedMethodA<JDOUBLE> CallStaticDoubleMethodVPointer;
-        internal readonly Ptr_Func_CallStaticUnmanagedMethodA<JDOUBLE> CallStaticDoubleMethodAPointer;
+        internal readonly Ptr_Func_CallStaticUnmanagedMethodA<JDOUBLE> Func_CallStaticDoubleMethod;
+        internal readonly Ptr_Func_CallStaticUnmanagedMethodA<JDOUBLE> Func_CallStaticDoubleMethodV;
+        internal readonly Ptr_Func_CallStaticUnmanagedMethodA<JDOUBLE> Func_CallStaticDoubleMethodA;
 
-        /// <summary>
-        /// ???
-        /// </summary>
         internal readonly Ptr_Func_CallStaticVoidMethodA Func_CallStaticVoidMethod;
-        /// <summary>
-        /// ???
-        /// </summary>
         internal readonly Ptr_Func_CallStaticVoidMethodA Func_CallStaticVoidMethodV;
         internal readonly Ptr_Func_CallStaticVoidMethodA Func_CallStaticVoidMethodA;
 
-        [MarshalAs(UnmanagedType.SysInt)] internal readonly nint GetStaticFieldIdPointer;
-        [MarshalAs(UnmanagedType.SysInt)] internal readonly nint GetStaticObjectFieldPointer;
-        [MarshalAs(UnmanagedType.SysInt)] internal readonly nint GetStaticBooleanFieldPointer;
-        [MarshalAs(UnmanagedType.SysInt)] internal readonly nint GetStaticByteFieldPointer;
-        [MarshalAs(UnmanagedType.SysInt)] internal readonly nint GetStaticCharFieldPointer;
-        [MarshalAs(UnmanagedType.SysInt)] internal readonly nint GetStaticShortFieldPointer;
-        [MarshalAs(UnmanagedType.SysInt)] internal readonly nint GetStaticIntFieldPointer;
-        [MarshalAs(UnmanagedType.SysInt)] internal readonly nint GetStaticLongFieldPointer;
-        [MarshalAs(UnmanagedType.SysInt)] internal readonly nint GetStaticFloatFieldPointer;
-        [MarshalAs(UnmanagedType.SysInt)] internal readonly nint GetStaticDoubleFieldPointer;
-        [MarshalAs(UnmanagedType.SysInt)] internal readonly nint SetStaticObjectFieldPointer;
-        [MarshalAs(UnmanagedType.SysInt)] internal readonly nint SetStaticBooleanFieldPointer;
-        [MarshalAs(UnmanagedType.SysInt)] internal readonly nint SetStaticByteFieldPointer;
-        [MarshalAs(UnmanagedType.SysInt)] internal readonly nint SetStaticCharFieldPointer;
-        [MarshalAs(UnmanagedType.SysInt)] internal readonly nint SetStaticShortFieldPointer;
-        [MarshalAs(UnmanagedType.SysInt)] internal readonly nint SetStaticIntFieldPointer;
-        [MarshalAs(UnmanagedType.SysInt)] internal readonly nint SetStaticLongFieldPointer;
-        [MarshalAs(UnmanagedType.SysInt)] internal readonly nint SetStaticFloatFieldPointer;
-        [MarshalAs(UnmanagedType.SysInt)] internal readonly nint SetStaticDoubleFieldPointer;
+        internal readonly Ptr_Func_GetStaticFieldID Func_GetStaticFieldID;
+        internal readonly Ptr_Func_GetStaticObjectField Func_GetStaticObjectField;
+        internal readonly Ptr_Func_GetStaticUnmanagedField<JBOOLEAN> GetStaticBooleanFieldPointer;
+        internal readonly Ptr_Func_GetStaticUnmanagedField<JBYTE> GetStaticByteFieldPointer;
+        internal readonly Ptr_Func_GetStaticUnmanagedField<JCHAR> GetStaticCharFieldPointer;
+        internal readonly Ptr_Func_GetStaticUnmanagedField<JSHORT> GetStaticShortFieldPointer;
+        internal readonly Ptr_Func_GetStaticUnmanagedField<JINT> GetStaticIntFieldPointer;
+        internal readonly Ptr_Func_GetStaticUnmanagedField<JLONG> GetStaticLongFieldPointer;
+        internal readonly Ptr_Func_GetStaticUnmanagedField<JFLOAT> GetStaticFloatFieldPointer;
+        internal readonly Ptr_Func_GetStaticUnmanagedField<JDOUBLE> GetStaticDoubleFieldPointer;
+
+        internal readonly Ptr_Func_SetStaticObjectField Func_SetStaticObjectField;
+        internal readonly Ptr_Func_SetStaticUnmanagedField<JBOOLEAN> Func_SetStaticBooleanField;
+        internal readonly Ptr_Func_SetStaticUnmanagedField<JBYTE> Func_SetStaticByteField;
+        internal readonly Ptr_Func_SetStaticUnmanagedField<JCHAR> Func_SetStaticCharField;
+        internal readonly Ptr_Func_SetStaticUnmanagedField<JSHORT> Func_SetStaticShortField;
+        internal readonly Ptr_Func_SetStaticUnmanagedField<JINT> Func_SetStaticIntField;
+        internal readonly Ptr_Func_SetStaticUnmanagedField<JLONG> Func_SetStaticLongField;
+        internal readonly Ptr_Func_SetStaticUnmanagedField<JFLOAT> Func_SetStaticFloatField;
+        internal readonly Ptr_Func_SetStaticUnmanagedField<JDOUBLE> Func_SetStaticDoubleField;
+
         internal readonly Ptr_Func_NewString Func_NewString;
         [MarshalAs(UnmanagedType.SysInt)] internal readonly nint GetStringLengthPointer;
         [MarshalAs(UnmanagedType.SysInt)] internal readonly nint GetStringCharsPointer;
@@ -923,6 +1147,7 @@ namespace Maple.MonoGameAssistant.AndroidCore.JNI.Value
         [MarshalAs(UnmanagedType.SysInt)] internal readonly nint GetDirectBufferCapacityPointer;
         [MarshalAs(UnmanagedType.SysInt)] internal readonly nint GetObjectRefTypePointer;
     }
+
 
     [StructLayout(LayoutKind.Sequential)]
     public readonly struct PTR_JNI_NATIVE_INTERFACE(nint ptr)
