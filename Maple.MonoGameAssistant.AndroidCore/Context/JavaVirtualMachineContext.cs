@@ -1,7 +1,7 @@
 ﻿using Maple.MonoGameAssistant.AndroidCore.JNI.Value;
 using System.Runtime.CompilerServices;
 
-namespace Maple.MonoGameAssistant.AndroidCore
+namespace Maple.MonoGameAssistant.AndroidCore.Context
 {
     public class JavaVirtualMachineContext(PTR_JAVA_VM javaVM)
     {

@@ -1,4 +1,5 @@
-﻿using Maple.MonoGameAssistant.AndroidCore.JNI.Opaque;
+﻿using Maple.MonoGameAssistant.AndroidCore.Extension;
+using Maple.MonoGameAssistant.AndroidCore.JNI.Opaque;
 using Maple.MonoGameAssistant.AndroidCore.JNI.Primitive;
 using Maple.MonoGameAssistant.AndroidCore.JNI.Reference;
 using Maple.MonoGameAssistant.AndroidCore.JNI.Reference.Array;

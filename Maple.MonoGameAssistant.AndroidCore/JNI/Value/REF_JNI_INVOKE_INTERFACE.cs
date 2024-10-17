@@ -1,4 +1,5 @@
-﻿using Maple.MonoGameAssistant.AndroidCore.JNI.Primitive;
+﻿using Maple.MonoGameAssistant.AndroidCore.Extension;
+using Maple.MonoGameAssistant.AndroidCore.JNI.Primitive;
 using Maple.MonoGameAssistant.AndroidCore.JNI.Reference;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;

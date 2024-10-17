@@ -1,6 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 
-namespace Maple.MonoGameAssistant.AndroidCore
+namespace Maple.MonoGameAssistant.AndroidCore.Extension
 {
     internal static class AndroidExtensions
     {

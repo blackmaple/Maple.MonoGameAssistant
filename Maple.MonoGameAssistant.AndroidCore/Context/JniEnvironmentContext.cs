@@ -2,7 +2,7 @@
 using Maple.MonoGameAssistant.AndroidNdk.Helper;
 using System.Runtime.CompilerServices;
 
-namespace Maple.MonoGameAssistant.AndroidCore
+namespace Maple.MonoGameAssistant.AndroidCore.Context
 {
     public readonly struct JniEnvironmentContext(JavaVirtualMachineContext javaVirtualMachineContext, PTR_JNI_ENV jniEnv) : IDisposable
     {
