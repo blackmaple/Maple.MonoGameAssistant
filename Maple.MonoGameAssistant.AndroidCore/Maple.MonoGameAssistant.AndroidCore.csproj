@@ -30,19 +30,17 @@
 
 	</PropertyGroup>
 
-
-
 	<ItemGroup>
-		<ProjectReference Include="..\Maple.MonoGameAssistant.Core\Maple.MonoGameAssistant.Core.csproj" />
+	  <Compile Remove="JNI\RawTyep\**" />
+	  <EmbeddedResource Remove="JNI\RawTyep\**" />
+	  <None Remove="JNI\RawTyep\**" />
 	</ItemGroup>
 
 
 
 	<ItemGroup>
-	  <Folder Include="JNI\Value\" />
-	  <Folder Include="JNI\Reference\" />
-	  <Folder Include="JNI\Primitive\" />
-	  <Folder Include="JNI\RawTyep\" />
+		<ProjectReference Include="..\Maple.MonoGameAssistant.AndroidModel\Maple.MonoGameAssistant.AndroidModel.csproj" />
+		<ProjectReference Include="..\Maple.MonoGameAssistant.Core\Maple.MonoGameAssistant.Core.csproj" />
 	</ItemGroup>
  
 
