@@ -1,4 +1,6 @@
-﻿using System.Runtime.CompilerServices;
+﻿using Maple.MonoGameAssistant.AndroidCore.JNI.Reference;
+using System.Numerics;
+using System.Runtime.CompilerServices;
 
 namespace Maple.MonoGameAssistant.AndroidCore.Extension
 {
@@ -10,5 +12,32 @@ namespace Maple.MonoGameAssistant.AndroidCore.Extension
               where T_STRUCT : unmanaged
               => ref Unsafe.AsRef<T_STRUCT>(@this.ToPointer());
 
+
+        internal static bool IsNullPtr<T>(this T obj) where T : unmanaged, IJNIReferenceInterface
+            => obj.Ptr == IntPtr.Zero;
+
+        internal static void SetNullPtr<T>(this T obj) where T : unmanaged, IJNIReferenceInterface
+            => obj.Ptr = IntPtr.Zero;
+
+        internal static string? ToString<T>(this T obj) where T : unmanaged, IJNIReferenceInterface
+            => obj.Ptr.ToString("X8");
     }
+
+    internal interface IJNIReferenceInterface
+    {
+        public nint Ptr { get; set; }
+
+    }
+
+    internal interface IJNIReferenceInterface<T> where T : unmanaged, IJNIReferenceInterface,INumber
+    {
+        static implicit operator T(nint val) => new(val);
+        static implicit operator nint(T val) => val._ptr;
+        static implicit operator bool(JARRAY val) => val.IsNullPtr();
+        static implicit operator JOBJECT(JARRAY val) => new(val._ptr);
+
+    }
+
+
+
 }

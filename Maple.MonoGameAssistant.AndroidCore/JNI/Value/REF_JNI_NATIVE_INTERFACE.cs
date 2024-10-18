@@ -1137,8 +1137,8 @@ namespace Maple.MonoGameAssistant.AndroidCore.JNI.Value
         [MarshalAs(UnmanagedType.SysInt)] internal readonly nint ReleasePrimitiveArrayCriticalPointer;
         [MarshalAs(UnmanagedType.SysInt)] internal readonly nint GetStringCriticalPointer;
         [MarshalAs(UnmanagedType.SysInt)] internal readonly nint ReleaseStringCriticalPointer;
-        [MarshalAs(UnmanagedType.SysInt)] internal readonly nint NewWeakGlobalRefPointer;
-        [MarshalAs(UnmanagedType.SysInt)] internal readonly nint DeleteWeakGlobalRefPointer;
+        internal readonly Ptr_Func_NewWeakGlobalRef Func_NewWeakGlobalRef;
+        internal readonly Ptr_Func_DeleteWeakGlobalRef Func_DeleteWeakGlobalRef;
 
         internal readonly Ptr_Func_ExceptionCheck Func_ExceptionCheck;
 

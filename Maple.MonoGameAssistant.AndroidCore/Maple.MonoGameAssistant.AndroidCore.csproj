@@ -6,6 +6,7 @@
 		<Nullable>enable</Nullable>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 		<InvariantGlobalization>true</InvariantGlobalization>
+		<LangVersion>preview</LangVersion>
 
 		<PublishAot>true</PublishAot>
 		<IsAotCompatible>true</IsAotCompatible>
