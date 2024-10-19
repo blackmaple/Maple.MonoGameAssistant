@@ -31,15 +31,10 @@
 
 	</PropertyGroup>
 
-	<ItemGroup>
-	  <Compile Remove="JNI\RawTyep\**" />
-	  <EmbeddedResource Remove="JNI\RawTyep\**" />
-	  <None Remove="JNI\RawTyep\**" />
-	</ItemGroup>
-
 
 
 	<ItemGroup>
+		<ProjectReference Include="..\Maple.MonoGameAssistant.AndroidJNI\Maple.MonoGameAssistant.AndroidJNI.csproj" />
 		<ProjectReference Include="..\Maple.MonoGameAssistant.AndroidModel\Maple.MonoGameAssistant.AndroidModel.csproj" />
 		<ProjectReference Include="..\Maple.MonoGameAssistant.Common\Maple.MonoGameAssistant.Common.csproj" />
 	</ItemGroup>

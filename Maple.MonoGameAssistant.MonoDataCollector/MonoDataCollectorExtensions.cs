@@ -35,13 +35,7 @@ namespace Maple.MonoGameAssistant.MonoDataCollector
             _ = RunWebApiServiceAsync();
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="hModule"></param>
-        /// <param name="ul_reason_for_call"></param>
-        /// <param name="lpReserved"></param>
-        /// <returns></returns>
+
         [UnmanagedCallersOnly(CallConvs = [typeof(CallConvStdcall), typeof(CallConvSuppressGCTransition)], EntryPoint = nameof(DllMain))]
         [return: MarshalAs(UnmanagedType.Bool)]
         public static bool DllMain(nint hModule, uint ul_reason_for_call, nint lpReserved)
