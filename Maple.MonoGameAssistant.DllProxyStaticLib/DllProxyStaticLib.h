@@ -797,13 +797,269 @@ extern "C" BOOL WINAPI InitDllMain(HINSTANCE hModule, DWORD ul_reason_for_call, 
 
 
 
-//#pragma comment(linker, "/export:AddMaple=Add")
-extern "C"  int __stdcall Add(int a, int b);
+////#pragma comment(linker, "/export:AddMaple=Add")
+//extern "C"  int WINAPI Add(int a, int b);
 
 
 #pragma comment(lib, "Shlwapi.lib")
 
 
+
+
+
+extern "C" void WINAPI Export_CloseDriver();
+extern "C" void WINAPI Export_DefDriverProc();
+extern "C" void WINAPI Export_DllCanUnloadNow();
+extern "C" void WINAPI Export_DllGetClassObject();
+extern "C" void WINAPI Export_DllRegisterServer();
+extern "C" void WINAPI Export_DllUnregisterServer();
+extern "C" void WINAPI Export_DriverCallback();
+extern "C" void WINAPI Export_DrvClose();
+extern "C" void WINAPI Export_DrvDefDriverProc();
+extern "C" void WINAPI Export_DrvGetModuleHandle();
+extern "C" void WINAPI Export_DrvOpen();
+extern "C" void WINAPI Export_DrvOpenA();
+extern "C" void WINAPI Export_DrvSendMessage();
+extern "C" void WINAPI Export_GetDriverFlags();
+extern "C" void WINAPI Export_GetDriverModuleHandle();
+extern "C" void WINAPI Export_GetFileVersionInfoA();
+extern "C" void WINAPI Export_GetFileVersionInfoExA();
+extern "C" void WINAPI Export_GetFileVersionInfoExW();
+extern "C" void WINAPI Export_GetFileVersionInfoSizeA();
+extern "C" void WINAPI Export_GetFileVersionInfoSizeExA();
+extern "C" void WINAPI Export_GetFileVersionInfoSizeExW();
+extern "C" void WINAPI Export_GetFileVersionInfoSizeW();
+extern "C" void WINAPI Export_GetFileVersionInfoW();
+extern "C" void WINAPI Export_OpenDriver();
+extern "C" void WINAPI Export_OpenDriverA();
+extern "C" void WINAPI Export_PlaySound();
+extern "C" void WINAPI Export_PlaySoundA();
+extern "C" void WINAPI Export_PlaySoundW();
+extern "C" void WINAPI Export_SendDriverMessage();
+extern "C" void WINAPI Export_VerFindFileA();
+extern "C" void WINAPI Export_VerFindFileW();
+extern "C" void WINAPI Export_VerInstallFileA();
+extern "C" void WINAPI Export_VerInstallFileW();
+extern "C" void WINAPI Export_VerLanguageNameA();
+extern "C" void WINAPI Export_VerLanguageNameW();
+extern "C" void WINAPI Export_VerQueryValueA();
+extern "C" void WINAPI Export_VerQueryValueW();
+extern "C" void WINAPI Export_WinHttpAddRequestHeaders();
+extern "C" void WINAPI Export_WinHttpCheckPlatform();
+extern "C" void WINAPI Export_WinHttpCloseHandle();
+extern "C" void WINAPI Export_WinHttpConnect();
+extern "C" void WINAPI Export_WinHttpCrackUrl();
+extern "C" void WINAPI Export_WinHttpCreateProxyResolver();
+extern "C" void WINAPI Export_WinHttpCreateUrl();
+extern "C" void WINAPI Export_WinHttpDetectAutoProxyConfigUrl();
+extern "C" void WINAPI Export_WinHttpFreeProxyResult();
+extern "C" void WINAPI Export_WinHttpFreeProxyResultEx();
+extern "C" void WINAPI Export_WinHttpFreeProxySettings();
+extern "C" void WINAPI Export_WinHttpGetDefaultProxyConfiguration();
+extern "C" void WINAPI Export_WinHttpGetIEProxyConfigForCurrentUser();
+extern "C" void WINAPI Export_WinHttpGetProxyForUrl();
+extern "C" void WINAPI Export_WinHttpGetProxyForUrlEx();
+extern "C" void WINAPI Export_WinHttpGetProxyForUrlEx2();
+extern "C" void WINAPI Export_WinHttpGetProxyResult();
+extern "C" void WINAPI Export_WinHttpGetProxyResultEx();
+extern "C" void WINAPI Export_WinHttpGetProxySettingsVersion();
+extern "C" void WINAPI Export_WinHttpOpen();
+extern "C" void WINAPI Export_WinHttpOpenRequest();
+extern "C" void WINAPI Export_WinHttpQueryAuthSchemes();
+extern "C" void WINAPI Export_WinHttpQueryDataAvailable();
+extern "C" void WINAPI Export_WinHttpQueryHeaders();
+extern "C" void WINAPI Export_WinHttpQueryOption();
+extern "C" void WINAPI Export_WinHttpReadData();
+extern "C" void WINAPI Export_WinHttpReadProxySettings();
+extern "C" void WINAPI Export_WinHttpReceiveResponse();
+extern "C" void WINAPI Export_WinHttpResetAutoProxy();
+extern "C" void WINAPI Export_WinHttpSendRequest();
+extern "C" void WINAPI Export_WinHttpSetCredentials();
+extern "C" void WINAPI Export_WinHttpSetDefaultProxyConfiguration();
+extern "C" void WINAPI Export_WinHttpSetOption();
+extern "C" void WINAPI Export_WinHttpSetStatusCallback();
+extern "C" void WINAPI Export_WinHttpSetTimeouts();
+extern "C" void WINAPI Export_WinHttpTimeFromSystemTime();
+extern "C" void WINAPI Export_WinHttpTimeToSystemTime();
+extern "C" void WINAPI Export_WinHttpWebSocketClose();
+extern "C" void WINAPI Export_WinHttpWebSocketCompleteUpgrade();
+extern "C" void WINAPI Export_WinHttpWebSocketQueryCloseStatus();
+extern "C" void WINAPI Export_WinHttpWebSocketReceive();
+extern "C" void WINAPI Export_WinHttpWebSocketSend();
+extern "C" void WINAPI Export_WinHttpWebSocketShutdown();
+extern "C" void WINAPI Export_WinHttpWriteData();
+extern "C" void WINAPI Export_WinHttpWriteProxySettings();
+extern "C" void WINAPI Export_auxGetDevCapsA();
+extern "C" void WINAPI Export_auxGetDevCapsW();
+extern "C" void WINAPI Export_auxGetNumDevs();
+extern "C" void WINAPI Export_auxGetVolume();
+extern "C" void WINAPI Export_auxOutMessage();
+extern "C" void WINAPI Export_auxSetVolume();
+extern "C" void WINAPI Export_joyConfigChanged();
+extern "C" void WINAPI Export_joyGetDevCapsA();
+extern "C" void WINAPI Export_joyGetDevCapsW();
+extern "C" void WINAPI Export_joyGetNumDevs();
+extern "C" void WINAPI Export_joyGetPos();
+extern "C" void WINAPI Export_joyGetPosEx();
+extern "C" void WINAPI Export_joyGetThreshold();
+extern "C" void WINAPI Export_joyReleaseCapture();
+extern "C" void WINAPI Export_joySetCapture();
+extern "C" void WINAPI Export_joySetThreshold();
+extern "C" void WINAPI Export_mciDriverNotify();
+extern "C" void WINAPI Export_mciDriverYield();
+extern "C" void WINAPI Export_mciExecute();
+extern "C" void WINAPI Export_mciFreeCommandResource();
+extern "C" void WINAPI Export_mciGetCreatorTask();
+extern "C" void WINAPI Export_mciGetDeviceIDA();
+extern "C" void WINAPI Export_mciGetDeviceIDFromElementIDA();
+extern "C" void WINAPI Export_mciGetDeviceIDFromElementIDW();
+extern "C" void WINAPI Export_mciGetDeviceIDW();
+extern "C" void WINAPI Export_mciGetDriverData();
+extern "C" void WINAPI Export_mciGetErrorStringA();
+extern "C" void WINAPI Export_mciGetErrorStringW();
+extern "C" void WINAPI Export_mciGetYieldProc();
+extern "C" void WINAPI Export_mciLoadCommandResource();
+extern "C" void WINAPI Export_mciSendCommandA();
+extern "C" void WINAPI Export_mciSendCommandW();
+extern "C" void WINAPI Export_mciSendStringA();
+extern "C" void WINAPI Export_mciSendStringW();
+extern "C" void WINAPI Export_mciSetDriverData();
+extern "C" void WINAPI Export_mciSetYieldProc();
+extern "C" void WINAPI Export_midiConnect();
+extern "C" void WINAPI Export_midiDisconnect();
+extern "C" void WINAPI Export_midiInAddBuffer();
+extern "C" void WINAPI Export_midiInClose();
+extern "C" void WINAPI Export_midiInGetDevCapsA();
+extern "C" void WINAPI Export_midiInGetDevCapsW();
+extern "C" void WINAPI Export_midiInGetErrorTextA();
+extern "C" void WINAPI Export_midiInGetErrorTextW();
+extern "C" void WINAPI Export_midiInGetID();
+extern "C" void WINAPI Export_midiInGetNumDevs();
+extern "C" void WINAPI Export_midiInMessage();
+extern "C" void WINAPI Export_midiInOpen();
+extern "C" void WINAPI Export_midiInPrepareHeader();
+extern "C" void WINAPI Export_midiInReset();
+extern "C" void WINAPI Export_midiInStart();
+extern "C" void WINAPI Export_midiInStop();
+extern "C" void WINAPI Export_midiInUnprepareHeader();
+extern "C" void WINAPI Export_midiOutCacheDrumPatches();
+extern "C" void WINAPI Export_midiOutCachePatches();
+extern "C" void WINAPI Export_midiOutClose();
+extern "C" void WINAPI Export_midiOutGetDevCapsA();
+extern "C" void WINAPI Export_midiOutGetDevCapsW();
+extern "C" void WINAPI Export_midiOutGetErrorTextA();
+extern "C" void WINAPI Export_midiOutGetErrorTextW();
+extern "C" void WINAPI Export_midiOutGetID();
+extern "C" void WINAPI Export_midiOutGetNumDevs();
+extern "C" void WINAPI Export_midiOutGetVolume();
+extern "C" void WINAPI Export_midiOutLongMsg();
+extern "C" void WINAPI Export_midiOutMessage();
+extern "C" void WINAPI Export_midiOutOpen();
+extern "C" void WINAPI Export_midiOutPrepareHeader();
+extern "C" void WINAPI Export_midiOutReset();
+extern "C" void WINAPI Export_midiOutSetVolume();
+extern "C" void WINAPI Export_midiOutShortMsg();
+extern "C" void WINAPI Export_midiOutUnprepareHeader();
+extern "C" void WINAPI Export_midiStreamClose();
+extern "C" void WINAPI Export_midiStreamOpen();
+extern "C" void WINAPI Export_midiStreamOut();
+extern "C" void WINAPI Export_midiStreamPause();
+extern "C" void WINAPI Export_midiStreamPosition();
+extern "C" void WINAPI Export_midiStreamProperty();
+extern "C" void WINAPI Export_midiStreamRestart();
+extern "C" void WINAPI Export_midiStreamStop();
+extern "C" void WINAPI Export_mixerClose();
+extern "C" void WINAPI Export_mixerGetControlDetailsA();
+extern "C" void WINAPI Export_mixerGetControlDetailsW();
+extern "C" void WINAPI Export_mixerGetDevCapsA();
+extern "C" void WINAPI Export_mixerGetDevCapsW();
+extern "C" void WINAPI Export_mixerGetID();
+extern "C" void WINAPI Export_mixerGetLineControlsA();
+extern "C" void WINAPI Export_mixerGetLineControlsW();
+extern "C" void WINAPI Export_mixerGetLineInfoA();
+extern "C" void WINAPI Export_mixerGetLineInfoW();
+extern "C" void WINAPI Export_mixerGetNumDevs();
+extern "C" void WINAPI Export_mixerMessage();
+extern "C" void WINAPI Export_mixerOpen();
+extern "C" void WINAPI Export_mixerSetControlDetails();
+extern "C" void WINAPI Export_mmGetCurrentTask();
+extern "C" void WINAPI Export_mmTaskBlock();
+extern "C" void WINAPI Export_mmTaskCreate();
+extern "C" void WINAPI Export_mmTaskSignal();
+extern "C" void WINAPI Export_mmTaskYield();
+extern "C" void WINAPI Export_mmioAdvance();
+extern "C" void WINAPI Export_mmioAscend();
+extern "C" void WINAPI Export_mmioClose();
+extern "C" void WINAPI Export_mmioCreateChunk();
+extern "C" void WINAPI Export_mmioDescend();
+extern "C" void WINAPI Export_mmioFlush();
+extern "C" void WINAPI Export_mmioGetInfo();
+extern "C" void WINAPI Export_mmioInstallIOProc16();
+extern "C" void WINAPI Export_mmioInstallIOProcA();
+extern "C" void WINAPI Export_mmioInstallIOProcW();
+extern "C" void WINAPI Export_mmioOpenA();
+extern "C" void WINAPI Export_mmioOpenW();
+extern "C" void WINAPI Export_mmioRead();
+extern "C" void WINAPI Export_mmioRenameA();
+extern "C" void WINAPI Export_mmioRenameW();
+extern "C" void WINAPI Export_mmioSeek();
+extern "C" void WINAPI Export_mmioSendMessage();
+extern "C" void WINAPI Export_mmioSetBuffer();
+extern "C" void WINAPI Export_mmioSetInfo();
+extern "C" void WINAPI Export_mmioStringToFOURCCA();
+extern "C" void WINAPI Export_mmioStringToFOURCCW();
+extern "C" void WINAPI Export_mmioWrite();
+extern "C" void WINAPI Export_mmsystemGetVersion();
+extern "C" void WINAPI Export_sndPlaySoundA();
+extern "C" void WINAPI Export_sndPlaySoundW();
+extern "C" void WINAPI Export_timeBeginPeriod();
+extern "C" void WINAPI Export_timeEndPeriod();
+extern "C" void WINAPI Export_timeGetDevCaps();
+extern "C" void WINAPI Export_timeGetSystemTime();
+extern "C" void WINAPI Export_timeGetTime();
+extern "C" void WINAPI Export_timeKillEvent();
+extern "C" void WINAPI Export_timeSetEvent();
+extern "C" void WINAPI Export_waveInAddBuffer();
+extern "C" void WINAPI Export_waveInClose();
+extern "C" void WINAPI Export_waveInGetDevCapsA();
+extern "C" void WINAPI Export_waveInGetDevCapsW();
+extern "C" void WINAPI Export_waveInGetErrorTextA();
+extern "C" void WINAPI Export_waveInGetErrorTextW();
+extern "C" void WINAPI Export_waveInGetID();
+extern "C" void WINAPI Export_waveInGetNumDevs();
+extern "C" void WINAPI Export_waveInGetPosition();
+extern "C" void WINAPI Export_waveInMessage();
+extern "C" void WINAPI Export_waveInOpen();
+extern "C" void WINAPI Export_waveInPrepareHeader();
+extern "C" void WINAPI Export_waveInReset();
+extern "C" void WINAPI Export_waveInStart();
+extern "C" void WINAPI Export_waveInStop();
+extern "C" void WINAPI Export_waveInUnprepareHeader();
+extern "C" void WINAPI Export_waveOutBreakLoop();
+extern "C" void WINAPI Export_waveOutClose();
+extern "C" void WINAPI Export_waveOutGetDevCapsA();
+extern "C" void WINAPI Export_waveOutGetDevCapsW();
+extern "C" void WINAPI Export_waveOutGetErrorTextA();
+extern "C" void WINAPI Export_waveOutGetErrorTextW();
+extern "C" void WINAPI Export_waveOutGetID();
+extern "C" void WINAPI Export_waveOutGetNumDevs();
+extern "C" void WINAPI Export_waveOutGetPitch();
+extern "C" void WINAPI Export_waveOutGetPlaybackRate();
+extern "C" void WINAPI Export_waveOutGetPosition();
+extern "C" void WINAPI Export_waveOutGetVolume();
+extern "C" void WINAPI Export_waveOutMessage();
+extern "C" void WINAPI Export_waveOutOpen();
+extern "C" void WINAPI Export_waveOutPause();
+extern "C" void WINAPI Export_waveOutPrepareHeader();
+extern "C" void WINAPI Export_waveOutReset();
+extern "C" void WINAPI Export_waveOutRestart();
+extern "C" void WINAPI Export_waveOutSetPitch();
+extern "C" void WINAPI Export_waveOutSetPlaybackRate();
+extern "C" void WINAPI Export_waveOutSetVolume();
+extern "C" void WINAPI Export_waveOutUnprepareHeader();
+extern "C" void WINAPI Export_waveOutWrite();
+
+#if _WIN64
 #pragma comment(linker, "/export:CloseDriver=Export_CloseDriver")
 #pragma comment(linker, "/export:DefDriverProc=Export_DefDriverProc")
 #pragma comment(linker, "/export:DllCanUnloadNow=Export_DllCanUnloadNow")
@@ -1055,259 +1311,259 @@ extern "C"  int __stdcall Add(int a, int b);
 #pragma comment(linker, "/export:waveOutSetVolume=Export_waveOutSetVolume")
 #pragma comment(linker, "/export:waveOutUnprepareHeader=Export_waveOutUnprepareHeader")
 #pragma comment(linker, "/export:waveOutWrite=Export_waveOutWrite")
-
-
-extern "C" void __stdcall Export_CloseDriver();
-extern "C" void __stdcall Export_DefDriverProc();
-extern "C" void __stdcall Export_DllCanUnloadNow();
-extern "C" void __stdcall Export_DllGetClassObject();
-extern "C" void __stdcall Export_DllRegisterServer();
-extern "C" void __stdcall Export_DllUnregisterServer();
-extern "C" void __stdcall Export_DriverCallback();
-extern "C" void __stdcall Export_DrvClose();
-extern "C" void __stdcall Export_DrvDefDriverProc();
-extern "C" void __stdcall Export_DrvGetModuleHandle();
-extern "C" void __stdcall Export_DrvOpen();
-extern "C" void __stdcall Export_DrvOpenA();
-extern "C" void __stdcall Export_DrvSendMessage();
-extern "C" void __stdcall Export_GetDriverFlags();
-extern "C" void __stdcall Export_GetDriverModuleHandle();
-extern "C" void __stdcall Export_GetFileVersionInfoA();
-extern "C" void __stdcall Export_GetFileVersionInfoExA();
-extern "C" void __stdcall Export_GetFileVersionInfoExW();
-extern "C" void __stdcall Export_GetFileVersionInfoSizeA();
-extern "C" void __stdcall Export_GetFileVersionInfoSizeExA();
-extern "C" void __stdcall Export_GetFileVersionInfoSizeExW();
-extern "C" void __stdcall Export_GetFileVersionInfoSizeW();
-extern "C" void __stdcall Export_GetFileVersionInfoW();
-extern "C" void __stdcall Export_OpenDriver();
-extern "C" void __stdcall Export_OpenDriverA();
-extern "C" void __stdcall Export_PlaySound();
-extern "C" void __stdcall Export_PlaySoundA();
-extern "C" void __stdcall Export_PlaySoundW();
-extern "C" void __stdcall Export_SendDriverMessage();
-extern "C" void __stdcall Export_VerFindFileA();
-extern "C" void __stdcall Export_VerFindFileW();
-extern "C" void __stdcall Export_VerInstallFileA();
-extern "C" void __stdcall Export_VerInstallFileW();
-extern "C" void __stdcall Export_VerLanguageNameA();
-extern "C" void __stdcall Export_VerLanguageNameW();
-extern "C" void __stdcall Export_VerQueryValueA();
-extern "C" void __stdcall Export_VerQueryValueW();
-extern "C" void __stdcall Export_WinHttpAddRequestHeaders();
-extern "C" void __stdcall Export_WinHttpCheckPlatform();
-extern "C" void __stdcall Export_WinHttpCloseHandle();
-extern "C" void __stdcall Export_WinHttpConnect();
-extern "C" void __stdcall Export_WinHttpCrackUrl();
-extern "C" void __stdcall Export_WinHttpCreateProxyResolver();
-extern "C" void __stdcall Export_WinHttpCreateUrl();
-extern "C" void __stdcall Export_WinHttpDetectAutoProxyConfigUrl();
-extern "C" void __stdcall Export_WinHttpFreeProxyResult();
-extern "C" void __stdcall Export_WinHttpFreeProxyResultEx();
-extern "C" void __stdcall Export_WinHttpFreeProxySettings();
-extern "C" void __stdcall Export_WinHttpGetDefaultProxyConfiguration();
-extern "C" void __stdcall Export_WinHttpGetIEProxyConfigForCurrentUser();
-extern "C" void __stdcall Export_WinHttpGetProxyForUrl();
-extern "C" void __stdcall Export_WinHttpGetProxyForUrlEx();
-extern "C" void __stdcall Export_WinHttpGetProxyForUrlEx2();
-extern "C" void __stdcall Export_WinHttpGetProxyResult();
-extern "C" void __stdcall Export_WinHttpGetProxyResultEx();
-extern "C" void __stdcall Export_WinHttpGetProxySettingsVersion();
-extern "C" void __stdcall Export_WinHttpOpen();
-extern "C" void __stdcall Export_WinHttpOpenRequest();
-extern "C" void __stdcall Export_WinHttpQueryAuthSchemes();
-extern "C" void __stdcall Export_WinHttpQueryDataAvailable();
-extern "C" void __stdcall Export_WinHttpQueryHeaders();
-extern "C" void __stdcall Export_WinHttpQueryOption();
-extern "C" void __stdcall Export_WinHttpReadData();
-extern "C" void __stdcall Export_WinHttpReadProxySettings();
-extern "C" void __stdcall Export_WinHttpReceiveResponse();
-extern "C" void __stdcall Export_WinHttpResetAutoProxy();
-extern "C" void __stdcall Export_WinHttpSendRequest();
-extern "C" void __stdcall Export_WinHttpSetCredentials();
-extern "C" void __stdcall Export_WinHttpSetDefaultProxyConfiguration();
-extern "C" void __stdcall Export_WinHttpSetOption();
-extern "C" void __stdcall Export_WinHttpSetStatusCallback();
-extern "C" void __stdcall Export_WinHttpSetTimeouts();
-extern "C" void __stdcall Export_WinHttpTimeFromSystemTime();
-extern "C" void __stdcall Export_WinHttpTimeToSystemTime();
-extern "C" void __stdcall Export_WinHttpWebSocketClose();
-extern "C" void __stdcall Export_WinHttpWebSocketCompleteUpgrade();
-extern "C" void __stdcall Export_WinHttpWebSocketQueryCloseStatus();
-extern "C" void __stdcall Export_WinHttpWebSocketReceive();
-extern "C" void __stdcall Export_WinHttpWebSocketSend();
-extern "C" void __stdcall Export_WinHttpWebSocketShutdown();
-extern "C" void __stdcall Export_WinHttpWriteData();
-extern "C" void __stdcall Export_WinHttpWriteProxySettings();
-extern "C" void __stdcall Export_auxGetDevCapsA();
-extern "C" void __stdcall Export_auxGetDevCapsW();
-extern "C" void __stdcall Export_auxGetNumDevs();
-extern "C" void __stdcall Export_auxGetVolume();
-extern "C" void __stdcall Export_auxOutMessage();
-extern "C" void __stdcall Export_auxSetVolume();
-extern "C" void __stdcall Export_joyConfigChanged();
-extern "C" void __stdcall Export_joyGetDevCapsA();
-extern "C" void __stdcall Export_joyGetDevCapsW();
-extern "C" void __stdcall Export_joyGetNumDevs();
-extern "C" void __stdcall Export_joyGetPos();
-extern "C" void __stdcall Export_joyGetPosEx();
-extern "C" void __stdcall Export_joyGetThreshold();
-extern "C" void __stdcall Export_joyReleaseCapture();
-extern "C" void __stdcall Export_joySetCapture();
-extern "C" void __stdcall Export_joySetThreshold();
-extern "C" void __stdcall Export_mciDriverNotify();
-extern "C" void __stdcall Export_mciDriverYield();
-extern "C" void __stdcall Export_mciExecute();
-extern "C" void __stdcall Export_mciFreeCommandResource();
-extern "C" void __stdcall Export_mciGetCreatorTask();
-extern "C" void __stdcall Export_mciGetDeviceIDA();
-extern "C" void __stdcall Export_mciGetDeviceIDFromElementIDA();
-extern "C" void __stdcall Export_mciGetDeviceIDFromElementIDW();
-extern "C" void __stdcall Export_mciGetDeviceIDW();
-extern "C" void __stdcall Export_mciGetDriverData();
-extern "C" void __stdcall Export_mciGetErrorStringA();
-extern "C" void __stdcall Export_mciGetErrorStringW();
-extern "C" void __stdcall Export_mciGetYieldProc();
-extern "C" void __stdcall Export_mciLoadCommandResource();
-extern "C" void __stdcall Export_mciSendCommandA();
-extern "C" void __stdcall Export_mciSendCommandW();
-extern "C" void __stdcall Export_mciSendStringA();
-extern "C" void __stdcall Export_mciSendStringW();
-extern "C" void __stdcall Export_mciSetDriverData();
-extern "C" void __stdcall Export_mciSetYieldProc();
-extern "C" void __stdcall Export_midiConnect();
-extern "C" void __stdcall Export_midiDisconnect();
-extern "C" void __stdcall Export_midiInAddBuffer();
-extern "C" void __stdcall Export_midiInClose();
-extern "C" void __stdcall Export_midiInGetDevCapsA();
-extern "C" void __stdcall Export_midiInGetDevCapsW();
-extern "C" void __stdcall Export_midiInGetErrorTextA();
-extern "C" void __stdcall Export_midiInGetErrorTextW();
-extern "C" void __stdcall Export_midiInGetID();
-extern "C" void __stdcall Export_midiInGetNumDevs();
-extern "C" void __stdcall Export_midiInMessage();
-extern "C" void __stdcall Export_midiInOpen();
-extern "C" void __stdcall Export_midiInPrepareHeader();
-extern "C" void __stdcall Export_midiInReset();
-extern "C" void __stdcall Export_midiInStart();
-extern "C" void __stdcall Export_midiInStop();
-extern "C" void __stdcall Export_midiInUnprepareHeader();
-extern "C" void __stdcall Export_midiOutCacheDrumPatches();
-extern "C" void __stdcall Export_midiOutCachePatches();
-extern "C" void __stdcall Export_midiOutClose();
-extern "C" void __stdcall Export_midiOutGetDevCapsA();
-extern "C" void __stdcall Export_midiOutGetDevCapsW();
-extern "C" void __stdcall Export_midiOutGetErrorTextA();
-extern "C" void __stdcall Export_midiOutGetErrorTextW();
-extern "C" void __stdcall Export_midiOutGetID();
-extern "C" void __stdcall Export_midiOutGetNumDevs();
-extern "C" void __stdcall Export_midiOutGetVolume();
-extern "C" void __stdcall Export_midiOutLongMsg();
-extern "C" void __stdcall Export_midiOutMessage();
-extern "C" void __stdcall Export_midiOutOpen();
-extern "C" void __stdcall Export_midiOutPrepareHeader();
-extern "C" void __stdcall Export_midiOutReset();
-extern "C" void __stdcall Export_midiOutSetVolume();
-extern "C" void __stdcall Export_midiOutShortMsg();
-extern "C" void __stdcall Export_midiOutUnprepareHeader();
-extern "C" void __stdcall Export_midiStreamClose();
-extern "C" void __stdcall Export_midiStreamOpen();
-extern "C" void __stdcall Export_midiStreamOut();
-extern "C" void __stdcall Export_midiStreamPause();
-extern "C" void __stdcall Export_midiStreamPosition();
-extern "C" void __stdcall Export_midiStreamProperty();
-extern "C" void __stdcall Export_midiStreamRestart();
-extern "C" void __stdcall Export_midiStreamStop();
-extern "C" void __stdcall Export_mixerClose();
-extern "C" void __stdcall Export_mixerGetControlDetailsA();
-extern "C" void __stdcall Export_mixerGetControlDetailsW();
-extern "C" void __stdcall Export_mixerGetDevCapsA();
-extern "C" void __stdcall Export_mixerGetDevCapsW();
-extern "C" void __stdcall Export_mixerGetID();
-extern "C" void __stdcall Export_mixerGetLineControlsA();
-extern "C" void __stdcall Export_mixerGetLineControlsW();
-extern "C" void __stdcall Export_mixerGetLineInfoA();
-extern "C" void __stdcall Export_mixerGetLineInfoW();
-extern "C" void __stdcall Export_mixerGetNumDevs();
-extern "C" void __stdcall Export_mixerMessage();
-extern "C" void __stdcall Export_mixerOpen();
-extern "C" void __stdcall Export_mixerSetControlDetails();
-extern "C" void __stdcall Export_mmGetCurrentTask();
-extern "C" void __stdcall Export_mmTaskBlock();
-extern "C" void __stdcall Export_mmTaskCreate();
-extern "C" void __stdcall Export_mmTaskSignal();
-extern "C" void __stdcall Export_mmTaskYield();
-extern "C" void __stdcall Export_mmioAdvance();
-extern "C" void __stdcall Export_mmioAscend();
-extern "C" void __stdcall Export_mmioClose();
-extern "C" void __stdcall Export_mmioCreateChunk();
-extern "C" void __stdcall Export_mmioDescend();
-extern "C" void __stdcall Export_mmioFlush();
-extern "C" void __stdcall Export_mmioGetInfo();
-extern "C" void __stdcall Export_mmioInstallIOProc16();
-extern "C" void __stdcall Export_mmioInstallIOProcA();
-extern "C" void __stdcall Export_mmioInstallIOProcW();
-extern "C" void __stdcall Export_mmioOpenA();
-extern "C" void __stdcall Export_mmioOpenW();
-extern "C" void __stdcall Export_mmioRead();
-extern "C" void __stdcall Export_mmioRenameA();
-extern "C" void __stdcall Export_mmioRenameW();
-extern "C" void __stdcall Export_mmioSeek();
-extern "C" void __stdcall Export_mmioSendMessage();
-extern "C" void __stdcall Export_mmioSetBuffer();
-extern "C" void __stdcall Export_mmioSetInfo();
-extern "C" void __stdcall Export_mmioStringToFOURCCA();
-extern "C" void __stdcall Export_mmioStringToFOURCCW();
-extern "C" void __stdcall Export_mmioWrite();
-extern "C" void __stdcall Export_mmsystemGetVersion();
-extern "C" void __stdcall Export_sndPlaySoundA();
-extern "C" void __stdcall Export_sndPlaySoundW();
-extern "C" void __stdcall Export_timeBeginPeriod();
-extern "C" void __stdcall Export_timeEndPeriod();
-extern "C" void __stdcall Export_timeGetDevCaps();
-extern "C" void __stdcall Export_timeGetSystemTime();
-extern "C" void __stdcall Export_timeGetTime();
-extern "C" void __stdcall Export_timeKillEvent();
-extern "C" void __stdcall Export_timeSetEvent();
-extern "C" void __stdcall Export_waveInAddBuffer();
-extern "C" void __stdcall Export_waveInClose();
-extern "C" void __stdcall Export_waveInGetDevCapsA();
-extern "C" void __stdcall Export_waveInGetDevCapsW();
-extern "C" void __stdcall Export_waveInGetErrorTextA();
-extern "C" void __stdcall Export_waveInGetErrorTextW();
-extern "C" void __stdcall Export_waveInGetID();
-extern "C" void __stdcall Export_waveInGetNumDevs();
-extern "C" void __stdcall Export_waveInGetPosition();
-extern "C" void __stdcall Export_waveInMessage();
-extern "C" void __stdcall Export_waveInOpen();
-extern "C" void __stdcall Export_waveInPrepareHeader();
-extern "C" void __stdcall Export_waveInReset();
-extern "C" void __stdcall Export_waveInStart();
-extern "C" void __stdcall Export_waveInStop();
-extern "C" void __stdcall Export_waveInUnprepareHeader();
-extern "C" void __stdcall Export_waveOutBreakLoop();
-extern "C" void __stdcall Export_waveOutClose();
-extern "C" void __stdcall Export_waveOutGetDevCapsA();
-extern "C" void __stdcall Export_waveOutGetDevCapsW();
-extern "C" void __stdcall Export_waveOutGetErrorTextA();
-extern "C" void __stdcall Export_waveOutGetErrorTextW();
-extern "C" void __stdcall Export_waveOutGetID();
-extern "C" void __stdcall Export_waveOutGetNumDevs();
-extern "C" void __stdcall Export_waveOutGetPitch();
-extern "C" void __stdcall Export_waveOutGetPlaybackRate();
-extern "C" void __stdcall Export_waveOutGetPosition();
-extern "C" void __stdcall Export_waveOutGetVolume();
-extern "C" void __stdcall Export_waveOutMessage();
-extern "C" void __stdcall Export_waveOutOpen();
-extern "C" void __stdcall Export_waveOutPause();
-extern "C" void __stdcall Export_waveOutPrepareHeader();
-extern "C" void __stdcall Export_waveOutReset();
-extern "C" void __stdcall Export_waveOutRestart();
-extern "C" void __stdcall Export_waveOutSetPitch();
-extern "C" void __stdcall Export_waveOutSetPlaybackRate();
-extern "C" void __stdcall Export_waveOutSetVolume();
-extern "C" void __stdcall Export_waveOutUnprepareHeader();
-extern "C" void __stdcall Export_waveOutWrite();
+#else
+#pragma comment(linker, "/export:CloseDriver=_Export_CloseDriver@0")
+#pragma comment(linker, "/export:DefDriverProc=_Export_DefDriverProc@0")
+#pragma comment(linker, "/export:DllCanUnloadNow=_Export_DllCanUnloadNow@0")
+#pragma comment(linker, "/export:DllGetClassObject=_Export_DllGetClassObject@0")
+#pragma comment(linker, "/export:DllRegisterServer=_Export_DllRegisterServer@0")
+#pragma comment(linker, "/export:DllUnregisterServer=_Export_DllUnregisterServer@0")
+#pragma comment(linker, "/export:DriverCallback=_Export_DriverCallback@0")
+#pragma comment(linker, "/export:DrvClose=_Export_DrvClose@0")
+#pragma comment(linker, "/export:DrvDefDriverProc=_Export_DrvDefDriverProc@0")
+#pragma comment(linker, "/export:DrvGetModuleHandle=_Export_DrvGetModuleHandle@0")
+#pragma comment(linker, "/export:DrvOpen=_Export_DrvOpen@0")
+#pragma comment(linker, "/export:DrvOpenA=_Export_DrvOpenA@0")
+#pragma comment(linker, "/export:DrvSendMessage=_Export_DrvSendMessage@0")
+#pragma comment(linker, "/export:GetDriverFlags=_Export_GetDriverFlags@0")
+#pragma comment(linker, "/export:GetDriverModuleHandle=_Export_GetDriverModuleHandle@0")
+#pragma comment(linker, "/export:GetFileVersionInfoA=_Export_GetFileVersionInfoA@0")
+#pragma comment(linker, "/export:GetFileVersionInfoExA=_Export_GetFileVersionInfoExA@0")
+#pragma comment(linker, "/export:GetFileVersionInfoExW=_Export_GetFileVersionInfoExW@0")
+#pragma comment(linker, "/export:GetFileVersionInfoSizeA=_Export_GetFileVersionInfoSizeA@0")
+#pragma comment(linker, "/export:GetFileVersionInfoSizeExA=_Export_GetFileVersionInfoSizeExA@0")
+#pragma comment(linker, "/export:GetFileVersionInfoSizeExW=_Export_GetFileVersionInfoSizeExW@0")
+#pragma comment(linker, "/export:GetFileVersionInfoSizeW=_Export_GetFileVersionInfoSizeW@0")
+#pragma comment(linker, "/export:GetFileVersionInfoW=_Export_GetFileVersionInfoW@0")
+#pragma comment(linker, "/export:OpenDriver=_Export_OpenDriver@0")
+#pragma comment(linker, "/export:OpenDriverA=_Export_OpenDriverA@0")
+#pragma comment(linker, "/export:PlaySound=_Export_PlaySound@0")
+#pragma comment(linker, "/export:PlaySoundA=_Export_PlaySoundA@0")
+#pragma comment(linker, "/export:PlaySoundW=_Export_PlaySoundW@0")
+#pragma comment(linker, "/export:SendDriverMessage=_Export_SendDriverMessage@0")
+#pragma comment(linker, "/export:VerFindFileA=_Export_VerFindFileA@0")
+#pragma comment(linker, "/export:VerFindFileW=_Export_VerFindFileW@0")
+#pragma comment(linker, "/export:VerInstallFileA=_Export_VerInstallFileA@0")
+#pragma comment(linker, "/export:VerInstallFileW=_Export_VerInstallFileW@0")
+#pragma comment(linker, "/export:VerLanguageNameA=_Export_VerLanguageNameA@0")
+#pragma comment(linker, "/export:VerLanguageNameW=_Export_VerLanguageNameW@0")
+#pragma comment(linker, "/export:VerQueryValueA=_Export_VerQueryValueA@0")
+#pragma comment(linker, "/export:VerQueryValueW=_Export_VerQueryValueW@0")
+#pragma comment(linker, "/export:WinHttpAddRequestHeaders=_Export_WinHttpAddRequestHeaders@0")
+#pragma comment(linker, "/export:WinHttpCheckPlatform=_Export_WinHttpCheckPlatform@0")
+#pragma comment(linker, "/export:WinHttpCloseHandle=_Export_WinHttpCloseHandle@0")
+#pragma comment(linker, "/export:WinHttpConnect=_Export_WinHttpConnect@0")
+#pragma comment(linker, "/export:WinHttpCrackUrl=_Export_WinHttpCrackUrl@0")
+#pragma comment(linker, "/export:WinHttpCreateProxyResolver=_Export_WinHttpCreateProxyResolver@0")
+#pragma comment(linker, "/export:WinHttpCreateUrl=_Export_WinHttpCreateUrl@0")
+#pragma comment(linker, "/export:WinHttpDetectAutoProxyConfigUrl=_Export_WinHttpDetectAutoProxyConfigUrl@0")
+#pragma comment(linker, "/export:WinHttpFreeProxyResult=_Export_WinHttpFreeProxyResult@0")
+#pragma comment(linker, "/export:WinHttpFreeProxyResultEx=_Export_WinHttpFreeProxyResultEx@0")
+#pragma comment(linker, "/export:WinHttpFreeProxySettings=_Export_WinHttpFreeProxySettings@0")
+#pragma comment(linker, "/export:WinHttpGetDefaultProxyConfiguration=_Export_WinHttpGetDefaultProxyConfiguration@0")
+#pragma comment(linker, "/export:WinHttpGetIEProxyConfigForCurrentUser=_Export_WinHttpGetIEProxyConfigForCurrentUser@0")
+#pragma comment(linker, "/export:WinHttpGetProxyForUrl=_Export_WinHttpGetProxyForUrl@0")
+#pragma comment(linker, "/export:WinHttpGetProxyForUrlEx=_Export_WinHttpGetProxyForUrlEx@0")
+#pragma comment(linker, "/export:WinHttpGetProxyForUrlEx2=_Export_WinHttpGetProxyForUrlEx2@0")
+#pragma comment(linker, "/export:WinHttpGetProxyResult=_Export_WinHttpGetProxyResult@0")
+#pragma comment(linker, "/export:WinHttpGetProxyResultEx=_Export_WinHttpGetProxyResultEx@0")
+#pragma comment(linker, "/export:WinHttpGetProxySettingsVersion=_Export_WinHttpGetProxySettingsVersion@0")
+#pragma comment(linker, "/export:WinHttpOpen=_Export_WinHttpOpen@0")
+#pragma comment(linker, "/export:WinHttpOpenRequest=_Export_WinHttpOpenRequest@0")
+#pragma comment(linker, "/export:WinHttpQueryAuthSchemes=_Export_WinHttpQueryAuthSchemes@0")
+#pragma comment(linker, "/export:WinHttpQueryDataAvailable=_Export_WinHttpQueryDataAvailable@0")
+#pragma comment(linker, "/export:WinHttpQueryHeaders=_Export_WinHttpQueryHeaders@0")
+#pragma comment(linker, "/export:WinHttpQueryOption=_Export_WinHttpQueryOption@0")
+#pragma comment(linker, "/export:WinHttpReadData=_Export_WinHttpReadData@0")
+#pragma comment(linker, "/export:WinHttpReadProxySettings=_Export_WinHttpReadProxySettings@0")
+#pragma comment(linker, "/export:WinHttpReceiveResponse=_Export_WinHttpReceiveResponse@0")
+#pragma comment(linker, "/export:WinHttpResetAutoProxy=_Export_WinHttpResetAutoProxy@0")
+#pragma comment(linker, "/export:WinHttpSendRequest=_Export_WinHttpSendRequest@0")
+#pragma comment(linker, "/export:WinHttpSetCredentials=_Export_WinHttpSetCredentials@0")
+#pragma comment(linker, "/export:WinHttpSetDefaultProxyConfiguration=_Export_WinHttpSetDefaultProxyConfiguration@0")
+#pragma comment(linker, "/export:WinHttpSetOption=_Export_WinHttpSetOption@0")
+#pragma comment(linker, "/export:WinHttpSetStatusCallback=_Export_WinHttpSetStatusCallback@0")
+#pragma comment(linker, "/export:WinHttpSetTimeouts=_Export_WinHttpSetTimeouts@0")
+#pragma comment(linker, "/export:WinHttpTimeFromSystemTime=_Export_WinHttpTimeFromSystemTime@0")
+#pragma comment(linker, "/export:WinHttpTimeToSystemTime=_Export_WinHttpTimeToSystemTime@0")
+#pragma comment(linker, "/export:WinHttpWebSocketClose=_Export_WinHttpWebSocketClose@0")
+#pragma comment(linker, "/export:WinHttpWebSocketCompleteUpgrade=_Export_WinHttpWebSocketCompleteUpgrade@0")
+#pragma comment(linker, "/export:WinHttpWebSocketQueryCloseStatus=_Export_WinHttpWebSocketQueryCloseStatus@0")
+#pragma comment(linker, "/export:WinHttpWebSocketReceive=_Export_WinHttpWebSocketReceive@0")
+#pragma comment(linker, "/export:WinHttpWebSocketSend=_Export_WinHttpWebSocketSend@0")
+#pragma comment(linker, "/export:WinHttpWebSocketShutdown=_Export_WinHttpWebSocketShutdown@0")
+#pragma comment(linker, "/export:WinHttpWriteData=_Export_WinHttpWriteData@0")
+#pragma comment(linker, "/export:WinHttpWriteProxySettings=_Export_WinHttpWriteProxySettings@0")
+#pragma comment(linker, "/export:auxGetDevCapsA=_Export_auxGetDevCapsA@0")
+#pragma comment(linker, "/export:auxGetDevCapsW=_Export_auxGetDevCapsW@0")
+#pragma comment(linker, "/export:auxGetNumDevs=_Export_auxGetNumDevs@0")
+#pragma comment(linker, "/export:auxGetVolume=_Export_auxGetVolume@0")
+#pragma comment(linker, "/export:auxOutMessage=_Export_auxOutMessage@0")
+#pragma comment(linker, "/export:auxSetVolume=_Export_auxSetVolume@0")
+#pragma comment(linker, "/export:joyConfigChanged=_Export_joyConfigChanged@0")
+#pragma comment(linker, "/export:joyGetDevCapsA=_Export_joyGetDevCapsA@0")
+#pragma comment(linker, "/export:joyGetDevCapsW=_Export_joyGetDevCapsW@0")
+#pragma comment(linker, "/export:joyGetNumDevs=_Export_joyGetNumDevs@0")
+#pragma comment(linker, "/export:joyGetPos=_Export_joyGetPos@0")
+#pragma comment(linker, "/export:joyGetPosEx=_Export_joyGetPosEx@0")
+#pragma comment(linker, "/export:joyGetThreshold=_Export_joyGetThreshold@0")
+#pragma comment(linker, "/export:joyReleaseCapture=_Export_joyReleaseCapture@0")
+#pragma comment(linker, "/export:joySetCapture=_Export_joySetCapture@0")
+#pragma comment(linker, "/export:joySetThreshold=_Export_joySetThreshold@0")
+#pragma comment(linker, "/export:mciDriverNotify=_Export_mciDriverNotify@0")
+#pragma comment(linker, "/export:mciDriverYield=_Export_mciDriverYield@0")
+#pragma comment(linker, "/export:mciExecute=_Export_mciExecute@0")
+#pragma comment(linker, "/export:mciFreeCommandResource=_Export_mciFreeCommandResource@0")
+#pragma comment(linker, "/export:mciGetCreatorTask=_Export_mciGetCreatorTask@0")
+#pragma comment(linker, "/export:mciGetDeviceIDA=_Export_mciGetDeviceIDA@0")
+#pragma comment(linker, "/export:mciGetDeviceIDFromElementIDA=_Export_mciGetDeviceIDFromElementIDA@0")
+#pragma comment(linker, "/export:mciGetDeviceIDFromElementIDW=_Export_mciGetDeviceIDFromElementIDW@0")
+#pragma comment(linker, "/export:mciGetDeviceIDW=_Export_mciGetDeviceIDW@0")
+#pragma comment(linker, "/export:mciGetDriverData=_Export_mciGetDriverData@0")
+#pragma comment(linker, "/export:mciGetErrorStringA=_Export_mciGetErrorStringA@0")
+#pragma comment(linker, "/export:mciGetErrorStringW=_Export_mciGetErrorStringW@0")
+#pragma comment(linker, "/export:mciGetYieldProc=_Export_mciGetYieldProc@0")
+#pragma comment(linker, "/export:mciLoadCommandResource=_Export_mciLoadCommandResource@0")
+#pragma comment(linker, "/export:mciSendCommandA=_Export_mciSendCommandA@0")
+#pragma comment(linker, "/export:mciSendCommandW=_Export_mciSendCommandW@0")
+#pragma comment(linker, "/export:mciSendStringA=_Export_mciSendStringA@0")
+#pragma comment(linker, "/export:mciSendStringW=_Export_mciSendStringW@0")
+#pragma comment(linker, "/export:mciSetDriverData=_Export_mciSetDriverData@0")
+#pragma comment(linker, "/export:mciSetYieldProc=_Export_mciSetYieldProc@0")
+#pragma comment(linker, "/export:midiConnect=_Export_midiConnect@0")
+#pragma comment(linker, "/export:midiDisconnect=_Export_midiDisconnect@0")
+#pragma comment(linker, "/export:midiInAddBuffer=_Export_midiInAddBuffer@0")
+#pragma comment(linker, "/export:midiInClose=_Export_midiInClose@0")
+#pragma comment(linker, "/export:midiInGetDevCapsA=_Export_midiInGetDevCapsA@0")
+#pragma comment(linker, "/export:midiInGetDevCapsW=_Export_midiInGetDevCapsW@0")
+#pragma comment(linker, "/export:midiInGetErrorTextA=_Export_midiInGetErrorTextA@0")
+#pragma comment(linker, "/export:midiInGetErrorTextW=_Export_midiInGetErrorTextW@0")
+#pragma comment(linker, "/export:midiInGetID=_Export_midiInGetID@0")
+#pragma comment(linker, "/export:midiInGetNumDevs=_Export_midiInGetNumDevs@0")
+#pragma comment(linker, "/export:midiInMessage=_Export_midiInMessage@0")
+#pragma comment(linker, "/export:midiInOpen=_Export_midiInOpen@0")
+#pragma comment(linker, "/export:midiInPrepareHeader=_Export_midiInPrepareHeader@0")
+#pragma comment(linker, "/export:midiInReset=_Export_midiInReset@0")
+#pragma comment(linker, "/export:midiInStart=_Export_midiInStart@0")
+#pragma comment(linker, "/export:midiInStop=_Export_midiInStop@0")
+#pragma comment(linker, "/export:midiInUnprepareHeader=_Export_midiInUnprepareHeader@0")
+#pragma comment(linker, "/export:midiOutCacheDrumPatches=_Export_midiOutCacheDrumPatches@0")
+#pragma comment(linker, "/export:midiOutCachePatches=_Export_midiOutCachePatches@0")
+#pragma comment(linker, "/export:midiOutClose=_Export_midiOutClose@0")
+#pragma comment(linker, "/export:midiOutGetDevCapsA=_Export_midiOutGetDevCapsA@0")
+#pragma comment(linker, "/export:midiOutGetDevCapsW=_Export_midiOutGetDevCapsW@0")
+#pragma comment(linker, "/export:midiOutGetErrorTextA=_Export_midiOutGetErrorTextA@0")
+#pragma comment(linker, "/export:midiOutGetErrorTextW=_Export_midiOutGetErrorTextW@0")
+#pragma comment(linker, "/export:midiOutGetID=_Export_midiOutGetID@0")
+#pragma comment(linker, "/export:midiOutGetNumDevs=_Export_midiOutGetNumDevs@0")
+#pragma comment(linker, "/export:midiOutGetVolume=_Export_midiOutGetVolume@0")
+#pragma comment(linker, "/export:midiOutLongMsg=_Export_midiOutLongMsg@0")
+#pragma comment(linker, "/export:midiOutMessage=_Export_midiOutMessage@0")
+#pragma comment(linker, "/export:midiOutOpen=_Export_midiOutOpen@0")
+#pragma comment(linker, "/export:midiOutPrepareHeader=_Export_midiOutPrepareHeader@0")
+#pragma comment(linker, "/export:midiOutReset=_Export_midiOutReset@0")
+#pragma comment(linker, "/export:midiOutSetVolume=_Export_midiOutSetVolume@0")
+#pragma comment(linker, "/export:midiOutShortMsg=_Export_midiOutShortMsg@0")
+#pragma comment(linker, "/export:midiOutUnprepareHeader=_Export_midiOutUnprepareHeader@0")
+#pragma comment(linker, "/export:midiStreamClose=_Export_midiStreamClose@0")
+#pragma comment(linker, "/export:midiStreamOpen=_Export_midiStreamOpen@0")
+#pragma comment(linker, "/export:midiStreamOut=_Export_midiStreamOut@0")
+#pragma comment(linker, "/export:midiStreamPause=_Export_midiStreamPause@0")
+#pragma comment(linker, "/export:midiStreamPosition=_Export_midiStreamPosition@0")
+#pragma comment(linker, "/export:midiStreamProperty=_Export_midiStreamProperty@0")
+#pragma comment(linker, "/export:midiStreamRestart=_Export_midiStreamRestart@0")
+#pragma comment(linker, "/export:midiStreamStop=_Export_midiStreamStop@0")
+#pragma comment(linker, "/export:mixerClose=_Export_mixerClose@0")
+#pragma comment(linker, "/export:mixerGetControlDetailsA=_Export_mixerGetControlDetailsA@0")
+#pragma comment(linker, "/export:mixerGetControlDetailsW=_Export_mixerGetControlDetailsW@0")
+#pragma comment(linker, "/export:mixerGetDevCapsA=_Export_mixerGetDevCapsA@0")
+#pragma comment(linker, "/export:mixerGetDevCapsW=_Export_mixerGetDevCapsW@0")
+#pragma comment(linker, "/export:mixerGetID=_Export_mixerGetID@0")
+#pragma comment(linker, "/export:mixerGetLineControlsA=_Export_mixerGetLineControlsA@0")
+#pragma comment(linker, "/export:mixerGetLineControlsW=_Export_mixerGetLineControlsW@0")
+#pragma comment(linker, "/export:mixerGetLineInfoA=_Export_mixerGetLineInfoA@0")
+#pragma comment(linker, "/export:mixerGetLineInfoW=_Export_mixerGetLineInfoW@0")
+#pragma comment(linker, "/export:mixerGetNumDevs=_Export_mixerGetNumDevs@0")
+#pragma comment(linker, "/export:mixerMessage=_Export_mixerMessage@0")
+#pragma comment(linker, "/export:mixerOpen=_Export_mixerOpen@0")
+#pragma comment(linker, "/export:mixerSetControlDetails=_Export_mixerSetControlDetails@0")
+#pragma comment(linker, "/export:mmGetCurrentTask=_Export_mmGetCurrentTask@0")
+#pragma comment(linker, "/export:mmTaskBlock=_Export_mmTaskBlock@0")
+#pragma comment(linker, "/export:mmTaskCreate=_Export_mmTaskCreate@0")
+#pragma comment(linker, "/export:mmTaskSignal=_Export_mmTaskSignal@0")
+#pragma comment(linker, "/export:mmTaskYield=_Export_mmTaskYield@0")
+#pragma comment(linker, "/export:mmioAdvance=_Export_mmioAdvance@0")
+#pragma comment(linker, "/export:mmioAscend=_Export_mmioAscend@0")
+#pragma comment(linker, "/export:mmioClose=_Export_mmioClose@0")
+#pragma comment(linker, "/export:mmioCreateChunk=_Export_mmioCreateChunk@0")
+#pragma comment(linker, "/export:mmioDescend=_Export_mmioDescend@0")
+#pragma comment(linker, "/export:mmioFlush=_Export_mmioFlush@0")
+#pragma comment(linker, "/export:mmioGetInfo=_Export_mmioGetInfo@0")
+#pragma comment(linker, "/export:mmioInstallIOProc16=_Export_mmioInstallIOProc16@0")
+#pragma comment(linker, "/export:mmioInstallIOProcA=_Export_mmioInstallIOProcA@0")
+#pragma comment(linker, "/export:mmioInstallIOProcW=_Export_mmioInstallIOProcW@0")
+#pragma comment(linker, "/export:mmioOpenA=_Export_mmioOpenA@0")
+#pragma comment(linker, "/export:mmioOpenW=_Export_mmioOpenW@0")
+#pragma comment(linker, "/export:mmioRead=_Export_mmioRead@0")
+#pragma comment(linker, "/export:mmioRenameA=_Export_mmioRenameA@0")
+#pragma comment(linker, "/export:mmioRenameW=_Export_mmioRenameW@0")
+#pragma comment(linker, "/export:mmioSeek=_Export_mmioSeek@0")
+#pragma comment(linker, "/export:mmioSendMessage=_Export_mmioSendMessage@0")
+#pragma comment(linker, "/export:mmioSetBuffer=_Export_mmioSetBuffer@0")
+#pragma comment(linker, "/export:mmioSetInfo=_Export_mmioSetInfo@0")
+#pragma comment(linker, "/export:mmioStringToFOURCCA=_Export_mmioStringToFOURCCA@0")
+#pragma comment(linker, "/export:mmioStringToFOURCCW=_Export_mmioStringToFOURCCW@0")
+#pragma comment(linker, "/export:mmioWrite=_Export_mmioWrite@0")
+#pragma comment(linker, "/export:mmsystemGetVersion=_Export_mmsystemGetVersion@0")
+#pragma comment(linker, "/export:sndPlaySoundA=_Export_sndPlaySoundA@0")
+#pragma comment(linker, "/export:sndPlaySoundW=_Export_sndPlaySoundW@0")
+#pragma comment(linker, "/export:timeBeginPeriod=_Export_timeBeginPeriod@0")
+#pragma comment(linker, "/export:timeEndPeriod=_Export_timeEndPeriod@0")
+#pragma comment(linker, "/export:timeGetDevCaps=_Export_timeGetDevCaps@0")
+#pragma comment(linker, "/export:timeGetSystemTime=_Export_timeGetSystemTime@0")
+#pragma comment(linker, "/export:timeGetTime=_Export_timeGetTime@0")
+#pragma comment(linker, "/export:timeKillEvent=_Export_timeKillEvent@0")
+#pragma comment(linker, "/export:timeSetEvent=_Export_timeSetEvent@0")
+#pragma comment(linker, "/export:waveInAddBuffer=_Export_waveInAddBuffer@0")
+#pragma comment(linker, "/export:waveInClose=_Export_waveInClose@0")
+#pragma comment(linker, "/export:waveInGetDevCapsA=_Export_waveInGetDevCapsA@0")
+#pragma comment(linker, "/export:waveInGetDevCapsW=_Export_waveInGetDevCapsW@0")
+#pragma comment(linker, "/export:waveInGetErrorTextA=_Export_waveInGetErrorTextA@0")
+#pragma comment(linker, "/export:waveInGetErrorTextW=_Export_waveInGetErrorTextW@0")
+#pragma comment(linker, "/export:waveInGetID=_Export_waveInGetID@0")
+#pragma comment(linker, "/export:waveInGetNumDevs=_Export_waveInGetNumDevs@0")
+#pragma comment(linker, "/export:waveInGetPosition=_Export_waveInGetPosition@0")
+#pragma comment(linker, "/export:waveInMessage=_Export_waveInMessage@0")
+#pragma comment(linker, "/export:waveInOpen=_Export_waveInOpen@0")
+#pragma comment(linker, "/export:waveInPrepareHeader=_Export_waveInPrepareHeader@0")
+#pragma comment(linker, "/export:waveInReset=_Export_waveInReset@0")
+#pragma comment(linker, "/export:waveInStart=_Export_waveInStart@0")
+#pragma comment(linker, "/export:waveInStop=_Export_waveInStop@0")
+#pragma comment(linker, "/export:waveInUnprepareHeader=_Export_waveInUnprepareHeader@0")
+#pragma comment(linker, "/export:waveOutBreakLoop=_Export_waveOutBreakLoop@0")
+#pragma comment(linker, "/export:waveOutClose=_Export_waveOutClose@0")
+#pragma comment(linker, "/export:waveOutGetDevCapsA=_Export_waveOutGetDevCapsA@0")
+#pragma comment(linker, "/export:waveOutGetDevCapsW=_Export_waveOutGetDevCapsW@0")
+#pragma comment(linker, "/export:waveOutGetErrorTextA=_Export_waveOutGetErrorTextA@0")
+#pragma comment(linker, "/export:waveOutGetErrorTextW=_Export_waveOutGetErrorTextW@0")
+#pragma comment(linker, "/export:waveOutGetID=_Export_waveOutGetID@0")
+#pragma comment(linker, "/export:waveOutGetNumDevs=_Export_waveOutGetNumDevs@0")
+#pragma comment(linker, "/export:waveOutGetPitch=_Export_waveOutGetPitch@0")
+#pragma comment(linker, "/export:waveOutGetPlaybackRate=_Export_waveOutGetPlaybackRate@0")
+#pragma comment(linker, "/export:waveOutGetPosition=_Export_waveOutGetPosition@0")
+#pragma comment(linker, "/export:waveOutGetVolume=_Export_waveOutGetVolume@0")
+#pragma comment(linker, "/export:waveOutMessage=_Export_waveOutMessage@0")
+#pragma comment(linker, "/export:waveOutOpen=_Export_waveOutOpen@0")
+#pragma comment(linker, "/export:waveOutPause=_Export_waveOutPause@0")
+#pragma comment(linker, "/export:waveOutPrepareHeader=_Export_waveOutPrepareHeader@0")
+#pragma comment(linker, "/export:waveOutReset=_Export_waveOutReset@0")
+#pragma comment(linker, "/export:waveOutRestart=_Export_waveOutRestart@0")
+#pragma comment(linker, "/export:waveOutSetPitch=_Export_waveOutSetPitch@0")
+#pragma comment(linker, "/export:waveOutSetPlaybackRate=_Export_waveOutSetPlaybackRate@0")
+#pragma comment(linker, "/export:waveOutSetVolume=_Export_waveOutSetVolume@0")
+#pragma comment(linker, "/export:waveOutUnprepareHeader=_Export_waveOutUnprepareHeader@0")
+#pragma comment(linker, "/export:waveOutWrite=_Export_waveOutWrite@0")
+#endif
 
 
 
