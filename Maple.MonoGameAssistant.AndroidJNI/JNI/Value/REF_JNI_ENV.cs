@@ -37,7 +37,7 @@ namespace Maple.MonoGameAssistant.AndroidJNI.JNI.Value
         public bool TryGetEnv(out PTR_JAVA_VM javaVM)
             => Functions.Func_GetJavaVM.Invoke(this, out javaVM) == JRESULT.Ok;
 
-
+ 
         public JWEAK NewWeakGlobalRef(JOBJECT obj)
         {
             var jRef = Env.Functions.Func_NewWeakGlobalRef.Invoke(this, obj);

@@ -1,6 +1,4 @@
-﻿using Maple.MonoGameAssistant.AndroidCore;
-
-namespace Maple.MonoGameAssistant.AndroidCore
+﻿namespace Maple.MonoGameAssistant.AndroidCore.AndroidTask
 {
     internal sealed class AndroidTaskState_FuncArgs<T_CONTEXT, T_ARGS, T_RETURN>
     (T_CONTEXT context, Func<T_CONTEXT, T_ARGS, T_RETURN> func, T_ARGS args)
@@ -15,7 +13,7 @@ namespace Maple.MonoGameAssistant.AndroidCore
 
         public T_RETURN Execute()
         {
-            return this.Func.Invoke(this.Context, Args);
+            return Func.Invoke(Context, Args);
 
         }
 

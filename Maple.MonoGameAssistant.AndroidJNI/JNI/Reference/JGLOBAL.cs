@@ -22,13 +22,15 @@ namespace Maple.MonoGameAssistant.AndroidJNI.JNI.Reference
 
     [StructLayout(LayoutKind.Sequential)]
     public readonly struct JGLOBAL<T>(nint ptr) : IJNIReferenceInterface
-        where T:unmanaged
+        where T : unmanaged
     {
         [MarshalAs(UnmanagedType.SysInt)]
         readonly nint _ptr = ptr;
         public nint Ptr => _ptr;
 
         public static implicit operator JGLOBAL<T>(nint val) => new(val);
+        public static implicit operator JGLOBAL<T>(JGLOBAL val) => new(val.Ptr);
+
         public static implicit operator nint(JGLOBAL<T> val) => val._ptr;
         public static implicit operator bool(JGLOBAL<T> val) => val.IsNullPtr();
         public static implicit operator JOBJECT(JGLOBAL<T> val) => new(val._ptr);

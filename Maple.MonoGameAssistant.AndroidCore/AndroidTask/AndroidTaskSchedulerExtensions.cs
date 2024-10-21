@@ -1,5 +1,5 @@
 ﻿using Maple.MonoGameAssistant.AndroidModel.ExceptionData;
-namespace Maple.MonoGameAssistant.AndroidCore
+namespace Maple.MonoGameAssistant.AndroidCore.AndroidTask
 {
     public static class AndroidTaskSchedulerExtensions
     {
@@ -73,6 +73,6 @@ namespace Maple.MonoGameAssistant.AndroidCore
 
 
 
-      
+
     }
 }

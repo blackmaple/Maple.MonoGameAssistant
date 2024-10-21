@@ -1,6 +1,4 @@
-﻿using Maple.MonoGameAssistant.AndroidCore;
-
-namespace Maple.MonoGameAssistant.AndroidCore
+﻿namespace Maple.MonoGameAssistant.AndroidCore.AndroidTask
 {
     internal sealed class AndroidTaskState_ActionArgs<T_CONTEXT, T_Args>(T_CONTEXT context, Action<T_CONTEXT, T_Args> action, T_Args args)
     : AndroidTaskState<T_CONTEXT>(context)
@@ -12,7 +10,7 @@ namespace Maple.MonoGameAssistant.AndroidCore
 
         public bool Execute()
         {
-            this.Action.Invoke(this.Context, this.Args);
+            Action.Invoke(Context, Args);
             return true;
         }
     }

@@ -1,4 +1,4 @@
-﻿namespace Maple.MonoGameAssistant.AndroidCore
+﻿namespace Maple.MonoGameAssistant.AndroidCore.AndroidTask
 {
     public interface IAndroidTaskScheduler<T_CONTEXT> where T_CONTEXT : class
     {

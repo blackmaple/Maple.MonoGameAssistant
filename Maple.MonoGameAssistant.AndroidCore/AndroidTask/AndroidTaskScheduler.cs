@@ -14,7 +14,7 @@ namespace Maple.MonoGameAssistant.AndroidCore.AndroidTask
             {
                 FullMode = BoundedChannelFullMode.Wait
             });
-            this.CreateTasks(concurrencyLevel);
+            this.CreateTasks2(concurrencyLevel);
 
         }
         public AndroidTaskScheduler(JavaVirtualMachineContext runtimeContext) : this(runtimeContext, Environment.ProcessorCount)
@@ -42,6 +42,39 @@ namespace Maple.MonoGameAssistant.AndroidCore.AndroidTask
                 }
             }
         }
+
+        private void CreateTasks2(int count)
+        {
+            for (int i = 0; i < count; ++i)
+            {
+                _ = Task.Factory.StartNew(ExecTaskProc,this,TaskCreationOptions.LongRunning);
+            }
+
+            static void ExecTaskProc(object? taskScheduler)
+            { 
+                if(taskScheduler is not AndroidTaskScheduler androidTaskScheduler)
+                {
+                    return;
+                }
+                if (androidTaskScheduler.RuntimeContext.TryAttachThreadAsDaemon(out var jniEnvironmentContext))
+                {
+                    using (jniEnvironmentContext)
+                    {
+                        while (true)
+                        {
+                            SpinWait.SpinUntil(() => androidTaskScheduler.TaskChannel.Reader.TryPeek(out _));
+                            if (!androidTaskScheduler.TaskChannel.Reader.TryRead(out var item))
+                            {
+                                continue;
+                            }
+                            androidTaskScheduler.TryExecuteTask(item);
+                        }
+                    }
+                }
+               
+            }
+        }
+
 
         protected override IEnumerable<Task>? GetScheduledTasks()
         {

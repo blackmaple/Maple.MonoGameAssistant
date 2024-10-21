@@ -15,6 +15,19 @@ namespace Maple.MonoGameAssistant.AndroidJNI.JNI.Reference
         [FieldOffset(0)] public JFLOAT F;
         [FieldOffset(0)] public JDOUBLE D;
         [FieldOffset(0)] public JOBJECT L;
+
+
+        public JVALUE(JBOOLEAN val) { Z = val; }
+        public JVALUE(JBYTE val) { B = val; }
+        public JVALUE(JCHAR val) { C = val; }
+        public JVALUE(JSHORT val) { S = val; }
+        public JVALUE(JINT val) { I = val; }
+        public JVALUE(JLONG val) { J = val; }
+        public JVALUE(JFLOAT val) { F = val; }
+        public JVALUE(JDOUBLE val) { D = val; }
+        public JVALUE(JOBJECT val) { L = val; }
+
+
     }
 
 }

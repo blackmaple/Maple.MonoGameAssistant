@@ -1,6 +1,7 @@
 ﻿using Maple.MonoGameAssistant.AndroidJNI.JNI.Opaque;
 using Maple.MonoGameAssistant.AndroidJNI.JNI.Primitive;
 using Maple.MonoGameAssistant.AndroidJNI.JNI.Reference;
+using Maple.MonoGameAssistant.AndroidJNI.JNI.Value;
 using System;
 
 namespace Maple.MonoGameAssistant.AndroidJNI
@@ -17,10 +18,24 @@ namespace Maple.MonoGameAssistant.AndroidJNI
     public class AndroidJniArgs
     {
 
-        public JGLOBAL<JSTRING> Action { get; }
-        public JGLOBAL<JSTRING> Json { get; }
-        public JWEAK<JOBJECT> Instance { get; }
-        public JGLOBAL<JCLASS> Class { get; }
-        public JMETHODID CallbackMethodId { get; }
+        public JGLOBAL<JSTRING> Action { get; init; }
+        public JGLOBAL<JSTRING> Json { get; init; }
+        public JWEAK<JOBJECT> Instance { get; init; }
+        public JGLOBAL<JCLASS> Class { get; init; }
+        public JMETHODID MethodId { get; init; }
+
+        public static AndroidJniArgs Create(PTR_JNI_ENV jniEnv, JOBJECT instance, JSTRING actionName, JSTRING json)
+        {
+            return new AndroidJniArgs()
+            {
+                Instance = jniEnv.NewWeakGlobalRef(instance),
+                Action = jniEnv.NewGlobalRef(actionName),
+                Json = jniEnv.NewGlobalRef(json)
+            };
+
+
+
+        }
+
     }
 }
