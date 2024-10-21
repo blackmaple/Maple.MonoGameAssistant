@@ -37,7 +37,6 @@ namespace Maple.MonoGameAssistant.AndroidCore.AndroidTask
                         using (environmentContext)
                         {
                             this.TryExecuteTask(task);
-
                         }
                     }
                 }

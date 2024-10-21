@@ -3,7 +3,7 @@ using Maple.MonoGameAssistant.AndroidJNI.JNI.Opaque;
 using Maple.MonoGameAssistant.AndroidJNI.JNI.Primitive;
 using Maple.MonoGameAssistant.AndroidJNI.JNI.Reference;
 using Maple.MonoGameAssistant.AndroidModel;
-using Maple.MonoGameAssistant.AndroidNdk.Helper;
+using Maple.MonoGameAssistant.AndroidModel.ExceptionData;
 using Maple.MonoGameAssistant.Common;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;

@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-namespace Maple.MonoGameAssistant.AndroidNdk.Helper
+namespace Maple.MonoGameAssistant.AndroidModel
 {
     public class JniNativeMethodDTO
     {
@@ -12,4 +12,7 @@ namespace Maple.MonoGameAssistant.AndroidNdk.Helper
 
         public nint Pointer { set; get; }
     }
+
+
+
 }

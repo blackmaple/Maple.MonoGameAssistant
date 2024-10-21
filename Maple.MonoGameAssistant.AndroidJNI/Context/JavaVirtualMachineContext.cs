@@ -9,6 +9,17 @@ namespace Maple.MonoGameAssistant.AndroidJNI.Context
 
         public PTR_JAVA_VM JAVA_VM { get; } = javaVM;
 
+        public bool TryGetEnv(out JniEnvironmentContext jniEnvironmentContext)
+        {
+            Unsafe.SkipInit(out jniEnvironmentContext);
+            if (JAVA_VM.GetEnv(out var jniEnv, JNI_VERSION_1_6))
+            {
+                jniEnvironmentContext = new JniEnvironmentContext(this, jniEnv);
+                return true;
+            }
+            return false;
+        }
+
         public bool TryAttachThread(out JniEnvironmentContext jniEnvironmentContext, [CallerMemberName] string threadName = nameof(TryAttachThread))
         {
             Unsafe.SkipInit(out jniEnvironmentContext);

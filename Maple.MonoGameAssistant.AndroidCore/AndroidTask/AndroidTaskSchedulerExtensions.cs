@@ -1,4 +1,4 @@
-﻿using Maple.MonoGameAssistant.AndroidModel;
+﻿using Maple.MonoGameAssistant.AndroidModel.ExceptionData;
 namespace Maple.MonoGameAssistant.AndroidCore
 {
     public static class AndroidTaskSchedulerExtensions
@@ -9,7 +9,7 @@ namespace Maple.MonoGameAssistant.AndroidCore
             where T_ARGS : notnull
         {
             var taskState = new AndroidTaskState_FuncArgs<T_CONTEXT, T_ARGS, T_RETURN>(taskScheduler.Context, func, args);
-            return Task.Factory.StartNew(ExecCodeProc, taskState, CancellationToken.None, TaskCreationOptions.DenyChildAttach, taskScheduler.Scheduler);
+            return Task.Factory.StartNew(ExecCodeProc, taskState, CancellationToken.None, TaskCreationOptions.DenyChildAttach, taskScheduler.AndroidScheduler);
 
             static T_RETURN ExecCodeProc(object? state)
             {
@@ -25,7 +25,7 @@ namespace Maple.MonoGameAssistant.AndroidCore
             where T_CONTEXT : class
         {
             var taskState = new AndroidTaskState_Func<T_CONTEXT, T_RETURN>(taskScheduler.Context, func);
-            return Task.Factory.StartNew(ExecCodeProc, taskState, CancellationToken.None, TaskCreationOptions.DenyChildAttach, taskScheduler.Scheduler);
+            return Task.Factory.StartNew(ExecCodeProc, taskState, CancellationToken.None, TaskCreationOptions.DenyChildAttach, taskScheduler.AndroidScheduler);
 
             static T_RETURN ExecCodeProc(object? state)
             {
@@ -41,7 +41,7 @@ namespace Maple.MonoGameAssistant.AndroidCore
             where T_CONTEXT : class
         {
             var taskState = new AndroidTaskState_Action<T_CONTEXT>(taskScheduler.Context, action);
-            return Task.Factory.StartNew(ExecCodeProc, taskState, CancellationToken.None, TaskCreationOptions.DenyChildAttach, taskScheduler.Scheduler);
+            return Task.Factory.StartNew(ExecCodeProc, taskState, CancellationToken.None, TaskCreationOptions.DenyChildAttach, taskScheduler.AndroidScheduler);
 
             static bool ExecCodeProc(object? state)
             {
@@ -59,7 +59,7 @@ namespace Maple.MonoGameAssistant.AndroidCore
            where T_ARGS : notnull
         {
             var taskState = new AndroidTaskState_ActionArgs<T_CONTEXT, T_ARGS>(taskScheduler.Context, action, args);
-            return Task.Factory.StartNew(ExecCodeProc, taskState, CancellationToken.None, TaskCreationOptions.DenyChildAttach, taskScheduler.Scheduler);
+            return Task.Factory.StartNew(ExecCodeProc, taskState, CancellationToken.None, TaskCreationOptions.DenyChildAttach, taskScheduler.AndroidScheduler);
 
             static bool ExecCodeProc(object? state)
             {

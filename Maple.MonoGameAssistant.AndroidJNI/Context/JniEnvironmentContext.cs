@@ -1,6 +1,6 @@
 ﻿using Maple.MonoGameAssistant.AndroidCore;
 using Maple.MonoGameAssistant.AndroidJNI.JNI.Value;
-using Maple.MonoGameAssistant.AndroidNdk.Helper;
+using Maple.MonoGameAssistant.AndroidModel;
 using System.Runtime.CompilerServices;
 
 namespace Maple.MonoGameAssistant.AndroidJNI.Context

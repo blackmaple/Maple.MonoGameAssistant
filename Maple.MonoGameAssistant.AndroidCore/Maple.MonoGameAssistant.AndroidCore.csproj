@@ -8,35 +8,22 @@
 		<InvariantGlobalization>true</InvariantGlobalization>
 		<LangVersion>preview</LangVersion>
 
-		<PublishAot>true</PublishAot>
-		<IsAotCompatible>true</IsAotCompatible>
-		<OutputType>Library</OutputType>
-		<AssemblyName>libmaple</AssemblyName>
-
-
-		<DebuggerSupport>false</DebuggerSupport>
-		<TrimmerRemoveSymbols>true</TrimmerRemoveSymbols>
-		<EnableUnsafeBinaryFormatterSerialization>false</EnableUnsafeBinaryFormatterSerialization>
-		<EnableUnsafeUTF7Encoding>false</EnableUnsafeUTF7Encoding>
-		<EventSourceSupport>false</EventSourceSupport>
-		<InvariantGlobalization>true</InvariantGlobalization>
-		<MetadataUpdaterSupport>false</MetadataUpdaterSupport>
-		<!--<StackTraceSupport>false</StackTraceSupport>-->
-		<UseSystemResourceKeys>true</UseSystemResourceKeys>
-
-
-		<EnableConfigurationBindingGenerator>true</EnableConfigurationBindingGenerator>
-		<EnableRequestDelegateGenerator>true</EnableRequestDelegateGenerator>
-		<InterceptorsPreviewNamespaces>$(InterceptorsPreviewNamespaces);Microsoft.AspNetCore.Http.Generated</InterceptorsPreviewNamespaces>
-
+ 
 	</PropertyGroup>
 
+	<ItemGroup>
+ 		<PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.1" />
+ 		<PackageReference Include="Microsoft.Extensions.Logging" Version="9.0.0-rc.1.24431.7" />
 
+	</ItemGroup>
 
 	<ItemGroup>
 		<ProjectReference Include="..\Maple.MonoGameAssistant.AndroidJNI\Maple.MonoGameAssistant.AndroidJNI.csproj" />
 		<ProjectReference Include="..\Maple.MonoGameAssistant.AndroidModel\Maple.MonoGameAssistant.AndroidModel.csproj" />
 		<ProjectReference Include="..\Maple.MonoGameAssistant.Common\Maple.MonoGameAssistant.Common.csproj" />
+		<ProjectReference Include="..\Maple.MonoGameAssistant.Core\Maple.MonoGameAssistant.Core.csproj" />
+		<ProjectReference Include="..\Maple.MonoGameAssistant.GameDTO\Maple.MonoGameAssistant.GameDTO.csproj" />
+
 	</ItemGroup>
  
 
