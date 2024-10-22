@@ -22,7 +22,7 @@ namespace Maple.MonoGameAssistant.AndroidJNI.JNI.Value
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    public unsafe readonly struct PTR_JNI_ENV(nint ptr): IJNIReferenceInterface
+    public unsafe readonly struct PTR_JNI_ENV(nint ptr) : IJNIReferenceInterface
     {
         [MarshalAs(UnmanagedType.SysInt)]
         readonly nint _ptr = ptr;
@@ -32,7 +32,7 @@ namespace Maple.MonoGameAssistant.AndroidJNI.JNI.Value
         public static implicit operator PTR_JNI_ENV(nint val) => new(val);
         public static implicit operator nint(PTR_JNI_ENV val) => val._ptr;
         public static implicit operator bool(PTR_JNI_ENV val) => val.IsNotNullPtr();
- 
+
 
         public ref REF_JNI_ENV Env => ref _ptr.RefStruct<REF_JNI_ENV>();
         public ref REF_JNI_NATIVE_INTERFACE Functions => ref Env.Functions;
@@ -544,7 +544,7 @@ namespace Maple.MonoGameAssistant.AndroidJNI.JNI.Value
                 fixed (void* pDesc = &ref_desc)
                 {
                     var jId = Functions.Func_GetStaticFieldID.Invoke(this, classObj, pName, pDesc);
-                    return jId.IsNotNullPtr() ? jId:AndroidJNIException.Throw<JFIELDID>()  ;
+                    return jId.IsNotNullPtr() ? jId : AndroidJNIException.Throw<JFIELDID>();
                 }
             }
 

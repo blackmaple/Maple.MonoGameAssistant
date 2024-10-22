@@ -6,12 +6,14 @@ using Maple.MonoGameAssistant.Common;
 using Maple.MonoGameAssistant.GameDTO;
 using Maple.MonoGameAssistant.Model;
 using Microsoft.Extensions.Logging;
-using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 namespace Maple.MonoGameAssistant.AndroidCore.Api
 {
-    public class AndroidApiService
-        : IAndroidTaskScheduler<AndroidApiService>
+    public class AndroidApiService(
+        ILogger<AndroidApiService> logger,
+        AndroidApiContext apiContext,
+        AndroidTaskScheduler androidTaskScheduler)
+                : IAndroidTaskScheduler<AndroidApiService>
     {
         static JsonSerializerOptions JsonSerializer { get; }
         static AndroidApiService()
@@ -21,64 +23,55 @@ namespace Maple.MonoGameAssistant.AndroidCore.Api
             JsonSerializer.TypeInfoResolverChain.Insert(0, GameJsonContext.Default);
         }
 
-        public ILogger Logger { get; }
-        public AndroidApiContext Api { get; }
-        public TaskScheduler AndroidScheduler { get; }
+        public ILogger Logger { get; } = logger;
+        public AndroidApiContext Api { get; } = apiContext;
+        public TaskScheduler AndroidScheduler { get; } = androidTaskScheduler;
 
         public JavaVirtualMachineContext VirtualMachineContext => Api.VirtualMachineContext;
         public AndroidApiService Context => this;
 
-
-        public AndroidApiService(
-            ILogger<AndroidApiService> logger,
-            AndroidApiContext apiContext,
-            AndroidTaskScheduler androidTaskScheduler)
-        {
-            this.Logger = logger;
-            this.Api = apiContext;
-            this.AndroidScheduler = androidTaskScheduler;
-        }
-
-
-        void CreateTasks(int count)
-        {
-            for (int i = 0; i < count; ++i)
-            {
-                _ = Task.Run(ExecTaskProc);
-            }
-
-            async ValueTask ExecTaskProc()
-            {
-                await foreach (var arg in Api.ReadAllAsync().ConfigureAwait(false))
-                {
-                    try
-                    {
-                        var actionName = await GetApiActionNameAsync(arg).ConfigureAwait(false);
-                        Logger.Info($"actionName:{actionName}");
-                        var exec = actionName switch
-                        {
-                            "test" => await ExecuteApiAsync<MonoPointerRequestDTO, string>(arg, p => TestApi(p)).ConfigureAwait(false),
-                            _ => await ExecuteApiAsync(actionName, arg).ConfigureAwait(false),
-                        };
-                        Logger.Info($"ExecuteApiAsync:{exec}");
-                    }
-                    catch (Exception ex)
-                    {
-                        Logger.Error(ex);
-                    }
-                    finally
-                    {
-                        await TryReleaseAsync(arg).ConfigureAwait(false);
-                    }
-                }
-            }
-
-        }
         public ValueTask StartAsync()
         {
             CreateTasks(Environment.ProcessorCount);
+
             return ValueTask.CompletedTask;
+            void CreateTasks(int count)
+            {
+                for (int i = 0; i < count; ++i)
+                {
+                    _ = Task.Run(ExecTaskProc);
+                }
+
+
+            }
+
         }
+        async ValueTask ExecTaskProc()
+        {
+            await foreach (var arg in Api.ReadAllAsync().ConfigureAwait(false))
+            {
+                try
+                {
+                    var actionName = await GetApiActionNameAsync(arg).ConfigureAwait(false);
+                    Logger.Info($"actionName:{actionName}");
+                    var exec = actionName switch
+                    {
+                        "test" => await ExecuteApiAsync<MonoPointerRequestDTO, string>(arg, p => TestApi(p)).ConfigureAwait(false),
+                        _ => await ExecuteApiAsync(actionName, arg).ConfigureAwait(false),
+                    };
+                    Logger.Info($"ExecuteApiAsync:{exec}");
+                }
+                catch (Exception ex)
+                {
+                    Logger.Error(ex);
+                }
+                finally
+                {
+                    await TryReleaseAsync(arg).ConfigureAwait(false);
+                }
+            }
+        }
+
         public ValueTask StopAsync()
         {
             this.Api.TryComplete();

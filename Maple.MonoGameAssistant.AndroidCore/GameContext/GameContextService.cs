@@ -194,23 +194,20 @@ namespace Maple.MonoGameAssistant.AndroidCore.GameContext
     }
 
     public sealed class DefGameContextService(
-        ILogger<DefGameContextService> logger, 
-        MonoGameSettings gameSettings, 
-        MonoRuntimeContext runtimeContext, 
-        MonoTaskScheduler monoTaskScheduler) 
+        ILogger<DefGameContextService> logger,
+        MonoGameSettings gameSettings,
+        MonoRuntimeContext runtimeContext,
+        MonoTaskScheduler monoTaskScheduler)
         : GameContextService<DefGameCollectorContext>(logger, gameSettings, runtimeContext, monoTaskScheduler)
     {
         protected override DefGameCollectorContext LoadGameContext()
         {
-            return default!;
+            return new DefGameCollectorContext(this.RuntimeContext, this.Logger);
         }
     }
 
-    public class DefGameCollectorContext : MonoCollectorContext
+    public class DefGameCollectorContext(MonoRuntimeContext runtimeContext, ILogger logger) : MonoCollectorContext(runtimeContext, EnumMonoCollectorTypeVersion.APP, logger, "202407222030")
     {
-        public DefGameCollectorContext(MonoRuntimeContext runtimeContext, EnumMonoCollectorTypeVersion typeVersion, ILogger logger, string apiVer = "202407222030") : base(runtimeContext, typeVersion, logger, apiVer)
-        {
-        }
     }
 
 }

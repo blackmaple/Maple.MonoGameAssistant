@@ -1,4 +1,5 @@
-﻿using Maple.MonoGameAssistant.AndroidJNI.Context;
+﻿using Maple.MonoGameAssistant.AndroidCore.Api;
+using Maple.MonoGameAssistant.AndroidJNI.Context;
 using System.Threading.Channels;
 
 namespace Maple.MonoGameAssistant.AndroidCore.AndroidTask
@@ -6,10 +7,12 @@ namespace Maple.MonoGameAssistant.AndroidCore.AndroidTask
     public sealed class AndroidTaskScheduler : TaskScheduler, IDisposable
     {
         Channel<Task> TaskChannel { get; }
-        JavaVirtualMachineContext RuntimeContext { get; }
-        AndroidTaskScheduler(JavaVirtualMachineContext runtimeContext, int concurrencyLevel)
+        AndroidApiContext ApiContext { get; }
+        JavaVirtualMachineContext VirtualMachineContext => ApiContext.VirtualMachineContext;
+
+        AndroidTaskScheduler(AndroidApiContext apiContext, int concurrencyLevel)
         {
-            this.RuntimeContext = runtimeContext;
+            this.ApiContext = apiContext;
             this.TaskChannel = Channel.CreateBounded<Task>(new BoundedChannelOptions(128)
             {
                 FullMode = BoundedChannelFullMode.Wait
@@ -17,10 +20,10 @@ namespace Maple.MonoGameAssistant.AndroidCore.AndroidTask
             this.CreateTasks2(concurrencyLevel);
 
         }
-        public AndroidTaskScheduler(JavaVirtualMachineContext runtimeContext) : this(runtimeContext, Environment.ProcessorCount)
+        public AndroidTaskScheduler(AndroidApiContext apiContext) : this(apiContext, Environment.ProcessorCount)
         { }
 
-
+        [Obsolete("remove...")]
         private void CreateTasks(int count)
         {
             for (int i = 0; i < count; ++i)
@@ -32,7 +35,7 @@ namespace Maple.MonoGameAssistant.AndroidCore.AndroidTask
             {
                 await foreach (var task in this.TaskChannel.Reader.ReadAllAsync().ConfigureAwait(false))
                 {
-                    if (this.RuntimeContext.TryAttachThread(out var environmentContext, nameof(AndroidTaskScheduler)))
+                    if (this.VirtualMachineContext.TryAttachThread(out var environmentContext, nameof(AndroidTaskScheduler)))
                     {
                         using (environmentContext)
                         {
@@ -47,16 +50,16 @@ namespace Maple.MonoGameAssistant.AndroidCore.AndroidTask
         {
             for (int i = 0; i < count; ++i)
             {
-                _ = Task.Factory.StartNew(ExecTaskProc,this,TaskCreationOptions.LongRunning);
+                _ = Task.Factory.StartNew(ExecTaskProc, this, TaskCreationOptions.LongRunning);
             }
 
             static void ExecTaskProc(object? taskScheduler)
-            { 
-                if(taskScheduler is not AndroidTaskScheduler androidTaskScheduler)
+            {
+                if (taskScheduler is not AndroidTaskScheduler androidTaskScheduler)
                 {
                     return;
                 }
-                if (androidTaskScheduler.RuntimeContext.TryAttachThreadAsDaemon(out var jniEnvironmentContext))
+                if (androidTaskScheduler.VirtualMachineContext.TryAttachThreadAsDaemon(out var jniEnvironmentContext))
                 {
                     using (jniEnvironmentContext)
                     {
@@ -71,7 +74,7 @@ namespace Maple.MonoGameAssistant.AndroidCore.AndroidTask
                         }
                     }
                 }
-               
+
             }
         }
 
