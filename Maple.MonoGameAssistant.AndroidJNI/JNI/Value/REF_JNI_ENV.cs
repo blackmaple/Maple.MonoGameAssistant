@@ -104,7 +104,7 @@ namespace Maple.MonoGameAssistant.AndroidJNI.JNI.Value
             fixed (void* pContent = &ref_Content.GetPinnableReference())
             {
                 classObj = Functions.Func_FindClass.Invoke(this, pContent);
-                return classObj.IsNullPtr();
+                return false==classObj.IsNullPtr();
             }
         }
         public bool TryFindClass(ReadOnlySpan<byte> className, out JCLASS classObj)
@@ -114,7 +114,7 @@ namespace Maple.MonoGameAssistant.AndroidJNI.JNI.Value
             fixed (void* pContent = &ref_Content)
             {
                 classObj = Functions.Func_FindClass.Invoke(this, pContent);
-                return classObj.IsNullPtr();
+                return false == classObj.IsNullPtr();
             }
         }
         public JCLASS FindClass(ReadOnlySpan<char> className)

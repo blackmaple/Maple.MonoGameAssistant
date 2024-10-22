@@ -1,5 +1,4 @@
 ﻿using Maple.MonoGameAssistant.AndroidCore.AndroidTask;
-using Maple.MonoGameAssistant.AndroidJNI;
 using Maple.MonoGameAssistant.AndroidJNI.Context;
 using Maple.MonoGameAssistant.AndroidJNI.JNI.Reference;
 using Maple.MonoGameAssistant.AndroidModel.ExceptionData;
@@ -7,12 +6,12 @@ using Maple.MonoGameAssistant.Common;
 using Maple.MonoGameAssistant.GameDTO;
 using Maple.MonoGameAssistant.Model;
 using Microsoft.Extensions.Logging;
+using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 namespace Maple.MonoGameAssistant.AndroidCore.Api
 {
-    public class AndroidApiService<T_ARG>
-        : IAndroidTaskScheduler<AndroidApiService<T_ARG>>
-        where T_ARG : AndroidJniArgs
+    public class AndroidApiService
+        : IAndroidTaskScheduler<AndroidApiService>
     {
         static JsonSerializerOptions JsonSerializer { get; }
         static AndroidApiService()
@@ -23,22 +22,23 @@ namespace Maple.MonoGameAssistant.AndroidCore.Api
         }
 
         public ILogger Logger { get; }
-        public AndroidApiContext<T_ARG> Api { get; }
+        public AndroidApiContext Api { get; }
         public TaskScheduler AndroidScheduler { get; }
 
         public JavaVirtualMachineContext VirtualMachineContext => Api.VirtualMachineContext;
-        public AndroidApiService<T_ARG> Context => this;
+        public AndroidApiService Context => this;
 
 
-        public AndroidApiService(ILogger<AndroidApiService<T_ARG>> logger,
-        AndroidApiContext<T_ARG> apiContext,
-        AndroidTaskScheduler androidTaskScheduler)
+        public AndroidApiService(
+            ILogger<AndroidApiService> logger,
+            AndroidApiContext apiContext,
+            AndroidTaskScheduler androidTaskScheduler)
         {
-            Logger = logger;
-            Api = apiContext;
-            AndroidScheduler = androidTaskScheduler;
-            CreateTasks(Environment.ProcessorCount);
+            this.Logger = logger;
+            this.Api = apiContext;
+            this.AndroidScheduler = androidTaskScheduler;
         }
+
 
         void CreateTasks(int count)
         {
@@ -74,8 +74,19 @@ namespace Maple.MonoGameAssistant.AndroidCore.Api
             }
 
         }
+        public ValueTask StartAsync()
+        {
+            CreateTasks(Environment.ProcessorCount);
+            return ValueTask.CompletedTask;
+        }
+        public ValueTask StopAsync()
+        {
+            this.Api.TryComplete();
+            return ValueTask.CompletedTask;
+        }
 
-        string? GetApiActionName(T_ARG arg)
+
+        string? GetApiActionName(AndroidApiArgs arg)
         {
             if (!VirtualMachineContext.TryGetEnv(out var jniEnvironmentContext))
             {
@@ -84,23 +95,27 @@ namespace Maple.MonoGameAssistant.AndroidCore.Api
             return jniEnvironmentContext.JNI_ENV.ConvertStringUnicode(arg.Action);
 
         }
-        Task<string?> GetApiActionNameAsync(T_ARG arg)
+        Task<string?> GetApiActionNameAsync(AndroidApiArgs arg)
         {
             return this.AndroidTaskAsync(static (p, args) => p.GetApiActionName(args), arg);
         }
 
-        public T? GetApiJson<T>(T_ARG arg)
+        public T? GetApiJson<T>(AndroidApiArgs arg)
             where T : class
         {
             if (!VirtualMachineContext.TryGetEnv(out var jniEnvironmentContext))
             {
                 return default;
             }
-
+            if (!JsonSerializer.TryGetTypeInfo(typeof(T), out var jsonTypeInfo))
+            {
+                return default;
+            }
             var pString = jniEnvironmentContext.JNI_ENV.GetStringChars(arg.Json);
             try
             {
-                return System.Text.Json.JsonSerializer.Deserialize<T>(pString.AsReadOnlySpan(), JsonSerializer);
+
+                return System.Text.Json.JsonSerializer.Deserialize(pString.AsReadOnlySpan(), jsonTypeInfo) as T;
             }
             finally
             {
@@ -108,18 +123,23 @@ namespace Maple.MonoGameAssistant.AndroidCore.Api
             }
 
         }
-        Task<T?> GetApiJsonAsync<T>(T_ARG arg) where T : class
+        Task<T?> GetApiJsonAsync<T>(AndroidApiArgs arg) where T : class
         {
             return this.AndroidTaskAsync(static (p, args) => p.GetApiJson<T>(args), arg);
         }
 
-        bool TryCallbackApiJson<T>(T_ARG arg, T data) where T : class
+        bool TryCallbackApiJson<T>(AndroidApiArgs arg, T data) where T : class
         {
             if (!VirtualMachineContext.TryGetEnv(out var jniEnvironmentContext))
             {
                 return false;
             }
-            var jsonData = System.Text.Json.JsonSerializer.Serialize(data, JsonSerializer);
+            if (!JsonSerializer.TryGetTypeInfo(typeof(T), out var jsonTypeInfo))
+            {
+                return default;
+            }
+            var jsonData = System.Text.Json.JsonSerializer.Serialize(data, jsonTypeInfo);
+            this.Logger.Info(jsonData);
             var pString = jniEnvironmentContext.JNI_ENV.CreateStringUnicode(jsonData);
             try
             {
@@ -130,12 +150,12 @@ namespace Maple.MonoGameAssistant.AndroidCore.Api
                 jniEnvironmentContext.JNI_ENV.DeleteLocalRef(pString);
             }
         }
-        Task<bool> TryCallbackApiJsonAsync<T>(T_ARG arg, T data) where T : class
+        Task<bool> TryCallbackApiJsonAsync<T>(AndroidApiArgs arg, T data) where T : class
         {
             return this.AndroidTaskAsync(static (p, args) => p.TryCallbackApiJson(args.arg, args.data), (arg, data));
         }
 
-        bool TryRelease(T_ARG arg)
+        bool TryRelease(AndroidApiArgs arg)
         {
             if (!VirtualMachineContext.TryGetEnv(out var jniEnvironmentContext))
             {
@@ -143,16 +163,16 @@ namespace Maple.MonoGameAssistant.AndroidCore.Api
             }
             jniEnvironmentContext.JNI_ENV.DeleteGlobalRef(arg.Action);
             jniEnvironmentContext.JNI_ENV.DeleteGlobalRef(arg.Json);
-            jniEnvironmentContext.JNI_ENV.DeleteGlobalRef(arg.Class);
+            //     jniEnvironmentContext.JNI_ENV.DeleteGlobalRef(arg.Class);
             jniEnvironmentContext.JNI_ENV.DeleteWeakGlobalRef(arg.Instance);
             return true;
         }
-        Task<bool> TryReleaseAsync(T_ARG arg)
+        Task<bool> TryReleaseAsync(AndroidApiArgs arg)
         {
             return this.AndroidTaskAsync(static (p, args) => p.TryRelease(args), arg);
         }
 
-        protected async ValueTask<bool> ExecuteApiAsync<TRequest, TResult>(T_ARG arg, Func<TRequest, ValueTask<TResult>> func)
+        protected async ValueTask<bool> ExecuteApiAsync<TRequest, TResult>(AndroidApiArgs arg, Func<TRequest, ValueTask<TResult>> func)
               where TRequest : class
               where TResult : class
         {
@@ -184,7 +204,7 @@ namespace Maple.MonoGameAssistant.AndroidCore.Api
             return false;
 
         }
-        protected virtual ValueTask<bool> ExecuteApiAsync(string? action, T_ARG arg)
+        protected virtual ValueTask<bool> ExecuteApiAsync(string? action, AndroidApiArgs arg)
         {
             return ValueTask.FromResult(false);
         }

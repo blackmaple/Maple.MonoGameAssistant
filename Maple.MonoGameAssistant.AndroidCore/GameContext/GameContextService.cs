@@ -3,6 +3,7 @@ using Maple.MonoGameAssistant.Common;
 using Maple.MonoGameAssistant.Core;
 using Maple.MonoGameAssistant.GameDTO;
 using Maple.MonoGameAssistant.Model;
+using Maple.MonoGameAssistant.MonoCollectorDataV2;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
@@ -12,11 +13,9 @@ namespace Maple.MonoGameAssistant.AndroidCore.GameContext
            ILogger logger,
            MonoGameSettings gameSettings,
            MonoRuntimeContext runtimeContext,
-           MonoTaskScheduler monoTaskScheduler,
-           AndroidTaskScheduler androidTaskScheduler)
+           MonoTaskScheduler monoTaskScheduler)
         : IGameContextService,
-        IMonoTaskScheduler<T_CONTEXT>,
-        IAndroidTaskScheduler<T_CONTEXT>
+        IMonoTaskScheduler<T_CONTEXT>
         where T_CONTEXT : MonoCollectorContext
     {
 
@@ -25,7 +24,6 @@ namespace Maple.MonoGameAssistant.AndroidCore.GameContext
         public ILogger Logger { get; } = logger;
         public MonoRuntimeContext RuntimeContext { get; } = runtimeContext;
         public TaskScheduler Scheduler { get; } = monoTaskScheduler;
-        public TaskScheduler AndroidScheduler { get; } = androidTaskScheduler;
         public MonoGameSettings GameSettings { get; } = gameSettings;
 
 
@@ -195,8 +193,24 @@ namespace Maple.MonoGameAssistant.AndroidCore.GameContext
         #endregion
     }
 
+    public sealed class DefGameContextService(
+        ILogger<DefGameContextService> logger, 
+        MonoGameSettings gameSettings, 
+        MonoRuntimeContext runtimeContext, 
+        MonoTaskScheduler monoTaskScheduler) 
+        : GameContextService<DefGameCollectorContext>(logger, gameSettings, runtimeContext, monoTaskScheduler)
+    {
+        protected override DefGameCollectorContext LoadGameContext()
+        {
+            return default!;
+        }
+    }
 
-
-
+    public class DefGameCollectorContext : MonoCollectorContext
+    {
+        public DefGameCollectorContext(MonoRuntimeContext runtimeContext, EnumMonoCollectorTypeVersion typeVersion, ILogger logger, string apiVer = "202407222030") : base(runtimeContext, typeVersion, logger, apiVer)
+        {
+        }
+    }
 
 }

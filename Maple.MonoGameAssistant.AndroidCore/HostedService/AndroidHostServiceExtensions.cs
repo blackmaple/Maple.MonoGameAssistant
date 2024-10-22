@@ -1,4 +1,6 @@
-﻿using Maple.MonoGameAssistant.AndroidCore.GameContext;
+﻿using Maple.MonoGameAssistant.AndroidCore.AndroidTask;
+using Maple.MonoGameAssistant.AndroidCore.Api;
+using Maple.MonoGameAssistant.AndroidCore.GameContext;
 using Maple.MonoGameAssistant.AndroidJNI.Context;
 using Maple.MonoGameAssistant.Core;
 using Maple.MonoGameAssistant.GameDTO;
@@ -17,7 +19,7 @@ namespace Maple.MonoGameAssistant.AndroidCore.HostedService
            where T_GAMECONTEXTSERVICE : class, IGameContextService
         {
 
-            serviceDescriptors.AddLogging();
+          //  serviceDescriptors.AddLogging();
             serviceDescriptors.AddMonoRuntimeService();
             serviceDescriptors.AddHostedService<AndroidHostedLifecycleService>();
 
@@ -29,7 +31,7 @@ namespace Maple.MonoGameAssistant.AndroidCore.HostedService
 
 
         public static IHost AsRunAndroidService<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] T_GAMECONTEXTSERVICE>
-            (JavaVirtualMachineContext javaVirtualMachineContext,string? gameName)
+            (AndroidApiContext androidApiContext, string? gameName)
             where T_GAMECONTEXTSERVICE : class, IGameContextService
 
         {
@@ -39,13 +41,38 @@ namespace Maple.MonoGameAssistant.AndroidCore.HostedService
                 GameName = gameName,
             };
             app.Services.AddSingleton(settings);
-            app.Services.AddSingleton(javaVirtualMachineContext);
+            app.Services.AddSingleton(androidApiContext);
+            app.Services.AddSingleton(androidApiContext.VirtualMachineContext);
+            app.Services.AddSingleton<AndroidTaskScheduler>();
+            app.Services.AddSingleton<AndroidApiService>();
+
             app.Services.UseGameContextService<T_GAMECONTEXTSERVICE>();
 
-           
-           var host = app.Build();
+
+            var host = app.Build();
             return host;
         }
+
+
+        public static IHost AsRunAndroidService(this AndroidApiContext androidApiContext, string? gameName,Action<IServiceCollection> addService)
+        {
+            var app = Host.CreateEmptyApplicationBuilder(default);
+            var settings = new MonoGameSettings()
+            {
+                GameName = gameName,
+            };
+            app.Services.AddSingleton(settings);
+            app.Services.AddSingleton(androidApiContext);
+            app.Services.AddSingleton(androidApiContext.VirtualMachineContext);
+            app.Services.AddSingleton<AndroidTaskScheduler>();
+            app.Services.AddSingleton<AndroidApiService>();
+
+            addService(app.Services);
+
+            var host = app.Build();
+            return host;
+        }
+
     }
 
 
