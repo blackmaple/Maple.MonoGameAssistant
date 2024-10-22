@@ -25,9 +25,9 @@ namespace Maple.MonoGameAssistant.Core
             return ref Unsafe.As<nint, T_STRUCT>(ref Unsafe.AsRef(in _ptr));
         }
 
-        public Span<T_STRUCT>  AsSpan<T_STRUCT>(int size) where T_STRUCT : unmanaged
+        public Span<T_STRUCT> AsSpan<T_STRUCT>(int size) where T_STRUCT : unmanaged
         {
-            ref var ref_struct= ref Unsafe.As<nint, T_STRUCT>(ref Unsafe.AsRef(in _ptr));
+            ref var ref_struct = ref Unsafe.As<nint, T_STRUCT>(ref Unsafe.AsRef(in _ptr));
             return MemoryMarshal.CreateSpan(ref ref_struct, (int)(uint)size);
         }
 
@@ -46,10 +46,10 @@ namespace Maple.MonoGameAssistant.Core
         public PMonoClass MonoClass => _ptr.AsRefStruct<REF_MONO_OBJECT>().MonoClass;
 
 
-       
+
     }
 
- 
+
 
 
 }

@@ -20,7 +20,7 @@ namespace Maple.MonoGameAssistant.MonoDataCollector
 
 
         protected sealed override MonoDataCollectorContext LoadGameContext()
-           => new(this.RuntimeContext, EnumMonoCollectorTypeVersion.Collector, this.Logger,"202409120900");
+           => new(this.RuntimeContext, EnumMonoCollectorTypeVersion.Collector, this.Logger, "202409120900");
         protected sealed override ValueTask LoadGameDataAsync()
         {
             using (this.Logger.Running())
