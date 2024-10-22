@@ -15,7 +15,7 @@ namespace Maple.MonoGameAssistant.AndroidJNI.JNI.Reference
         public static implicit operator JOBJECT(nint val) => new(val);
         public static implicit operator JOBJECT(void* val) => new nint(val);
         public static implicit operator nint(JOBJECT val) => val._ptr;
-        public static implicit operator bool(JOBJECT val) => val.IsNullPtr();
+        public static implicit operator bool(JOBJECT val) => val.IsNotNullPtr();
 
 
     }

@@ -16,7 +16,7 @@ namespace Maple.MonoGameAssistant.AndroidJNI.JNI.Reference.Array
         public static implicit operator JVALUE_ARRAY(nint val) => new(val);
         public static implicit operator JVALUE_ARRAY(void* val) => new nint(val);
         public static implicit operator nint(JVALUE_ARRAY val) => val._ptr;
-        public static implicit operator bool(JVALUE_ARRAY val) => val.IsNullPtr();
+        public static implicit operator bool(JVALUE_ARRAY val) => val.IsNotNullPtr();
         public static implicit operator JOBJECT(JVALUE_ARRAY val) => new(val._ptr);
         public static implicit operator JOBJECT_ARRAY(JVALUE_ARRAY val) => new(val._ptr);
 

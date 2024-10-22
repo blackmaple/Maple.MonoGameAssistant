@@ -13,7 +13,7 @@ namespace Maple.MonoGameAssistant.AndroidJNI.JNI.Reference
 
         public static implicit operator JTHROWABLE(nint val) => new(val);
         public static implicit operator nint(JTHROWABLE val) => val._ptr;
-        public static implicit operator bool(JTHROWABLE val) => val.IsNullPtr();
+        public static implicit operator bool(JTHROWABLE val) => val.IsNotNullPtr();
         public static implicit operator JOBJECT(JTHROWABLE val) => new(val._ptr);
 
 

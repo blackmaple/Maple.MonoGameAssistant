@@ -18,17 +18,18 @@ namespace Maple.MonoGameAssistant.AndroidJNI.JNI.Value
 
 
     [StructLayout(LayoutKind.Sequential)]
-    public readonly struct PTR_JAVA_VM(nint ptr)
+    public readonly struct PTR_JAVA_VM(nint ptr) : IJNIReferenceInterface
     {
         [MarshalAs(UnmanagedType.SysInt)]
         readonly nint _ptr = ptr;
+        public nint Ptr => _ptr;
+
         public static implicit operator PTR_JAVA_VM(nint val) => new(val);
         public static implicit operator nint(PTR_JAVA_VM val) => val._ptr;
-        public static implicit operator bool(PTR_JAVA_VM val) => val.IsNullPtr();
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool IsNullPtr() => _ptr != nint.Zero;
+        public static implicit operator bool(PTR_JAVA_VM val) => val.IsNotNullPtr();
 
         public ref REF_JAVA_VM VirtualMachine => ref _ptr.RefStruct<REF_JAVA_VM>();
+
 
         public bool DestroyJavaVM()
             => VirtualMachine.Functions.Func_DestroyJavaVM.Invoke(this) == JRESULT.Ok;

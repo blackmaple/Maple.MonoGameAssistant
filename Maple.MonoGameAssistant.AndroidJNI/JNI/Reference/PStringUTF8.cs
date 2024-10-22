@@ -22,7 +22,7 @@ namespace Maple.MonoGameAssistant.AndroidJNI.JNI.Reference
 
         public ReadOnlySpan<byte> AsReadOnlySpan()
         {
-            if (false == this.IsNullPtr())
+            if (false == this.IsNotNullPtr())
             {
                 return default;
             }
@@ -33,7 +33,7 @@ namespace Maple.MonoGameAssistant.AndroidJNI.JNI.Reference
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public string? GetRawString()
         {
-            if (false == this.IsNullPtr())
+            if (false == this.IsNotNullPtr())
             {
                 return default;
             }

@@ -13,7 +13,7 @@ namespace Maple.MonoGameAssistant.AndroidJNI.JNI.Reference
 
         public static implicit operator JGLOBAL(nint val) => new(val);
         public static implicit operator nint(JGLOBAL val) => val._ptr;
-        public static implicit operator bool(JGLOBAL val) => val.IsNullPtr();
+        public static implicit operator bool(JGLOBAL val) => val.IsNotNullPtr();
         public static implicit operator JOBJECT(JGLOBAL val) => new(val._ptr);
 
     }
@@ -32,7 +32,7 @@ namespace Maple.MonoGameAssistant.AndroidJNI.JNI.Reference
         public static implicit operator JGLOBAL<T>(JGLOBAL val) => new(val.Ptr);
 
         public static implicit operator nint(JGLOBAL<T> val) => val._ptr;
-        public static implicit operator bool(JGLOBAL<T> val) => val.IsNullPtr();
+        public static implicit operator bool(JGLOBAL<T> val) => val.IsNotNullPtr();
         public static implicit operator JOBJECT(JGLOBAL<T> val) => new(val._ptr);
         public static implicit operator JGLOBAL(JGLOBAL<T> val) => new(val._ptr);
         public static implicit operator T(JGLOBAL<T> val) => val.Value;

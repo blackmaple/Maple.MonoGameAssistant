@@ -12,8 +12,8 @@ namespace Maple.MonoGameAssistant.AndroidJNI.Extension
               where T_STRUCT : unmanaged
               => ref Unsafe.AsRef<T_STRUCT>(@this.ToPointer());
 
-        internal static bool IsNullPtr<T>(this T obj) where T : unmanaged, IJNIReferenceInterface
-            => obj.Ptr == nint.Zero;
+        internal static bool IsNotNullPtr<T>(this T obj) where T : unmanaged, IJNIReferenceInterface
+            => obj.Ptr != nint.Zero;
 
         internal static string ToString<T>(this T obj) where T : unmanaged, IJNIReferenceInterface
             => obj.Ptr.ToString("X8");

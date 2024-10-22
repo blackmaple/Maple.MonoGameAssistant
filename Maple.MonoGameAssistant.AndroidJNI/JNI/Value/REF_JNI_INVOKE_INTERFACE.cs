@@ -95,15 +95,17 @@ namespace Maple.MonoGameAssistant.AndroidJNI.JNI.Value
 
 
     [StructLayout(LayoutKind.Sequential)]
-    public readonly struct PTR_JNI_INVOKE_INTERFACE(nint ptr)
+    public readonly struct PTR_JNI_INVOKE_INTERFACE(nint ptr) : IJNIReferenceInterface
     {
         [MarshalAs(UnmanagedType.SysInt)]
         readonly nint _ptr = ptr;
+
+        public nint Ptr => _ptr;
+
         public static implicit operator PTR_JNI_INVOKE_INTERFACE(nint val) => new(val);
         public static implicit operator nint(PTR_JNI_INVOKE_INTERFACE val) => val._ptr;
-        public static implicit operator bool(PTR_JNI_INVOKE_INTERFACE val) => val.IsNullPtr();
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool IsNullPtr() => _ptr != nint.Zero;
+        public static implicit operator bool(PTR_JNI_INVOKE_INTERFACE val) => val.IsNotNullPtr();
+
 
         public ref REF_JNI_INVOKE_INTERFACE AsRef() => ref _ptr.RefStruct<REF_JNI_INVOKE_INTERFACE>();
     }
