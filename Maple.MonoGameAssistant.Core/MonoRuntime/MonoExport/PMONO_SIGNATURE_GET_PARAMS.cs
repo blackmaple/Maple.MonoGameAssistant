@@ -17,11 +17,11 @@ namespace Maple.MonoGameAssistant.Core
 
         //PMonoType MONO_SIGNATURE_GET_PARAMS (MonoMethodSignature *sig, gpointer *iter)
         //typedef MonoType* (__cdecl *MONO_SIGNATURE_GET_PARAMS)(MonoMethodSignature *sig, gpointer *iter);
-        readonly delegate* unmanaged[Cdecl, SuppressGCTransition]<PMethodSignature, RefValue<PMonoIterator>, PMonoType> _func 
-            = (delegate* unmanaged[Cdecl, SuppressGCTransition]<PMethodSignature, RefValue<PMonoIterator>, PMonoType>)ptr;
+        readonly delegate* unmanaged[Cdecl, SuppressGCTransition]<PMethodSignature, MapleRef<PMonoIterator>, PMonoType> _func 
+            = (delegate* unmanaged[Cdecl, SuppressGCTransition]<PMethodSignature, MapleRef<PMonoIterator>, PMonoType>)ptr;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public readonly PMonoType Invoke(PMethodSignature pMethodSignature, ref PMonoIterator iter) => _func(pMethodSignature, RefValue<PMonoIterator>.CreateRefValue(ref iter));
+        public readonly PMonoType Invoke(PMethodSignature pMethodSignature, ref PMonoIterator iter) => _func(pMethodSignature, MapleRef<PMonoIterator>.FromRef(ref iter));
 
     }
 

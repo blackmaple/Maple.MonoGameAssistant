@@ -5,6 +5,7 @@ using Maple.MonoGameAssistant.AndroidJNI.JNI.Reference;
 using Maple.MonoGameAssistant.AndroidModel;
 using Maple.MonoGameAssistant.AndroidModel.ExceptionData;
 using Maple.MonoGameAssistant.Common;
+using System;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -68,6 +69,7 @@ namespace Maple.MonoGameAssistant.AndroidJNI.JNI.Value
 
         public JSTRING CreateStringUnicode(ReadOnlySpan<char> content)
         {
+
             ref var ref_content = ref MemoryMarshal.GetReference(content);
             fixed (char* pContent = &ref_content)
             {
@@ -79,21 +81,14 @@ namespace Maple.MonoGameAssistant.AndroidJNI.JNI.Value
 
         public string? ConvertStringUnicode(JSTRING str)
         {
-
-            //  var len =  this.Functions.Func_GetStringLength.Invoke(this, str);
-            var pstring = Functions.Func_GetStringChars.Invoke(this, str, nint.Zero);
+            var pstring = Functions.Func_GetStringChars.Invoke(this, str);
             var content = pstring.ToString();
             Functions.Func_ReleaseStringChars.Invoke(this, str, pstring);
             return content;
         }
         public PStringUnicode GetStringChars(JSTRING str)
         {
-            //  size = this.Functions.Func_GetStringLength.Invoke(this, str);
-            //  var buffer = MemoryPool<char>.Shared.Rent(size);
-            return Functions.Func_GetStringChars.Invoke(this, str, nint.Zero);
-            // return   pstring.AsReadOnlySpan();
-            //   pstring.AsReadOnlySpan().CopyTo(buffer.Memory.Span);
-            //   this.Functions.Func_ReleaseStringChars.Invoke(this, str, pstring);
+            return Functions.Func_GetStringChars.Invoke(this, str);
         }
         public void ReleaseStringChars(JSTRING str, PStringUnicode pString)
         {
@@ -123,51 +118,21 @@ namespace Maple.MonoGameAssistant.AndroidJNI.JNI.Value
         }
         public JCLASS FindClass(ReadOnlySpan<char> className)
         {
-            using var ref_Content = className.AsUnmanaged(Encoding.UTF8, (stackalloc byte[MapleStringUnmanaged_Ref.MaxSize]));
-            fixed (void* pContent = &ref_Content.GetPinnableReference())
+            if (this.TryFindClass(className, out var classObj))
             {
-                var klass = Functions.Func_FindClass.Invoke(this, pContent);
-                return klass.IsNotNullPtr() ? klass : AndroidJNIException.Throw<JCLASS>();
+                return classObj;
             }
+            return AndroidJNIException.Throw<JCLASS>();
         }
         public JCLASS FindClass(ReadOnlySpan<byte> className)
         {
-            ref var ref_Content = ref MemoryMarshal.GetReference(className);
-            fixed (byte* pContent = &ref_Content)
+            if (this.TryFindClass(className, out var classObj))
             {
-                var klass = Functions.Func_FindClass.Invoke(this, pContent);
-                return klass.IsNotNullPtr() ? klass : AndroidJNIException.Throw<JCLASS>();
+                return classObj;
             }
+            return AndroidJNIException.Throw<JCLASS>();
         }
 
-        public JMETHODID GetStaticMethodId(JCLASS classObj, ReadOnlySpan<byte> methodName, ReadOnlySpan<byte> methodDesc)
-        {
-            ref var ref_name = ref MemoryMarshal.GetReference(methodName);
-            ref var ref_desc = ref MemoryMarshal.GetReference(methodDesc);
-            fixed (void* pName = &ref_name)
-            {
-                fixed (void* pDesc = &ref_desc)
-                {
-                    var jId = Functions.Func_GetStaticMethodID.Invoke(this, classObj, pName, pDesc);
-                    return jId.IsNotNullPtr() ? jId : AndroidJNIException.Throw<JMETHODID>();
-                }
-            }
-
-        }
-        public JMETHODID GetStaticMethodId(JCLASS classObj, ReadOnlySpan<char> methodName, ReadOnlySpan<char> methodDesc)
-        {
-            using var ref_name = methodName.AsUnmanaged(Encoding.UTF8, default);
-            using var ref_desc = methodDesc.AsUnmanaged(Encoding.UTF8, default);
-            fixed (void* pName = &ref_name.GetPinnableReference())
-            {
-                fixed (void* pDesc = &ref_desc.GetPinnableReference())
-                {
-                    var jId = Functions.Func_GetStaticMethodID.Invoke(this, classObj, pName, pDesc);
-                    return jId.IsNotNullPtr() ? jId : AndroidJNIException.Throw<JMETHODID>();
-                }
-            }
-
-        }
         public bool TryGetStaticMethodId(JCLASS classObj, ReadOnlySpan<byte> methodName, ReadOnlySpan<byte> methodDesc, out JMETHODID methodId)
         {
             ref var ref_name = ref MemoryMarshal.GetReference(methodName);
@@ -195,35 +160,25 @@ namespace Maple.MonoGameAssistant.AndroidJNI.JNI.Value
             }
 
         }
-
-        public JMETHODID GetMethodId(JCLASS classObj, ReadOnlySpan<byte> methodName, ReadOnlySpan<byte> methodDesc)
+        public JMETHODID GetStaticMethodId(JCLASS classObj, ReadOnlySpan<byte> methodName, ReadOnlySpan<byte> methodDesc)
         {
-            ref var ref_name = ref MemoryMarshal.GetReference(methodName);
-            ref var ref_desc = ref MemoryMarshal.GetReference(methodDesc);
-            fixed (void* pName = &ref_name)
+            if (TryGetStaticMethodId(classObj, methodName, methodDesc, out var methodId))
             {
-                fixed (void* pDesc = &ref_desc)
-                {
-                    var jId = Functions.Func_GetMethodID.Invoke(this, classObj, pName, pDesc);
-                    return jId.IsNotNullPtr() ? jId : AndroidJNIException.Throw<JMETHODID>();
-                }
+                return methodId;
             }
+            return AndroidJNIException.Throw<JMETHODID>();
 
         }
-        public JMETHODID GetMethodId(JCLASS classObj, ReadOnlySpan<char> methodName, ReadOnlySpan<char> methodDesc)
+        public JMETHODID GetStaticMethodId(JCLASS classObj, ReadOnlySpan<char> methodName, ReadOnlySpan<char> methodDesc)
         {
-            using var ref_name = methodName.AsUnmanaged(Encoding.UTF8, default);
-            using var ref_desc = methodDesc.AsUnmanaged(Encoding.UTF8, default);
-            fixed (void* pName = &ref_name.GetPinnableReference())
+            if (TryGetStaticMethodId(classObj, methodName, methodDesc, out var methodId))
             {
-                fixed (void* pDesc = &ref_desc.GetPinnableReference())
-                {
-                    var jId = Functions.Func_GetMethodID.Invoke(this, classObj, pName, pDesc);
-                    return jId.IsNotNullPtr() ? jId : AndroidJNIException.Throw<JMETHODID>();
-                }
+                return methodId;
             }
+            return AndroidJNIException.Throw<JMETHODID>();
 
         }
+
         public bool TryGetMethodId(JCLASS classObj, ReadOnlySpan<byte> methodName, ReadOnlySpan<byte> methodDesc, out JMETHODID methodId)
         {
             ref var ref_name = ref MemoryMarshal.GetReference(methodName);
@@ -251,75 +206,91 @@ namespace Maple.MonoGameAssistant.AndroidJNI.JNI.Value
             }
 
         }
-
-        public void CallStaticVoidMethod(JCLASS classObj, JMETHODID methodId, params JVALUE[] args)
+        public JMETHODID GetMethodId(JCLASS classObj, ReadOnlySpan<byte> methodName, ReadOnlySpan<byte> methodDesc)
         {
-            ref var ref_args = ref MemoryMarshal.GetArrayDataReference(args);
+            if (TryGetMethodId(classObj, methodName, methodDesc, out var methodId))
+            {
+                return methodId;
+            }
+            return AndroidJNIException.Throw<JMETHODID>();
+        }
+        public JMETHODID GetMethodId(JCLASS classObj, ReadOnlySpan<char> methodName, ReadOnlySpan<char> methodDesc)
+        {
+            if (TryGetMethodId(classObj, methodName, methodDesc, out var methodId))
+            {
+                return methodId;
+            }
+            return AndroidJNIException.Throw<JMETHODID>();
+        }
+
+        public void CallStaticVoidMethod(JCLASS classObj, JMETHODID methodId, params ReadOnlySpan<JVALUE> args)
+        {
+            ref var ref_args = ref MemoryMarshal.GetReference(args);
             fixed (void* pArgs = &ref_args)
             {
                 Functions.Func_CallStaticVoidMethodA.Invoke(this, classObj, methodId, pArgs);
             }
         }
-        public JOBJECT CallStaticObjectMethod(JCLASS classObj, JMETHODID methodId, params JVALUE[] args)
+        public JOBJECT CallStaticObjectMethod(JCLASS classObj, JMETHODID methodId, params ReadOnlySpan<JVALUE> args)
         {
-            ref var ref_args = ref MemoryMarshal.GetArrayDataReference(args);
+            ref var ref_args = ref MemoryMarshal.GetReference(args);
             fixed (void* pArgs = &ref_args)
             {
                 return Functions.Func_CallStaticObjectMethodA.Invoke(this, classObj, methodId, pArgs);
 
             }
         }
-        public JBOOLEAN CallStaticBooleanMethod(JCLASS classObj, JMETHODID methodId, params JVALUE[] args)
+        public JBOOLEAN CallStaticBooleanMethod(JCLASS classObj, JMETHODID methodId, params ReadOnlySpan<JVALUE> args)
         {
-            ref var ref_args = ref MemoryMarshal.GetArrayDataReference(args);
+            ref var ref_args = ref MemoryMarshal.GetReference(args);
             fixed (void* pArgs = &ref_args)
             {
                 return Functions.Func_CallStaticBooleanMethodA.Invoke(this, classObj, methodId, pArgs);
             }
         }
-        public JBYTE CallStaticByteMethod(JCLASS classObj, JMETHODID methodId, params JVALUE[] args)
+        public JBYTE CallStaticByteMethod(JCLASS classObj, JMETHODID methodId, params ReadOnlySpan<JVALUE> args)
         {
-            ref var ref_args = ref MemoryMarshal.GetArrayDataReference(args);
+            ref var ref_args = ref MemoryMarshal.GetReference(args);
             fixed (void* pArgs = &ref_args)
             {
                 return Functions.Func_CallStaticByteMethodA.Invoke(this, classObj, methodId, pArgs);
             }
         }
-        public JCHAR CallStaticCharMethod(JCLASS classObj, JMETHODID methodId, params JVALUE[] args)
+        public JCHAR CallStaticCharMethod(JCLASS classObj, JMETHODID methodId, params ReadOnlySpan<JVALUE> args)
         {
-            ref var ref_args = ref MemoryMarshal.GetArrayDataReference(args);
+            ref var ref_args = ref MemoryMarshal.GetReference(args);
             fixed (void* pArgs = &ref_args)
             {
                 return Functions.Func_CallStaticCharMethodA.Invoke(this, classObj, methodId, pArgs);
             }
         }
-        public JSHORT CallStaticShortMethod(JCLASS classObj, JMETHODID methodId, params JVALUE[] args)
+        public JSHORT CallStaticShortMethod(JCLASS classObj, JMETHODID methodId, params ReadOnlySpan<JVALUE> args)
         {
-            ref var ref_args = ref MemoryMarshal.GetArrayDataReference(args);
+            ref var ref_args = ref MemoryMarshal.GetReference(args);
             fixed (void* pArgs = &ref_args)
             {
                 return Functions.Func_CallStaticShortMethodA.Invoke(this, classObj, methodId, pArgs);
             }
         }
-        public JINT CallStaticIntMethod(JCLASS classObj, JMETHODID methodId, params JVALUE[] args)
+        public JINT CallStaticIntMethod(JCLASS classObj, JMETHODID methodId, params ReadOnlySpan<JVALUE> args)
         {
-            ref var ref_args = ref MemoryMarshal.GetArrayDataReference(args);
+            ref var ref_args = ref MemoryMarshal.GetReference(args);
             fixed (void* pArgs = &ref_args)
             {
                 return Functions.Func_CallStaticIntMethodA.Invoke(this, classObj, methodId, pArgs);
             }
         }
-        public JFLOAT CallStaticFloatMethod(JCLASS classObj, JMETHODID methodId, params JVALUE[] args)
+        public JFLOAT CallStaticFloatMethod(JCLASS classObj, JMETHODID methodId, params ReadOnlySpan<JVALUE> args)
         {
-            ref var ref_args = ref MemoryMarshal.GetArrayDataReference(args);
+            ref var ref_args = ref MemoryMarshal.GetReference(args);
             fixed (void* pArgs = &ref_args)
             {
                 return Functions.Func_CallStaticFloatMethodA.Invoke(this, classObj, methodId, pArgs);
             }
         }
-        public JDOUBLE CallStaticDoubleMethod(JCLASS classObj, JMETHODID methodId, params JVALUE[] args)
+        public JDOUBLE CallStaticDoubleMethod(JCLASS classObj, JMETHODID methodId, params ReadOnlySpan<JVALUE> args)
         {
-            ref var ref_args = ref MemoryMarshal.GetArrayDataReference(args);
+            ref var ref_args = ref MemoryMarshal.GetReference(args);
             fixed (void* pArgs = &ref_args)
             {
                 return Functions.Func_CallStaticDoubleMethodA.Invoke(this, classObj, methodId, pArgs);
@@ -327,74 +298,74 @@ namespace Maple.MonoGameAssistant.AndroidJNI.JNI.Value
         }
 
 
-        public void CallVoidMethod(JOBJECT instance, JMETHODID methodId, params JVALUE[] args)
+        public void CallVoidMethod(JOBJECT instance, JMETHODID methodId, params ReadOnlySpan<JVALUE> args)
         {
-            ref var ref_args = ref MemoryMarshal.GetArrayDataReference(args);
+            ref var ref_args = ref MemoryMarshal.GetReference(args);
             fixed (void* pArgs = &ref_args)
             {
                 Functions.Func_CallVoidMethodA.Invoke(this, instance, methodId, pArgs);
             }
         }
-        public JOBJECT CallObjectMethod(JOBJECT instance, JMETHODID methodId, params JVALUE[] args)
+        public JOBJECT CallObjectMethod(JOBJECT instance, JMETHODID methodId, params ReadOnlySpan<JVALUE> args)
         {
-            ref var ref_args = ref MemoryMarshal.GetArrayDataReference(args);
+            ref var ref_args = ref MemoryMarshal.GetReference(args);
             fixed (void* pArgs = &ref_args)
             {
                 return Functions.Func_CallObjectMethodA.Invoke(this, instance, methodId, pArgs);
 
             }
         }
-        public JBOOLEAN CallBooleanMethod(JOBJECT instance, JMETHODID methodId, params JVALUE[] args)
+        public JBOOLEAN CallBooleanMethod(JOBJECT instance, JMETHODID methodId, params ReadOnlySpan<JVALUE> args)
         {
-            ref var ref_args = ref MemoryMarshal.GetArrayDataReference(args);
+            ref var ref_args = ref MemoryMarshal.GetReference(args);
             fixed (void* pArgs = &ref_args)
             {
                 return Functions.Func_CallBooleanMethodA.Invoke(this, instance, methodId, pArgs);
             }
         }
-        public JBYTE CallByteMethod(JOBJECT instance, JMETHODID methodId, params JVALUE[] args)
+        public JBYTE CallByteMethod(JOBJECT instance, JMETHODID methodId, params ReadOnlySpan<JVALUE> args)
         {
-            ref var ref_args = ref MemoryMarshal.GetArrayDataReference(args);
+            ref var ref_args = ref MemoryMarshal.GetReference(args);
             fixed (void* pArgs = &ref_args)
             {
                 return Functions.Func_CallByteMethodA.Invoke(this, instance, methodId, pArgs);
             }
         }
-        public JCHAR CallCharMethod(JOBJECT instance, JMETHODID methodId, params JVALUE[] args)
+        public JCHAR CallCharMethod(JOBJECT instance, JMETHODID methodId, params ReadOnlySpan<JVALUE> args)
         {
-            ref var ref_args = ref MemoryMarshal.GetArrayDataReference(args);
+            ref var ref_args = ref MemoryMarshal.GetReference(args);
             fixed (void* pArgs = &ref_args)
             {
                 return Functions.Func_CallCharMethodA.Invoke(this, instance, methodId, pArgs);
             }
         }
-        public JSHORT CallShortMethod(JOBJECT instance, JMETHODID methodId, params JVALUE[] args)
+        public JSHORT CallShortMethod(JOBJECT instance, JMETHODID methodId, params ReadOnlySpan<JVALUE> args)
         {
-            ref var ref_args = ref MemoryMarshal.GetArrayDataReference(args);
+            ref var ref_args = ref MemoryMarshal.GetReference(args);
             fixed (void* pArgs = &ref_args)
             {
                 return Functions.Func_CallShortMethodA.Invoke(this, instance, methodId, pArgs);
             }
         }
-        public JINT CallIntMethod(JOBJECT instance, JMETHODID methodId, params JVALUE[] args)
+        public JINT CallIntMethod(JOBJECT instance, JMETHODID methodId, params ReadOnlySpan<JVALUE> args)
         {
-            ref var ref_args = ref MemoryMarshal.GetArrayDataReference(args);
+            ref var ref_args = ref MemoryMarshal.GetReference(args);
             fixed (void* pArgs = &ref_args)
             {
                 return Functions.Func_CallIntMethodA.Invoke(this, instance, methodId, pArgs);
             }
         }
-        public JFLOAT CallFloatMethod(JOBJECT instance, JMETHODID methodId, params JVALUE[] args)
+        public JFLOAT CallFloatMethod(JOBJECT instance, JMETHODID methodId, params ReadOnlySpan<JVALUE> args)
         {
-            ref var ref_args = ref MemoryMarshal.GetArrayDataReference(args);
+            ref var ref_args = ref MemoryMarshal.GetReference(args);
             fixed (void* pArgs = &ref_args)
             {
                 return Functions.Func_CallFloatMethodA.Invoke(this, instance, methodId, pArgs);
             }
         }
-        public JDOUBLE CallDoubleMethod(JOBJECT instance, JMETHODID methodId, params JVALUE[] args)
+        public JDOUBLE CallDoubleMethod(JOBJECT instance, JMETHODID methodId, params ReadOnlySpan<JVALUE> args)
         {
-            ref var ref_args = ref MemoryMarshal.GetArrayDataReference(args);
+            ref var ref_args = ref MemoryMarshal.GetReference(args);
             fixed (void* pArgs = &ref_args)
             {
                 return Functions.Func_CallDoubleMethodA.Invoke(this, instance, methodId, pArgs);
@@ -402,74 +373,74 @@ namespace Maple.MonoGameAssistant.AndroidJNI.JNI.Value
         }
 
 
-        public void CallNonVirtualVoidMethod(JOBJECT instance, JCLASS classObj, JMETHODID methodId, params JVALUE[] args)
+        public void CallNonVirtualVoidMethod(JOBJECT instance, JCLASS classObj, JMETHODID methodId, params ReadOnlySpan<JVALUE> args)
         {
-            ref var ref_args = ref MemoryMarshal.GetArrayDataReference(args);
+            ref var ref_args = ref MemoryMarshal.GetReference(args);
             fixed (void* pArgs = &ref_args)
             {
                 Functions.Func_CallNonVirtualVoidMethodA.Invoke(this, instance, classObj, methodId, pArgs);
             }
         }
-        public JOBJECT CallNonVirtualObjectMethod(JOBJECT instance, JCLASS classObj, JMETHODID methodId, params JVALUE[] args)
+        public JOBJECT CallNonVirtualObjectMethod(JOBJECT instance, JCLASS classObj, JMETHODID methodId, params ReadOnlySpan<JVALUE> args)
         {
-            ref var ref_args = ref MemoryMarshal.GetArrayDataReference(args);
+            ref var ref_args = ref MemoryMarshal.GetReference(args);
             fixed (void* pArgs = &ref_args)
             {
                 return Functions.Func_CallNonVirtualObjectMethodA.Invoke(this, instance, classObj, methodId, pArgs);
 
             }
         }
-        public JBOOLEAN CallNonVirtualBooleanMethod(JOBJECT instance, JCLASS classObj, JMETHODID methodId, params JVALUE[] args)
+        public JBOOLEAN CallNonVirtualBooleanMethod(JOBJECT instance, JCLASS classObj, JMETHODID methodId, params ReadOnlySpan<JVALUE> args)
         {
-            ref var ref_args = ref MemoryMarshal.GetArrayDataReference(args);
+            ref var ref_args = ref MemoryMarshal.GetReference(args);
             fixed (void* pArgs = &ref_args)
             {
                 return Functions.Func_CallNonVirtualBooleanMethodA.Invoke(this, instance, classObj, methodId, pArgs);
             }
         }
-        public JBYTE CallNonVirtualByteMethod(JOBJECT instance, JCLASS classObj, JMETHODID methodId, params JVALUE[] args)
+        public JBYTE CallNonVirtualByteMethod(JOBJECT instance, JCLASS classObj, JMETHODID methodId, params ReadOnlySpan<JVALUE> args)
         {
-            ref var ref_args = ref MemoryMarshal.GetArrayDataReference(args);
+            ref var ref_args = ref MemoryMarshal.GetReference(args);
             fixed (void* pArgs = &ref_args)
             {
                 return Functions.Func_CallNonVirtualByteMethodA.Invoke(this, instance, classObj, methodId, pArgs);
             }
         }
-        public JCHAR CallNonVirtualCharMethod(JOBJECT instance, JCLASS classObj, JMETHODID methodId, params JVALUE[] args)
+        public JCHAR CallNonVirtualCharMethod(JOBJECT instance, JCLASS classObj, JMETHODID methodId, params ReadOnlySpan<JVALUE> args)
         {
-            ref var ref_args = ref MemoryMarshal.GetArrayDataReference(args);
+            ref var ref_args = ref MemoryMarshal.GetReference(args);
             fixed (void* pArgs = &ref_args)
             {
                 return Functions.Func_CallNonVirtualCharMethodA.Invoke(this, instance, classObj, methodId, pArgs);
             }
         }
-        public JSHORT CallNonVirtualShortMethod(JOBJECT instance, JCLASS classObj, JMETHODID methodId, params JVALUE[] args)
+        public JSHORT CallNonVirtualShortMethod(JOBJECT instance, JCLASS classObj, JMETHODID methodId, params ReadOnlySpan<JVALUE> args)
         {
-            ref var ref_args = ref MemoryMarshal.GetArrayDataReference(args);
+            ref var ref_args = ref MemoryMarshal.GetReference(args);
             fixed (void* pArgs = &ref_args)
             {
                 return Functions.Func_CallNonVirtualShortMethodA.Invoke(this, instance, classObj, methodId, pArgs);
             }
         }
-        public JINT CallNonVirtualIntMethod(JOBJECT instance, JCLASS classObj, JMETHODID methodId, params JVALUE[] args)
+        public JINT CallNonVirtualIntMethod(JOBJECT instance, JCLASS classObj, JMETHODID methodId, params ReadOnlySpan<JVALUE> args)
         {
-            ref var ref_args = ref MemoryMarshal.GetArrayDataReference(args);
+            ref var ref_args = ref MemoryMarshal.GetReference(args);
             fixed (void* pArgs = &ref_args)
             {
                 return Functions.Func_CallNonVirtualIntMethodA.Invoke(this, instance, classObj, methodId, pArgs);
             }
         }
-        public JFLOAT CallNonVirtualFloatMethod(JOBJECT instance, JCLASS classObj, JMETHODID methodId, params JVALUE[] args)
+        public JFLOAT CallNonVirtualFloatMethod(JOBJECT instance, JCLASS classObj, JMETHODID methodId, params ReadOnlySpan<JVALUE> args)
         {
-            ref var ref_args = ref MemoryMarshal.GetArrayDataReference(args);
+            ref var ref_args = ref MemoryMarshal.GetReference(args);
             fixed (void* pArgs = &ref_args)
             {
                 return Functions.Func_CallNonVirtualFloatMethodA.Invoke(this, instance, classObj, methodId, pArgs);
             }
         }
-        public JDOUBLE CallNonVirtualDoubleMethod(JOBJECT instance, JCLASS classObj, JMETHODID methodId, params JVALUE[] args)
+        public JDOUBLE CallNonVirtualDoubleMethod(JOBJECT instance, JCLASS classObj, JMETHODID methodId, params ReadOnlySpan<JVALUE> args)
         {
-            ref var ref_args = ref MemoryMarshal.GetArrayDataReference(args);
+            ref var ref_args = ref MemoryMarshal.GetReference(args);
             fixed (void* pArgs = &ref_args)
             {
                 return Functions.Func_CallNonVirtualDoubleMethodA.Invoke(this, instance, classObj, methodId, pArgs);
@@ -477,35 +448,74 @@ namespace Maple.MonoGameAssistant.AndroidJNI.JNI.Value
         }
 
 
+        public void CallStaticVoidMethod(JCLASS classObj, JMETHODID methodId, params JVALUE[] args)
+            => CallStaticVoidMethod(classObj, methodId, args.AsSpan());
+        public JOBJECT CallStaticObjectMethod(JCLASS classObj, JMETHODID methodId, params JVALUE[] args)
+            => CallStaticObjectMethod(classObj, methodId, args.AsSpan());
+        public JBOOLEAN CallStaticBooleanMethod(JCLASS classObj, JMETHODID methodId, params JVALUE[] args)
+            => CallStaticBooleanMethod(classObj, methodId, args.AsSpan());
+        public JBYTE CallStaticByteMethod(JCLASS classObj, JMETHODID methodId, params JVALUE[] args)
+            => CallStaticByteMethod(classObj, methodId, args.AsSpan());
+        public JCHAR CallStaticCharMethod(JCLASS classObj, JMETHODID methodId, params JVALUE[] args)
+            => CallStaticCharMethod(classObj, methodId, args.AsSpan());
+        public JSHORT CallStaticShortMethod(JCLASS classObj, JMETHODID methodId, params JVALUE[] args)
+            => CallStaticShortMethod(classObj, methodId, args.AsSpan());
+        public JINT CallStaticIntMethod(JCLASS classObj, JMETHODID methodId, params JVALUE[] args)
+            => CallStaticIntMethod(classObj, methodId, args.AsSpan());
+        public JFLOAT CallStaticFloatMethod(JCLASS classObj, JMETHODID methodId, params JVALUE[] args)
+            => CallStaticFloatMethod(classObj, methodId, args.AsSpan());
+        public JDOUBLE CallStaticDoubleMethod(JCLASS classObj, JMETHODID methodId, params JVALUE[] args)
+            => CallStaticDoubleMethod(classObj, methodId, args.AsSpan());
 
-        public JFIELDID GetFieldId(JCLASS classObj, ReadOnlySpan<byte> fieldName, ReadOnlySpan<byte> fieldDesc)
-        {
-            ref var ref_name = ref MemoryMarshal.GetReference(fieldName);
-            ref var ref_desc = ref MemoryMarshal.GetReference(fieldDesc);
-            fixed (void* pName = &ref_name)
-            {
-                fixed (void* pDesc = &ref_desc)
-                {
-                    var jId = Functions.Func_GetFieldID.Invoke(this, classObj, pName, pDesc);
-                    return jId.IsNotNullPtr() ? jId : AndroidJNIException.Throw<JFIELDID>();
-                }
-            }
 
-        }
-        public JFIELDID GetFieldId(JCLASS classObj, ReadOnlySpan<char> fieldName, ReadOnlySpan<char> fieldDesc)
-        {
-            using var ref_name = fieldName.AsUnmanaged(Encoding.UTF8, default);
-            using var ref_desc = fieldDesc.AsUnmanaged(Encoding.UTF8, default);
-            fixed (void* pName = &ref_name.GetPinnableReference())
-            {
-                fixed (void* pDesc = &ref_desc.GetPinnableReference())
-                {
-                    var jId = Functions.Func_GetFieldID.Invoke(this, classObj, pName, pDesc);
-                    return jId.IsNotNullPtr() ? jId : AndroidJNIException.Throw<JFIELDID>();
-                }
-            }
 
-        }
+
+        public void CallVoidMethod(JOBJECT instance, JMETHODID methodId, params JVALUE[] args)
+            => CallVoidMethod(instance, methodId, args.AsSpan());
+        public JOBJECT CallObjectMethod(JOBJECT instance, JMETHODID methodId, params JVALUE[] args)
+            => CallObjectMethod(instance, methodId, args.AsSpan());
+        public JBOOLEAN CallBooleanMethod(JOBJECT instance, JMETHODID methodId, params JVALUE[] args)
+            => CallBooleanMethod(instance, methodId, args.AsSpan());
+        public JBYTE CallByteMethod(JOBJECT instance, JMETHODID methodId, params JVALUE[] args)
+            => CallByteMethod(instance, methodId, args.AsSpan());
+        public JCHAR CallCharMethod(JOBJECT instance, JMETHODID methodId, params JVALUE[] args)
+            => CallCharMethod(instance, methodId, args.AsSpan());
+        public JSHORT CallShortMethod(JOBJECT instance, JMETHODID methodId, params JVALUE[] args)
+            => CallShortMethod(instance, methodId, args.AsSpan());
+        public JINT CallIntMethod(JOBJECT instance, JMETHODID methodId, params JVALUE[] args)
+            => CallIntMethod(instance, methodId, args.AsSpan());
+        public JFLOAT CallFloatMethod(JOBJECT instance, JMETHODID methodId, params JVALUE[] args)
+            => CallFloatMethod(instance, methodId, args.AsSpan());
+        public JDOUBLE CallDoubleMethod(JOBJECT instance, JMETHODID methodId, params JVALUE[] args)
+            => CallDoubleMethod(instance, methodId, args.AsSpan());
+
+
+
+
+        public void CallNonVirtualVoidMethod(JOBJECT instance, JCLASS classObj, JMETHODID methodId, params JVALUE[] args)
+            => CallNonVirtualVoidMethod(instance, classObj, methodId, args.AsSpan());
+        public JOBJECT CallNonVirtualObjectMethod(JOBJECT instance, JCLASS classObj, JMETHODID methodId, params JVALUE[] args)
+            => CallNonVirtualObjectMethod(instance, classObj, methodId, args.AsSpan());
+        public JBOOLEAN CallNonVirtualBooleanMethod(JOBJECT instance, JCLASS classObj, JMETHODID methodId, params JVALUE[] args)
+            => CallNonVirtualBooleanMethod(instance, classObj, methodId, args.AsSpan());
+        public JBYTE CallNonVirtualByteMethod(JOBJECT instance, JCLASS classObj, JMETHODID methodId, params JVALUE[] args)
+            => CallNonVirtualByteMethod(instance, classObj, methodId, args.AsSpan());
+        public JCHAR CallNonVirtualCharMethod(JOBJECT instance, JCLASS classObj, JMETHODID methodId, params JVALUE[] args)
+            => CallNonVirtualCharMethod(instance, classObj, methodId, args.AsSpan());
+        public JSHORT CallNonVirtualShortMethod(JOBJECT instance, JCLASS classObj, JMETHODID methodId, params JVALUE[] args)
+            => CallNonVirtualShortMethod(instance, classObj, methodId, args.AsSpan());
+        public JINT CallNonVirtualIntMethod(JOBJECT instance, JCLASS classObj, JMETHODID methodId, params JVALUE[] args)
+            => CallNonVirtualIntMethod(instance, classObj, methodId, args.AsSpan());
+        public JFLOAT CallNonVirtualFloatMethod(JOBJECT instance, JCLASS classObj, JMETHODID methodId, params JVALUE[] args)
+            => CallNonVirtualFloatMethod(instance, classObj, methodId, args.AsSpan());
+        public JDOUBLE CallNonVirtualDoubleMethod(JOBJECT instance, JCLASS classObj, JMETHODID methodId, params JVALUE[] args)
+            => CallNonVirtualDoubleMethod(instance, classObj, methodId, args.AsSpan());
+
+
+
+
+
+
         public bool TryGetFieldId(JCLASS classObj, ReadOnlySpan<byte> fieldName, ReadOnlySpan<byte> fieldDesc, out JFIELDID fieldId)
         {
             ref var ref_name = ref MemoryMarshal.GetReference(fieldName);
@@ -533,36 +543,26 @@ namespace Maple.MonoGameAssistant.AndroidJNI.JNI.Value
             }
 
         }
-
-
-        public JFIELDID GetStaticFieldId(JCLASS classObj, ReadOnlySpan<byte> fieldName, ReadOnlySpan<byte> fieldDesc)
+        public JFIELDID GetFieldId(JCLASS classObj, ReadOnlySpan<byte> fieldName, ReadOnlySpan<byte> fieldDesc)
         {
-            ref var ref_name = ref MemoryMarshal.GetReference(fieldName);
-            ref var ref_desc = ref MemoryMarshal.GetReference(fieldDesc);
-            fixed (void* pName = &ref_name)
+            if (TryGetFieldId(classObj, fieldName, fieldDesc, out var fieldId))
             {
-                fixed (void* pDesc = &ref_desc)
-                {
-                    var jId = Functions.Func_GetStaticFieldID.Invoke(this, classObj, pName, pDesc);
-                    return jId.IsNotNullPtr() ? jId : AndroidJNIException.Throw<JFIELDID>();
-                }
+                return fieldId;
             }
+            return AndroidJNIException.Throw<JFIELDID>();
 
         }
-        public JFIELDID GetStaticFieldId(JCLASS classObj, ReadOnlySpan<char> fieldName, ReadOnlySpan<char> fieldDesc)
+        public JFIELDID GetFieldId(JCLASS classObj, ReadOnlySpan<char> fieldName, ReadOnlySpan<char> fieldDesc)
         {
-            using var ref_name = fieldName.AsUnmanaged(Encoding.UTF8, default);
-            using var ref_desc = fieldDesc.AsUnmanaged(Encoding.UTF8, default);
-            fixed (void* pName = &ref_name.GetPinnableReference())
+            if (TryGetFieldId(classObj, fieldName, fieldDesc, out var fieldId))
             {
-                fixed (void* pDesc = &ref_desc.GetPinnableReference())
-                {
-                    var jId = Functions.Func_GetStaticFieldID.Invoke(this, classObj, pName, pDesc);
-                    return jId.IsNotNullPtr() ? jId : AndroidJNIException.Throw<JFIELDID>();
-                }
+                return fieldId;
             }
+            return AndroidJNIException.Throw<JFIELDID>();
 
         }
+
+
         public bool TryGetStaticFieldId(JCLASS classObj, ReadOnlySpan<byte> fieldName, ReadOnlySpan<byte> fieldDesc, out JFIELDID fieldId)
         {
             ref var ref_name = ref MemoryMarshal.GetReference(fieldName);
@@ -588,6 +588,24 @@ namespace Maple.MonoGameAssistant.AndroidJNI.JNI.Value
                     return fieldId;
                 }
             }
+
+        }
+        public JFIELDID GetStaticFieldId(JCLASS classObj, ReadOnlySpan<byte> fieldName, ReadOnlySpan<byte> fieldDesc)
+        {
+            if (TryGetStaticFieldId(classObj, fieldName, fieldDesc, out var fieldId))
+            {
+                return fieldId;
+            }
+            return AndroidJNIException.Throw<JFIELDID>();
+
+        }
+        public JFIELDID GetStaticFieldId(JCLASS classObj, ReadOnlySpan<char> fieldName, ReadOnlySpan<char> fieldDesc)
+        {
+            if (TryGetStaticFieldId(classObj, fieldName, fieldDesc, out var fieldId))
+            {
+                return fieldId;
+            }
+            return AndroidJNIException.Throw<JFIELDID>();
 
         }
 
@@ -740,6 +758,13 @@ namespace Maple.MonoGameAssistant.AndroidJNI.JNI.Value
         {
             Functions.Func_SetStaticDoubleField.Invoke(this, classObj, fieldId, obj);
         }
+
+        public JOBJECT AllocObject(JCLASS classObj)
+        {
+            var jObject = this.Functions.Func_AllocObject.Invoke(this, classObj);
+            return jObject.IsNotNullPtr() ? jObject : AndroidJNIException.Throw<JOBJECT>();
+        }
+
 
         public bool RegisterNative(JCLASS classObj, in REF_JNI_NATIVE_METHOD method)
         {

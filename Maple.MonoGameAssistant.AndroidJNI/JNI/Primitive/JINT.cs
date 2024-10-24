@@ -11,6 +11,7 @@ namespace Maple.MonoGameAssistant.AndroidJNI.JNI.Primitive
         public static implicit operator JINT(int val) => new(val);
         public static implicit operator int(JINT val) => val._value;
         public static implicit operator JRESULT(JINT val) => (JRESULT)val._value;
+        public static implicit operator JVALUE(JINT val) => new(val);
 
     }
 

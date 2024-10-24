@@ -6,6 +6,7 @@ using Maple.MonoGameAssistant.Common;
 using Maple.MonoGameAssistant.GameDTO;
 using Maple.MonoGameAssistant.Model;
 using Microsoft.Extensions.Logging;
+using System.Text.Encodings.Web;
 using System.Text.Json;
 namespace Maple.MonoGameAssistant.AndroidCore.Api
 {
@@ -18,7 +19,11 @@ namespace Maple.MonoGameAssistant.AndroidCore.Api
         static JsonSerializerOptions JsonSerializer { get; }
         static AndroidApiService()
         {
-            JsonSerializer = new JsonSerializerOptions();
+           
+            JsonSerializer = new JsonSerializerOptions()
+            {
+                Encoder =  JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
+            };
             JsonSerializer.AddMonoJsonContext();
             JsonSerializer.TypeInfoResolverChain.Insert(0, GameJsonContext.Default);
         }
@@ -136,7 +141,7 @@ namespace Maple.MonoGameAssistant.AndroidCore.Api
             var pString = jniEnvironmentContext.JNI_ENV.CreateStringUnicode(jsonData);
             try
             {
-                return jniEnvironmentContext.JNI_ENV.CallBooleanMethod(arg.Instance.Value, arg.MethodId, [new JVALUE(pString)]);
+                return jniEnvironmentContext.JNI_ENV.CallBooleanMethod(arg.Instance.Value, arg.MethodId, pString);
             }
             finally
             {

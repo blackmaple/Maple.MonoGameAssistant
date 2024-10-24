@@ -6,15 +6,6 @@ using System;
 
 namespace Maple.MonoGameAssistant.AndroidCore
 {
-
-    //public unsafe readonly struct Ptr_Func_Callback(nint ptr)
-    //{
-    //    readonly delegate* unmanaged[Cdecl, SuppressGCTransition]<JSTRING, JSTRING, JBOOLEAN> _ptr
-    //        = (delegate* unmanaged[Cdecl, SuppressGCTransition]<JSTRING, JSTRING, JBOOLEAN>)ptr;
-
-    //    public JBOOLEAN Invoke()
-    //}
-
     public class AndroidApiArgs
     {
 

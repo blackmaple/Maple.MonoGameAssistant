@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using Maple.MonoGameAssistant.AndroidJNI.JNI.Reference;
+using System.Runtime.InteropServices;
 
 namespace Maple.MonoGameAssistant.AndroidJNI.JNI.Primitive
 {
@@ -9,6 +10,7 @@ namespace Maple.MonoGameAssistant.AndroidJNI.JNI.Primitive
         readonly long _value = val;
         public static implicit operator JLONG(long val) => new(val);
         public static implicit operator long(JLONG val) => val._value;
+        public static implicit operator JVALUE(JLONG val) => new(val);
 
     }
 

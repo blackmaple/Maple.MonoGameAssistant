@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using Maple.MonoGameAssistant.AndroidJNI.JNI.Reference;
+using System.Runtime.InteropServices;
 
 namespace Maple.MonoGameAssistant.AndroidJNI.JNI.Primitive
 {
@@ -11,6 +12,7 @@ namespace Maple.MonoGameAssistant.AndroidJNI.JNI.Primitive
         readonly short _value = val;
         public static implicit operator JSHORT(short val) => new(val);
         public static implicit operator short(JSHORT val) => val._value;
+        public static implicit operator JVALUE(JSHORT val) => new(val);
 
     }
 

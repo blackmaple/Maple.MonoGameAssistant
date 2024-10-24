@@ -17,14 +17,14 @@ namespace Maple.MonoGameAssistant.Core
 
         //uint* IL2CPP_DOMAIN_GET_ASSEMBLIES (void * domain, SIZE_T *size)
         //typedef UINT_PTR* (__cdecl *IL2CPP_DOMAIN_GET_ASSEMBLIES)(void * domain, SIZE_T *size);
-        readonly delegate* unmanaged[Cdecl, SuppressGCTransition]<PMonoDomain, RefValue<nuint>, RefValue<PMonoAssembly>> _func
-            = (delegate* unmanaged[Cdecl, SuppressGCTransition]<PMonoDomain, RefValue<nuint>, RefValue<PMonoAssembly>>)ptr;
+        readonly delegate* unmanaged[Cdecl, SuppressGCTransition]<PMonoDomain, MapleOut<nuint>, MapleRef<PMonoAssembly>> _func
+            = (delegate* unmanaged[Cdecl, SuppressGCTransition]<PMonoDomain, MapleOut<nuint>, MapleRef<PMonoAssembly>>)ptr;
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public readonly ReadOnlySpan<PMonoAssembly> Invoke(PMonoDomain pMonoDomain)
         {
-            var pMonoAssembly = _func(pMonoDomain, RefValue<nuint>.CreateOutValue(out var size));
+            var pMonoAssembly = _func(pMonoDomain, MapleOut<nuint>.FromOut(out var size));
             return MemoryMarshal.CreateReadOnlySpan(ref pMonoAssembly.Raw, (int)(uint)size);
         }
 

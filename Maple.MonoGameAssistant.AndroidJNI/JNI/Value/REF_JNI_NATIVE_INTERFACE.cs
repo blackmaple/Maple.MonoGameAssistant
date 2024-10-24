@@ -677,11 +677,11 @@ namespace Maple.MonoGameAssistant.AndroidJNI.JNI.Value
         /// <summary>
         ///        //const jchar* (*GetStringChars)(JNIEnv*, jstring, jboolean*);
         /// </summary>
-        readonly delegate* unmanaged[Cdecl, SuppressGCTransition]<PTR_JNI_ENV, JSTRING, JOBJECT, PStringUnicode> _ptr
-            = (delegate* unmanaged[Cdecl, SuppressGCTransition]<PTR_JNI_ENV, JSTRING, JOBJECT, PStringUnicode>)ptr;
+        readonly delegate* unmanaged[Cdecl, SuppressGCTransition]<PTR_JNI_ENV, JSTRING, JREF<JOBJECT>, PStringUnicode> _ptr
+            = (delegate* unmanaged[Cdecl, SuppressGCTransition]<PTR_JNI_ENV, JSTRING, JREF<JOBJECT>, PStringUnicode>)ptr;
 
-        public PStringUnicode Invoke(PTR_JNI_ENV @this, JSTRING str, JOBJECT ref_iscopy)
-            => _ptr(@this, str, ref_iscopy);
+        public PStringUnicode Invoke(PTR_JNI_ENV @this, JSTRING str )
+            => _ptr(@this, str, JREF<JOBJECT>.NullRef());
     }
 
 

@@ -18,13 +18,13 @@ namespace Maple.MonoGameAssistant.Core
 
         //nint MONO_CLASS_GET_FIELDS (void *klass, void *iter)
         //typedef void* (__cdecl *MONO_CLASS_GET_FIELDS)(void *klass, void *iter);
-        readonly delegate* unmanaged[Cdecl, SuppressGCTransition]<PMonoClass, RefValue<PMonoIterator>, PMonoField> _func
-            = (delegate* unmanaged[Cdecl, SuppressGCTransition]<PMonoClass, RefValue<PMonoIterator>, PMonoField>)ptr;
+        readonly delegate* unmanaged[Cdecl, SuppressGCTransition]<PMonoClass, MapleRef<PMonoIterator>, PMonoField> _func
+            = (delegate* unmanaged[Cdecl, SuppressGCTransition]<PMonoClass, MapleRef<PMonoIterator>, PMonoField>)ptr;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public readonly PMonoField Invoke(PMonoClass pMonoClass, ref PMonoIterator iter)
         {
-            return _func(pMonoClass, RefValue<PMonoIterator>.CreateRefValue(ref iter));
+            return _func(pMonoClass, MapleRef<PMonoIterator>.FromRef(ref iter));
         }
 
 
