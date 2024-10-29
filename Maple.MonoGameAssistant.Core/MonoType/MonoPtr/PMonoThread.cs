@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 
 namespace Maple.MonoGameAssistant.Core
 {
-    [DebuggerDisplay("{_ptr}")]
+
     [StructLayout(LayoutKind.Sequential)]
     public readonly struct PMonoThread(nint ptr)
     {
