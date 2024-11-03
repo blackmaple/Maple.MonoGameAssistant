@@ -31,13 +31,10 @@ namespace Maple.MonoGameAssistant.AndroidJNI.Classes
 
 
         public static AndroidToastReference Create(in JniEnvironmentContext jniEnvironmentContext)
-        { 
-            return CreateReference(jniEnvironmentContext, "123\0"u8);
-        }
-        public static AndroidToastReference Create2(in JniEnvironmentContext jniEnvironmentContext)
         {
-            return CreateReference(jniEnvironmentContext, "123");
+            return CreateReference(jniEnvironmentContext, AndroidToastMetadata.CreateMetadata(jniEnvironmentContext));
         }
+ 
     }
 
 }

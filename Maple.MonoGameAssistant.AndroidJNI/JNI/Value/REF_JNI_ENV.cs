@@ -81,8 +81,9 @@ namespace Maple.MonoGameAssistant.AndroidJNI.JNI.Value
 
         public string? ConvertStringUnicode(JSTRING str)
         {
+            var len = Functions.Func_GetStringLength.Invoke(this, str);
             var pstring = Functions.Func_GetStringChars.Invoke(this, str);
-            var content = pstring.ToString();
+            var content = pstring.ToString(len);
             Functions.Func_ReleaseStringChars.Invoke(this, str, pstring);
             return content;
         }

@@ -12,7 +12,7 @@ namespace Maple.MonoGameAssistant.AndroidJNI.Classes
         protected override void FindMethods(in JniEnvironmentContext context)
         {
             METHOD_MAKETEXT = context.JNI_ENV.GetStaticMethodId(GlobalClass, "makeText\0"u8, "(Landroid/content/Context;Ljava/lang/CharSequence;I)Landroid/widget/Toast;\0"u8);
-            METHOD_SHOW = context.JNI_ENV.GetStaticMethodId(GlobalClass, "show\0"u8, "()V\0"u8);
+            METHOD_SHOW = context.JNI_ENV.GetMethodId(GlobalClass, "show\0"u8, "()V\0"u8);
         }
 
         //protected override void FindFields(in JniEnvironmentContext context)

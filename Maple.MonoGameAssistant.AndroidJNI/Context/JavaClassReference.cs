@@ -27,6 +27,10 @@ namespace Maple.MonoGameAssistant.AndroidJNI.Context
         public static T_Reference CreateReference(in JniEnvironmentContext context, JCLASS classObj)
             => context.GetOrAddReference<T_Reference, T_Metadata>(classObj);
 
+        public static T_Reference CreateReference(in JniEnvironmentContext context, T_Metadata metadata)
+            => context.GetReference<T_Reference, T_Metadata>(metadata);
+
+
     }
 
 }

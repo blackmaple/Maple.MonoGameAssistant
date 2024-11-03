@@ -27,8 +27,24 @@ namespace Maple.MonoGameAssistant.AndroidJNI.JNI.Reference
                 return default;
             }
 
-            return new string((char*)_ptr);
+            return new string(((char*)_ptr));
         }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public string? ToString(int len) => GetRawString(len);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public string? GetRawString(int len)
+        {
+            if (false == this.IsNotNullPtr())
+            {
+                return default;
+            }
+
+            return new string(((char*)_ptr), 0, len);
+        }
+
 
         public ReadOnlySpan<char> AsReadOnlySpan()
         {

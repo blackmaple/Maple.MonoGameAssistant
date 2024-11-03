@@ -55,15 +55,15 @@ namespace Maple.MonoGameAssistant.AndroidJNI.Context
         where TMetadata : JavaClassMetadata<TMetadata>, new()
     {
 
-        protected static TMetadata CreateMetadata(in JniEnvironmentContext jniEnvironmentContext, ReadOnlySpan<char> className)
+        public static TMetadata CreateMetadata(in JniEnvironmentContext jniEnvironmentContext, ReadOnlySpan<char> className)
         {
             return jniEnvironmentContext.GetOrAddMetadata<TMetadata>(className);
         }
-        protected static TMetadata CreateMetadata(in JniEnvironmentContext jniEnvironmentContext, ReadOnlySpan<byte> className)
+        public static TMetadata CreateMetadata(in JniEnvironmentContext jniEnvironmentContext, ReadOnlySpan<byte> className)
         {
             return jniEnvironmentContext.GetOrAddMetadata<TMetadata>(className);
         }
-        protected static TMetadata CreateMetadata(in JniEnvironmentContext jniEnvironmentContext, JCLASS classObj)
+        public static TMetadata CreateMetadata(in JniEnvironmentContext jniEnvironmentContext, JCLASS classObj)
         {
             return jniEnvironmentContext.GetOrAddMetadata<TMetadata>(classObj);
         }

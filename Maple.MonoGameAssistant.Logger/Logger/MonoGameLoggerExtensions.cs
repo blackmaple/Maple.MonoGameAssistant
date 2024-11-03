@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
+using System.IO;
 
 namespace Maple.MonoGameAssistant.Logger
 {
@@ -50,7 +51,8 @@ namespace Maple.MonoGameAssistant.Logger
 
         public static string GetBaseDirectory()
         {
-            return IsAndroidEnvironment() ? "/sdcard/Download" : AppContext.BaseDirectory;
+
+            return IsAndroidEnvironment() ? "/sdcard/Download" : Path.Combine(AppContext.BaseDirectory, nameof(MonoGameLogger));
         }
     }
 }

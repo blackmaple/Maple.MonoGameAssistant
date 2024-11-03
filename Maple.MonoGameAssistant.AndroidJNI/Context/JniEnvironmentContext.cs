@@ -56,7 +56,7 @@ namespace Maple.MonoGameAssistant.AndroidJNI.Context
         {
             if (!CacheClasses.TryGetValue(typeof(TMetadata).Name, out var metadata))
             {
-                var realMetadata = JavaClassMetadata.CreateMetadataImp<TMetadata>(this,className);
+                var realMetadata = JavaClassMetadata.CreateMetadataImp<TMetadata>(this, className);
                 CacheClasses.TryAdd(typeof(TMetadata).Name, realMetadata);
                 return realMetadata;
             }
@@ -106,6 +106,11 @@ namespace Maple.MonoGameAssistant.AndroidJNI.Context
             where TReference : JavaClassReference<TReference, TMetadata>, new()
             where TMetadata : JavaClassMetadata<TMetadata>, new()
             => new() { Jni = this, Metadata = this.GetOrAddMetadata<TMetadata>(classObj) };
+
+        public TReference GetReference<TReference, TMetadata>(TMetadata metadata)
+            where TReference : JavaClassReference<TReference, TMetadata>, new()
+            where TMetadata : JavaClassMetadata<TMetadata>, new()
+            => new() { Jni = this, Metadata = metadata };
 
 
 

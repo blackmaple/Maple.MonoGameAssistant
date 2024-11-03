@@ -22,13 +22,7 @@ namespace Maple.MonoGameAssistant.Logger
         {
             Category = category;
             var path = MonoGameLoggerExtensions.GetBaseDirectory();
-            path = Path.Combine(path, nameof(MonoGameLogger));
-            if (Directory.Exists(path) == false)
-            {
-                Directory.CreateDirectory(path);
-            }
-            FilePath = path;
-
+            FilePath = Directory.Exists(path) ? path : Directory.CreateDirectory(path).FullName;
         }
 
 
@@ -41,8 +35,6 @@ namespace Maple.MonoGameAssistant.Logger
         [MethodImpl(MethodImplOptions.Synchronized)]
         public void LogImp(string message)
         {
-
-
             var file = Path.Combine(FilePath, $"{DateTime.Now:yyyyMMdd_HH}_{Category}.log");
             using var stream = File.AppendText(file);
             stream.WriteLine(message);
