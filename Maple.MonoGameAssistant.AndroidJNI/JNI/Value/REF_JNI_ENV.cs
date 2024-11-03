@@ -96,6 +96,11 @@ namespace Maple.MonoGameAssistant.AndroidJNI.JNI.Value
         }
 
 
+        public JCLASS GetObjectClass(JOBJECT instance)
+        {
+            return this.Functions.Func_GetObjectClass.Invoke(this, instance);
+        }
+
         public bool TryFindClass(ReadOnlySpan<char> className, out JCLASS classObj)
         {
             Unsafe.SkipInit(out classObj);

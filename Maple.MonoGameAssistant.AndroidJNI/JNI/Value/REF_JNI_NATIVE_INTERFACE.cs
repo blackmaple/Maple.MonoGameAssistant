@@ -193,7 +193,19 @@ namespace Maple.MonoGameAssistant.AndroidJNI.JNI.Value
     }
 
 
-    //jclass(*GetObjectClass)(JNIEnv*, jobject);
+    
+    [StructLayout(LayoutKind.Sequential)]
+    internal readonly unsafe struct Ptr_Func_GetObjectClass(nint ptr)
+    {
+        /// <summary>
+        /// //jclass(*GetObjectClass)(JNIEnv*, jobject);
+        /// </summary>
+        readonly delegate* unmanaged[Cdecl, SuppressGCTransition]<PTR_JNI_ENV, JOBJECT,JCLASS>
+            _ptr = (delegate* unmanaged[Cdecl, SuppressGCTransition]<PTR_JNI_ENV, JOBJECT, JCLASS>)ptr;
+        public JCLASS Invoke(PTR_JNI_ENV @this,JOBJECT instance)
+            => _ptr(@this, instance);
+    }
+
     //jboolean(*IsInstanceOf)(JNIEnv*, jobject, jclass);
 
     [StructLayout(LayoutKind.Sequential)]
@@ -936,7 +948,7 @@ namespace Maple.MonoGameAssistant.AndroidJNI.JNI.Value
         internal readonly Ptr_Func_NewObjectA Func_NewObject;
         internal readonly Ptr_Func_NewObjectA Func_NewObjectV;
         internal readonly Ptr_Func_NewObjectA Func_NewObjectA;
-        [MarshalAs(UnmanagedType.SysInt)] internal readonly nint GetObjectClassPointer;
+        internal readonly Ptr_Func_GetObjectClass Func_GetObjectClass;
         [MarshalAs(UnmanagedType.SysInt)] internal readonly nint IsInstanceOfPointer;
 
         internal readonly Ptr_Func_GetMethodID Func_GetMethodID;

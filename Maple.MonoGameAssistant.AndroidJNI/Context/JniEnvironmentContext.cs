@@ -1,6 +1,9 @@
-﻿using Maple.MonoGameAssistant.AndroidCore;
+﻿using Maple.MonoGameAssistant.AndroidJNI.JNI.Opaque;
+using Maple.MonoGameAssistant.AndroidJNI.JNI.Reference;
 using Maple.MonoGameAssistant.AndroidJNI.JNI.Value;
 using Maple.MonoGameAssistant.AndroidModel;
+using Maple.MonoGameAssistant.AndroidModel.ExceptionData;
+using System.Collections.Concurrent;
 using System.Runtime.CompilerServices;
 
 namespace Maple.MonoGameAssistant.AndroidJNI.Context
@@ -9,6 +12,8 @@ namespace Maple.MonoGameAssistant.AndroidJNI.Context
     {
         public JavaVirtualMachineContext JavaVMContext { get; } = javaVirtualMachineContext;
         public PTR_JNI_ENV JNI_ENV { get; } = jniEnv;
+
+        #region JNI NATIVE
 
         public bool RegisterNativeMethod(string className, string methodName, string methodDesc, nint methodPointer)
         {
@@ -26,8 +31,7 @@ namespace Maple.MonoGameAssistant.AndroidJNI.Context
             }
             return false;
         }
-
-
+        #endregion
 
         public void Dispose() => JavaVMContext.DetachThread();
 
@@ -43,23 +47,70 @@ namespace Maple.MonoGameAssistant.AndroidJNI.Context
         }
 
 
-        public JniGlobalObjectColltion CreateGlobalObject()
+        #region JavaClass
+        static ConcurrentDictionary<string, JavaClassMetadata> CacheClasses { get; } = new(Environment.ProcessorCount << 2, 64);
+
+
+        public TMetadata GetOrAddMetadata<TMetadata>(ReadOnlySpan<char> className)
+            where TMetadata : JavaClassMetadata<TMetadata>, new()
         {
-            JniGlobalObjectColltion objectColltion = new();
-            if (JNI_ENV.TryFindClass(JniGlobalObjectColltion.LooperClassName, out var looperObj))
+            if (!CacheClasses.TryGetValue(typeof(TMetadata).Name, out var metadata))
             {
-                objectColltion.LooperObject = JNI_ENV.NewGlobalRef(looperObj);
-                JNI_ENV.DeleteLocalRef(looperObj);
+                var realMetadata = JavaClassMetadata.CreateMetadataImp<TMetadata>(this,className);
+                CacheClasses.TryAdd(typeof(TMetadata).Name, realMetadata);
+                return realMetadata;
             }
-            if (JNI_ENV.TryFindClass(JniGlobalObjectColltion.ToastClassName, out var toastObj))
-            {
-                objectColltion.ToastObject = JNI_ENV.NewGlobalRef(toastObj);
-                JNI_ENV.DeleteLocalRef(toastObj);
-            }
+            return metadata as TMetadata ?? AndroidJNIException.Throw<TMetadata>();
 
 
-            return objectColltion;
         }
+        public TMetadata GetOrAddMetadata<TMetadata>(ReadOnlySpan<byte> className)
+            where TMetadata : JavaClassMetadata<TMetadata>, new()
+        {
+            if (!CacheClasses.TryGetValue(typeof(TMetadata).Name, out var metadata))
+            {
+                var realMetadata = JavaClassMetadata.CreateMetadataImp<TMetadata>(this, className);
+                CacheClasses.TryAdd(typeof(TMetadata).Name, realMetadata);
+                return realMetadata;
+            }
+            return metadata as TMetadata ?? AndroidJNIException.Throw<TMetadata>();
+
+
+        }
+        public TMetadata GetOrAddMetadata<TMetadata>(JCLASS classObj)
+            where TMetadata : JavaClassMetadata<TMetadata>, new()
+        {
+            if (!CacheClasses.TryGetValue(typeof(TMetadata).Name, out var metadata))
+            {
+                var realMetadata = JavaClassMetadata.CreateMetadataImp<TMetadata>(this, classObj);
+                CacheClasses.TryAdd(typeof(TMetadata).Name, realMetadata);
+                return realMetadata;
+            }
+            return metadata as TMetadata ?? AndroidJNIException.Throw<TMetadata>();
+
+
+        }
+
+
+        public TReference GetOrAddReference<TReference, TMetadata>(ReadOnlySpan<char> className)
+            where TReference : JavaClassReference<TReference, TMetadata>, new()
+            where TMetadata : JavaClassMetadata<TMetadata>, new()
+            => new() { Jni = this, Metadata = this.GetOrAddMetadata<TMetadata>(className) };
+
+        public TReference GetOrAddReference<TReference, TMetadata>(ReadOnlySpan<byte> className)
+            where TReference : JavaClassReference<TReference, TMetadata>, new()
+            where TMetadata : JavaClassMetadata<TMetadata>, new()
+            => new() { Jni = this, Metadata = this.GetOrAddMetadata<TMetadata>(className) };
+
+        public TReference GetOrAddReference<TReference, TMetadata>(JCLASS classObj)
+            where TReference : JavaClassReference<TReference, TMetadata>, new()
+            where TMetadata : JavaClassMetadata<TMetadata>, new()
+            => new() { Jni = this, Metadata = this.GetOrAddMetadata<TMetadata>(classObj) };
+
+
+
+        #endregion
+
     }
 
 

@@ -19,58 +19,43 @@ namespace Maple.MonoGameAssistant.AndroidCore.HostedService
            where T_GAMECONTEXTSERVICE : class, IGameContextService
         {
 
-          //  serviceDescriptors.AddLogging();
+            //  serviceDescriptors.AddLogging();
             serviceDescriptors.AddMonoRuntimeService();
-            serviceDescriptors.AddHostedService<AndroidHostedLifecycleService>();
-
             serviceDescriptors.AddSingleton<IGameContextService, T_GAMECONTEXTSERVICE>();
             serviceDescriptors.AddSingleton<IGameWebApiControllers>(p => p.GetRequiredService<IGameContextService>());
-
             return serviceDescriptors;
         }
 
 
-        public static IHost AsRunAndroidService<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] T_GAMECONTEXTSERVICE>
-            (AndroidApiContext androidApiContext, string? gameName)
-            where T_GAMECONTEXTSERVICE : class, IGameContextService
-
+        public static IHost AsRunAndroidService(this AndroidApiContext androidApiContext, Action<MonoGameSettings>? settings, Action<IServiceCollection>? addService)
         {
             var app = Host.CreateEmptyApplicationBuilder(default);
-            var settings = new MonoGameSettings()
-            {
-                GameName = gameName,
-            };
-            app.Services.AddSingleton(settings);
+            var gameSetting = new MonoGameSettings();
+            settings?.Invoke(gameSetting);
+            app.Services.AddSingleton(gameSetting);
             app.Services.AddSingleton(androidApiContext);
-            app.Services.AddSingleton(androidApiContext.VirtualMachineContext);
+            app.Services.AddHostedService<AndroidHostedLifecycleService>();
             app.Services.AddSingleton<AndroidTaskScheduler>();
             app.Services.AddSingleton<AndroidApiService>();
-
-            app.Services.UseGameContextService<T_GAMECONTEXTSERVICE>();
-
-
+            addService?.Invoke(app.Services);
             var host = app.Build();
             return host;
         }
 
-
-        public static IHost AsRunAndroidService(this AndroidApiContext androidApiContext, string? gameName,Action<IServiceCollection> addService)
+        public static AndroidApiContext TestRun(this AndroidApiContext androidApiContext)
         {
-            var app = Host.CreateEmptyApplicationBuilder(default);
-            var settings = new MonoGameSettings()
+            _= Task.Factory.StartNew(TaskAndroidService, androidApiContext, TaskCreationOptions.LongRunning);
+            return androidApiContext;
+
+            static void TaskAndroidService(object? obj)
             {
-                GameName = gameName,
-            };
-            app.Services.AddSingleton(settings);
-            app.Services.AddSingleton(androidApiContext);
-            app.Services.AddSingleton(androidApiContext.VirtualMachineContext);
-            app.Services.AddSingleton<AndroidTaskScheduler>();
-            app.Services.AddSingleton<AndroidApiService>();
-
-            addService(app.Services);
-
-            var host = app.Build();
-            return host;
+                if (obj is not AndroidApiContext context)
+                {
+                    return;
+                }
+                var host = context.AsRunAndroidService(p => { p.GameName = "AndroidTest"; }, p => { });
+                host.Run();
+            }
         }
 
     }

@@ -16,9 +16,12 @@ namespace Maple.MonoGameAssistant.AndroidCore.HostedService
             {
                 try
                 {
-                    var monoRuntimeFactory = serviceProvider.GetRequiredService<MonoRuntimeFactory>();
-                    var init = monoRuntimeFactory.CreateMonoRuntime(out var runtimeType);
-                    logger.LogInformation("{serviceName}=>{status}=>{runtimeType}", nameof(MonoRuntimeFactory), init, runtimeType);
+                    var monoRuntimeFactory = serviceProvider.GetService<MonoRuntimeFactory>();
+                    if(monoRuntimeFactory is not null )
+                    {
+                        var init = monoRuntimeFactory.CreateMonoRuntime(out var runtimeType);
+                        logger.LogInformation("{serviceName}=>{status}=>{runtimeType}", nameof(MonoRuntimeFactory), init, runtimeType);
+                    }
                 }
                 catch (MonoRuntimeException ex)
                 {
@@ -39,8 +42,11 @@ namespace Maple.MonoGameAssistant.AndroidCore.HostedService
             {
                 try
                 {
-                    var gameContextService = serviceProvider.GetRequiredService<IGameContextService>();
-                    await gameContextService.StartAsync().ConfigureAwait(false);
+                    var gameContextService = serviceProvider.GetService<IGameContextService>();
+                    if(gameContextService is not null)
+                    {
+                        await gameContextService.StartAsync().ConfigureAwait(false);
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -54,8 +60,11 @@ namespace Maple.MonoGameAssistant.AndroidCore.HostedService
             {
                 try
                 {
-                    var androidApiService = serviceProvider.GetRequiredService<AndroidApiService>();
-                    await androidApiService.StartAsync().ConfigureAwait(false);
+                    var androidApiService = serviceProvider.GetService<AndroidApiService>();
+                    if (androidApiService is not null)
+                    {
+                        await androidApiService.StartAsync().ConfigureAwait(false);
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -75,8 +84,11 @@ namespace Maple.MonoGameAssistant.AndroidCore.HostedService
             {
                 try
                 {
-                    var androidApiService = serviceProvider.GetRequiredService<AndroidApiService>();
-                    await androidApiService.StopAsync().ConfigureAwait(false);
+                    var androidApiService = serviceProvider.GetService<AndroidApiService>();
+                    if (androidApiService is not null)
+                    {
+                        await androidApiService.StopAsync().ConfigureAwait(false);
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -91,8 +103,11 @@ namespace Maple.MonoGameAssistant.AndroidCore.HostedService
             {
                 try
                 {
-                    var gameContextService = serviceProvider.GetRequiredService<IGameContextService>();
-                    await gameContextService.StopAsync().ConfigureAwait(false);
+                    var gameContextService = serviceProvider.GetService<IGameContextService>();
+                    if (gameContextService is not null)
+                    {
+                        await gameContextService.StopAsync().ConfigureAwait(false);
+                    }
                 }
                 catch (Exception ex)
                 {

@@ -1,14 +1,15 @@
 ﻿using Maple.MonoGameAssistant.AndroidJNI.JNI.Value;
+using System.Collections.Concurrent;
 using System.Runtime.CompilerServices;
 
 namespace Maple.MonoGameAssistant.AndroidJNI.Context
 {
-    public class JavaVirtualMachineContext(PTR_JAVA_VM javaVM)
+    public sealed class JavaVirtualMachineContext(PTR_JAVA_VM javaVM)  
     {
+
         public const int JNI_VERSION_1_6 = 0x00010006;
 
         public PTR_JAVA_VM JAVA_VM { get; } = javaVM;
-
         public bool TryGetEnv(out JniEnvironmentContext jniEnvironmentContext)
         {
             Unsafe.SkipInit(out jniEnvironmentContext);
@@ -19,7 +20,6 @@ namespace Maple.MonoGameAssistant.AndroidJNI.Context
             }
             return false;
         }
-
         public bool TryAttachThread(out JniEnvironmentContext jniEnvironmentContext, [CallerMemberName] string threadName = nameof(TryAttachThread))
         {
             Unsafe.SkipInit(out jniEnvironmentContext);
@@ -43,11 +43,7 @@ namespace Maple.MonoGameAssistant.AndroidJNI.Context
             return false;
         }
         public void DetachThread() => JAVA_VM.DetachCurrentThread();
-
-
-
-
-
+        
     }
 
 }
