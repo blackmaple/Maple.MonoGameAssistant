@@ -15,7 +15,7 @@ namespace Maple.MonoGameAssistant.AndroidCore.Api
         [UnmanagedCallersOnly(EntryPoint = nameof(JNI_OnLoad), CallConvs = [typeof(CallConvCdecl)])]
         public static JINT JNI_OnLoad(PTR_JAVA_VM javaVM, JOBJECT reserved)
         {
-            ApiContext = AndroidApiContext.CreateContext(javaVM).TestRun();
+            ApiContext = AndroidApiContext.CreateContext(javaVM).CreateDefaultAndroidService();
             return JavaVirtualMachineContext.JNI_VERSION_1_6;
         }
 
@@ -28,12 +28,7 @@ namespace Maple.MonoGameAssistant.AndroidCore.Api
         [UnmanagedCallersOnly(EntryPoint = nameof(ApiAction), CallConvs = [typeof(CallConvCdecl)])]
         public static JBOOLEAN ApiAction(PTR_JNI_ENV jniEnv, JOBJECT instance, JINT actionIndex, JSTRING json)
         {
-
-            if (ApiContext is not null)
-            {
-                ApiContext.TryWrite()
-            }
-            return false;
+            return ApiContext?.TryWrite(AndroidApiArgs.Create(jniEnv, instance, actionIndex, json)) ?? false;
         }
 
     }

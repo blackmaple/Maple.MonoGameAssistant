@@ -1,4 +1,5 @@
 ﻿using Maple.MonoGameAssistant.AndroidCore.Api;
+using Maple.MonoGameAssistant.AndroidJNI.Context;
 using Maple.MonoGameAssistant.AndroidJNI.JNI.Opaque;
 using Maple.MonoGameAssistant.AndroidJNI.JNI.Primitive;
 using Maple.MonoGameAssistant.AndroidJNI.JNI.Reference;
@@ -23,10 +24,13 @@ namespace Maple.MonoGameAssistant.AndroidCore
                 Instance = jniEnv.NewWeakGlobalRef(instance),
                 Json = jniEnv.NewGlobalRef(json)
             };
-
-
-
         }
-   
+
+        public void Release(in JniEnvironmentContext jniEnvironmentContext)
+        {
+            jniEnvironmentContext.JNI_ENV.DeleteWeakGlobalRef(this.Instance);
+            jniEnvironmentContext.JNI_ENV.DeleteGlobalRef(this.Json);
+        }
+
     }
 }

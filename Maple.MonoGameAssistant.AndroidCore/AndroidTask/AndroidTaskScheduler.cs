@@ -10,6 +10,13 @@ namespace Maple.MonoGameAssistant.AndroidCore.AndroidTask
         AndroidApiContext ApiContext { get; }
         JavaVirtualMachineContext VirtualMachineContext => ApiContext.VirtualMachineContext;
 
+        ThreadLocal<JniEnvironmentContext> TheadJniEnv { get; } = new ThreadLocal<JniEnvironmentContext>();
+        public JniEnvironmentContext CurrJniEnv
+        {
+            get => TheadJniEnv.Value;
+            private set => TheadJniEnv.Value = value;
+        }
+
         AndroidTaskScheduler(AndroidApiContext apiContext, int concurrencyLevel)
         {
             this.ApiContext = apiContext;
@@ -17,37 +24,16 @@ namespace Maple.MonoGameAssistant.AndroidCore.AndroidTask
             {
                 FullMode = BoundedChannelFullMode.Wait
             });
-            this.CreateTasks2(concurrencyLevel);
+            this.CreateTasks_Default(concurrencyLevel);
 
         }
         public AndroidTaskScheduler(AndroidApiContext apiContext) : this(apiContext, Environment.ProcessorCount)
         { }
 
-        [Obsolete("remove...")]
-        private void CreateTasks(int count)
-        {
-            for (int i = 0; i < count; ++i)
-            {
-                _ = Task.Run(ExecTaskProc);
-            }
 
-            async Task ExecTaskProc()
-            {
-                await foreach (var task in this.TaskChannel.Reader.ReadAllAsync().ConfigureAwait(false))
-                {
-                    if (this.VirtualMachineContext.TryAttachThread(out var environmentContext, nameof(AndroidTaskScheduler)))
-                    {
-                        using (environmentContext)
-                        {
-                            this.TryExecuteTask(task);
-                        }
-                    }
-                }
-            }
-        }
-
-        private void CreateTasks2(int count)
+        private void CreateTasks_Default(int count)
         {
+
             for (int i = 0; i < count; ++i)
             {
                 _ = Task.Factory.StartNew(ExecTaskProc, this, TaskCreationOptions.LongRunning);
@@ -61,6 +47,7 @@ namespace Maple.MonoGameAssistant.AndroidCore.AndroidTask
                 }
                 if (androidTaskScheduler.VirtualMachineContext.TryAttachThreadAsDaemon(out var jniEnvironmentContext))
                 {
+                    androidTaskScheduler.TheadJniEnv.Value = jniEnvironmentContext;
                     using (jniEnvironmentContext)
                     {
                         while (true)

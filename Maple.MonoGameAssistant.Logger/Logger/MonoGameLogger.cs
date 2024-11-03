@@ -21,8 +21,7 @@ namespace Maple.MonoGameAssistant.Logger
         public MonoGameLogger(string category = nameof(MonoGameLogger))
         {
             Category = category;
-
-            var path = AppContext.BaseDirectory;
+            var path = MonoGameLoggerExtensions.GetBaseDirectory();
             path = Path.Combine(path, nameof(MonoGameLogger));
             if (Directory.Exists(path) == false)
             {
@@ -31,6 +30,9 @@ namespace Maple.MonoGameAssistant.Logger
             FilePath = path;
 
         }
+
+
+
 
         /// <summary>
         /// lock write log msg
@@ -45,6 +47,7 @@ namespace Maple.MonoGameAssistant.Logger
             using var stream = File.AppendText(file);
             stream.WriteLine(message);
         }
+
         [MethodImpl(MethodImplOptions.Synchronized)]
         public void LogImp(StringBuilder sb)
         {

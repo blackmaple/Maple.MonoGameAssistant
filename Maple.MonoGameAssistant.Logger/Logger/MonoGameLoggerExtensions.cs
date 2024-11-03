@@ -34,5 +34,23 @@ namespace Maple.MonoGameAssistant.Logger
             builder.AddMonoGameLogger();
             return builder;
         }
+
+        public static bool IsAndroidEnvironment()
+             => string.IsNullOrEmpty(Environment.GetEnvironmentVariable(nameof(MonoGameLogger))) == false;
+
+        public static void SetAndroidEnvironment()
+        {
+            Environment.SetEnvironmentVariable(nameof(MonoGameLogger), nameof(MonoGameLogger));
+        }
+
+        public static void SetDefaultEnvironment()
+        {
+            Environment.SetEnvironmentVariable(nameof(MonoGameLogger), string.Empty);
+        }
+
+        public static string GetBaseDirectory()
+        {
+            return IsAndroidEnvironment() ? "/sdcard/Download" : AppContext.BaseDirectory;
+        }
     }
 }

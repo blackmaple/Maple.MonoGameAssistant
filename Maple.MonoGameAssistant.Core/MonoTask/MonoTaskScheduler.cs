@@ -4,61 +4,6 @@ using System.Threading.Channels;
 
 namespace Maple.MonoGameAssistant.Core
 {
-    //public sealed class MonoTaskScheduler : TaskScheduler, IDisposable
-    //{
-    //    BlockingCollection<Task> TaskCollection { get; }
-    //    MonoRuntimeContext RuntimeContext { get; }
-    //    public MonoTaskScheduler(MonoRuntimeContext runtimeContext, int concurrencyLevel)
-    //    {
-    //        this.RuntimeContext = runtimeContext;
-    //        this.TaskCollection = [];
-    //        this.CreateTasks(concurrencyLevel);
-
-    //    }
-    //    public MonoTaskScheduler(MonoRuntimeContext runtimeContext) : this(runtimeContext, Environment.ProcessorCount)
-    //    { }
-
-
-    //    private void CreateTasks(int count)
-    //    {
-    //        for (int i = 0; i < count; ++i)
-    //        {
-    //            var task = Task.Factory.StartNew(ExecTaskProc, TaskCreationOptions.LongRunning);
-    //        }
-    //        void ExecTaskProc()
-    //        {
-    //            foreach (var task in this.TaskCollection.GetConsumingEnumerable())
-    //            {
-    //                using (this.RuntimeContext.CreateAttachContext())
-    //                {
-    //                    this.TryExecuteTask(task);
-    //                }
-    //            }
-    //        }
-    //    }
-
-    //    protected override IEnumerable<Task>? GetScheduledTasks()
-    //    {
-    //        return default;
-    //    }
-
-    //    protected override void QueueTask(Task task)
-    //    {
-    //        this.TaskCollection.Add(task);
-    //    }
-
-    //    protected override bool TryExecuteTaskInline(Task task, bool taskWasPreviouslyQueued)
-    //    {
-    //        return false;
-    //    }
-
-    //    public void Dispose()
-    //    {
-    //        this.TaskCollection.CompleteAdding();
-    //        this.TaskCollection.Dispose();
-    //    }
-    //}
-
     public sealed class MonoTaskScheduler : TaskScheduler, IDisposable
     {
         Channel<Task> TaskChannel { get; }
@@ -70,14 +15,30 @@ namespace Maple.MonoGameAssistant.Core
             {
                 FullMode = BoundedChannelFullMode.Wait
             });
-            this.CreateTasks(concurrencyLevel);
-
+            if (IsAndroidEnvironment())
+            {
+                this.CreateTasks_Android(concurrencyLevel);
+            }
+            else
+            {
+               this.CreateTasks_Default(concurrencyLevel);
+            }
         }
         public MonoTaskScheduler(MonoRuntimeContext runtimeContext) : this(runtimeContext, Environment.ProcessorCount)
         { }
 
+        static bool IsAndroidEnvironment()
+            => string.IsNullOrEmpty(Environment.GetEnvironmentVariable(nameof(MonoTaskScheduler))) == false;
+        public static void SetAndroidEnvironment()
+        {
+            Environment.SetEnvironmentVariable(nameof(MonoTaskScheduler), nameof(MonoTaskScheduler));
+        }
+        public static void SetDefaultEnvironment()
+        {
+            Environment.SetEnvironmentVariable(nameof(MonoTaskScheduler), string.Empty);
+        }
 
-        private void CreateTasks(int count)
+        private void CreateTasks_Default(int count)
         {
             for (int i = 0; i < count; ++i)
             {
@@ -95,6 +56,35 @@ namespace Maple.MonoGameAssistant.Core
                 }
             }
         }
+        private void CreateTasks_Android(int count)
+        {
+            for (int i = 0; i < count; ++i)
+            {
+                _ = Task.Factory.StartNew(ExecTaskProc, this, TaskCreationOptions.LongRunning);
+            }
+
+            static void ExecTaskProc(object? taskScheduler)
+            {
+                if (taskScheduler is not MonoTaskScheduler monoTaskScheduler)
+                {
+                    return;
+                }
+                using (monoTaskScheduler.RuntimeContext.CreateAttachContext())
+                {
+                    while (true)
+                    {
+                        SpinWait.SpinUntil(() => monoTaskScheduler.TaskChannel.Reader.TryPeek(out _));
+                        if (!monoTaskScheduler.TaskChannel.Reader.TryRead(out var item))
+                        {
+                            continue;
+                        }
+                        monoTaskScheduler.TryExecuteTask(item);
+                    }
+                }
+
+            }
+        }
+
 
         protected override IEnumerable<Task>? GetScheduledTasks()
         {
@@ -119,5 +109,5 @@ namespace Maple.MonoGameAssistant.Core
     }
 
 
- 
+
 }
