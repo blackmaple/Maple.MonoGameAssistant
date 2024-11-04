@@ -42,4 +42,7 @@ namespace Maple.MonoGameAssistant.AndroidJNI.JNI.Reference
         public T Value => Unsafe.As<nint, T>(ref Unsafe.AsRef(in _ptr));
     }
 
+
+
+
 }

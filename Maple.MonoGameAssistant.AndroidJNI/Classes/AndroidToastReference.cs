@@ -9,14 +9,17 @@ using Maple.MonoGameAssistant.AndroidModel;
 using System.Reflection.Metadata;
 using System.Runtime.InteropServices;
 using System.Collections.Concurrent;
+using Maple.MonoGameAssistant.AndroidJNI.JNI.Value;
 
 namespace Maple.MonoGameAssistant.AndroidJNI.Classes
 {
 
 
-    public sealed partial class AndroidToastReference()
-        : JavaClassReference<AndroidToastReference, AndroidToastMetadata>
+    public readonly ref struct AndroidToastReference : IJavaClassReference<AndroidToastReference, AndroidToastMetadata>
     {
+        public AndroidToastMetadata Metadata { get; init; }
+        public PTR_JNI_ENV JNI_ENV { get; init; }
+
         public unsafe void Show(JOBJECT context, ReadOnlySpan<char> content, bool showLong = true)
         {
             const int LENGTH_LONG = 1;
@@ -30,11 +33,11 @@ namespace Maple.MonoGameAssistant.AndroidJNI.Classes
         }
 
 
-        public static AndroidToastReference Create(in JniEnvironmentContext jniEnvironmentContext)
+        public static AndroidToastReference CreateReference(in JniEnvironmentContext jniEnvironmentContext)
         {
-            return CreateReference(jniEnvironmentContext, AndroidToastMetadata.CreateMetadata(jniEnvironmentContext));
+            return jniEnvironmentContext.GetReference<AndroidToastReference, AndroidToastMetadata>(AndroidToastMetadata.CreateMetadata(jniEnvironmentContext));
         }
- 
+
     }
 
 }

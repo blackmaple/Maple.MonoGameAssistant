@@ -60,13 +60,27 @@ namespace Maple.MonoGameAssistant.AndroidJNI.JNI.Value
         public void DeleteGlobalRef(JGLOBAL obj)
             => Functions.Func_DeleteGlobalRef.Invoke(this, obj);
 
-        public JOBJECT NewLocalRef(JOBJECT obj)
+        public JLOCAL NewLocalRef(JOBJECT obj)
         {
             var jRef = Env.Functions.Func_NewLocalRef.Invoke(this, obj);
-            return ExceptionCheck() ? AndroidJNIException.Throw<JOBJECT>() : jRef;
+            return ExceptionCheck() ? AndroidJNIException.Throw<JLOCAL>() : jRef;
         }
         public void DeleteLocalRef(JOBJECT obj)
             => Functions.Func_DeleteLocalRef.Invoke(this, obj);
+        public void DeleteLocalRef(JLOCAL obj)
+        => Functions.Func_DeleteLocalRef.Invoke(this, obj);
+
+        public bool TryWeak2Local(JWEAK obj, out JLOCAL localObj)
+        {
+            Unsafe.SkipInit(out localObj);
+            if (this.Functions.Func_IsSameObject.Invoke(this, obj, nint.Zero))
+            {
+                return false;
+            }
+            localObj = this.NewLocalRef(obj);
+            return true;
+        }
+
 
         public JSTRING CreateStringUnicode(ReadOnlySpan<char> content)
         {
@@ -114,7 +128,8 @@ namespace Maple.MonoGameAssistant.AndroidJNI.JNI.Value
             fixed (void* pContent = &ref_Content.GetPinnableReference())
             {
                 classObj = Functions.Func_FindClass.Invoke(this, pContent);
-                return classObj.IsNotNullPtr();
+                
+                return !this.ExceptionCheck();
             }
         }
         public bool TryFindClass(ReadOnlySpan<byte> className, out JCLASS classObj)
@@ -124,7 +139,7 @@ namespace Maple.MonoGameAssistant.AndroidJNI.JNI.Value
             fixed (void* pContent = &ref_Content)
             {
                 classObj = Functions.Func_FindClass.Invoke(this, pContent);
-                return classObj.IsNotNullPtr();
+                return !this.ExceptionCheck();
             }
         }
         public JCLASS FindClass(ReadOnlySpan<char> className)
@@ -153,7 +168,7 @@ namespace Maple.MonoGameAssistant.AndroidJNI.JNI.Value
                 fixed (void* pDesc = &ref_desc)
                 {
                     methodId = Functions.Func_GetStaticMethodID.Invoke(this, classObj, pName, pDesc);
-                    return methodId;
+                    return !this.ExceptionCheck();
                 }
             }
         }
@@ -166,7 +181,7 @@ namespace Maple.MonoGameAssistant.AndroidJNI.JNI.Value
                 fixed (void* pDesc = &ref_desc.GetPinnableReference())
                 {
                     methodId = Functions.Func_GetStaticMethodID.Invoke(this, classObj, pName, pDesc);
-                    return methodId;
+                    return !this.ExceptionCheck();
                 }
             }
 
@@ -199,7 +214,7 @@ namespace Maple.MonoGameAssistant.AndroidJNI.JNI.Value
                 fixed (void* pDesc = &ref_desc)
                 {
                     methodId = Functions.Func_GetMethodID.Invoke(this, classObj, pName, pDesc);
-                    return methodId;
+                    return !this.ExceptionCheck();
                 }
             }
         }
@@ -212,7 +227,7 @@ namespace Maple.MonoGameAssistant.AndroidJNI.JNI.Value
                 fixed (void* pDesc = &ref_desc.GetPinnableReference())
                 {
                     methodId = Functions.Func_GetMethodID.Invoke(this, classObj, pName, pDesc);
-                    return methodId;
+                    return !this.ExceptionCheck();
                 }
             }
 
@@ -536,7 +551,7 @@ namespace Maple.MonoGameAssistant.AndroidJNI.JNI.Value
                 fixed (void* pDesc = &ref_desc)
                 {
                     fieldId = Functions.Func_GetFieldID.Invoke(this, classObj, pName, pDesc);
-                    return fieldId;
+                    return !this.ExceptionCheck();
                 }
             }
         }
@@ -549,7 +564,7 @@ namespace Maple.MonoGameAssistant.AndroidJNI.JNI.Value
                 fixed (void* pDesc = &ref_desc.GetPinnableReference())
                 {
                     fieldId = Functions.Func_GetFieldID.Invoke(this, classObj, pName, pDesc);
-                    return fieldId;
+                    return !this.ExceptionCheck();
                 }
             }
 
@@ -583,7 +598,7 @@ namespace Maple.MonoGameAssistant.AndroidJNI.JNI.Value
                 fixed (void* pDesc = &ref_desc)
                 {
                     fieldId = Functions.Func_GetStaticFieldID.Invoke(this, classObj, pName, pDesc);
-                    return fieldId;
+                    return !this.ExceptionCheck();
                 }
             }
         }
@@ -596,7 +611,7 @@ namespace Maple.MonoGameAssistant.AndroidJNI.JNI.Value
                 fixed (void* pDesc = &ref_desc.GetPinnableReference())
                 {
                     fieldId = Functions.Func_GetStaticFieldID.Invoke(this, classObj, pName, pDesc);
-                    return fieldId;
+                    return !this.ExceptionCheck();
                 }
             }
 

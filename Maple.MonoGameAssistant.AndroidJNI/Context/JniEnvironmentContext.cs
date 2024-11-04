@@ -77,6 +77,19 @@ namespace Maple.MonoGameAssistant.AndroidJNI.Context
 
 
         }
+        public TMetadata GetOrAddMetadata<TMetadata>(JOBJECT instance)
+            where TMetadata : JavaClassMetadata<TMetadata>, new()
+        {
+            if (!CacheClasses.TryGetValue(typeof(TMetadata).Name, out var metadata))
+            {
+                var realMetadata = JavaClassMetadata.CreateMetadataImp<TMetadata>(this, instance);
+                CacheClasses.TryAdd(typeof(TMetadata).Name, realMetadata);
+                return realMetadata;
+            }
+            return metadata as TMetadata ?? AndroidJNIException.Throw<TMetadata>();
+
+
+        }
         public TMetadata GetOrAddMetadata<TMetadata>(JCLASS classObj)
             where TMetadata : JavaClassMetadata<TMetadata>, new()
         {
@@ -92,25 +105,31 @@ namespace Maple.MonoGameAssistant.AndroidJNI.Context
         }
 
 
-        public TReference GetOrAddReference<TReference, TMetadata>(ReadOnlySpan<char> className)
-            where TReference : JavaClassReference<TReference, TMetadata>, new()
-            where TMetadata : JavaClassMetadata<TMetadata>, new()
-            => new() { Jni = this, Metadata = this.GetOrAddMetadata<TMetadata>(className) };
+        //public TReference GetOrAddReference<TReference, TMetadata>(ReadOnlySpan<char> className)
+        //    where TReference : JavaClassReference<TReference, TMetadata>, new()
+        //    where TMetadata : JavaClassMetadata<TMetadata>, new()
+        //    => this.GetReference<TReference, TMetadata>(this.GetOrAddMetadata<TMetadata>(className));
 
-        public TReference GetOrAddReference<TReference, TMetadata>(ReadOnlySpan<byte> className)
-            where TReference : JavaClassReference<TReference, TMetadata>, new()
-            where TMetadata : JavaClassMetadata<TMetadata>, new()
-            => new() { Jni = this, Metadata = this.GetOrAddMetadata<TMetadata>(className) };
+        //public TReference GetOrAddReference<TReference, TMetadata>(ReadOnlySpan<byte> className)
+        //    where TReference : JavaClassReference<TReference, TMetadata>, new()
+        //    where TMetadata : JavaClassMetadata<TMetadata>, new()
+        //    => this.GetReference<TReference, TMetadata>(this.GetOrAddMetadata<TMetadata>(className));
 
-        public TReference GetOrAddReference<TReference, TMetadata>(JCLASS classObj)
-            where TReference : JavaClassReference<TReference, TMetadata>, new()
-            where TMetadata : JavaClassMetadata<TMetadata>, new()
-            => new() { Jni = this, Metadata = this.GetOrAddMetadata<TMetadata>(classObj) };
+        //public TReference GetOrAddReference<TReference, TMetadata>(JCLASS classObj)
+        //    where TReference : JavaClassReference<TReference, TMetadata>, new()
+        //    where TMetadata : JavaClassMetadata<TMetadata>, new()
+        //    => this.GetReference<TReference, TMetadata>(this.GetOrAddMetadata<TMetadata>(classObj));
+
+        //public TReference GetOrAddReference<TReference, TMetadata>(JOBJECT instance)
+        //    where TReference : JavaClassReference<TReference, TMetadata>, new()
+        //    where TMetadata : JavaClassMetadata<TMetadata>, new()
+        //    => this.GetReference<TReference, TMetadata>(this.GetOrAddMetadata<TMetadata>(instance));
+
 
         public TReference GetReference<TReference, TMetadata>(TMetadata metadata)
-            where TReference : JavaClassReference<TReference, TMetadata>, new()
+            where TReference : struct, IJavaClassReference<TReference, TMetadata>, allows ref struct
             where TMetadata : JavaClassMetadata<TMetadata>, new()
-            => new() { Jni = this, Metadata = metadata };
+            => new() { JNI_ENV = this.JNI_ENV, Metadata = metadata };
 
 
 

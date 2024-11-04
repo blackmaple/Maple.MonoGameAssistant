@@ -1,28 +1,36 @@
 ﻿using Maple.MonoGameAssistant.AndroidJNI.Context;
 using Maple.MonoGameAssistant.AndroidJNI.JNI.Primitive;
 using Maple.MonoGameAssistant.AndroidJNI.JNI.Reference;
-using Maple.MonoGameAssistant.Common;
+using System.Runtime.CompilerServices;
 namespace Maple.MonoGameAssistant.AndroidCore.Api
 {
-    public sealed class VirtualActionApiCallbackInstance(JOBJECT ptr, VirtualActionApiCallbackReference reference)
-        : JavaClassInstance<VirtualActionApiCallbackReference>(ptr, reference)
+    public readonly struct VirtualActionApiCallbackInstance(JLOCAL<JOBJECT> instance, VirtualActionApiCallbackReference reference)
+        : IJavaClassLocalInstance<VirtualActionApiCallbackReference>
     {
 
-        public static VirtualActionApiCallbackInstance Create(in JniEnvironmentContext jniEnvironmentContext, JOBJECT ptr)
+        public JLOCAL<JOBJECT> JLocal => instance;
+
+        public JOBJECT Instance => JLocal.Value;
+
+        public VirtualActionApiCallbackReference Reference => reference;
+
+
+        public static bool TryCreate(in JniEnvironmentContext jniEnvironmentContext, JWEAK<JOBJECT> ptr, out VirtualActionApiCallbackInstance callbackInstance)
         {
-            Logger.MonoGameLogger.Default.Info("create.1");
-            var classObj = jniEnvironmentContext.JNI_ENV.GetObjectClass(ptr);
-            Logger.MonoGameLogger.Default.Info("create.2");
-            var metadata = VirtualActionApiCallbackMetadata.CreateMetadata(jniEnvironmentContext, classObj);
-            Logger.MonoGameLogger.Default.Info("create.3");
-            var classRef = VirtualActionApiCallbackReference.CreateReference(jniEnvironmentContext, metadata);
-            Logger.MonoGameLogger.Default.Info("create.4");
-            return new VirtualActionApiCallbackInstance(ptr, classRef);
+            Unsafe.SkipInit(out callbackInstance);
+            if (jniEnvironmentContext.JNI_ENV.TryWeak2Local(ptr, out var localObj))
+            {
+                var metadata = VirtualActionApiCallbackMetadata.CreateMetadata(jniEnvironmentContext, localObj);
+                var classRef = VirtualActionApiCallbackReference.CreateReference(jniEnvironmentContext, metadata);
+                callbackInstance = new VirtualActionApiCallbackInstance(localObj, classRef);
+                return true;
+            }
+            return false;
         }
 
 
-        public JBOOLEAN None(JSTRING json) => this.Reference.None(this.Instance, json);
 
+        public JBOOLEAN None(JSTRING json) => this.Reference.None(this.Instance, json);
 
         public JBOOLEAN EnumImages(JSTRING json) => this.Reference.EnumImages(this.Instance, json);
         public JBOOLEAN EnumClasses(JSTRING json) => this.Reference.EnumClasses(this.Instance, json);
@@ -51,6 +59,7 @@ namespace Maple.MonoGameAssistant.AndroidCore.Api
         public JBOOLEAN AddSkillDisplay(JSTRING json) => this.Reference.AddSkillDisplay(this.Instance, json);
         public JBOOLEAN GetListSwitchDisplay(JSTRING json) => this.Reference.GetListSwitchDisplay(this.Instance, json);
         public JBOOLEAN UpdateSwitchDisplay(JSTRING json) => this.Reference.UpdateSwitchDisplay(this.Instance, json);
+
 
     }
 

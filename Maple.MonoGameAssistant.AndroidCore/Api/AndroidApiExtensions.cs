@@ -28,7 +28,7 @@ namespace Maple.MonoGameAssistant.AndroidCore.Api
         [UnmanagedCallersOnly(EntryPoint = nameof(JNI_OnLoad))]
         public unsafe static JINT JNI_OnLoad(PTR_JAVA_VM javaVM, JOBJECT reserved)
         {
-            Logger.MonoGameLoggerExtensions.SetAndroidEnvironment();
+          //  Logger.MonoGameLoggerExtensions.SetAndroidEnvironment();
             ApiContext = AndroidApiContext.CreateContext(javaVM).CreateDefaultAndroidService();
             if (ApiContext.VirtualMachineContext.TryGetEnv(out var jniEnvironmentContext))
             {
@@ -54,29 +54,29 @@ namespace Maple.MonoGameAssistant.AndroidCore.Api
             //    return true;
             //}
             //return false;
-            //  return ApiContext?.TryWrite(AndroidApiArgs.Create(jniEnv, instance, actionIndex, json)) ?? false;
-            if (JniEnvironmentContext.TryCreateJniEnvironmentContext(jniEnv, out var jniEnvironmentContext))
-            {
-                try
-                {
-                    Logger.MonoGameLogger.Default.Info("1");
-                    var api = VirtualActionApiCallbackInstance.Create(jniEnvironmentContext, instance);
-                    Logger.MonoGameLogger.Default.Info("2");
-                    api.None(json);
-                    Logger.MonoGameLogger.Default.Info("3");
+              return ApiContext?.TryWrite(AndroidApiArgs.Create(jniEnv, instance, actionIndex, json)) ?? false;
+            //if (JniEnvironmentContext.TryCreateJniEnvironmentContext(jniEnv, out var jniEnvironmentContext))
+            //{
+            //    try
+            //    {
+            //        Logger.MonoGameLogger.Default.Info("1");
+            //        var api = VirtualActionApiCallbackInstance.Create(jniEnvironmentContext, instance);
+            //        Logger.MonoGameLogger.Default.Info("2");
+            //        api.None(json);
+            //        Logger.MonoGameLogger.Default.Info("3");
 
-                }
-                catch (Exception ex)
-                {
-                    Logger.MonoGameLogger.Default.Error(ex);
-                }
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        Logger.MonoGameLogger.Default.Error(ex);
+            //    }
 
 
-                var androidToast = AndroidToastReference.Create(in jniEnvironmentContext);
-                androidToast.Show(instance, $@"{(int)actionIndex}:{jniEnvironmentContext.JNI_ENV.ConvertStringUnicode(json)}", false);
-                return true;
-            }
-            return true;
+            //    var androidToast = AndroidToastReference.CreateReference(in jniEnvironmentContext);
+            //    androidToast.Show(instance, $@"{(int)actionIndex}:{jniEnvironmentContext.JNI_ENV.ConvertStringUnicode(json)}", false);
+            //    return true;
+            //}
+            //return true;
         }
 
         [UnmanagedCallersOnly(EntryPoint = nameof(TestAction))]
@@ -84,7 +84,7 @@ namespace Maple.MonoGameAssistant.AndroidCore.Api
         {
             if (JniEnvironmentContext.TryCreateJniEnvironmentContext(jniEnv, out var jniEnvironmentContext))
             {
-                var androidToast = AndroidToastReference.Create(in jniEnvironmentContext);
+                var androidToast = AndroidToastReference.CreateReference(in jniEnvironmentContext);
                 androidToast.Show(instance, jniEnvironmentContext.JNI_ENV.ConvertStringUnicode(text), false);
                 return true;
             }

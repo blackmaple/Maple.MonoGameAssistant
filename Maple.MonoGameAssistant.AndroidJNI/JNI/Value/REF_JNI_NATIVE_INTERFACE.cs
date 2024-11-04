@@ -156,9 +156,9 @@ namespace Maple.MonoGameAssistant.AndroidJNI.JNI.Value
         /// <summary>
         ///     //jobject(*NewLocalRef)(JNIEnv*, jobject);
         /// </summary>
-        readonly delegate* unmanaged[Cdecl, SuppressGCTransition]<PTR_JNI_ENV, JOBJECT, JOBJECT> _ptr =
-            (delegate* unmanaged[Cdecl, SuppressGCTransition]<PTR_JNI_ENV, JOBJECT, JOBJECT>)ptr;
-        public JOBJECT Invoke(PTR_JNI_ENV @this, JOBJECT obj)
+        readonly delegate* unmanaged[Cdecl, SuppressGCTransition]<PTR_JNI_ENV, JOBJECT, JLOCAL> _ptr =
+            (delegate* unmanaged[Cdecl, SuppressGCTransition]<PTR_JNI_ENV, JOBJECT, JLOCAL>)ptr;
+        public JLOCAL Invoke(PTR_JNI_ENV @this, JOBJECT obj)
             => _ptr(@this, obj);
     }
 

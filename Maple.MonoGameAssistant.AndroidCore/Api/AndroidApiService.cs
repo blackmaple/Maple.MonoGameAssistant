@@ -1,5 +1,4 @@
 ﻿using Maple.MonoGameAssistant.AndroidCore.AndroidTask;
-using Maple.MonoGameAssistant.AndroidJNI.Context;
 using Maple.MonoGameAssistant.AndroidModel.ExceptionData;
 using Maple.MonoGameAssistant.Common;
 using Maple.MonoGameAssistant.Core;
@@ -251,149 +250,156 @@ namespace Maple.MonoGameAssistant.AndroidCore.Api
 
         bool TryCallbackApiJson<T>(AndroidApiArgs arg, T data) where T : class
         {
-            var jniEnvironmentContext = this.Scheduler.CurrJniEnv;
-
- 
-            VirtualActionApiCallbackInstance callback;
-            callback = VirtualActionApiCallbackInstance.Create(jniEnvironmentContext, arg.Instance.Value);
             if (!JsonSerializer.TryGetTypeInfo(typeof(T), out var jsonTypeInfo))
             {
                 return false;
             }
+            this.Logger.Info("VirtualActionApiCallbackInstance.1");
+            var jniEnvironmentContext = this.Scheduler.CurrJniEnv;
+            this.Logger.Info("VirtualActionApiCallbackInstance.2");
 
-            var jsonData = System.Text.Json.JsonSerializer.Serialize(data, jsonTypeInfo);
-            this.Logger.Info(jsonData);
-            var javaJson = jniEnvironmentContext.JNI_ENV.CreateStringUnicode(jsonData);
-            try
+            if (false == VirtualActionApiCallbackInstance.TryCreate(jniEnvironmentContext, arg.Instance, out var callback))
             {
-                var actionIndex = (int)arg.Action;
-                if ((int)EnumApiActionIndex.EnumImages == actionIndex)
+                return false;
+            }
+            this.Logger.Info("VirtualActionApiCallbackInstance.3");
+            using (callback)
+            {
+                var jsonData = System.Text.Json.JsonSerializer.Serialize(data, jsonTypeInfo);
+                this.Logger.Info(jsonData);
+                var javaJson = jniEnvironmentContext.JNI_ENV.CreateStringUnicode(jsonData);
+                try
                 {
-                    return callback.EnumImages(javaJson);
-                }
-                else if ((int)EnumApiActionIndex.EnumClasses == actionIndex)
-                {
-                    return callback.EnumClasses(javaJson);
-                }
-                else if ((int)EnumApiActionIndex.EnumObjects == actionIndex)
-                {
-                    return callback.EnumObjects(javaJson);
-                }
-                else if ((int)EnumApiActionIndex.EnumClassDetail == actionIndex)
-                {
-                    return callback.EnumClassDetail(javaJson);
-                }
+                    var actionIndex = (int)arg.Action;
+                    if ((int)EnumApiActionIndex.EnumImages == actionIndex)
+                    {
+                        return callback.EnumImages(javaJson);
+                    }
+                    else if ((int)EnumApiActionIndex.EnumClasses == actionIndex)
+                    {
+                        return callback.EnumClasses(javaJson);
+                    }
+                    else if ((int)EnumApiActionIndex.EnumObjects == actionIndex)
+                    {
+                        return callback.EnumObjects(javaJson);
+                    }
+                    else if ((int)EnumApiActionIndex.EnumClassDetail == actionIndex)
+                    {
+                        return callback.EnumClassDetail(javaJson);
+                    }
 
-                //game
-                else if ((int)EnumApiActionIndex.INFO == actionIndex)
-                {
-                    return callback.INFO(javaJson);
-                }
-                else if ((int)EnumApiActionIndex.LoadResource == actionIndex)
-                {
-                    return callback.LoadResource(javaJson);
-                }
+                    //game
+                    else if ((int)EnumApiActionIndex.INFO == actionIndex)
+                    {
+                        return callback.INFO(javaJson);
+                    }
+                    else if ((int)EnumApiActionIndex.LoadResource == actionIndex)
+                    {
+                        return callback.LoadResource(javaJson);
+                    }
 
-                else if ((int)EnumApiActionIndex.GetListCurrencyDisplay == actionIndex)
-                {
-                    return callback.GetListCurrencyDisplay(javaJson);
-                }
-                else if ((int)EnumApiActionIndex.GetCurrencyInfo == actionIndex)
-                {
-                    return callback.GetCurrencyInfo(javaJson);
-                }
-                else if ((int)EnumApiActionIndex.UpdateCurrencyInfo == actionIndex)
-                {
-                    return callback.UpdateCurrencyInfo(javaJson);
-                }
+                    else if ((int)EnumApiActionIndex.GetListCurrencyDisplay == actionIndex)
+                    {
+                        return callback.GetListCurrencyDisplay(javaJson);
+                    }
+                    else if ((int)EnumApiActionIndex.GetCurrencyInfo == actionIndex)
+                    {
+                        return callback.GetCurrencyInfo(javaJson);
+                    }
+                    else if ((int)EnumApiActionIndex.UpdateCurrencyInfo == actionIndex)
+                    {
+                        return callback.UpdateCurrencyInfo(javaJson);
+                    }
 
-                else if ((int)EnumApiActionIndex.GetListInventoryDisplay == actionIndex)
-                {
-                    return callback.GetListInventoryDisplay(javaJson);
-                }
-                else if ((int)EnumApiActionIndex.GetInventoryInfo == actionIndex)
-                {
-                    return callback.GetInventoryInfo(javaJson);
-                }
-                else if ((int)EnumApiActionIndex.UpdateInventoryInfo == actionIndex)
-                {
-                    return callback.UpdateInventoryInfo(javaJson);
-                }
+                    else if ((int)EnumApiActionIndex.GetListInventoryDisplay == actionIndex)
+                    {
+                        return callback.GetListInventoryDisplay(javaJson);
+                    }
+                    else if ((int)EnumApiActionIndex.GetInventoryInfo == actionIndex)
+                    {
+                        return callback.GetInventoryInfo(javaJson);
+                    }
+                    else if ((int)EnumApiActionIndex.UpdateInventoryInfo == actionIndex)
+                    {
+                        return callback.UpdateInventoryInfo(javaJson);
+                    }
 
-                else if ((int)EnumApiActionIndex.GetListCharacterDisplay == actionIndex)
-                {
-                    return callback.GetListCharacterDisplay(javaJson);
-                }
+                    else if ((int)EnumApiActionIndex.GetListCharacterDisplay == actionIndex)
+                    {
+                        return callback.GetListCharacterDisplay(javaJson);
+                    }
 
-                else if ((int)EnumApiActionIndex.GetCharacterStatus == actionIndex)
-                {
-                    return callback.GetCharacterStatus(javaJson);
-                }
-                else if ((int)EnumApiActionIndex.UpdateCharacterStatus == actionIndex)
-                {
-                    return callback.UpdateCharacterStatus(javaJson);
-                }
+                    else if ((int)EnumApiActionIndex.GetCharacterStatus == actionIndex)
+                    {
+                        return callback.GetCharacterStatus(javaJson);
+                    }
+                    else if ((int)EnumApiActionIndex.UpdateCharacterStatus == actionIndex)
+                    {
+                        return callback.UpdateCharacterStatus(javaJson);
+                    }
 
-                else if ((int)EnumApiActionIndex.GetCharacterEquipment == actionIndex)
-                {
-                    return callback.GetCharacterEquipment(javaJson);
-                }
-                else if ((int)EnumApiActionIndex.UpdateCharacterEquipment == actionIndex)
-                {
-                    return callback.UpdateCharacterEquipment(javaJson);
-                }
+                    else if ((int)EnumApiActionIndex.GetCharacterEquipment == actionIndex)
+                    {
+                        return callback.GetCharacterEquipment(javaJson);
+                    }
+                    else if ((int)EnumApiActionIndex.UpdateCharacterEquipment == actionIndex)
+                    {
+                        return callback.UpdateCharacterEquipment(javaJson);
+                    }
 
-                else if ((int)EnumApiActionIndex.GetCharacterSkill == actionIndex)
-                {
-                    return callback.GetCharacterSkill(javaJson);
-                }
-                else if ((int)EnumApiActionIndex.UpdateCharacterSkill == actionIndex)
-                {
-                    return callback.UpdateCharacterSkill(javaJson);
-                }
+                    else if ((int)EnumApiActionIndex.GetCharacterSkill == actionIndex)
+                    {
+                        return callback.GetCharacterSkill(javaJson);
+                    }
+                    else if ((int)EnumApiActionIndex.UpdateCharacterSkill == actionIndex)
+                    {
+                        return callback.UpdateCharacterSkill(javaJson);
+                    }
 
-                else if ((int)EnumApiActionIndex.GetListMonsterDisplay == actionIndex)
-                {
-                    return callback.GetListMonsterDisplay(javaJson);
-                }
-                else if ((int)EnumApiActionIndex.AddMonsterMember == actionIndex)
-                {
-                    return callback.AddMonsterMember(javaJson);
-                }
+                    else if ((int)EnumApiActionIndex.GetListMonsterDisplay == actionIndex)
+                    {
+                        return callback.GetListMonsterDisplay(javaJson);
+                    }
+                    else if ((int)EnumApiActionIndex.AddMonsterMember == actionIndex)
+                    {
+                        return callback.AddMonsterMember(javaJson);
+                    }
 
-                else if ((int)EnumApiActionIndex.GetListSkillDisplay == actionIndex)
-                {
-                    return callback.GetListSkillDisplay(javaJson);
-                }
-                else if ((int)EnumApiActionIndex.AddSkillDisplay == actionIndex)
-                {
-                    return callback.AddSkillDisplay(javaJson);
-                }
+                    else if ((int)EnumApiActionIndex.GetListSkillDisplay == actionIndex)
+                    {
+                        return callback.GetListSkillDisplay(javaJson);
+                    }
+                    else if ((int)EnumApiActionIndex.AddSkillDisplay == actionIndex)
+                    {
+                        return callback.AddSkillDisplay(javaJson);
+                    }
 
-                else if ((int)EnumApiActionIndex.GetListSwitchDisplay == actionIndex)
-                {
-                    return callback.GetListSwitchDisplay(javaJson);
+                    else if ((int)EnumApiActionIndex.GetListSwitchDisplay == actionIndex)
+                    {
+                        return callback.GetListSwitchDisplay(javaJson);
+                    }
+                    else if ((int)EnumApiActionIndex.UpdateSwitchDisplay == actionIndex)
+                    {
+                        return callback.UpdateSwitchDisplay(javaJson);
+                    }
+                    else
+                    {
+                        return callback.None(javaJson);
+                    }
                 }
-                else if ((int)EnumApiActionIndex.UpdateSwitchDisplay == actionIndex)
+                finally
                 {
-                    return callback.UpdateSwitchDisplay(javaJson);
-                }
-                else
-                {
-                    return callback.None(javaJson);
+                    jniEnvironmentContext.JNI_ENV.DeleteLocalRef(javaJson);
                 }
             }
-            finally
-            {
-                jniEnvironmentContext.JNI_ENV.DeleteLocalRef(javaJson);
-            }
+
+
 
         }
         async Task<bool> TryCallbackApiJsonAsync<T>(AndroidApiArgs arg, T data) where T : class
         {
             try
             {
-                this.Logger.Info($"TryCallbackApiJsonAsync=>{typeof(T).FullName}");
                 return await this.AndroidTaskAsync(static (p, args) => p.TryCallbackApiJson(args.arg, args.data), (arg, data));
             }
             catch (Exception ex)
