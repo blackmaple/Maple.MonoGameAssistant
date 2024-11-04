@@ -8,6 +8,8 @@
 		<InvariantGlobalization>true</InvariantGlobalization>
 		<LangVersion>preview</LangVersion>
 
+
+		<!--<RuntimeIdentifier>linux-bionic-x64</RuntimeIdentifier>-->
 		<DisableUnsupportedError>true</DisableUnsupportedError>
 		<PublishAotUsingRuntimePack>true</PublishAotUsingRuntimePack>
 		<PublishAot>true</PublishAot>

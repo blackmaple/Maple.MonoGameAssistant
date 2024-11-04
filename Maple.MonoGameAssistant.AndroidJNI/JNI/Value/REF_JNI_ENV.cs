@@ -2,6 +2,7 @@
 using Maple.MonoGameAssistant.AndroidJNI.JNI.Opaque;
 using Maple.MonoGameAssistant.AndroidJNI.JNI.Primitive;
 using Maple.MonoGameAssistant.AndroidJNI.JNI.Reference;
+using Maple.MonoGameAssistant.AndroidJNI.JNI.Reference.Array;
 using Maple.MonoGameAssistant.AndroidModel;
 using Maple.MonoGameAssistant.AndroidModel.ExceptionData;
 using Maple.MonoGameAssistant.Common;
@@ -87,11 +88,15 @@ namespace Maple.MonoGameAssistant.AndroidJNI.JNI.Value
             Functions.Func_ReleaseStringChars.Invoke(this, str, pstring);
             return content;
         }
-        public PStringUnicode GetStringChars(JSTRING str)
+        public JSIZE GetStringLength(JSTRING str)
+        {
+            return Functions.Func_GetStringLength.Invoke(this, str);
+        }
+        public JCHAR_ARRAY GetStringChars(JSTRING str)
         {
             return Functions.Func_GetStringChars.Invoke(this, str);
         }
-        public void ReleaseStringChars(JSTRING str, PStringUnicode pString)
+        public void ReleaseStringChars(JSTRING str, JCHAR_ARRAY pString)
         {
             Functions.Func_ReleaseStringChars.Invoke(this, str, pString);
         }

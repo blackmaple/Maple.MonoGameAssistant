@@ -55,6 +55,15 @@ namespace Maple.MonoGameAssistant.AndroidJNI.JNI.Reference
             return MemoryMarshal.CreateReadOnlySpanFromNullTerminated((char*)_ptr);
         }
 
+        public ReadOnlySpan<char> AsReadOnlySpan(int len)
+        {
+            if (false == this.IsNotNullPtr())
+            {
+                return default;
+            }
+            return new ReadOnlySpan<char>((char*)_ptr, len);
+           
+        }
     }
 
 }

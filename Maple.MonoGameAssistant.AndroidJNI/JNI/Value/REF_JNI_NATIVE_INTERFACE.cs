@@ -663,10 +663,10 @@ namespace Maple.MonoGameAssistant.AndroidJNI.JNI.Value
         /// <summary>
         /// //jstring(*NewString)(JNIEnv*, const jchar*, jsize);
         /// </summary>
-        readonly delegate* unmanaged[Cdecl, SuppressGCTransition]<PTR_JNI_ENV, PStringUnicode, JSIZE, JSTRING> _ptr
-            = (delegate* unmanaged[Cdecl, SuppressGCTransition]<PTR_JNI_ENV, PStringUnicode, JSIZE, JSTRING>)ptr;
+        readonly delegate* unmanaged[Cdecl, SuppressGCTransition]<PTR_JNI_ENV, JCHAR_ARRAY, JSIZE, JSTRING> _ptr
+            = (delegate* unmanaged[Cdecl, SuppressGCTransition]<PTR_JNI_ENV, JCHAR_ARRAY, JSIZE, JSTRING>)ptr;
 
-        public JSTRING Invoke(PTR_JNI_ENV @this, PStringUnicode txt, JSIZE length)
+        public JSTRING Invoke(PTR_JNI_ENV @this, JCHAR_ARRAY txt, JSIZE length)
             => _ptr(@this, txt, length);
     }
 
@@ -689,10 +689,10 @@ namespace Maple.MonoGameAssistant.AndroidJNI.JNI.Value
         /// <summary>
         ///        //const jchar* (*GetStringChars)(JNIEnv*, jstring, jboolean*);
         /// </summary>
-        readonly delegate* unmanaged[Cdecl, SuppressGCTransition]<PTR_JNI_ENV, JSTRING, JREF<JOBJECT>, PStringUnicode> _ptr
-            = (delegate* unmanaged[Cdecl, SuppressGCTransition]<PTR_JNI_ENV, JSTRING, JREF<JOBJECT>, PStringUnicode>)ptr;
+        readonly delegate* unmanaged[Cdecl, SuppressGCTransition]<PTR_JNI_ENV, JSTRING, JREF<JOBJECT>, JCHAR_ARRAY> _ptr
+            = (delegate* unmanaged[Cdecl, SuppressGCTransition]<PTR_JNI_ENV, JSTRING, JREF<JOBJECT>, JCHAR_ARRAY>)ptr;
 
-        public PStringUnicode Invoke(PTR_JNI_ENV @this, JSTRING str )
+        public JCHAR_ARRAY Invoke(PTR_JNI_ENV @this, JSTRING str )
             => _ptr(@this, str, JREF<JOBJECT>.NullRef());
     }
 
@@ -703,10 +703,10 @@ namespace Maple.MonoGameAssistant.AndroidJNI.JNI.Value
         /// <summary>
         ///            //void (* ReleaseStringChars) (JNIEnv*, jstring, const jchar*);
         /// </summary>
-        readonly delegate* unmanaged[Cdecl, SuppressGCTransition]<PTR_JNI_ENV, JSTRING, PStringUnicode, void> _ptr
-            = (delegate* unmanaged[Cdecl, SuppressGCTransition]<PTR_JNI_ENV, JSTRING, PStringUnicode, void>)ptr;
+        readonly delegate* unmanaged[Cdecl, SuppressGCTransition]<PTR_JNI_ENV, JSTRING, JCHAR_ARRAY, void> _ptr
+            = (delegate* unmanaged[Cdecl, SuppressGCTransition]<PTR_JNI_ENV, JSTRING, JCHAR_ARRAY, void>)ptr;
 
-        public void Invoke(PTR_JNI_ENV @this, JSTRING str, PStringUnicode pString)
+        public void Invoke(PTR_JNI_ENV @this, JSTRING str, JCHAR_ARRAY pString)
             => _ptr(@this, str, pString);
     }
 

@@ -213,8 +213,8 @@ namespace Maple.MonoGameAssistant.AndroidCore.Api
 
 
 
-        public T? GetApiJson<T>(AndroidApiArgs arg)
-            where T : class
+        T? GetApiJson<T>(AndroidApiArgs arg)
+          where T : class
         {
             //if (!VirtualMachineContext.TryGetEnv(out var jniEnvironmentContext))
             //{
@@ -226,11 +226,12 @@ namespace Maple.MonoGameAssistant.AndroidCore.Api
             {
                 return default;
             }
+
             var pString = jniEnvironmentContext.JNI_ENV.GetStringChars(arg.Json);
+            var strSize = jniEnvironmentContext.JNI_ENV.GetStringLength(arg.Json);
             try
             {
-
-                return System.Text.Json.JsonSerializer.Deserialize(pString.AsReadOnlySpan(), jsonTypeInfo) as T;
+                return System.Text.Json.JsonSerializer.Deserialize(pString.AsReadOnlySpan(strSize), jsonTypeInfo) as T;
             }
             finally
             {
@@ -243,21 +244,18 @@ namespace Maple.MonoGameAssistant.AndroidCore.Api
             var requestData = await this.AndroidTaskAsync(static (p, args) => p.GetApiJson<T>(args), arg).ConfigureAwait(false);
             if (requestData is null)
             {
-                return AndroidJNIException.Throw<T>("json is null");
+                return AndroidJNIException.Throw<T>($"{typeof(T).FullName}:JSON IS NULL");
             }
             return requestData;
         }
 
         bool TryCallbackApiJson<T>(AndroidApiArgs arg, T data) where T : class
         {
-            //if (!VirtualMachineContext.TryGetEnv(out var jniEnvironmentContext))
-            //{
-            //    return false;
-            //}
             var jniEnvironmentContext = this.Scheduler.CurrJniEnv;
 
-            var callback = VirtualActionApiCallbackInstance.Create(jniEnvironmentContext, arg.Instance.Value);
-
+ 
+            VirtualActionApiCallbackInstance callback;
+            callback = VirtualActionApiCallbackInstance.Create(jniEnvironmentContext, arg.Instance.Value);
             if (!JsonSerializer.TryGetTypeInfo(typeof(T), out var jsonTypeInfo))
             {
                 return false;
@@ -391,9 +389,18 @@ namespace Maple.MonoGameAssistant.AndroidCore.Api
             }
 
         }
-        Task<bool> TryCallbackApiJsonAsync<T>(AndroidApiArgs arg, T data) where T : class
+        async Task<bool> TryCallbackApiJsonAsync<T>(AndroidApiArgs arg, T data) where T : class
         {
-            return this.AndroidTaskAsync(static (p, args) => p.TryCallbackApiJson(args.arg, args.data), (arg, data));
+            try
+            {
+                this.Logger.Info($"TryCallbackApiJsonAsync=>{typeof(T).FullName}");
+                return await this.AndroidTaskAsync(static (p, args) => p.TryCallbackApiJson(args.arg, args.data), (arg, data));
+            }
+            catch (Exception ex)
+            {
+                this.Logger.Error(ex);
+            }
+            return false;
         }
 
         void Release(AndroidApiArgs arg)
@@ -423,17 +430,17 @@ namespace Maple.MonoGameAssistant.AndroidCore.Api
             }
             catch (MonoCommonException ex)
             {
-                Logger.LogError("api err:{ex}", ex);
+                Logger.LogError("action:{action} / api err:{ex}", (int)arg.Action, ex);
                 return await TryCallbackApiJsonAsync(arg, MonoResultDTO.GetBizError(ex)).ConfigureAwait(false);
             }
             catch (AndroidCommonException ex)
             {
-                Logger.LogError("jni err:{ex}", ex);
+                Logger.LogError("action:{action} / jni err:{ex}", (int)arg.Action, ex);
                 return await TryCallbackApiJsonAsync(arg, MonoResultDTO.GetBizError<TResult>((int)EnumMonoCommonCode.BIZ_ERROR, ex.Message)).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
-                Logger.LogError("system err:{ex}", ex);
+                Logger.LogError("action:{action} /system err:{ex}", (int)arg.Action, ex);
                 return await TryCallbackApiJsonAsync(arg, MonoResultDTO.GetSystemError(ex.Message)).ConfigureAwait(false);
             }
 
@@ -454,24 +461,25 @@ namespace Maple.MonoGameAssistant.AndroidCore.Api
             }
             catch (MonoCommonException ex)
             {
-                Logger.LogError("api err:{ex}", ex);
+                Logger.LogError("action:{action} / api err:{ex}", (int)arg.Action, ex);
                 return await TryCallbackApiJsonAsync(arg, MonoResultDTO.GetBizError(ex)).ConfigureAwait(false);
             }
             catch (AndroidCommonException ex)
             {
-                Logger.LogError("jni err:{ex}", ex);
-                return await TryCallbackApiJsonAsync(arg, MonoResultDTO.GetBizError<TRequest>((int)EnumMonoCommonCode.BIZ_ERROR, ex.Message)).ConfigureAwait(false);
+                Logger.LogError("action:{action} / jni err:{ex}", (int)arg.Action, ex);
+                return await TryCallbackApiJsonAsync(arg, MonoResultDTO.GetBizError<TResult>((int)EnumMonoCommonCode.BIZ_ERROR, ex.Message)).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
-                Logger.LogError("system err:{ex}", ex);
+                Logger.LogError("action:{action} / system err:{ex}", (int)arg.Action, ex);
                 return await TryCallbackApiJsonAsync(arg, MonoResultDTO.GetSystemError(ex.Message)).ConfigureAwait(false);
             }
 
 
+
         }
 
-        protected virtual async ValueTask<bool> ExecuteApiAsync(int action, AndroidApiArgs arg)
+        protected async ValueTask<bool> ExecuteApiAsync(int action, AndroidApiArgs arg)
         {
             try
             {
@@ -480,19 +488,21 @@ namespace Maple.MonoGameAssistant.AndroidCore.Api
             }
             catch (MonoCommonException ex)
             {
-                Logger.LogError("api err:{ex}", ex);
+                Logger.LogError("action:{action} / api err:{ex}", action, ex);
                 return await TryCallbackApiJsonAsync(arg, MonoResultDTO.GetBizError(ex)).ConfigureAwait(false);
             }
             catch (AndroidCommonException ex)
             {
-                Logger.LogError("jni err:{ex}", ex);
+                Logger.LogError("action:{action} / jni err:{ex}", action, ex);
                 return await TryCallbackApiJsonAsync(arg, MonoResultDTO.GetBizError<bool>((int)EnumMonoCommonCode.BIZ_ERROR, ex.Message)).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
-                Logger.LogError("system err:{ex}", ex);
+                Logger.LogError("action:{action} / system err:{ex}", action, ex);
                 return await TryCallbackApiJsonAsync(arg, MonoResultDTO.GetSystemError(ex.Message)).ConfigureAwait(false);
             }
+
+
         }
 
     }

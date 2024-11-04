@@ -1,6 +1,7 @@
 ﻿using Maple.MonoGameAssistant.AndroidJNI.Context;
 using Maple.MonoGameAssistant.AndroidJNI.JNI.Primitive;
 using Maple.MonoGameAssistant.AndroidJNI.JNI.Reference;
+using Maple.MonoGameAssistant.Common;
 namespace Maple.MonoGameAssistant.AndroidCore.Api
 {
     public sealed class VirtualActionApiCallbackInstance(JOBJECT ptr, VirtualActionApiCallbackReference reference)
@@ -9,8 +10,14 @@ namespace Maple.MonoGameAssistant.AndroidCore.Api
 
         public static VirtualActionApiCallbackInstance Create(in JniEnvironmentContext jniEnvironmentContext, JOBJECT ptr)
         {
+            Logger.MonoGameLogger.Default.Info("create.1");
             var classObj = jniEnvironmentContext.JNI_ENV.GetObjectClass(ptr);
-            return new VirtualActionApiCallbackInstance(ptr, VirtualActionApiCallbackReference.CreateReference(jniEnvironmentContext, classObj));
+            Logger.MonoGameLogger.Default.Info("create.2");
+            var metadata = VirtualActionApiCallbackMetadata.CreateMetadata(jniEnvironmentContext, classObj);
+            Logger.MonoGameLogger.Default.Info("create.3");
+            var classRef = VirtualActionApiCallbackReference.CreateReference(jniEnvironmentContext, metadata);
+            Logger.MonoGameLogger.Default.Info("create.4");
+            return new VirtualActionApiCallbackInstance(ptr, classRef);
         }
 
 
