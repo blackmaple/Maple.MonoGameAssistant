@@ -19,11 +19,8 @@ namespace Maple.MonoGameAssistant.AndroidCore.HostedService
             (this IServiceCollection serviceDescriptors)
            where T_GAMECONTEXTSERVICE : class, IGameContextService
         {
-
-      
             MonoTaskScheduler.SetAndroidEnvironment();
             serviceDescriptors.AddMonoRuntimeService();
-
             serviceDescriptors.AddSingleton<IGameContextService, T_GAMECONTEXTSERVICE>();
             serviceDescriptors.AddSingleton<IGameWebApiControllers>(p => p.GetRequiredService<IGameContextService>());
             return serviceDescriptors;

@@ -1,41 +1,57 @@
 ﻿using Maple.MonoGameAssistant.Core;
 using Microsoft.Extensions.Hosting;
+using System.Collections.Concurrent;
 using System.Threading.Channels;
 
 namespace Maple.MonoGameAssistant.Core
 {
-    public sealed class MonoTaskScheduler : TaskScheduler, IDisposable
+    public class MonoTaskScheduler(MonoRuntimeContext runtimeContext) : TaskScheduler
     {
-        Channel<Task> TaskChannel { get; }
-        MonoRuntimeContext RuntimeContext { get; }
-        MonoTaskScheduler(MonoRuntimeContext runtimeContext, int concurrencyLevel)
-        {
-            this.RuntimeContext = runtimeContext;
-            this.TaskChannel = Channel.CreateBounded<Task>(new BoundedChannelOptions(128)
-            {
-                FullMode = BoundedChannelFullMode.Wait
-            });
-            if (IsAndroidEnvironment())
-            {
-                this.CreateTasks_Android(concurrencyLevel);
-            }
-            else
-            {
-               this.CreateTasks_Default(concurrencyLevel);
-            }
-        }
-        public MonoTaskScheduler(MonoRuntimeContext runtimeContext) : this(runtimeContext, Environment.ProcessorCount)
-        { }
 
-        static bool IsAndroidEnvironment()
-            => string.IsNullOrEmpty(Environment.GetEnvironmentVariable(nameof(MonoTaskScheduler))) == false;
+        protected MonoRuntimeContext RuntimeContext { get; } = runtimeContext;
+
+        public static bool IsAndroidEnvironment()
+             => string.IsNullOrEmpty(Environment.GetEnvironmentVariable(nameof(MonoTaskScheduler))) == false;
+
         public static void SetAndroidEnvironment()
         {
             Environment.SetEnvironmentVariable(nameof(MonoTaskScheduler), nameof(MonoTaskScheduler));
         }
+
         public static void SetDefaultEnvironment()
         {
             Environment.SetEnvironmentVariable(nameof(MonoTaskScheduler), string.Empty);
+        }
+
+        protected sealed override IEnumerable<Task>? GetScheduledTasks()
+        {
+            return default;
+        }
+
+        protected override void QueueTask(Task task)
+        {
+
+        }
+
+        protected sealed override bool TryExecuteTaskInline(Task task, bool taskWasPreviouslyQueued)
+        {
+            return false;
+        }
+
+
+    }
+
+    public sealed class MonoTaskScheduler_Default : MonoTaskScheduler, IDisposable
+    {
+        Channel<Task> TaskChannel { get; }
+
+        public MonoTaskScheduler_Default(MonoRuntimeContext runtimeContext) : base(runtimeContext)
+        {
+            this.TaskChannel = Channel.CreateBounded<Task>(new BoundedChannelOptions(Environment.ProcessorCount)
+            {
+                FullMode = BoundedChannelFullMode.Wait
+            });
+            this.CreateTasks_Default(Environment.ProcessorCount);
         }
 
         private void CreateTasks_Default(int count)
@@ -56,6 +72,29 @@ namespace Maple.MonoGameAssistant.Core
                 }
             }
         }
+
+        protected override void QueueTask(Task task)
+        {
+            this.TaskChannel.Writer.TryWrite(task);
+        }
+
+        public void Dispose()
+        {
+            this.TaskChannel.Writer.Complete();
+        }
+
+    }
+
+    public sealed class MonoTaskScheduler_Android : MonoTaskScheduler, IDisposable
+    {
+        BlockingCollection<Task> TaskCollection { get; }
+
+        public MonoTaskScheduler_Android(MonoRuntimeContext runtimeContext) : base(runtimeContext)
+        {
+            this.TaskCollection = new BlockingCollection<Task>(Environment.ProcessorCount);
+            this.CreateTasks_Android(Environment.ProcessorCount);
+        }
+
         private void CreateTasks_Android(int count)
         {
             for (int i = 0; i < count; ++i)
@@ -65,49 +104,36 @@ namespace Maple.MonoGameAssistant.Core
 
             static void ExecTaskProc(object? taskScheduler)
             {
-                if (taskScheduler is not MonoTaskScheduler monoTaskScheduler)
+                if (taskScheduler is not MonoTaskScheduler_Android monoTaskScheduler)
                 {
                     return;
                 }
                 using (monoTaskScheduler.RuntimeContext.CreateAttachContext())
                 {
-                    while (true)
+                    while (!monoTaskScheduler.TaskCollection.IsCompleted)
                     {
-                        SpinWait.SpinUntil(() => monoTaskScheduler.TaskChannel.Reader.TryPeek(out _));
-                        if (!monoTaskScheduler.TaskChannel.Reader.TryRead(out var item))
+                        foreach (var task in monoTaskScheduler.TaskCollection.GetConsumingEnumerable())
                         {
-                            continue;
+                            monoTaskScheduler.TryExecuteTask(task);
                         }
-                        monoTaskScheduler.TryExecuteTask(item);
+
                     }
                 }
 
             }
         }
 
-
-        protected override IEnumerable<Task>? GetScheduledTasks()
-        {
-            return default;
-        }
-
         protected override void QueueTask(Task task)
         {
-            this.TaskChannel.Writer.TryWrite(task);
-        }
+            this.TaskCollection.Add(task);
 
-        protected override bool TryExecuteTaskInline(Task task, bool taskWasPreviouslyQueued)
-        {
-            return false;
         }
 
         public void Dispose()
         {
-            this.TaskChannel.Writer.Complete();
+            this.TaskCollection.CompleteAdding();
 
         }
     }
-
-
 
 }
