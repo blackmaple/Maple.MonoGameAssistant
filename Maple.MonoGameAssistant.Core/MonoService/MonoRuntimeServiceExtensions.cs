@@ -13,7 +13,14 @@ namespace Maple.MonoGameAssistant.Core
             services.AddSingleton<MonoRuntimeFactory>();
             services.AddSingleton(p => p.GetRequiredService<MonoRuntimeFactory>().GetProvider());
             services.AddSingleton<MonoRuntimeContext>();
-            services.AddSingleton<MonoTaskScheduler>();
+            if (MonoTaskScheduler.IsAndroidEnvironment())
+            {
+                services.AddSingleton<MonoTaskScheduler, MonoTaskScheduler_Android>();
+            }
+            else
+            {
+                services.AddSingleton<MonoTaskScheduler, MonoTaskScheduler_Default>();
+            }
             return services.AddSingleton<MonoCollectorApiService>();
         }
 

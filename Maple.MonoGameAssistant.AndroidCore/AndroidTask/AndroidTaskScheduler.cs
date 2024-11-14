@@ -1,12 +1,13 @@
 ﻿using Maple.MonoGameAssistant.AndroidCore.Api;
 using Maple.MonoGameAssistant.AndroidJNI.Context;
+using System.Collections.Concurrent;
 using System.Threading.Channels;
 
 namespace Maple.MonoGameAssistant.AndroidCore.AndroidTask
 {
     public sealed class AndroidTaskScheduler : TaskScheduler, IDisposable
     {
-        Channel<Task> TaskChannel { get; }
+        BlockingCollection<Task> TaskCollection { get; }
         AndroidApiContext ApiContext { get; }
         JavaVirtualMachineContext VirtualMachineContext => ApiContext.VirtualMachineContext;
 
@@ -20,10 +21,7 @@ namespace Maple.MonoGameAssistant.AndroidCore.AndroidTask
         AndroidTaskScheduler(AndroidApiContext apiContext, int concurrencyLevel)
         {
             this.ApiContext = apiContext;
-            this.TaskChannel = Channel.CreateBounded<Task>(new BoundedChannelOptions(128)
-            {
-                FullMode = BoundedChannelFullMode.Wait
-            });
+            this.TaskCollection = new BlockingCollection<Task>(concurrencyLevel);
             this.CreateTasks_Default(concurrencyLevel);
 
         }
@@ -50,14 +48,12 @@ namespace Maple.MonoGameAssistant.AndroidCore.AndroidTask
                     androidTaskScheduler.TheadJniEnv.Value = jniEnvironmentContext;
                     using (jniEnvironmentContext)
                     {
-                        while (true)
+                        while (!androidTaskScheduler.TaskCollection.IsCompleted)
                         {
-                            SpinWait.SpinUntil(() => androidTaskScheduler.TaskChannel.Reader.TryPeek(out _));
-                            if (!androidTaskScheduler.TaskChannel.Reader.TryRead(out var item))
+                            foreach(var task in androidTaskScheduler.TaskCollection.GetConsumingEnumerable())
                             {
-                                continue;
+                                androidTaskScheduler.TryExecuteTask(task);
                             }
-                            androidTaskScheduler.TryExecuteTask(item);
                         }
                     }
                 }
@@ -73,7 +69,7 @@ namespace Maple.MonoGameAssistant.AndroidCore.AndroidTask
 
         protected override void QueueTask(Task task)
         {
-            this.TaskChannel.Writer.TryWrite(task);
+            this.TaskCollection.Add(task);
         }
 
         protected override bool TryExecuteTaskInline(Task task, bool taskWasPreviouslyQueued)
@@ -83,7 +79,7 @@ namespace Maple.MonoGameAssistant.AndroidCore.AndroidTask
 
         public void Dispose()
         {
-            this.TaskChannel.Writer.Complete();
+            this.TaskCollection.CompleteAdding();
 
         }
     }
