@@ -254,15 +254,11 @@ namespace Maple.MonoGameAssistant.AndroidCore.Api
             {
                 return false;
             }
-            this.Logger.Info("VirtualActionApiCallbackInstance.1");
             var jniEnvironmentContext = this.Scheduler.CurrJniEnv;
-            this.Logger.Info("VirtualActionApiCallbackInstance.2");
-
             if (false == VirtualActionApiCallbackInstance.TryCreate(jniEnvironmentContext, arg.Instance, out var callback))
             {
                 return false;
             }
-            this.Logger.Info("VirtualActionApiCallbackInstance.3");
             using (callback)
             {
                 var jsonData = System.Text.Json.JsonSerializer.Serialize(data, jsonTypeInfo);
