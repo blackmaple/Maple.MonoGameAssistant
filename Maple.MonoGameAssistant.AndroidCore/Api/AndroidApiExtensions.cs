@@ -17,6 +17,7 @@ namespace Maple.MonoGameAssistant.AndroidCore.Api
 {
     public static partial class AndroidApiExtensions
     {
+        public const string JavaClassFullName = "com/android/maple/service/MapleService";
         //private static void DebugLog(object txt)
         //{
         //    var log = Path.Combine($"/sdcard/Download", $"{Environment.ProcessId:X8}.txt");
@@ -28,12 +29,12 @@ namespace Maple.MonoGameAssistant.AndroidCore.Api
         [UnmanagedCallersOnly(EntryPoint = nameof(JNI_OnLoad))]
         public unsafe static JINT JNI_OnLoad(PTR_JAVA_VM javaVM, JOBJECT reserved)
         {
-          //  Logger.MonoGameLoggerExtensions.SetAndroidEnvironment();
+            //  Logger.MonoGameLoggerExtensions.SetAndroidEnvironment();
             ApiContext = AndroidApiContext.CreateContext(javaVM).CreateDefaultAndroidService();
             if (ApiContext.VirtualMachineContext.TryGetEnv(out var jniEnvironmentContext))
             {
-                jniEnvironmentContext.RegisterNativeMethod("com/android/maple/MainActivity", nameof(TestAction), "(Ljava/lang/String;)Z", new Ptr_Func_TestAction(&TestAction));
-                jniEnvironmentContext.RegisterNativeMethod("com/android/maple/MainActivity", nameof(ApiAction), "(ILjava/lang/String;)Z", new Ptr_Func_ApiAction(&ApiAction));
+                jniEnvironmentContext.RegisterNativeMethod(JavaClassFullName, nameof(TestAction), "(Ljava/lang/String;)Z", new Ptr_Func_TestAction(&TestAction));
+                jniEnvironmentContext.RegisterNativeMethod(JavaClassFullName, nameof(ApiAction), "(ILjava/lang/String;)Z", new Ptr_Func_ApiAction(&ApiAction));
             }
             return JavaVirtualMachineContext.JNI_VERSION_1_6;
         }
@@ -54,7 +55,7 @@ namespace Maple.MonoGameAssistant.AndroidCore.Api
             //    return true;
             //}
             //return false;
-              return ApiContext?.TryWrite(AndroidApiArgs.Create(jniEnv, instance, actionIndex, json)) ?? false;
+            return ApiContext?.TryWrite(AndroidApiArgs.Create(jniEnv, instance, actionIndex, json)) ?? false;
             //if (JniEnvironmentContext.TryCreateJniEnvironmentContext(jniEnv, out var jniEnvironmentContext))
             //{
             //    try
