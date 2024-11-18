@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System.Text.Encodings.Web;
 using System.Text.Json;
+using System.Text.Json.Serialization.Metadata;
 namespace Maple.MonoGameAssistant.AndroidCore.Api
 {
     public class AndroidApiService(
@@ -29,6 +30,30 @@ namespace Maple.MonoGameAssistant.AndroidCore.Api
             JsonSerializer.AddMonoJsonContext();
             JsonSerializer.TypeInfoResolverChain.Insert(0, GameJsonContext.Default);
         }
+        static JsonTypeInfo GetJsonTypeInfoThrowIfNotFound<T>() where T : class
+        {
+            if (JsonSerializer.TryGetTypeInfo(typeof(T), out var jsonTypeInfo))
+            {
+                return jsonTypeInfo;
+            }
+            return AndroidServiceException.Throw<JsonTypeInfo>($"{typeof(T).FullName}:NOT FOUND JSON METADATA");
+        }
+        static T Json2Object<T>(ReadOnlySpan<char> json) where T : class
+        {
+            var jsonTypeInfo = GetJsonTypeInfoThrowIfNotFound<T>();
+            if (System.Text.Json.JsonSerializer.Deserialize(json, jsonTypeInfo) is T jsonObject)
+            {
+                return jsonObject;
+            }
+            return AndroidServiceException.Throw<T>($"{typeof(T).FullName}:FROM JSON IS NULL");
+        }
+        static string Json4Object<T>(T obj) where T : class
+        {
+            var jsonTypeInfo = GetJsonTypeInfoThrowIfNotFound<T>();
+            return System.Text.Json.JsonSerializer.Serialize(obj, jsonTypeInfo);
+        }
+
+
 
         IServiceProvider ServiceProvider { get; } = serviceProvider;
         public ILogger Logger { get; } = logger;
@@ -57,7 +82,6 @@ namespace Maple.MonoGameAssistant.AndroidCore.Api
             }
 
         }
-
         async ValueTask ExecTaskProc()
         {
             await foreach (var arg in Api.ReadAllAsync().ConfigureAwait(false))
@@ -65,131 +89,8 @@ namespace Maple.MonoGameAssistant.AndroidCore.Api
                 try
                 {
                     var actionIndex = (int)arg.Action;
-
-                    //if ((int)EnumApiActionIndex.None == actionIndex)
-                    //{
-                    //    await ExecuteApiAsync<IGameWebApiControllers, GameSessionInfoDTO>(arg, static (api) => api.GetSessionInfoAsync()).ConfigureAwait(false);
-                    //}
-
-                    if (GameSettings.MonoDataCollector)
-                    {
-                        //mono
-                        if ((int)EnumApiActionIndex.EnumImages == actionIndex)
-                        {
-                            await ExecuteApiAsync<MonoCollectorApiService, MonoImageInfoDTO[]>(arg, static (api) => new(api.EnumMonoImagesAsync())).ConfigureAwait(false);
-                        }
-                        else if ((int)EnumApiActionIndex.EnumClasses == actionIndex)
-                        {
-                            await ExecuteApiAsync<MonoCollectorApiService, MonoPointerRequestDTO, MonoClassInfoDTO[]>(arg, static (api, req) => new(api.EnumMonoClassesAsync(req.Pointer))).ConfigureAwait(false);
-                        }
-                        else if ((int)EnumApiActionIndex.EnumObjects == actionIndex)
-                        {
-                            await ExecuteApiAsync<MonoCollectorApiService, MonoPointerRequestDTO, MonoObjectInfoDTO[]>(arg, static (api, req) => new(api.EnumMonoObjectsAsync(req.Pointer))).ConfigureAwait(false);
-                        }
-                        else if ((int)EnumApiActionIndex.EnumClassDetail == actionIndex)
-                        {
-                            await ExecuteApiAsync<MonoCollectorApiService, MonoClassDetailRequestDTO, MonoClassDetailDTO>(arg, static (api, req) => new(api.EnumMonoClassDetailAsync(req.Pointer, req.FieldOptions))).ConfigureAwait(false);
-                        }
-                    }
-
-                    //game
-                    if ((int)EnumApiActionIndex.INFO == actionIndex)
-                    {
-                        await ExecuteApiAsync<IGameWebApiControllers, GameSessionInfoDTO>(arg, static (api) => api.GetSessionInfoAsync()).ConfigureAwait(false);
-                    }
-                    else if ((int)EnumApiActionIndex.LoadResource == actionIndex)
-                    {
-                        await ExecuteApiAsync<IGameWebApiControllers, GameSessionInfoDTO>(arg, static (api) => api.LoadResourceAsync()).ConfigureAwait(false);
-                    }
-
-                    else if ((int)EnumApiActionIndex.GetListCurrencyDisplay == actionIndex)
-                    {
-                        await ExecuteApiAsync<IGameWebApiControllers, GameCurrencyDisplayDTO[]>(arg, static (api) => api.GetListCurrencyDisplayAsync()).ConfigureAwait(false);
-                    }
-                    else if ((int)EnumApiActionIndex.GetCurrencyInfo == actionIndex)
-                    {
-                        await ExecuteApiAsync<IGameWebApiControllers, GameCurrencyObjectDTO, GameCurrencyInfoDTO>(arg, static (api, req) => api.GetCurrencyInfoAsync(req)).ConfigureAwait(false);
-                    }
-                    else if ((int)EnumApiActionIndex.UpdateCurrencyInfo == actionIndex)
-                    {
-                        await ExecuteApiAsync<IGameWebApiControllers, GameCurrencyModifyDTO, GameCurrencyInfoDTO>(arg, static (api, req) => api.UpdateCurrencyInfoAsync(req)).ConfigureAwait(false);
-                    }
-
-                    else if ((int)EnumApiActionIndex.GetListInventoryDisplay == actionIndex)
-                    {
-                        await ExecuteApiAsync<IGameWebApiControllers, GameInventoryDisplayDTO[]>(arg, static (api) => api.GetListInventoryDisplayAsync()).ConfigureAwait(false);
-                    }
-                    else if ((int)EnumApiActionIndex.GetInventoryInfo == actionIndex)
-                    {
-                        await ExecuteApiAsync<IGameWebApiControllers, GameInventoryObjectDTO, GameInventoryInfoDTO>(arg, static (api, req) => api.GetInventoryInfoAsync(req)).ConfigureAwait(false);
-                    }
-                    else if ((int)EnumApiActionIndex.UpdateInventoryInfo == actionIndex)
-                    {
-                        await ExecuteApiAsync<IGameWebApiControllers, GameInventoryModifyDTO, GameInventoryInfoDTO>(arg, static (api, req) => api.UpdateInventoryInfoAsync(req)).ConfigureAwait(false);
-                    }
-
-                    else if ((int)EnumApiActionIndex.GetListCharacterDisplay == actionIndex)
-                    {
-                        await ExecuteApiAsync<IGameWebApiControllers, GameCharacterDisplayDTO[]>(arg, static (api) => api.GetListCharacterDisplayAsync()).ConfigureAwait(false);
-                    }
-
-                    else if ((int)EnumApiActionIndex.GetCharacterStatus == actionIndex)
-                    {
-                        await ExecuteApiAsync<IGameWebApiControllers, GameCharacterObjectDTO, GameCharacterStatusDTO>(arg, static (api, req) => api.GetCharacterStatusAsync(req)).ConfigureAwait(false);
-                    }
-                    else if ((int)EnumApiActionIndex.UpdateCharacterStatus == actionIndex)
-                    {
-                        await ExecuteApiAsync<IGameWebApiControllers, GameCharacterModifyDTO, GameCharacterStatusDTO>(arg, static (api, req) => api.UpdateCharacterStatusAsync(req)).ConfigureAwait(false);
-                    }
-
-                    else if ((int)EnumApiActionIndex.GetCharacterEquipment == actionIndex)
-                    {
-                        await ExecuteApiAsync<IGameWebApiControllers, GameCharacterObjectDTO, GameCharacterEquipmentDTO>(arg, static (api, req) => api.GetCharacterEquipmentAsync(req)).ConfigureAwait(false);
-                    }
-                    else if ((int)EnumApiActionIndex.UpdateCharacterEquipment == actionIndex)
-                    {
-                        await ExecuteApiAsync<IGameWebApiControllers, GameCharacterModifyDTO, GameCharacterEquipmentDTO>(arg, static (api, req) => api.UpdateCharacterEquipmentAsync(req)).ConfigureAwait(false);
-                    }
-
-                    else if ((int)EnumApiActionIndex.GetCharacterSkill == actionIndex)
-                    {
-                        await ExecuteApiAsync<IGameWebApiControllers, GameCharacterObjectDTO, GameCharacterSkillDTO>(arg, static (api, req) => api.GetCharacterSkillAsync(req)).ConfigureAwait(false);
-                    }
-                    else if ((int)EnumApiActionIndex.UpdateCharacterSkill == actionIndex)
-                    {
-                        await ExecuteApiAsync<IGameWebApiControllers, GameCharacterModifyDTO, GameCharacterSkillDTO>(arg, static (api, req) => api.UpdateCharacterSkillAsync(req)).ConfigureAwait(false);
-                    }
-
-                    else if ((int)EnumApiActionIndex.GetListMonsterDisplay == actionIndex)
-                    {
-                        await ExecuteApiAsync<IGameWebApiControllers, GameMonsterDisplayDTO[]>(arg, static (api) => api.GetListMonsterDisplayAsync()).ConfigureAwait(false);
-                    }
-                    else if ((int)EnumApiActionIndex.AddMonsterMember == actionIndex)
-                    {
-                        await ExecuteApiAsync<IGameWebApiControllers, GameMonsterObjectDTO, GameCharacterSkillDTO>(arg, static (api, req) => api.AddMonsterMemberAsync(req)).ConfigureAwait(false);
-                    }
-
-                    else if ((int)EnumApiActionIndex.GetListSkillDisplay == actionIndex)
-                    {
-                        await ExecuteApiAsync<IGameWebApiControllers, GameSkillDisplayDTO[]>(arg, static (api) => api.GetListSkillDisplayAsync()).ConfigureAwait(false);
-                    }
-                    else if ((int)EnumApiActionIndex.AddSkillDisplay == actionIndex)
-                    {
-                        await ExecuteApiAsync<IGameWebApiControllers, GameSkillObjectDTO, GameSkillDisplayDTO>(arg, static (api, req) => api.AddSkillDisplayAsync(req)).ConfigureAwait(false);
-                    }
-
-                    else if ((int)EnumApiActionIndex.GetListSwitchDisplay == actionIndex)
-                    {
-                        await ExecuteApiAsync<IGameWebApiControllers, GameSwitchDisplayDTO[]>(arg, static (api) => api.GetListSwitchDisplayAsync()).ConfigureAwait(false);
-                    }
-                    else if ((int)EnumApiActionIndex.UpdateSwitchDisplay == actionIndex)
-                    {
-                        await ExecuteApiAsync<IGameWebApiControllers, GameSwitchModifyDTO, GameSwitchDisplayDTO>(arg, static (api, req) => api.UpdateSwitchDisplayAsync(req)).ConfigureAwait(false);
-                    }
-                    else
-                    {
-                        await ExecuteApiAsync(actionIndex, arg).ConfigureAwait(false);
-                    }
+                    bool b = await ExecActionApiAsync(actionIndex, arg).ConfigureAwait(false);
+                    this.Logger.LogInformation("ExecActionApi:{api} EXEC:{e}", actionIndex, b);
                 }
                 catch (Exception ex)
                 {
@@ -201,6 +102,92 @@ namespace Maple.MonoGameAssistant.AndroidCore.Api
                 }
             }
         }
+ 
+
+        ValueTask<bool> ExecActionApiAsync( int actionIndex, AndroidApiArgs arg)
+        {
+            return actionIndex switch
+            {
+                (int)EnumApiActionIndex.EnumImages 
+                =>ExecuteApiAsync<MonoCollectorApiService, MonoImageInfoDTO[]>(arg, static (api) => new(api.EnumMonoImagesAsync())),
+
+                (int)EnumApiActionIndex.EnumClasses 
+                =>ExecuteApiAsync<MonoCollectorApiService, MonoPointerRequestDTO, MonoClassInfoDTO[]>(arg, static (api, req) => new(api.EnumMonoClassesAsync(req.Pointer))),
+
+                (int)EnumApiActionIndex.EnumObjects 
+                =>ExecuteApiAsync<MonoCollectorApiService, MonoPointerRequestDTO, MonoObjectInfoDTO[]>(arg, static (api, req) => new(api.EnumMonoObjectsAsync(req.Pointer))),
+
+                (int)EnumApiActionIndex.EnumClassDetail 
+                =>ExecuteApiAsync<MonoCollectorApiService, MonoClassDetailRequestDTO, MonoClassDetailDTO>(arg, static (api, req) => new(api.EnumMonoClassDetailAsync(req.Pointer, req.FieldOptions))),
+
+                (int)EnumApiActionIndex.INFO
+                => ExecuteApiAsync<IGameWebApiControllers, GameSessionInfoDTO>(arg, static (api) => api.GetSessionInfoAsync()),
+
+                (int)EnumApiActionIndex.LoadResource
+                => ExecuteApiAsync<IGameWebApiControllers, GameSessionInfoDTO>(arg, static (api) => api.LoadResourceAsync()),
+
+                (int)EnumApiActionIndex.GetListCurrencyDisplay
+                => ExecuteApiAsync<IGameWebApiControllers, GameCurrencyDisplayDTO[]>(arg, static (api) => api.GetListCurrencyDisplayAsync()),
+
+                (int)EnumApiActionIndex.GetCurrencyInfo
+                => ExecuteApiAsync<IGameWebApiControllers, GameCurrencyObjectDTO, GameCurrencyInfoDTO>(arg, static (api, req) => api.GetCurrencyInfoAsync(req)),
+
+                (int)EnumApiActionIndex.UpdateCurrencyInfo
+                => ExecuteApiAsync<IGameWebApiControllers, GameCurrencyModifyDTO, GameCurrencyInfoDTO>(arg, static (api, req) => api.UpdateCurrencyInfoAsync(req)),
+
+                (int)EnumApiActionIndex.GetListInventoryDisplay
+                => ExecuteApiAsync<IGameWebApiControllers, GameInventoryDisplayDTO[]>(arg, static (api) => api.GetListInventoryDisplayAsync()),
+
+                (int)EnumApiActionIndex.GetInventoryInfo
+                => ExecuteApiAsync<IGameWebApiControllers, GameInventoryObjectDTO, GameInventoryInfoDTO>(arg, static (api, req) => api.GetInventoryInfoAsync(req)),
+
+                (int)EnumApiActionIndex.UpdateInventoryInfo
+                => ExecuteApiAsync<IGameWebApiControllers, GameInventoryModifyDTO, GameInventoryInfoDTO>(arg, static (api, req) => api.UpdateInventoryInfoAsync(req)),
+
+                (int)EnumApiActionIndex.GetListCharacterDisplay
+                => ExecuteApiAsync<IGameWebApiControllers, GameCharacterDisplayDTO[]>(arg, static (api) => api.GetListCharacterDisplayAsync()),
+
+                (int)EnumApiActionIndex.GetCharacterStatus
+                => ExecuteApiAsync<IGameWebApiControllers, GameCharacterObjectDTO, GameCharacterStatusDTO>(arg, static (api, req) => api.GetCharacterStatusAsync(req)),
+
+                (int)EnumApiActionIndex.UpdateCharacterStatus
+                => ExecuteApiAsync<IGameWebApiControllers, GameCharacterModifyDTO, GameCharacterStatusDTO>(arg, static (api, req) => api.UpdateCharacterStatusAsync(req)),
+
+                (int)EnumApiActionIndex.GetCharacterEquipment
+                => ExecuteApiAsync<IGameWebApiControllers, GameCharacterObjectDTO, GameCharacterEquipmentDTO>(arg, static (api, req) => api.GetCharacterEquipmentAsync(req)),
+
+                (int)EnumApiActionIndex.UpdateCharacterEquipment
+                => ExecuteApiAsync<IGameWebApiControllers, GameCharacterModifyDTO, GameCharacterEquipmentDTO>(arg, static (api, req) => api.UpdateCharacterEquipmentAsync(req)),
+
+                (int)EnumApiActionIndex.GetCharacterSkill
+                => ExecuteApiAsync<IGameWebApiControllers, GameCharacterObjectDTO, GameCharacterSkillDTO>(arg, static (api, req) => api.GetCharacterSkillAsync(req)),
+
+                (int)EnumApiActionIndex.UpdateCharacterSkill
+                => ExecuteApiAsync<IGameWebApiControllers, GameCharacterModifyDTO, GameCharacterSkillDTO>(arg, static (api, req) => api.UpdateCharacterSkillAsync(req)),
+
+                (int)EnumApiActionIndex.GetListMonsterDisplay
+                => ExecuteApiAsync<IGameWebApiControllers, GameMonsterDisplayDTO[]>(arg, static (api) => api.GetListMonsterDisplayAsync()),
+
+                (int)EnumApiActionIndex.AddMonsterMember
+                => ExecuteApiAsync<IGameWebApiControllers, GameMonsterObjectDTO, GameCharacterSkillDTO>(arg, static (api, req) => api.AddMonsterMemberAsync(req)),
+
+                (int)EnumApiActionIndex.GetListSkillDisplay
+                => ExecuteApiAsync<IGameWebApiControllers, GameSkillDisplayDTO[]>(arg, static (api) => api.GetListSkillDisplayAsync()),
+
+                (int)EnumApiActionIndex.AddSkillDisplay
+                => ExecuteApiAsync<IGameWebApiControllers, GameSkillObjectDTO, GameSkillDisplayDTO>(arg, static (api, req) => api.AddSkillDisplayAsync(req)),
+
+                (int)EnumApiActionIndex.GetListSwitchDisplay
+                => ExecuteApiAsync<IGameWebApiControllers, GameSwitchDisplayDTO[]>(arg, static (api) => api.GetListSwitchDisplayAsync()),
+
+
+                (int)EnumApiActionIndex.UpdateSwitchDisplay
+                => ExecuteApiAsync<IGameWebApiControllers, GameSwitchModifyDTO, GameSwitchDisplayDTO>(arg, static (api, req) => api.UpdateSwitchDisplayAsync(req)),
+
+                _ => ExecuteApiAsync(actionIndex, arg),
+            };
+        }
+
 
         public ValueTask StopAsync()
         {
@@ -212,176 +199,72 @@ namespace Maple.MonoGameAssistant.AndroidCore.Api
 
 
 
-        T? GetApiJson<T>(AndroidApiArgs arg)
-          where T : class
+        T AndroidTask_GetRequiredData4ApiJson<T>(AndroidApiArgs arg)
+            where T : class
         {
-            //if (!VirtualMachineContext.TryGetEnv(out var jniEnvironmentContext))
-            //{
-            //    return default;
-            //}
+
             var jniEnvironmentContext = this.Scheduler.CurrJniEnv;
-
-            if (!JsonSerializer.TryGetTypeInfo(typeof(T), out var jsonTypeInfo))
-            {
-                return default;
-            }
-
-            var pString = jniEnvironmentContext.JNI_ENV.GetStringChars(arg.Json);
-            var strSize = jniEnvironmentContext.JNI_ENV.GetStringLength(arg.Json);
+            var javaJson = arg.Json;
+            var pString = jniEnvironmentContext.JNI_ENV.GetStringChars(javaJson);
+            var strSize = jniEnvironmentContext.JNI_ENV.GetStringLength(javaJson);
             try
             {
-                return System.Text.Json.JsonSerializer.Deserialize(pString.AsReadOnlySpan(strSize), jsonTypeInfo) as T;
+                return Json2Object<T>(pString.AsReadOnlySpan(strSize));
             }
             finally
             {
-                jniEnvironmentContext.JNI_ENV.ReleaseStringChars(arg.Json, pString);
+                jniEnvironmentContext.JNI_ENV.ReleaseStringChars(javaJson, pString);
             }
-
         }
-        async Task<T> GetRequiredApiJsonAsync<T>(AndroidApiArgs arg) where T : class
+        Task<T> GetRequiredData4ApiJsonAsync<T>(AndroidApiArgs arg) where T : class
         {
-            var requestData = await this.AndroidTaskAsync(static (p, args) => p.GetApiJson<T>(args), arg).ConfigureAwait(false);
-            if (requestData is null)
-            {
-                return AndroidJNIException.Throw<T>($"{typeof(T).FullName}:JSON IS NULL");
-            }
-            return requestData;
+            return this.AndroidTaskAsync(static (p, args) => p.AndroidTask_GetRequiredData4ApiJson<T>(args), arg);
         }
 
-        bool TryCallbackApiJson<T>(AndroidApiArgs arg, T data) where T : class
+        bool AndroidTask_Callback2ApiJson<T>(AndroidApiArgs arg, T data) where T : class
         {
-            if (!JsonSerializer.TryGetTypeInfo(typeof(T), out var jsonTypeInfo))
-            {
-                return false;
-            }
+
             var jniEnvironmentContext = this.Scheduler.CurrJniEnv;
             if (false == VirtualActionApiCallbackInstance.TryCreate(jniEnvironmentContext, arg.Instance, out var callback))
             {
-                return false;
+                return AndroidJNIException.Throw<bool>($"{nameof(VirtualActionApiCallbackInstance)}:CREATE ERROR");
             }
             using (callback)
             {
-                var jsonData = System.Text.Json.JsonSerializer.Serialize(data, jsonTypeInfo);
-                this.Logger.Info(jsonData);
+                var jsonData = Json4Object(data);
                 var javaJson = jniEnvironmentContext.JNI_ENV.CreateStringUnicode(jsonData);
                 try
                 {
                     var actionIndex = (int)arg.Action;
-                    if ((int)EnumApiActionIndex.EnumImages == actionIndex)
+                    return actionIndex switch
                     {
-                        return callback.EnumImages(javaJson);
-                    }
-                    else if ((int)EnumApiActionIndex.EnumClasses == actionIndex)
-                    {
-                        return callback.EnumClasses(javaJson);
-                    }
-                    else if ((int)EnumApiActionIndex.EnumObjects == actionIndex)
-                    {
-                        return callback.EnumObjects(javaJson);
-                    }
-                    else if ((int)EnumApiActionIndex.EnumClassDetail == actionIndex)
-                    {
-                        return callback.EnumClassDetail(javaJson);
-                    }
-
-                    //game
-                    else if ((int)EnumApiActionIndex.INFO == actionIndex)
-                    {
-                        return callback.INFO(javaJson);
-                    }
-                    else if ((int)EnumApiActionIndex.LoadResource == actionIndex)
-                    {
-                        return callback.LoadResource(javaJson);
-                    }
-
-                    else if ((int)EnumApiActionIndex.GetListCurrencyDisplay == actionIndex)
-                    {
-                        return callback.GetListCurrencyDisplay(javaJson);
-                    }
-                    else if ((int)EnumApiActionIndex.GetCurrencyInfo == actionIndex)
-                    {
-                        return callback.GetCurrencyInfo(javaJson);
-                    }
-                    else if ((int)EnumApiActionIndex.UpdateCurrencyInfo == actionIndex)
-                    {
-                        return callback.UpdateCurrencyInfo(javaJson);
-                    }
-
-                    else if ((int)EnumApiActionIndex.GetListInventoryDisplay == actionIndex)
-                    {
-                        return callback.GetListInventoryDisplay(javaJson);
-                    }
-                    else if ((int)EnumApiActionIndex.GetInventoryInfo == actionIndex)
-                    {
-                        return callback.GetInventoryInfo(javaJson);
-                    }
-                    else if ((int)EnumApiActionIndex.UpdateInventoryInfo == actionIndex)
-                    {
-                        return callback.UpdateInventoryInfo(javaJson);
-                    }
-
-                    else if ((int)EnumApiActionIndex.GetListCharacterDisplay == actionIndex)
-                    {
-                        return callback.GetListCharacterDisplay(javaJson);
-                    }
-
-                    else if ((int)EnumApiActionIndex.GetCharacterStatus == actionIndex)
-                    {
-                        return callback.GetCharacterStatus(javaJson);
-                    }
-                    else if ((int)EnumApiActionIndex.UpdateCharacterStatus == actionIndex)
-                    {
-                        return callback.UpdateCharacterStatus(javaJson);
-                    }
-
-                    else if ((int)EnumApiActionIndex.GetCharacterEquipment == actionIndex)
-                    {
-                        return callback.GetCharacterEquipment(javaJson);
-                    }
-                    else if ((int)EnumApiActionIndex.UpdateCharacterEquipment == actionIndex)
-                    {
-                        return callback.UpdateCharacterEquipment(javaJson);
-                    }
-
-                    else if ((int)EnumApiActionIndex.GetCharacterSkill == actionIndex)
-                    {
-                        return callback.GetCharacterSkill(javaJson);
-                    }
-                    else if ((int)EnumApiActionIndex.UpdateCharacterSkill == actionIndex)
-                    {
-                        return callback.UpdateCharacterSkill(javaJson);
-                    }
-
-                    else if ((int)EnumApiActionIndex.GetListMonsterDisplay == actionIndex)
-                    {
-                        return callback.GetListMonsterDisplay(javaJson);
-                    }
-                    else if ((int)EnumApiActionIndex.AddMonsterMember == actionIndex)
-                    {
-                        return callback.AddMonsterMember(javaJson);
-                    }
-
-                    else if ((int)EnumApiActionIndex.GetListSkillDisplay == actionIndex)
-                    {
-                        return callback.GetListSkillDisplay(javaJson);
-                    }
-                    else if ((int)EnumApiActionIndex.AddSkillDisplay == actionIndex)
-                    {
-                        return callback.AddSkillDisplay(javaJson);
-                    }
-
-                    else if ((int)EnumApiActionIndex.GetListSwitchDisplay == actionIndex)
-                    {
-                        return callback.GetListSwitchDisplay(javaJson);
-                    }
-                    else if ((int)EnumApiActionIndex.UpdateSwitchDisplay == actionIndex)
-                    {
-                        return callback.UpdateSwitchDisplay(javaJson);
-                    }
-                    else
-                    {
-                        return callback.None(javaJson);
-                    }
+                        (int)EnumApiActionIndex.EnumImages => callback.EnumImages(javaJson),
+                        (int)EnumApiActionIndex.EnumClasses => callback.EnumClasses(javaJson),
+                        (int)EnumApiActionIndex.EnumObjects => callback.EnumObjects(javaJson),
+                        (int)EnumApiActionIndex.EnumClassDetail => callback.EnumClassDetail(javaJson),
+                        (int)EnumApiActionIndex.INFO => callback.INFO(javaJson),
+                        (int)EnumApiActionIndex.LoadResource => callback.LoadResource(javaJson),
+                        (int)EnumApiActionIndex.GetListCurrencyDisplay => callback.GetListCurrencyDisplay(javaJson),
+                        (int)EnumApiActionIndex.GetCurrencyInfo => callback.GetCurrencyInfo(javaJson),
+                        (int)EnumApiActionIndex.UpdateCurrencyInfo => callback.UpdateCurrencyInfo(javaJson),
+                        (int)EnumApiActionIndex.GetListInventoryDisplay => callback.GetListInventoryDisplay(javaJson),
+                        (int)EnumApiActionIndex.GetInventoryInfo => callback.GetInventoryInfo(javaJson),
+                        (int)EnumApiActionIndex.UpdateInventoryInfo => callback.UpdateInventoryInfo(javaJson),
+                        (int)EnumApiActionIndex.GetListCharacterDisplay => callback.GetListCharacterDisplay(javaJson),
+                        (int)EnumApiActionIndex.GetCharacterStatus => callback.GetCharacterStatus(javaJson),
+                        (int)EnumApiActionIndex.UpdateCharacterStatus => callback.UpdateCharacterStatus(javaJson),
+                        (int)EnumApiActionIndex.GetCharacterEquipment => callback.GetCharacterEquipment(javaJson),
+                        (int)EnumApiActionIndex.UpdateCharacterEquipment => callback.UpdateCharacterEquipment(javaJson),
+                        (int)EnumApiActionIndex.GetCharacterSkill => callback.GetCharacterSkill(javaJson),
+                        (int)EnumApiActionIndex.UpdateCharacterSkill => callback.UpdateCharacterSkill(javaJson),
+                        (int)EnumApiActionIndex.GetListMonsterDisplay => callback.GetListMonsterDisplay(javaJson),
+                        (int)EnumApiActionIndex.AddMonsterMember => callback.AddMonsterMember(javaJson),
+                        (int)EnumApiActionIndex.GetListSkillDisplay => callback.GetListSkillDisplay(javaJson),
+                        (int)EnumApiActionIndex.AddSkillDisplay => callback.AddSkillDisplay(javaJson),
+                        (int)EnumApiActionIndex.GetListSwitchDisplay => callback.GetListSwitchDisplay(javaJson),
+                        (int)EnumApiActionIndex.UpdateSwitchDisplay => callback.UpdateSwitchDisplay(javaJson),
+                        _ => callback.None(javaJson)
+                    };
                 }
                 finally
                 {
@@ -392,11 +275,11 @@ namespace Maple.MonoGameAssistant.AndroidCore.Api
 
 
         }
-        async Task<bool> TryCallbackApiJsonAsync<T>(AndroidApiArgs arg, T data) where T : class
+        async Task<bool> TryCallback2ApiJsonAsync<T>(AndroidApiArgs arg, T data) where T : class
         {
             try
             {
-                return await this.AndroidTaskAsync(static (p, args) => p.TryCallbackApiJson(args.arg, args.data), (arg, data));
+                return await this.AndroidTaskAsync(static (p, args) => p.AndroidTask_Callback2ApiJson(args.arg, args.data), (arg, data));
             }
             catch (Exception ex)
             {
@@ -405,18 +288,14 @@ namespace Maple.MonoGameAssistant.AndroidCore.Api
             return false;
         }
 
-        void Release(AndroidApiArgs arg)
+        void AndroidTask_Release(AndroidApiArgs arg)
         {
-            //if (!VirtualMachineContext.TryGetEnv(out var jniEnvironmentContext))
-            //{
-            //    return false;
-            //}
             var jniEnvironmentContext = this.Scheduler.CurrJniEnv;
             arg.Release(jniEnvironmentContext);
         }
         Task<bool> ReleaseAsync(AndroidApiArgs arg)
         {
-            return this.AndroidTaskAsync(static (p, args) => p.Release(args), arg);
+            return this.AndroidTaskAsync(static (p, args) => p.AndroidTask_Release(args), arg);
         }
 
 
@@ -428,26 +307,25 @@ namespace Maple.MonoGameAssistant.AndroidCore.Api
             {
                 var actionApiService = this.ServiceProvider.GetRequiredService<TService>();
                 var resData = await func(actionApiService).ConfigureAwait(false);
-                return await TryCallbackApiJsonAsync(arg, resData.GetOk()).ConfigureAwait(false);
+                return await TryCallback2ApiJsonAsync(arg, resData.GetOk()).ConfigureAwait(false);
             }
             catch (MonoCommonException ex)
             {
                 Logger.LogError("action:{action} / api err:{ex}", (int)arg.Action, ex);
-                return await TryCallbackApiJsonAsync(arg, MonoResultDTO.GetBizError(ex)).ConfigureAwait(false);
+                return await TryCallback2ApiJsonAsync(arg, MonoResultDTO.GetBizError(ex)).ConfigureAwait(false);
             }
             catch (AndroidCommonException ex)
             {
                 Logger.LogError("action:{action} / jni err:{ex}", (int)arg.Action, ex);
-                return await TryCallbackApiJsonAsync(arg, MonoResultDTO.GetBizError<TResult>((int)EnumMonoCommonCode.BIZ_ERROR, ex.Message)).ConfigureAwait(false);
+                return await TryCallback2ApiJsonAsync(arg, MonoResultDTO.GetBizError<TResult>((int)EnumMonoCommonCode.BIZ_ERROR, ex.Message)).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
                 Logger.LogError("action:{action} /system err:{ex}", (int)arg.Action, ex);
-                return await TryCallbackApiJsonAsync(arg, MonoResultDTO.GetSystemError(ex.Message)).ConfigureAwait(false);
+                return await TryCallback2ApiJsonAsync(arg, MonoResultDTO.GetSystemError(ex.Message)).ConfigureAwait(false);
             }
 
         }
-
         protected async ValueTask<bool> ExecuteApiAsync<TService, TRequest, TResult>(AndroidApiArgs arg, Func<TService, TRequest, ValueTask<TResult>> func)
             where TService : notnull
             where TRequest : class
@@ -456,52 +334,51 @@ namespace Maple.MonoGameAssistant.AndroidCore.Api
             try
             {
                 var actionApiService = this.ServiceProvider.GetRequiredService<TService>();
-                var requestData = await GetRequiredApiJsonAsync<TRequest>(arg).ConfigureAwait(false);
-
+                var requestData = await GetRequiredData4ApiJsonAsync<TRequest>(arg).ConfigureAwait(false);
                 var resData = await func(actionApiService, requestData).ConfigureAwait(false);
-                return await TryCallbackApiJsonAsync(arg, resData.GetOk()).ConfigureAwait(false);
+                return await TryCallback2ApiJsonAsync(arg, resData.GetOk()).ConfigureAwait(false);
             }
             catch (MonoCommonException ex)
             {
                 Logger.LogError("action:{action} / api err:{ex}", (int)arg.Action, ex);
-                return await TryCallbackApiJsonAsync(arg, MonoResultDTO.GetBizError(ex)).ConfigureAwait(false);
+                return await TryCallback2ApiJsonAsync(arg, MonoResultDTO.GetBizError(ex)).ConfigureAwait(false);
             }
             catch (AndroidCommonException ex)
             {
                 Logger.LogError("action:{action} / jni err:{ex}", (int)arg.Action, ex);
-                return await TryCallbackApiJsonAsync(arg, MonoResultDTO.GetBizError<TResult>((int)EnumMonoCommonCode.BIZ_ERROR, ex.Message)).ConfigureAwait(false);
+                return await TryCallback2ApiJsonAsync(arg, MonoResultDTO.GetBizError<TResult>((int)EnumMonoCommonCode.BIZ_ERROR, ex.Message)).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
                 Logger.LogError("action:{action} / system err:{ex}", (int)arg.Action, ex);
-                return await TryCallbackApiJsonAsync(arg, MonoResultDTO.GetSystemError(ex.Message)).ConfigureAwait(false);
+                return await TryCallback2ApiJsonAsync(arg, MonoResultDTO.GetSystemError(ex.Message)).ConfigureAwait(false);
             }
 
 
 
         }
-
         protected async ValueTask<bool> ExecuteApiAsync(int action, AndroidApiArgs arg)
         {
             try
             {
-                var requestData = await GetRequiredApiJsonAsync<GameSessionObjectDTO>(arg).ConfigureAwait(false);
-                return await TryCallbackApiJsonAsync(arg, requestData.GetOk()).ConfigureAwait(false);
+                var requestData = await GetRequiredData4ApiJsonAsync<GameSessionObjectDTO>(arg).ConfigureAwait(false);
+                var resData = new GameSessionInfoDTO() { ObjectId = requestData.Session, DisplayName = "Android", DisplayDesc = "Android Test", ApiVer = "202411172000" }.GetOk();
+                return await TryCallback2ApiJsonAsync(arg, resData).ConfigureAwait(false);
             }
             catch (MonoCommonException ex)
             {
                 Logger.LogError("action:{action} / api err:{ex}", action, ex);
-                return await TryCallbackApiJsonAsync(arg, MonoResultDTO.GetBizError(ex)).ConfigureAwait(false);
+                return await TryCallback2ApiJsonAsync(arg, MonoResultDTO.GetBizError(ex)).ConfigureAwait(false);
             }
             catch (AndroidCommonException ex)
             {
                 Logger.LogError("action:{action} / jni err:{ex}", action, ex);
-                return await TryCallbackApiJsonAsync(arg, MonoResultDTO.GetBizError<bool>((int)EnumMonoCommonCode.BIZ_ERROR, ex.Message)).ConfigureAwait(false);
+                return await TryCallback2ApiJsonAsync(arg, MonoResultDTO.GetBizError<bool>((int)EnumMonoCommonCode.BIZ_ERROR, ex.Message)).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
                 Logger.LogError("action:{action} / system err:{ex}", action, ex);
-                return await TryCallbackApiJsonAsync(arg, MonoResultDTO.GetSystemError(ex.Message)).ConfigureAwait(false);
+                return await TryCallback2ApiJsonAsync(arg, MonoResultDTO.GetSystemError(ex.Message)).ConfigureAwait(false);
             }
 
 
