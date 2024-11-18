@@ -48,7 +48,6 @@ namespace Maple.MonoGameAssistant.AndroidCore.HostedService
 
         public static AndroidApiContext CreateDefaultAndroidService(this AndroidApiContext androidApiContext)
         {
-            
             _ = Task.Factory.StartNew(AndroidServiceTask, androidApiContext, TaskCreationOptions.LongRunning);
             return androidApiContext;
 

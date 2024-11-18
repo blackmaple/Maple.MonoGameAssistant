@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Maple.MonoGameAssistant.Common
 {
-    public unsafe ref struct MapleStringUnmanaged_Ref
+    public unsafe ref struct MapleStringUnmanaged_Ref : IDisposable
     {
         public const int MaxSize = 0x100;
         readonly ref byte _ptr;
