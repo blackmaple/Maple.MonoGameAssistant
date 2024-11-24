@@ -12,11 +12,11 @@
 		<!--<RuntimeIdentifier>linux-bionic-x64</RuntimeIdentifier>-->
 		<DisableUnsupportedError>true</DisableUnsupportedError>
 		<PublishAotUsingRuntimePack>true</PublishAotUsingRuntimePack>
-		<PublishAot>true</PublishAot>
-		<IsAotCompatible>true</IsAotCompatible>
+		<!--<PublishAot>true</PublishAot>
+		<IsAotCompatible>true</IsAotCompatible>-->
 
-		<OutputType>Library</OutputType>
-		<AssemblyName>libmaple</AssemblyName>
+		<!--<OutputType>Library</OutputType>
+		<AssemblyName>libmaple</AssemblyName>-->
 
 
 		<DebuggerSupport>false</DebuggerSupport>
@@ -33,8 +33,27 @@
 		<EnableConfigurationBindingGenerator>true</EnableConfigurationBindingGenerator>
 		<EnableRequestDelegateGenerator>true</EnableRequestDelegateGenerator>
 		<InterceptorsPreviewNamespaces>$(InterceptorsPreviewNamespaces);Microsoft.AspNetCore.Http.Generated</InterceptorsPreviewNamespaces>
+		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+		<Title>Maple.MonoGameAssistant.GameContext.Windows</Title>
+		<RepositoryUrl>https://github.com/blackmaple/Maple.MonoGameAssistant</RepositoryUrl>
+		<PackageLicenseFile>LICENSE</PackageLicenseFile>
+		<PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
+		<Description>Maple.MonoGameAssistant.GameContext</Description>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<PackageTags>mono;unity;game;maple</PackageTags>
+		<Version>1.0.90-rc</Version>
 	</PropertyGroup>
 
+	<ItemGroup>
+		<None Include="..\LICENSE" Link="LICENSE">
+			<PackagePath>\</PackagePath>
+			<Pack>True</Pack>
+		</None>
+		<None Include="..\README.md" Link="README.md">
+			<PackagePath>\</PackagePath>
+			<Pack>True</Pack>
+		</None>
+	</ItemGroup>
 	<ItemGroup>
  		<PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.0" />
  		<PackageReference Include="Microsoft.Extensions.Logging" Version="9.0.0" />

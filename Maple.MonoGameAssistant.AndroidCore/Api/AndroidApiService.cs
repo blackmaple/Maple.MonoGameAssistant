@@ -102,23 +102,23 @@ namespace Maple.MonoGameAssistant.AndroidCore.Api
                 }
             }
         }
- 
 
-        ValueTask<bool> ExecActionApiAsync( int actionIndex, AndroidApiArgs arg)
+
+        ValueTask<bool> ExecActionApiAsync(int actionIndex, AndroidApiArgs arg)
         {
             return actionIndex switch
             {
-                (int)EnumApiActionIndex.EnumImages 
-                =>ExecuteApiAsync<MonoCollectorApiService, MonoImageInfoDTO[]>(arg, static (api) => new(api.EnumMonoImagesAsync())),
+                (int)EnumApiActionIndex.EnumImages
+                => ExecuteApiAsync<MonoCollectorApiService, MonoImageInfoDTO[]>(arg, static (api) => new(api.EnumMonoImagesAsync())),
 
-                (int)EnumApiActionIndex.EnumClasses 
-                =>ExecuteApiAsync<MonoCollectorApiService, MonoPointerRequestDTO, MonoClassInfoDTO[]>(arg, static (api, req) => new(api.EnumMonoClassesAsync(req.Pointer))),
+                (int)EnumApiActionIndex.EnumClasses
+                => ExecuteApiAsync<MonoCollectorApiService, MonoPointerRequestDTO, MonoClassInfoDTO[]>(arg, static (api, req) => new(api.EnumMonoClassesAsync(req.Pointer))),
 
-                (int)EnumApiActionIndex.EnumObjects 
-                =>ExecuteApiAsync<MonoCollectorApiService, MonoPointerRequestDTO, MonoObjectInfoDTO[]>(arg, static (api, req) => new(api.EnumMonoObjectsAsync(req.Pointer))),
+                (int)EnumApiActionIndex.EnumObjects
+                => ExecuteApiAsync<MonoCollectorApiService, MonoPointerRequestDTO, MonoObjectInfoDTO[]>(arg, static (api, req) => new(api.EnumMonoObjectsAsync(req.Pointer))),
 
-                (int)EnumApiActionIndex.EnumClassDetail 
-                =>ExecuteApiAsync<MonoCollectorApiService, MonoClassDetailRequestDTO, MonoClassDetailDTO>(arg, static (api, req) => new(api.EnumMonoClassDetailAsync(req.Pointer, req.FieldOptions))),
+                (int)EnumApiActionIndex.EnumClassDetail
+                => ExecuteApiAsync<MonoCollectorApiService, MonoClassDetailRequestDTO, MonoClassDetailDTO>(arg, static (api, req) => new(api.EnumMonoClassDetailAsync(req.Pointer, req.FieldOptions))),
 
                 (int)EnumApiActionIndex.INFO
                 => ExecuteApiAsync<IGameWebApiControllers, GameSessionInfoDTO>(arg, static (api) => api.GetSessionInfoAsync()),
@@ -140,7 +140,7 @@ namespace Maple.MonoGameAssistant.AndroidCore.Api
 
                 (int)EnumApiActionIndex.GetInventoryInfo
                 => ExecuteApiAsync<IGameWebApiControllers, GameInventoryObjectDTO, GameInventoryInfoDTO>(arg, static (api, req) => api.GetInventoryInfoAsync(req)),
-
+               
                 (int)EnumApiActionIndex.UpdateInventoryInfo
                 => ExecuteApiAsync<IGameWebApiControllers, GameInventoryModifyDTO, GameInventoryInfoDTO>(arg, static (api, req) => api.UpdateInventoryInfoAsync(req)),
 
@@ -361,8 +361,8 @@ namespace Maple.MonoGameAssistant.AndroidCore.Api
         {
             try
             {
-                var requestData = await GetRequiredData4ApiJsonAsync<GameSessionObjectDTO>(arg).ConfigureAwait(false);
-                var resData = new GameSessionInfoDTO() { ObjectId = requestData.Session, DisplayName = "Android", DisplayDesc = "Android Test", ApiVer = "202411172000" }.GetOk();
+                //  var requestData = await GetRequiredData4ApiJsonAsync<GameSessionObjectDTO>(arg).ConfigureAwait(false);
+                var resData = new GameSessionInfoDTO() { ObjectId = Environment.ProcessId.ToString(), DisplayName = "Android", DisplayDesc = "Android Test", ApiVer = "202411172000" }.GetOk();
                 return await TryCallback2ApiJsonAsync(arg, resData).ConfigureAwait(false);
             }
             catch (MonoCommonException ex)

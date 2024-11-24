@@ -14,7 +14,7 @@
 		<Description>Maple.MonoGameAssistant.GameDTO</Description>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<PackageTags>mono;unity;game;maple</PackageTags>
-		<Version>1.0.1-rc</Version>
+		<Version>1.0.90-rc</Version>
 	</PropertyGroup>
 
 	<ItemGroup>

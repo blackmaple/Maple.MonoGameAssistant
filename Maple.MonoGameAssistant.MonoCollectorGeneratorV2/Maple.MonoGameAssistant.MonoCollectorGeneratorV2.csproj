@@ -20,7 +20,7 @@
 		<Description>Maple.MonoGameAssistant.MonoCollectorGeneratorV2</Description>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<PackageTags>mono;unity;game;maple</PackageTags>
-		<Version>1.0.2-rc</Version>
+		<Version>1.0.90-rc</Version>
 	</PropertyGroup>
 
 
