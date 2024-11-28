@@ -10,20 +10,13 @@ namespace Maple.MonoGameAssistant.Logger
     /// <summary>
     /// 简单的一个日志
     /// </summary>
-    public sealed class MonoGameLogger : ILogger
+    public sealed class MonoGameLogger(string category = nameof(MonoGameLogger)) : ILogger
     {
         public static ILogger Default { get; } = MonoGameLoggerExtensions.DefaultProvider.CreateLogger(typeof(MonoGameLogger).FullName ?? nameof(MonoGameLogger));
 
         #region Imp
-        string Category { get; }
-        string FilePath { get; }
-
-        public MonoGameLogger(string category = nameof(MonoGameLogger))
-        {
-            Category = category;
-            var path = MonoGameLoggerExtensions.GetBaseDirectory();
-            FilePath = Directory.Exists(path) ? path : Directory.CreateDirectory(path).FullName;
-        }
+        string Category { get; } = category;
+        string FilePath { get; } = MonoGameLoggerExtensions.GetBaseDirectory();
 
 
 

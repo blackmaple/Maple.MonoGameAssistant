@@ -4,33 +4,27 @@ using Maple.MonoGameAssistant.AndroidJNI.Context;
 using Maple.MonoGameAssistant.AndroidJNI.JNI.Primitive;
 using Maple.MonoGameAssistant.AndroidJNI.JNI.Reference;
 using Maple.MonoGameAssistant.AndroidJNI.JNI.Value;
-using Maple.MonoGameAssistant.Common;
-using Maple.MonoGameAssistant.Logger;
-using Microsoft.Extensions.Logging;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using unsafe TestActionDelegate = delegate* unmanaged<Maple.MonoGameAssistant.AndroidJNI.JNI.Value.PTR_JNI_ENV, Maple.MonoGameAssistant.AndroidJNI.JNI.Reference.JOBJECT, Maple.MonoGameAssistant.AndroidJNI.JNI.Reference.JSTRING, Maple.MonoGameAssistant.AndroidJNI.JNI.Primitive.JBOOLEAN>;
 using unsafe ApiActionDelegate = delegate* unmanaged<Maple.MonoGameAssistant.AndroidJNI.JNI.Value.PTR_JNI_ENV, Maple.MonoGameAssistant.AndroidJNI.JNI.Reference.JOBJECT, Maple.MonoGameAssistant.AndroidJNI.JNI.Primitive.JINT, Maple.MonoGameAssistant.AndroidJNI.JNI.Reference.JSTRING, Maple.MonoGameAssistant.AndroidJNI.JNI.Primitive.JBOOLEAN>;
-using static System.Net.Mime.MediaTypeNames;
+using unsafe TestActionDelegate = delegate* unmanaged<Maple.MonoGameAssistant.AndroidJNI.JNI.Value.PTR_JNI_ENV, Maple.MonoGameAssistant.AndroidJNI.JNI.Reference.JOBJECT, Maple.MonoGameAssistant.AndroidJNI.JNI.Reference.JSTRING, Maple.MonoGameAssistant.AndroidJNI.JNI.Primitive.JBOOLEAN>;
 
 namespace Maple.MonoGameAssistant.AndroidCore.Api
 {
-    public static partial class AndroidApiExtensions
+    public unsafe static partial class AndroidApiExtensions
     {
         public const string JavaClassFullName = "com/android/maple/service/MapleService";
-        //private static void DebugLog(object txt)
-        //{
-        //    var log = Path.Combine($"/sdcard/Download", $"{Environment.ProcessId:X8}.txt");
-        //    using var writer = File.AppendText(log);
-        //    writer.WriteLine($"{DateTime.Now:yyyy-MM-dd HH:mm:ss}:{txt}");
-        //}
+
         static AndroidApiContext? ApiContext { get; set; }
 
         [UnmanagedCallersOnly(EntryPoint = nameof(JNI_OnLoad))]
-        public unsafe static JINT JNI_OnLoad(PTR_JAVA_VM javaVM, JOBJECT reserved)
+        public static JINT JNI_OnLoad(PTR_JAVA_VM javaVM, JOBJECT reserved)
         {
-            //  Logger.MonoGameLoggerExtensions.SetAndroidEnvironment();
-            ApiContext = AndroidApiContext.CreateContext(javaVM).CreateDefaultAndroidService();
+            return JNI_OnLoadImp(javaVM, reserved, static api => api.CreateDefaultAndroidService());
+        }
+        public static JINT JNI_OnLoadImp(PTR_JAVA_VM javaVM, JOBJECT reserved, Func<AndroidApiContext, AndroidApiContext> createService)
+        {
+            ApiContext = createService(AndroidApiContext.CreateContext(javaVM));
+
             if (ApiContext.VirtualMachineContext.TryGetEnv(out var jniEnvironmentContext))
             {
                 jniEnvironmentContext.RegisterNativeMethod(JavaClassFullName, nameof(TestAction), "(Ljava/lang/String;)Z", new Ptr_Func_TestAction(&TestAction));
@@ -42,46 +36,29 @@ namespace Maple.MonoGameAssistant.AndroidCore.Api
         [UnmanagedCallersOnly(EntryPoint = nameof(JNI_OnUnload))]
         public static void JNI_OnUnload(PTR_JAVA_VM javaVM, JOBJECT reserved)
         {
-            // ApiContext?.VirtualMachineContext.DetachThread();
+            JNI_OnUnloadImp(javaVM, reserved);
+        }
+        public static void JNI_OnUnloadImp(PTR_JAVA_VM javaVM, JOBJECT reserved)
+        {
         }
 
         [UnmanagedCallersOnly(EntryPoint = nameof(ApiAction))]
         public static JBOOLEAN ApiAction(PTR_JNI_ENV jniEnv, JOBJECT instance, JINT actionIndex, JSTRING json)
         {
+            return ApiActionImp(jniEnv, instance, actionIndex, json);
+        }
+        public static JBOOLEAN ApiActionImp(PTR_JNI_ENV jniEnv, JOBJECT instance, JINT actionIndex, JSTRING json)
+        {
 
-            //{
-            //    var androidToast = AndroidToastReference.Create(in jniEnvironmentContext);
-            //    androidToast.Show(instance, $@"{(int)actionIndex}:{jniEnvironmentContext.JNI_ENV.ConvertStringUnicode(json)}", false);
-            //    return true;
-            //}
-            //return false;
             return ApiContext?.TryWrite(AndroidApiArgs.Create(jniEnv, instance, actionIndex, json)) ?? false;
-            //if (JniEnvironmentContext.TryCreateJniEnvironmentContext(jniEnv, out var jniEnvironmentContext))
-            //{
-            //    try
-            //    {
-            //        Logger.MonoGameLogger.Default.Info("1");
-            //        var api = VirtualActionApiCallbackInstance.Create(jniEnvironmentContext, instance);
-            //        Logger.MonoGameLogger.Default.Info("2");
-            //        api.None(json);
-            //        Logger.MonoGameLogger.Default.Info("3");
-
-            //    }
-            //    catch (Exception ex)
-            //    {
-            //        Logger.MonoGameLogger.Default.Error(ex);
-            //    }
-
-
-            //    var androidToast = AndroidToastReference.CreateReference(in jniEnvironmentContext);
-            //    androidToast.Show(instance, $@"{(int)actionIndex}:{jniEnvironmentContext.JNI_ENV.ConvertStringUnicode(json)}", false);
-            //    return true;
-            //}
-            //return true;
         }
 
         [UnmanagedCallersOnly(EntryPoint = nameof(TestAction))]
         public static JBOOLEAN TestAction(PTR_JNI_ENV jniEnv, JOBJECT instance, JSTRING text)
+        {
+            return TestActionImp(jniEnv, instance, text);
+        }
+        public static JBOOLEAN TestActionImp(PTR_JNI_ENV jniEnv, JOBJECT instance, JSTRING text)
         {
             if (JniEnvironmentContext.TryCreateJniEnvironmentContext(jniEnv, out var jniEnvironmentContext))
             {
@@ -92,12 +69,12 @@ namespace Maple.MonoGameAssistant.AndroidCore.Api
             return false;
         }
 
-        readonly unsafe struct Ptr_Func_ApiAction(ApiActionDelegate ptr)
+        readonly struct Ptr_Func_ApiAction(ApiActionDelegate ptr)
         {
             readonly ApiActionDelegate _ptr = ptr;
             public static implicit operator nint(Ptr_Func_ApiAction func) => (nint)func._ptr;
         }
-        readonly unsafe struct Ptr_Func_TestAction(TestActionDelegate ptr)
+        readonly struct Ptr_Func_TestAction(TestActionDelegate ptr)
         {
             readonly TestActionDelegate _ptr = ptr;
             public static implicit operator nint(Ptr_Func_TestAction func) => (nint)func._ptr;
@@ -105,4 +82,5 @@ namespace Maple.MonoGameAssistant.AndroidCore.Api
 
 
     }
+
 }

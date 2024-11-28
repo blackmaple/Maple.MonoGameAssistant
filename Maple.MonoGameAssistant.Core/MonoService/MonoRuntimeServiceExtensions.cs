@@ -4,7 +4,7 @@ namespace Maple.MonoGameAssistant.Core
 {
     public static class MonoRuntimeServiceExtensions
     {
-        public static IServiceCollection AddMonoRuntimeService(this IServiceCollection services, Action<MonoRuntimeModuleView> action)
+        public static IServiceCollection AddMonoRuntimeService(this IServiceCollection services, Action<MonoRuntimeModuleView> action, bool android = false)
         {
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
             var moduleView = new MonoRuntimeModuleView();
@@ -13,7 +13,7 @@ namespace Maple.MonoGameAssistant.Core
             services.AddSingleton<MonoRuntimeFactory>();
             services.AddSingleton(p => p.GetRequiredService<MonoRuntimeFactory>().GetProvider());
             services.AddSingleton<MonoRuntimeContext>();
-            if (MonoTaskScheduler.IsAndroidEnvironment())
+            if (android)
             {
                 services.AddSingleton<MonoTaskScheduler, MonoTaskScheduler_Android>();
             }
@@ -24,9 +24,9 @@ namespace Maple.MonoGameAssistant.Core
             return services.AddSingleton<MonoCollectorApiService>();
         }
 
-        public static IServiceCollection AddMonoRuntimeService(this IServiceCollection services)
+        public static IServiceCollection AddMonoRuntimeService(this IServiceCollection services, bool android = false)
         {
-            return services.AddMonoRuntimeService(static _ => { });
+            return services.AddMonoRuntimeService(static _ => { }, android);
         }
 
 

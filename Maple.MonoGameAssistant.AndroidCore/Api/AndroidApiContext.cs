@@ -32,6 +32,8 @@ namespace Maple.MonoGameAssistant.AndroidCore.Api
             return new AndroidApiContext(new JavaVirtualMachineContext(javaVM));
         }
 
-       
+        public string? GameName { set; get; }
+
+        public string? GameDesc { set; get; }
     }
 }

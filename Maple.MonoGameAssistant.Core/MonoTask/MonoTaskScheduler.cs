@@ -10,19 +10,6 @@ namespace Maple.MonoGameAssistant.Core
 
         protected MonoRuntimeContext RuntimeContext { get; } = runtimeContext;
 
-        public static bool IsAndroidEnvironment()
-             => string.IsNullOrEmpty(Environment.GetEnvironmentVariable(nameof(MonoTaskScheduler))) == false;
-
-        public static void SetAndroidEnvironment()
-        {
-            Environment.SetEnvironmentVariable(nameof(MonoTaskScheduler), nameof(MonoTaskScheduler));
-        }
-
-        public static void SetDefaultEnvironment()
-        {
-            Environment.SetEnvironmentVariable(nameof(MonoTaskScheduler), string.Empty);
-        }
-
         protected sealed override IEnumerable<Task>? GetScheduledTasks()
         {
             return default;

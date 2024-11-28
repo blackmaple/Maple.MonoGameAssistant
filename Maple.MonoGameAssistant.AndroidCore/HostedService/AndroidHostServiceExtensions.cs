@@ -19,8 +19,8 @@ namespace Maple.MonoGameAssistant.AndroidCore.HostedService
             (this IServiceCollection serviceDescriptors)
            where T_GAMECONTEXTSERVICE : class, IGameContextService
         {
-            MonoTaskScheduler.SetAndroidEnvironment();
-            serviceDescriptors.AddMonoRuntimeService();
+
+            serviceDescriptors.AddMonoRuntimeService(android: true);
             serviceDescriptors.AddSingleton<IGameContextService, T_GAMECONTEXTSERVICE>();
             serviceDescriptors.AddSingleton<IGameWebApiControllers>(p => p.GetRequiredService<IGameContextService>());
             return serviceDescriptors;
@@ -33,8 +33,8 @@ namespace Maple.MonoGameAssistant.AndroidCore.HostedService
             var gameSetting = new MonoGameSettings();
             settings?.Invoke(gameSetting);
 
-            MonoGameLoggerExtensions.SetAndroidEnvironment();
-            app.Services.AddLogging(p=>p.AddOnlyMonoGameLogger());
+
+            app.Services.AddLogging(p => p.AddOnlyMonoGameLogger());
 
             app.Services.AddSingleton(gameSetting);
             app.Services.AddSingleton(androidApiContext);
@@ -58,6 +58,29 @@ namespace Maple.MonoGameAssistant.AndroidCore.HostedService
                     return;
                 }
                 var host = context.CreateAndroidService(p => { p.GameName = "DefaultAndroidService"; }, p => { });
+                host.Run();
+            }
+        }
+
+        public static AndroidApiContext CreateGameAndroidService<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] T_GAMECONTEXTSERVICE>
+            (this AndroidApiContext androidApiContext)
+           where T_GAMECONTEXTSERVICE : class, IGameContextService
+        {
+            _ = Task.Factory.StartNew(AndroidServiceTask, androidApiContext, TaskCreationOptions.LongRunning);
+            return androidApiContext;
+
+            static void AndroidServiceTask(object? obj)
+            {
+                if (obj is not AndroidApiContext context)
+                {
+                    return;
+                }
+                var host = context.CreateAndroidService(p =>
+                {
+                    p.GameName = context.GameName;
+                    p.QQ = context.GameDesc;
+
+                }, p => p.AddGameContextService<T_GAMECONTEXTSERVICE>());
                 host.Run();
             }
         }

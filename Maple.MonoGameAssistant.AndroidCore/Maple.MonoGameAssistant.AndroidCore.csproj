@@ -13,9 +13,9 @@
 		<DisableUnsupportedError>true</DisableUnsupportedError>
 		<PublishAotUsingRuntimePack>true</PublishAotUsingRuntimePack>
 		<!--<PublishAot>true</PublishAot>
-		<IsAotCompatible>true</IsAotCompatible>-->
+		<IsAotCompatible>true</IsAotCompatible>
 
-		<!--<OutputType>Library</OutputType>
+		<OutputType>Library</OutputType>
 		<AssemblyName>libmaple</AssemblyName>-->
 
 

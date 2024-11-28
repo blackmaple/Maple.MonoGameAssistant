@@ -9,6 +9,8 @@ namespace Maple.MonoGameAssistant.Logger
     {
         public static MonoGameLoggerProvider DefaultProvider { get; } = new MonoGameLoggerProvider();
 
+        const string Android_Download = "/sdcard/Download";
+
         public static IServiceCollection AddMonoGameLogger(this IServiceCollection services)
         {
             services.TryAddEnumerable(ServiceDescriptor.Singleton<ILoggerProvider, MonoGameLoggerProvider>());
@@ -36,23 +38,17 @@ namespace Maple.MonoGameAssistant.Logger
             return builder;
         }
 
-        public static bool IsAndroidEnvironment()
-             => string.IsNullOrEmpty(Environment.GetEnvironmentVariable(nameof(MonoGameLogger))) == false;
 
-        public static void SetAndroidEnvironment()
-        {
-            Environment.SetEnvironmentVariable(nameof(MonoGameLogger), nameof(MonoGameLogger));
-        }
-
-        public static void SetDefaultEnvironment()
-        {
-            Environment.SetEnvironmentVariable(nameof(MonoGameLogger), string.Empty);
-        }
 
         public static string GetBaseDirectory()
         {
+            if (Directory.Exists(Android_Download))
+            {
+                return Android_Download;
+            }
+            var path = Path.Combine(AppContext.BaseDirectory, nameof(MonoGameLogger));
+            return Directory.Exists(path) ? path : Directory.CreateDirectory(path).FullName;
 
-            return IsAndroidEnvironment() ? "/sdcard/Download" : Path.Combine(AppContext.BaseDirectory, nameof(MonoGameLogger));
         }
     }
 }
