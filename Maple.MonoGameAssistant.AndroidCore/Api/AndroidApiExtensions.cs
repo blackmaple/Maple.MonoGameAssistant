@@ -12,12 +12,12 @@ namespace Maple.MonoGameAssistant.AndroidCore.Api
 {
     public unsafe static partial class AndroidApiExtensions
     {
-        public const string JavaClassFullName = "com/android/maple/service/MapleService";
+        const string JavaClassFullName = "com/android/maple/service/MapleService";
 
         static AndroidApiContext? ApiContext { get; set; }
 
         [UnmanagedCallersOnly(EntryPoint = nameof(JNI_OnLoad))]
-        public static JINT JNI_OnLoad(PTR_JAVA_VM javaVM, JOBJECT reserved)
+        internal static JINT JNI_OnLoad(PTR_JAVA_VM javaVM, JOBJECT reserved)
         {
             return JNI_OnLoadImp(javaVM, reserved, static api => api.CreateDefaultAndroidService());
         }
@@ -34,7 +34,7 @@ namespace Maple.MonoGameAssistant.AndroidCore.Api
         }
 
         [UnmanagedCallersOnly(EntryPoint = nameof(JNI_OnUnload))]
-        public static void JNI_OnUnload(PTR_JAVA_VM javaVM, JOBJECT reserved)
+        internal static void JNI_OnUnload(PTR_JAVA_VM javaVM, JOBJECT reserved)
         {
             JNI_OnUnloadImp(javaVM, reserved);
         }
@@ -43,7 +43,7 @@ namespace Maple.MonoGameAssistant.AndroidCore.Api
         }
 
         [UnmanagedCallersOnly(EntryPoint = nameof(ApiAction))]
-        public static JBOOLEAN ApiAction(PTR_JNI_ENV jniEnv, JOBJECT instance, JINT actionIndex, JSTRING json)
+        internal static JBOOLEAN ApiAction(PTR_JNI_ENV jniEnv, JOBJECT instance, JINT actionIndex, JSTRING json)
         {
             return ApiActionImp(jniEnv, instance, actionIndex, json);
         }
@@ -54,7 +54,7 @@ namespace Maple.MonoGameAssistant.AndroidCore.Api
         }
 
         [UnmanagedCallersOnly(EntryPoint = nameof(TestAction))]
-        public static JBOOLEAN TestAction(PTR_JNI_ENV jniEnv, JOBJECT instance, JSTRING text)
+        internal static JBOOLEAN TestAction(PTR_JNI_ENV jniEnv, JOBJECT instance, JSTRING text)
         {
             return TestActionImp(jniEnv, instance, text);
         }
