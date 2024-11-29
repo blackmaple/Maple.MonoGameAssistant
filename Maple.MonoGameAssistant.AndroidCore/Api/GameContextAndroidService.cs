@@ -5,7 +5,7 @@ using Maple.MonoGameAssistant.GameDTO;
 using Maple.MonoGameAssistant.Model;
 using Microsoft.Extensions.Logging;
 
-namespace Maple.MonoGameAssistant.AndroidCore.Api
+namespace Maple.MonoGameAssistant.AndroidCore
 {
     public abstract class GameContextAndroidService<T_CONTEXT>(ILogger logger, MonoRuntimeContext runtimeContext, MonoTaskScheduler monoTaskScheduler, MonoGameSettings gameSettings)
     : IGameContextService,

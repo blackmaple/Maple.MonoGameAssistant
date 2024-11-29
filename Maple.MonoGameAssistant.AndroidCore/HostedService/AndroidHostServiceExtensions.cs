@@ -81,6 +81,7 @@ namespace Maple.MonoGameAssistant.AndroidCore.HostedService
                     p.QQ = context.GameDesc;
 
                 }, p => p.AddGameContextService<T_GAMECONTEXTSERVICE>());
+                Thread.SpinWait(context.DelayStartupSeconds);
                 host.Run();
             }
         }

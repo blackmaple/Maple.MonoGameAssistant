@@ -4,7 +4,7 @@ using Maple.MonoGameAssistant.AndroidJNI.JNI.Value;
 using System.Threading.Channels;
 namespace Maple.MonoGameAssistant.AndroidCore.Api
 {
-    public class AndroidApiContext (JavaVirtualMachineContext virtualMachineContext)  
+    public class AndroidApiContext(JavaVirtualMachineContext virtualMachineContext)
     {
         public JavaVirtualMachineContext VirtualMachineContext { get; } = virtualMachineContext;
         public Channel<AndroidApiArgs> TaskChannel { get; } = Channel.CreateBounded<AndroidApiArgs>(new BoundedChannelOptions(128)
@@ -17,7 +17,7 @@ namespace Maple.MonoGameAssistant.AndroidCore.Api
             return TaskChannel.Writer.TryWrite(arg);
         }
 
-        public IAsyncEnumerable<AndroidApiArgs> ReadAllAsync( )
+        public IAsyncEnumerable<AndroidApiArgs> ReadAllAsync()
         {
             return TaskChannel.Reader.ReadAllAsync();
         }
@@ -35,5 +35,7 @@ namespace Maple.MonoGameAssistant.AndroidCore.Api
         public string? GameName { set; get; }
 
         public string? GameDesc { set; get; }
+
+        public int DelayStartupSeconds { set; get; } = 10;
     }
 }
