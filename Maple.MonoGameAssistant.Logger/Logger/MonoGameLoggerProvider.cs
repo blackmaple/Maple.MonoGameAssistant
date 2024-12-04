@@ -3,6 +3,7 @@ using Microsoft.Extensions.ObjectPool;
 using System.Collections.Concurrent;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Threading.Channels;
 
 namespace Maple.MonoGameAssistant.Logger
 {
@@ -14,6 +15,7 @@ namespace Maple.MonoGameAssistant.Logger
         internal static ObjectPool<StringBuilder> StringBuilderPool { get; } = new DefaultObjectPoolProvider().CreateStringBuilderPool();
 
         ConcurrentDictionary<string, MonoGameLogger> Loggers { get; } = new ConcurrentDictionary<string, MonoGameLogger>();
+
 
         public ILogger CreateLogger(string categoryName) => CreateLoggerImp(categoryName);
         public void Dispose() => Loggers.Clear();

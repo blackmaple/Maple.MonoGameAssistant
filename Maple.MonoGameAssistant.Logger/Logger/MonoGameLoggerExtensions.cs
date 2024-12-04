@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
 using System.IO;
+using System.Runtime.InteropServices;
 
 namespace Maple.MonoGameAssistant.Logger
 {
@@ -42,10 +43,15 @@ namespace Maple.MonoGameAssistant.Logger
 
         public static string GetBaseDirectory()
         {
-            if (Directory.Exists(Android_Download))
+
+            if (Environment.OSVersion.Platform != PlatformID.Win32NT)
             {
-                return Android_Download;
+                if (Directory.Exists(Android_Download))
+                {
+                    return Android_Download;
+                }
             }
+           
             var path = Path.Combine(AppContext.BaseDirectory, nameof(MonoGameLogger));
             return Directory.Exists(path) ? path : Directory.CreateDirectory(path).FullName;
 

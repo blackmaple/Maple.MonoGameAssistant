@@ -1,8 +1,13 @@
 ﻿using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.ObjectPool;
+using Microsoft.Win32.SafeHandles;
+using System.Collections.Concurrent;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
+using System.Reflection.Metadata;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Threading.Channels;
 
 namespace Maple.MonoGameAssistant.Logger
 {
@@ -10,43 +15,107 @@ namespace Maple.MonoGameAssistant.Logger
     /// <summary>
     /// 简单的一个日志
     /// </summary>
-    public sealed class MonoGameLogger(string category = nameof(MonoGameLogger)) : ILogger
+    public sealed class MonoGameLogger : ILogger
     {
         public static ILogger Default { get; } = MonoGameLoggerExtensions.DefaultProvider.CreateLogger(typeof(MonoGameLogger).FullName ?? nameof(MonoGameLogger));
 
         #region Imp
-        string Category { get; } = category;
-        string FilePath { get; } = MonoGameLoggerExtensions.GetBaseDirectory();
+        string Category { get; }
+        string FilePath { get; }
+        Channel<StringBuilder> LogChannel { get; }
 
-
-
-
-        /// <summary>
-        /// lock write log msg
-        /// </summary>
-        /// <param name="message"></param>
-        [MethodImpl(MethodImplOptions.Synchronized)]
-        public void LogImp(string message)
+        public MonoGameLogger(string category = nameof(MonoGameLogger))
         {
-            var file = Path.Combine(FilePath, $"{DateTime.Now:yyyyMMdd_HH}_{Category}.log");
-            using var stream = File.AppendText(file);
-            stream.WriteLine(message);
-        }
-
-        [MethodImpl(MethodImplOptions.Synchronized)]
-        public void LogImp(StringBuilder sb)
-        {
-            var file = Path.Combine(FilePath, $"{DateTime.Now:yyyyMMdd_HH}_{Category}.log");
-            using var stream = File.AppendText(file);
-            foreach (var str in sb.GetChunks())
+            this.Category = category;
+            this.FilePath = MonoGameLoggerExtensions.GetBaseDirectory();
+            this.LogChannel = Channel.CreateBounded<StringBuilder>(new BoundedChannelOptions(Environment.ProcessorCount)
             {
-                stream.Write(str.Span);
-            }
-            stream.WriteLine();
+                FullMode = BoundedChannelFullMode.Wait
+            });
+
+            _ = Task.Run(ReadLog2FileLoop);
         }
 
+        async Task ReadLog2FileLoop()
+        {
+
+            using var safeFileHandleWapper = new SafeFileHandleWapper();
+            await foreach (var sb in this.LogChannel.Reader.ReadAllAsync().ConfigureAwait(false))
+            {
+                try
+                {
+                    var file = Path.Combine(FilePath, $"{DateTime.Now:yyyyMMdd_HH}_{Category}.log");
+                    var lastFileHandle = safeFileHandleWapper.TryGetOrUpdate(file);
+                    var fileStream = new FileStream(lastFileHandle, FileAccess.Write);
+                    var stream = new StreamWriter(fileStream);
+                    foreach (var str in sb.GetChunks())
+                    {
+                        await stream.WriteAsync(str).ConfigureAwait(false);
+                    }
+                    await stream.WriteLineAsync().ConfigureAwait(false);
+                    await stream.FlushAsync().ConfigureAwait(false);
+                }
+                finally
+                {
+                    MonoGameLoggerProvider.StringBuilderPool.Return(sb);
+                }
+
+            }
+
+
+        }
+        void WritLog2Channel(StringBuilder sb)
+        {
+            this.LogChannel.Writer.TryWrite(sb);
+        }
+
+
+        sealed class SafeFileHandleWapper : IDisposable
+        {
+
+            SafeFileHandle? LastSafeFileHandle { get; set; }
+            string? LastLogFileName { get; set; }
+
+
+            public void TryCloseHandle()
+            {
+
+                var lastHandle = this.LastSafeFileHandle;
+                if (lastHandle is null)
+                {
+                    return;
+                }
+                this.LastSafeFileHandle = null;
+                if (lastHandle.IsInvalid == false)
+                {
+                    lastHandle.Close();
+                }
+
+            }
+
+            public void Dispose()
+            {
+                this.TryCloseHandle();
+            }
+
+            public SafeFileHandle TryGetOrUpdate(string file)
+            {
+                if (this.LastLogFileName != file)
+                {
+                    this.LastLogFileName = file;
+                    this.TryCloseHandle();
+                }
+
+                this.LastSafeFileHandle ??= File.OpenHandle(file, FileMode.Append, FileAccess.Write,FileShare.ReadWrite,FileOptions.RandomAccess);
+                return this.LastSafeFileHandle;
+            }
+
+
+        }
 
         #endregion
+
+
 
         #region ILogger
 
@@ -63,19 +132,12 @@ namespace Maple.MonoGameAssistant.Logger
         public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception? exception, Func<TState, Exception?, string> formatter)
         {
             StringBuilder sb = MonoGameLoggerProvider.StringBuilderPool.Get();
-            try
-            {
-                sb.Append($"{DateTime.Now:yyyy-MM-dd HH:mm:ss.ffff}-");
-                sb.Append($"[{Environment.CurrentManagedThreadId:x4}]-");
-                sb.Append($"[{logLevel}]-");
-                sb.Append($"[{Category}]-");
-                sb.Append($"{formatter(state, exception)}");
-                this.LogImp(sb);
-            }
-            finally
-            {
-                MonoGameLoggerProvider.StringBuilderPool.Return(sb);
-            }
+            sb.Append($"{DateTime.Now:yyyy-MM-dd HH:mm:ss.ffff}-");
+            sb.Append($"[{Environment.CurrentManagedThreadId:X4}]-");
+            sb.Append($"[{logLevel}]-");
+         //   sb.Append($"[{Category}]-");
+            sb.Append($"{formatter(state, exception)}");
+            this.WritLog2Channel(sb);
         }
         #endregion
 

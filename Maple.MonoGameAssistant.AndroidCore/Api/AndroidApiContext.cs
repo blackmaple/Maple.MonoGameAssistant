@@ -7,7 +7,7 @@ namespace Maple.MonoGameAssistant.AndroidCore.Api
     public class AndroidApiContext(JavaVirtualMachineContext virtualMachineContext)
     {
         public JavaVirtualMachineContext VirtualMachineContext { get; } = virtualMachineContext;
-        public Channel<AndroidApiArgs> TaskChannel { get; } = Channel.CreateBounded<AndroidApiArgs>(new BoundedChannelOptions(128)
+        public Channel<AndroidApiArgs> TaskChannel { get; } = Channel.CreateBounded<AndroidApiArgs>(new BoundedChannelOptions(Environment.ProcessorCount)
         {
             FullMode = BoundedChannelFullMode.Wait
         });
