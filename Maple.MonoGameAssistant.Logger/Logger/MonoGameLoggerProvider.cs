@@ -14,14 +14,15 @@ namespace Maple.MonoGameAssistant.Logger
         internal static Channel<MonoLogData> LogChannel { get; } = Channel.CreateUnbounded<MonoLogData>();
         static MonoGameLoggerProvider()
         {
-            _ = Task.Run(ReadLog2FileLoop);
+            _ = Task.Run(WriteLog2FileLoopTask);
         }
-        static async Task ReadLog2FileLoop()
+        static async Task WriteLog2FileLoopTask()
         {
+           
             var sb = new StringBuilder(1024);
             await foreach (var logData in LogChannel.Reader.ReadAllAsync().ConfigureAwait(false))
             {
-                var time = WriteLogContent(logData.LogLevel, logData.Content, sb);
+                var time = BuildLogContent(logData.LogLevel, logData.Content, sb);
                 var logPath = Path.Combine(logData.FilePath, $"{time:yyyyMMdd_HH}_{logData.Category}_{Environment.ProcessId:X4}.log");
                 var streamWriter = File.AppendText(logPath);
                 await using (streamWriter.ConfigureAwait(false))
@@ -33,9 +34,11 @@ namespace Maple.MonoGameAssistant.Logger
                     await streamWriter.WriteLineAsync().ConfigureAwait(false);
                 }
             }
+
+            
         }
 
-        public static DateTime WriteLogContent(LogLevel logLevel, string content, StringBuilder sb)
+        public static DateTime BuildLogContent(LogLevel logLevel, string content, StringBuilder sb)
         {
             var time = DateTime.Now;
             sb.Clear();
@@ -49,8 +52,11 @@ namespace Maple.MonoGameAssistant.Logger
 
 
         ConcurrentDictionary<string, MonoGameLogger> Loggers { get; } = new ConcurrentDictionary<string, MonoGameLogger>();
+
         public ILogger CreateLogger(string categoryName) => CreateLoggerImp(categoryName);
+
         public void Dispose() => Loggers.Clear();
+
         [MethodImpl(MethodImplOptions.Synchronized)]
         internal MonoGameLogger CreateLoggerImp(string categoryName) => this.Loggers.GetOrAdd(categoryName, static (log) => new(log));
 
