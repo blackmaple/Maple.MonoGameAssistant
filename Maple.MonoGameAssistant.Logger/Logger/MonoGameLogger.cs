@@ -35,33 +35,31 @@ namespace Maple.MonoGameAssistant.Logger
 
         async Task ReadLog2FileLoop()
         {
-            var logFileCache = new LogFileCache();
-            await using (logFileCache.ConfigureAwait(false))
+            await foreach (var logData in this.LogChannel.Reader.ReadAllAsync().ConfigureAwait(false))
             {
-                await foreach (var logData in this.LogChannel.Reader.ReadAllAsync().ConfigureAwait(false))
+                StringBuilder sb = MonoGameLoggerProvider.StringBuilderPool.Get();
+                try
                 {
-                    StringBuilder sb = MonoGameLoggerProvider.StringBuilderPool.Get();
-                    try
-                    {
-                        var time = DateTime.Now;
-                        sb.Append($"{time:yyyy-MM-dd HH:mm:ss.ffff}-");
-                        sb.Append($"[{Environment.CurrentManagedThreadId:X4}]-");
-                        sb.Append($"[{logData.LogLevel}]-");
-                        sb.Append(logData.Content);
+                    var time = DateTime.Now;
+                    sb.Append($"{time:yyyy-MM-dd HH:mm:ss.ffff}-");
+                    sb.Append($"[{Environment.CurrentManagedThreadId:X4}]-");
+                    sb.Append($"[{logData.LogLevel}]-");
+                    sb.Append(logData.Content);
 
-                        var file = Path.Combine(FilePath, $"{time:yyyyMMdd_HH}_{Category}.log");
-                        await logFileCache.WriteLogAsync(file, sb).ConfigureAwait(false);
-                    }
-                    finally
+                    var logPath = Path.Combine(FilePath, $"{time:yyyyMMdd_HH}_{Category}.log");
+                    using var streamWriter = File.AppendText(logPath);
+                    foreach (var str in sb.GetChunks())
                     {
-                        MonoGameLoggerProvider.StringBuilderPool.Return(sb);
+                        await streamWriter.WriteAsync(str).ConfigureAwait(false);
                     }
-
+                    await streamWriter.WriteLineAsync().ConfigureAwait(false);
                 }
+                finally
+                {
+                    MonoGameLoggerProvider.StringBuilderPool.Return(sb);
+                }
+
             }
-
-
-
         }
         void WritLog2Channel(LogData sb)
         {
@@ -94,69 +92,6 @@ namespace Maple.MonoGameAssistant.Logger
 
     }
 
-    sealed class LogFileCache : IDisposable, IAsyncDisposable
-    {
-
-        StreamWriter? LastWriter { get; set; }
-        string? LastLogFileName { get; set; }
-
-
-        public void TryCloseHandle()
-        {
-
-            var lastWriter = this.LastWriter;
-            if (lastWriter is not null)
-            {
-                this.LastWriter = null;
-                lastWriter.Dispose();
-            }
-
-
-        }
-        public ValueTask TryCloseHandleAsync()
-        {
-
-            var lastWriter = this.LastWriter;
-            if (lastWriter is not null)
-            {
-                this.LastWriter = null;
-                return lastWriter.DisposeAsync();
-            }
-            return ValueTask.CompletedTask;
-
-
-        }
-        public ValueTask DisposeAsync() => TryCloseHandleAsync();
-
-
-        public void Dispose() => this.TryCloseHandle();
-
-
-        public StreamWriter TryGetOrUpdate(string file)
-        {
-            if (this.LastLogFileName != file)
-            {
-                this.LastLogFileName = file;
-                this.TryCloseHandle();
-            }
-
-            this.LastWriter ??= File.AppendText(file);
-            return this.LastWriter;
-        }
-
-        public async Task WriteLogAsync(string file, StringBuilder sb)
-        {
-            var lastWriter = this.TryGetOrUpdate(file);
-            foreach (var str in sb.GetChunks())
-            {
-                await lastWriter.WriteAsync(str).ConfigureAwait(false);
-            }
-            await lastWriter.WriteLineAsync().ConfigureAwait(false);
-            await lastWriter.FlushAsync().ConfigureAwait(false);
-        }
-
-
-    }
 
 
 
