@@ -22,96 +22,53 @@ namespace Maple.MonoGameAssistant.Logger
         #region Imp
         string Category { get; }
         string FilePath { get; }
-        Channel<StringBuilder> LogChannel { get; }
+        Channel<LogData> LogChannel { get; }
 
         public MonoGameLogger(string category = nameof(MonoGameLogger))
         {
             this.Category = category;
             this.FilePath = MonoGameLoggerExtensions.GetBaseDirectory();
-            this.LogChannel = Channel.CreateBounded<StringBuilder>(new BoundedChannelOptions(Environment.ProcessorCount)
-            {
-                FullMode = BoundedChannelFullMode.Wait
-            });
+            this.LogChannel = Channel.CreateUnbounded<LogData>();
 
             _ = Task.Run(ReadLog2FileLoop);
         }
 
         async Task ReadLog2FileLoop()
         {
-
-            using var safeFileHandleWapper = new SafeFileHandleWapper();
-            await foreach (var sb in this.LogChannel.Reader.ReadAllAsync().ConfigureAwait(false))
+            var logFileCache = new LogFileCache();
+            await using (logFileCache.ConfigureAwait(false))
             {
-                try
+                await foreach (var logData in this.LogChannel.Reader.ReadAllAsync().ConfigureAwait(false))
                 {
-                    var file = Path.Combine(FilePath, $"{DateTime.Now:yyyyMMdd_HH}_{Category}.log");
-                    var lastFileHandle = safeFileHandleWapper.TryGetOrUpdate(file);
-                    var fileStream = new FileStream(lastFileHandle, FileAccess.Write);
-                    var stream = new StreamWriter(fileStream);
-                    foreach (var str in sb.GetChunks())
+                    StringBuilder sb = MonoGameLoggerProvider.StringBuilderPool.Get();
+                    try
                     {
-                        await stream.WriteAsync(str).ConfigureAwait(false);
-                    }
-                    await stream.WriteLineAsync().ConfigureAwait(false);
-                    await stream.FlushAsync().ConfigureAwait(false);
-                }
-                finally
-                {
-                    MonoGameLoggerProvider.StringBuilderPool.Return(sb);
-                }
+                        var time = DateTime.Now;
+                        sb.Append($"{time:yyyy-MM-dd HH:mm:ss.ffff}-");
+                        sb.Append($"[{Environment.CurrentManagedThreadId:X4}]-");
+                        sb.Append($"[{logData.LogLevel}]-");
+                        sb.Append(logData.Content);
 
+                        var file = Path.Combine(FilePath, $"{time:yyyyMMdd_HH}_{Category}.log");
+                        await logFileCache.WriteLogAsync(file, sb).ConfigureAwait(false);
+                    }
+                    finally
+                    {
+                        MonoGameLoggerProvider.StringBuilderPool.Return(sb);
+                    }
+
+                }
             }
 
 
+
         }
-        void WritLog2Channel(StringBuilder sb)
+        void WritLog2Channel(LogData sb)
         {
             this.LogChannel.Writer.TryWrite(sb);
         }
 
 
-        sealed class SafeFileHandleWapper : IDisposable
-        {
-
-            SafeFileHandle? LastSafeFileHandle { get; set; }
-            string? LastLogFileName { get; set; }
-
-
-            public void TryCloseHandle()
-            {
-
-                var lastHandle = this.LastSafeFileHandle;
-                if (lastHandle is null)
-                {
-                    return;
-                }
-                this.LastSafeFileHandle = null;
-                if (lastHandle.IsInvalid == false)
-                {
-                    lastHandle.Close();
-                }
-
-            }
-
-            public void Dispose()
-            {
-                this.TryCloseHandle();
-            }
-
-            public SafeFileHandle TryGetOrUpdate(string file)
-            {
-                if (this.LastLogFileName != file)
-                {
-                    this.LastLogFileName = file;
-                    this.TryCloseHandle();
-                }
-
-                this.LastSafeFileHandle ??= File.OpenHandle(file, FileMode.Append, FileAccess.Write,FileShare.ReadWrite,FileOptions.RandomAccess);
-                return this.LastSafeFileHandle;
-            }
-
-
-        }
 
         #endregion
 
@@ -131,15 +88,83 @@ namespace Maple.MonoGameAssistant.Logger
 
         public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception? exception, Func<TState, Exception?, string> formatter)
         {
-            StringBuilder sb = MonoGameLoggerProvider.StringBuilderPool.Get();
-            sb.Append($"{DateTime.Now:yyyy-MM-dd HH:mm:ss.ffff}-");
-            sb.Append($"[{Environment.CurrentManagedThreadId:X4}]-");
-            sb.Append($"[{logLevel}]-");
-         //   sb.Append($"[{Category}]-");
-            sb.Append($"{formatter(state, exception)}");
-            this.WritLog2Channel(sb);
+            this.WritLog2Channel(new LogData() { LogLevel = logLevel, EventId = eventId, Content = formatter(state, exception) });
         }
         #endregion
 
     }
+
+    sealed class LogFileCache : IDisposable, IAsyncDisposable
+    {
+
+        StreamWriter? LastWriter { get; set; }
+        string? LastLogFileName { get; set; }
+
+
+        public void TryCloseHandle()
+        {
+
+            var lastWriter = this.LastWriter;
+            if (lastWriter is not null)
+            {
+                this.LastWriter = null;
+                lastWriter.Dispose();
+            }
+
+
+        }
+        public ValueTask TryCloseHandleAsync()
+        {
+
+            var lastWriter = this.LastWriter;
+            if (lastWriter is not null)
+            {
+                this.LastWriter = null;
+                return lastWriter.DisposeAsync();
+            }
+            return ValueTask.CompletedTask;
+
+
+        }
+        public ValueTask DisposeAsync() => TryCloseHandleAsync();
+
+
+        public void Dispose() => this.TryCloseHandle();
+
+
+        public StreamWriter TryGetOrUpdate(string file)
+        {
+            if (this.LastLogFileName != file)
+            {
+                this.LastLogFileName = file;
+                this.TryCloseHandle();
+            }
+
+            this.LastWriter ??= File.AppendText(file);
+            return this.LastWriter;
+        }
+
+        public async Task WriteLogAsync(string file, StringBuilder sb)
+        {
+            var lastWriter = this.TryGetOrUpdate(file);
+            foreach (var str in sb.GetChunks())
+            {
+                await lastWriter.WriteAsync(str).ConfigureAwait(false);
+            }
+            await lastWriter.WriteLineAsync().ConfigureAwait(false);
+            await lastWriter.FlushAsync().ConfigureAwait(false);
+        }
+
+
+    }
+
+
+
+    class LogData
+    {
+        public required LogLevel LogLevel { get; set; }
+        public required EventId EventId { get; set; }
+        public required string Content { set; get; }
+    }
+
 }
