@@ -11,7 +11,6 @@ namespace Maple.MonoGameAssistant.Logger
         public static MonoGameLoggerProvider DefaultProvider { get; } = new MonoGameLoggerProvider();
 
         const string Android_Download = "/sdcard/Download";
-
         public static IServiceCollection AddMonoGameLogger(this IServiceCollection services)
         {
             services.TryAddEnumerable(ServiceDescriptor.Singleton<ILoggerProvider, MonoGameLoggerProvider>());
