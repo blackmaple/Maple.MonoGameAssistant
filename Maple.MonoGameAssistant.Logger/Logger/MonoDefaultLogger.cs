@@ -50,7 +50,7 @@ namespace Maple.MonoGameAssistant.Logger
             {
                 var logTime = MonoGameLoggerExtensions.BuildLogContent(logLevel, formatter(state, exception), sb);
                 var logPath = MonoGameLoggerExtensions.GetLogFileFullName(this.FilePath, this.Category, logTime);
-                MonoGameLoggerExtensions.WriteLogFileContent(logPath, sb);
+                MonoGameLoggerExtensions.WriteLogFileContent_Lock(logPath, sb);
             }
             finally
             {

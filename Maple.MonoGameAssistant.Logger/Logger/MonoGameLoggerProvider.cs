@@ -15,23 +15,30 @@ namespace Maple.MonoGameAssistant.Logger
     {
 
         ConcurrentDictionary<string, MonoGameLogger> CacheLoggers { get; } = new ConcurrentDictionary<string, MonoGameLogger>();
-        Channel<MonoLogData> LogChannel { get; } = Channel.CreateUnbounded<MonoLogData>();
+        BlockingCollection<MonoLogData> LogCollection { get; } = new BlockingCollection<MonoLogData>(Environment.ProcessorCount);
 
         public MonoGameLoggerProvider()
         {
-            _ = Task.Run(WriteLog2FileLoopTask);
+            _ = Task.Factory.StartNew(WriteLog2FileLoopTask, this, TaskCreationOptions.LongRunning);
         }
 
-        async Task WriteLog2FileLoopTask()
+        static void WriteLog2FileLoopTask(object? obj)
         {
+            if (obj is not MonoGameLoggerProvider loggerProvider)
+            {
+                return;
+            }
             var sb = MonoGameLoggerExtensions.StringBuilderPool.Get();
             try
             {
-                await foreach (var logData in LogChannel.Reader.ReadAllAsync().ConfigureAwait(false))
+                while (false == loggerProvider.LogCollection.IsCompleted)
                 {
-                    var logTime = MonoGameLoggerExtensions.BuildLogContent(logData.LogLevel, logData.Content, sb);
-                    var logPath = MonoGameLoggerExtensions.GetLogFileFullName(logData.FilePath, logData.Category, logTime);
-                    await MonoGameLoggerExtensions.WriteLogFileContentAsync(logPath, sb).ConfigureAwait(false);
+                    foreach (var logData in loggerProvider.LogCollection.GetConsumingEnumerable())
+                    {
+                        var logTime = MonoGameLoggerExtensions.BuildLogContent(logData.LogLevel, logData.Content, sb);
+                        var logPath = MonoGameLoggerExtensions.GetLogFileFullName(logData.FilePath, logData.Category, logTime);
+                        MonoGameLoggerExtensions.WriteLogFileContent(logPath, sb);
+                    }
                 }
             }
             finally
@@ -42,15 +49,15 @@ namespace Maple.MonoGameAssistant.Logger
 
         internal void TryWriteLog2Channel(MonoLogData logData)
         {
-            this.LogChannel.Writer.TryWrite(logData);
+            this.LogCollection.TryAdd(logData);
         }
 
         public ILogger CreateLogger(string categoryName) => CreateLoggerImp(categoryName);
 
         public void Dispose()
         {
+            this.LogCollection.CompleteAdding();
             this.CacheLoggers.Clear();
-            this.LogChannel.Writer.Complete();
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]

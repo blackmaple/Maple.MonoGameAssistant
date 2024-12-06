@@ -91,6 +91,16 @@ namespace Maple.MonoGameAssistant.Logger
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
+        internal static void WriteLogFileContent_Lock(string logPath, StringBuilder sb)
+        {
+            using var streamWriter = File.AppendText(logPath);
+            foreach (var str in sb.GetChunks())
+            {
+                streamWriter.Write(str.Span);
+            }
+            streamWriter.WriteLine();
+        }
+
         internal static void WriteLogFileContent(string logPath, StringBuilder sb)
         {
             using var streamWriter = File.AppendText(logPath);
