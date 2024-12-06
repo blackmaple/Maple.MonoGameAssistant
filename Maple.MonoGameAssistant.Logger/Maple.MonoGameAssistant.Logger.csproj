@@ -15,7 +15,7 @@
 		<Description>Maple.MonoGameAssistant.Logger</Description>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<PackageTags>mono;unity;game;maple</PackageTags>
-		<Version>1.0.929-rc</Version>
+		<Version>1.0.930-rc</Version>
 
 	</PropertyGroup>
 
