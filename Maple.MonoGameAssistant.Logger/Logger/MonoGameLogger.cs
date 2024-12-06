@@ -15,43 +15,22 @@ namespace Maple.MonoGameAssistant.Logger
     /// <summary>
     /// 简单的一个日志
     /// </summary>
-    public sealed class MonoGameLogger(string category = nameof(MonoGameLogger)) : ILogger
+    public sealed class MonoGameLogger(string category, MonoGameLoggerProvider loggerProvider) : MonoDefaultLogger(category), ILogger
     {
-        public static ILogger Default { get; } = MonoGameLoggerExtensions.DefaultProvider.CreateLogger(typeof(MonoGameLogger).FullName ?? nameof(MonoGameLogger));
+        MonoGameLoggerProvider LoggerProvider { get; } = loggerProvider;
 
-        #region Props
-        string Category { get; } = category;
-        string FilePath { get; } = MonoGameLoggerExtensions.GetBaseDirectory();
-        #endregion
-
-
-
-        #region ILogger
-
-        readonly struct Disposable : IDisposable
+        public sealed override void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception? exception, Func<TState, Exception?, string> formatter)
         {
-            public readonly void Dispose()
-            {
-
-            }
-        }
-        public IDisposable? BeginScope<TState>(TState state) where TState : notnull => new Disposable();
-        public bool IsEnabled(LogLevel logLevel) => true;
-
-        public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception? exception, Func<TState, Exception?, string> formatter)
-        {
-            MonoGameLoggerProvider.LogChannel.Writer.TryWrite(
+            this.LoggerProvider.TryWriteLog2Channel(
                 new MonoLogData()
                 {
-                    FilePath = this.FilePath,
                     Category = this.Category,
                     LogLevel = logLevel,
+                    Content = formatter(state, exception),
                     EventId = eventId,
-                    Content = formatter(state, exception)
+                    FilePath = this.FilePath,
                 });
         }
-        #endregion
-
     }
 
 }

@@ -1,7 +1,6 @@
 ﻿using Maple.MonoGameAssistant.AndroidCore.AndroidTask;
 using Maple.MonoGameAssistant.AndroidCore.Api;
 using Maple.MonoGameAssistant.AndroidCore.GameContext;
-using Maple.MonoGameAssistant.AndroidJNI.Context;
 using Maple.MonoGameAssistant.Core;
 using Maple.MonoGameAssistant.GameDTO;
 using Maple.MonoGameAssistant.Logger;

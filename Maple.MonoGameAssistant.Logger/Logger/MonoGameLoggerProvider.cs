@@ -1,4 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.ObjectPool;
+using System;
 using System.Collections.Concurrent;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -11,54 +13,54 @@ namespace Maple.MonoGameAssistant.Logger
     /// </summary>
     public sealed class MonoGameLoggerProvider : ILoggerProvider
     {
-        internal static Channel<MonoLogData> LogChannel { get; } = Channel.CreateUnbounded<MonoLogData>();
-        static MonoGameLoggerProvider()
+
+        ConcurrentDictionary<string, MonoGameLogger> CacheLoggers { get; } = new ConcurrentDictionary<string, MonoGameLogger>();
+        Channel<MonoLogData> LogChannel { get; } = Channel.CreateUnbounded<MonoLogData>();
+
+        public MonoGameLoggerProvider()
         {
             _ = Task.Run(WriteLog2FileLoopTask);
         }
-        static async Task WriteLog2FileLoopTask()
+
+        async Task WriteLog2FileLoopTask()
         {
-           
-            var sb = new StringBuilder(1024);
-            await foreach (var logData in LogChannel.Reader.ReadAllAsync().ConfigureAwait(false))
+            var sb = MonoGameLoggerExtensions.StringBuilderPool.Get();
+            try
             {
-                var time = BuildLogContent(logData.LogLevel, logData.Content, sb);
-                var logPath = Path.Combine(logData.FilePath, $"{time:yyyyMMdd_HH}_{logData.Category}_{Environment.ProcessId:X4}.log");
-                var streamWriter = File.AppendText(logPath);
-                await using (streamWriter.ConfigureAwait(false))
+                await foreach (var logData in LogChannel.Reader.ReadAllAsync().ConfigureAwait(false))
                 {
-                    foreach (var str in sb.GetChunks())
-                    {
-                        await streamWriter.WriteAsync(str).ConfigureAwait(false);
-                    }
-                    await streamWriter.WriteLineAsync().ConfigureAwait(false);
+                    var logTime = MonoGameLoggerExtensions.BuildLogContent(logData.LogLevel, logData.Content, sb);
+                    var logPath = MonoGameLoggerExtensions.GetLogFileFullName(logData.FilePath, logData.Category, logTime);
+                    await MonoGameLoggerExtensions.WriteLogFileContentAsync(logPath, sb).ConfigureAwait(false);
                 }
             }
-
-            
+            finally
+            {
+                MonoGameLoggerExtensions.StringBuilderPool.Return(sb);
+            }
         }
 
-        public static DateTime BuildLogContent(LogLevel logLevel, string content, StringBuilder sb)
+        internal void TryWriteLog2Channel(MonoLogData logData)
         {
-            var time = DateTime.Now;
-            sb.Clear();
-            sb.Append($"{time:yyyy-MM-dd HH:mm:ss.ffff}-");
-            sb.Append($"[{Environment.CurrentManagedThreadId:X4}]-");
-            sb.Append($"[{logLevel}]-");
-            sb.Append(content);
-            return time;
+            this.LogChannel.Writer.TryWrite(logData);
         }
-
-
-
-        ConcurrentDictionary<string, MonoGameLogger> Loggers { get; } = new ConcurrentDictionary<string, MonoGameLogger>();
 
         public ILogger CreateLogger(string categoryName) => CreateLoggerImp(categoryName);
 
-        public void Dispose() => Loggers.Clear();
+        public void Dispose()
+        {
+            this.CacheLoggers.Clear();
+            this.LogChannel.Writer.Complete();
+        }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
-        internal MonoGameLogger CreateLoggerImp(string categoryName) => this.Loggers.GetOrAdd(categoryName, static (log) => new(log));
+        internal MonoGameLogger CreateLoggerImp(string categoryName) => this.CacheLoggers.GetOrAdd(categoryName, (log) => new(log, this));
 
     }
+
+
+
+
+
+
 }
