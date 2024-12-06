@@ -24,7 +24,7 @@ namespace Maple.MonoGameAssistant.Logger
                 {
                     foreach (var logData in loggerChannel.ReadAll())
                     {
-                        var logTime = MonoGameLoggerExtensions.BuildLogContent(logData.LogLevel, logData.Content, sb);
+                        var logTime = MonoGameLoggerExtensions.BuildLogContent(logData.LogLevel, logData.Content, logData.ThreadId, sb);
                         var logPath = MonoGameLoggerExtensions.GetLogFileFullName(logData.FilePath, logData.Category, logTime);
                         MonoGameLoggerExtensions.WriteLogFileContent(logPath, sb);
                     }
