@@ -15,13 +15,13 @@ namespace Maple.MonoGameAssistant.Logger
     /// <summary>
     /// 简单的一个日志
     /// </summary>
-    public sealed class MonoGameLogger(string category, MonoGameLoggerProvider loggerProvider) : MonoDefaultLogger(category), ILogger
+    public sealed class MonoGameLogger(string category, MonoGameLoggerChannel loggerChannel) : MonoDefaultLogger(category), ILogger
     {
-        MonoGameLoggerProvider LoggerProvider { get; } = loggerProvider;
+        MonoGameLoggerChannel LoggerChannel { get; } = loggerChannel;
 
         public sealed override void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception? exception, Func<TState, Exception?, string> formatter)
         {
-            this.LoggerProvider.TryWriteLog2Channel(
+            this.LoggerChannel.TryAdd(
                 new MonoLogData()
                 {
                     Category = this.Category,

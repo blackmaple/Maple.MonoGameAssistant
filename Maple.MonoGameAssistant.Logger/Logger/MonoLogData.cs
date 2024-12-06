@@ -2,7 +2,7 @@
 
 namespace Maple.MonoGameAssistant.Logger
 {
-    internal class MonoLogData
+    public class MonoLogData
     {
         public required string FilePath { set; get; }
         public required string Category { set; get; }

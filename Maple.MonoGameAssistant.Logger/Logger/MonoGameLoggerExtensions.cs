@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.ObjectPool;
+using System.ComponentModel;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -13,11 +14,11 @@ namespace Maple.MonoGameAssistant.Logger
     {
         internal static ObjectPool<StringBuilder> StringBuilderPool { get; } = new DefaultObjectPoolProvider().CreateStringBuilderPool();
 
-        public static MonoGameLoggerProvider DefaultProvider { get; } = new MonoGameLoggerProvider();
-
         const string Android_Download = "/sdcard/Download";
         public static IServiceCollection AddMonoGameLogger(this IServiceCollection services)
         {
+            services.AddSingleton<MonoGameLoggerChannel>();
+            services.AddHostedService<MonoGameLoggerHostedService>();
             services.TryAddEnumerable(ServiceDescriptor.Singleton<ILoggerProvider, MonoGameLoggerProvider>());
             return services;
         }
