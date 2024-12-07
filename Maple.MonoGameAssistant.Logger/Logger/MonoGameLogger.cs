@@ -21,17 +21,27 @@ namespace Maple.MonoGameAssistant.Logger
 
         public sealed override void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception? exception, Func<TState, Exception?, string> formatter)
         {
-            this.LoggerChannel.TryAdd(
-                new MonoLogData()
+            //我无法理解 在安卓系统执行这个方法 有操作集合容器添加数据行为 会引发应用崩溃  T_T
+            if (MonoGameLoggerExtensions.IsAndroidPlatform)
+            {
+                base.Log(logLevel, eventId, state, exception, formatter);
+            }
+            else
+            {
+                this.LoggerChannel.TryWrite(new MonoLogData()
                 {
                     Category = this.Category,
+                    FilePath = this.FilePath,
                     LogLevel = logLevel,
                     Content = formatter(state, exception),
-                    EventId = eventId,
-                    FilePath = this.FilePath,
-                    ThreadId = Environment.CurrentManagedThreadId,
+                    ThreadId = Environment.CurrentManagedThreadId
                 });
+            }
+
         }
+
+
+
     }
 
 }

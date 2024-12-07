@@ -17,12 +17,12 @@ namespace Maple.MonoGameAssistant.Logger
         ConcurrentDictionary<string, MonoGameLogger> CacheLoggers { get; } = new ConcurrentDictionary<string, MonoGameLogger>();
         MonoGameLoggerChannel LoggerChannel { get; } = loggerChannel;
 
- 
+
         public ILogger CreateLogger(string categoryName) => CreateLoggerImp(categoryName);
 
         public void Dispose()
         {
-            this.LoggerChannel.Completed();
+            this.LoggerChannel.Complete();
             this.CacheLoggers.Clear();
         }
 

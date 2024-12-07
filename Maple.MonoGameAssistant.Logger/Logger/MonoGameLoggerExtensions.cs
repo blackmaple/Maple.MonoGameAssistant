@@ -44,17 +44,14 @@ namespace Maple.MonoGameAssistant.Logger
             return builder;
         }
 
-
+        internal static bool IsAndroidPlatform { get; } = Environment.OSVersion.Platform != PlatformID.Win32NT && Directory.Exists(Android_Download);
 
         internal static string GetBaseDirectory()
         {
 
-            if (Environment.OSVersion.Platform != PlatformID.Win32NT)
+            if (IsAndroidPlatform)
             {
-                if (Directory.Exists(Android_Download))
-                {
-                    return Android_Download;
-                }
+                return Android_Download;
             }
 
             var path = Path.Combine(AppContext.BaseDirectory, nameof(MonoGameLogger));
@@ -62,7 +59,7 @@ namespace Maple.MonoGameAssistant.Logger
 
         }
 
-        internal static DateTime BuildLogContent(LogLevel logLevel, string content,int threadId, StringBuilder sb)
+        internal static DateTime BuildLogContent(LogLevel logLevel, string content, int threadId, StringBuilder sb)
         {
             var time = DateTime.Now;
             sb.Clear();

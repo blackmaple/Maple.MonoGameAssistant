@@ -8,27 +8,20 @@ namespace Maple.MonoGameAssistant.Logger
 
         protected override Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            return Task.Factory.StartNew(WriteLog2FileLoopTask, this.LoggerChannel, TaskCreationOptions.LongRunning);
+            //return Task.Factory.StartNew(WriteLog2FileLoopTask, this.LoggerChannel, TaskCreationOptions.LongRunning);
+            return Task.Run(WriteLog2FileLoopTask, stoppingToken);
         }
 
-        static void WriteLog2FileLoopTask(object? obj)
+        async Task WriteLog2FileLoopTask()
         {
-            if (obj is not MonoGameLoggerChannel loggerChannel)
-            {
-                return;
-            }
             var sb = MonoGameLoggerExtensions.StringBuilderPool.Get();
             try
             {
-                while (false == loggerChannel.IsCompleted)
+                await foreach (var logData in this.LoggerChannel.ReadAllAsync().ConfigureAwait(false))
                 {
-                    foreach (var logData in loggerChannel.ReadAll())
-                    {
-                        Thread.SpinWait(1000);
-                        var logTime = MonoGameLoggerExtensions.BuildLogContent(logData.LogLevel, logData.Content, sb);
-                        var logPath = MonoGameLoggerExtensions.GetLogFileFullName(logData.FilePath, logData.Category, logTime);
-                        MonoGameLoggerExtensions.WriteLogFileContent(logPath, sb);
-                    }
+                    var logTime = MonoGameLoggerExtensions.BuildLogContent(logData.LogLevel, logData.Content, logData.ThreadId, sb);
+                    var logPath = MonoGameLoggerExtensions.GetLogFileFullName(logData.FilePath, logData.Category, logTime);
+                    await MonoGameLoggerExtensions.WriteLogFileContentAsync(logPath, sb).ConfigureAwait(false);
                 }
             }
             finally
@@ -38,6 +31,6 @@ namespace Maple.MonoGameAssistant.Logger
         }
 
 
-    
+
     }
 }
