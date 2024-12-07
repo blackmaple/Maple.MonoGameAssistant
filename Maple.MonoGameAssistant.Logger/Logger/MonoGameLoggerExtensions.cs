@@ -62,12 +62,12 @@ namespace Maple.MonoGameAssistant.Logger
 
         }
 
-        internal static DateTime BuildLogContent(LogLevel logLevel, string content, StringBuilder sb)
+        internal static DateTime BuildLogContent(LogLevel logLevel, string content,int threadId, StringBuilder sb)
         {
             var time = DateTime.Now;
             sb.Clear();
             sb.Append($"{time:yyyy-MM-dd HH:mm:ss.ffff}-");
-            sb.Append($"[{Environment.CurrentManagedThreadId:X4}]-");
+            sb.Append($"[{threadId:X4}]-");
             sb.Append($"[{logLevel}]-");
             sb.Append(content);
             return time;

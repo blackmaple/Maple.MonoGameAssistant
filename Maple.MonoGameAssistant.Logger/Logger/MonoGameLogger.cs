@@ -29,6 +29,7 @@ namespace Maple.MonoGameAssistant.Logger
                     Content = formatter(state, exception),
                     EventId = eventId,
                     FilePath = this.FilePath,
+                    ThreadId = Environment.CurrentManagedThreadId,
                 });
         }
     }

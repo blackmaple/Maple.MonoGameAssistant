@@ -48,7 +48,7 @@ namespace Maple.MonoGameAssistant.Logger
             var sb = MonoGameLoggerExtensions.StringBuilderPool.Get();
             try
             {
-                var logTime = MonoGameLoggerExtensions.BuildLogContent(logLevel, formatter(state, exception), sb);
+                var logTime = MonoGameLoggerExtensions.BuildLogContent(logLevel, formatter(state, exception), Environment.CurrentManagedThreadId, sb);
                 var logPath = MonoGameLoggerExtensions.GetLogFileFullName(this.FilePath, this.Category, logTime);
                 MonoGameLoggerExtensions.WriteLogFileContent_Lock(logPath, sb);
             }
