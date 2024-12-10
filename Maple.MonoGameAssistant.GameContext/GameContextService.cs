@@ -43,7 +43,7 @@ namespace Maple.MonoGameAssistant.GameContext
 
         #region Host Service
 
- 
+
 
         public ValueTask StopAsync()
         {
@@ -158,7 +158,6 @@ namespace Maple.MonoGameAssistant.GameContext
         {
             return msgNotify.KeyCode switch
             {
-                EnumVirtualKeyCode.VK_Q => Q_KeyDown(),
 
                 EnumVirtualKeyCode.VK_F1 => F1_KeyDown(),
                 EnumVirtualKeyCode.VK_F2 => F2_KeyDown(),
@@ -202,19 +201,57 @@ namespace Maple.MonoGameAssistant.GameContext
 
 
 
+
+                EnumVirtualKeyCode.VK_A => A_KeyDown(),
+                EnumVirtualKeyCode.VK_B => B_KeyDown(),
+                EnumVirtualKeyCode.VK_C => C_KeyDown(),
+                EnumVirtualKeyCode.VK_D => D_KeyDown(),
+                EnumVirtualKeyCode.VK_E => E_KeyDown(),
+                EnumVirtualKeyCode.VK_F => F_KeyDown(),
+                EnumVirtualKeyCode.VK_G => G_KeyDown(),
+                EnumVirtualKeyCode.VK_H => H_KeyDown(),
+                EnumVirtualKeyCode.VK_I => I_KeyDown(),
+                EnumVirtualKeyCode.VK_J => J_KeyDown(),
+                EnumVirtualKeyCode.VK_K => K_KeyDown(),
+                EnumVirtualKeyCode.VK_L => L_KeyDown(),
+                EnumVirtualKeyCode.VK_M => M_KeyDown(),
+                EnumVirtualKeyCode.VK_N => N_KeyDown(),
+                EnumVirtualKeyCode.VK_O => O_KeyDown(),
+                EnumVirtualKeyCode.VK_P => P_KeyDown(),
+                EnumVirtualKeyCode.VK_Q => Q_KeyDown(),
+                EnumVirtualKeyCode.VK_R => R_KeyDown(),
+                EnumVirtualKeyCode.VK_S => S_KeyDown(),
+                EnumVirtualKeyCode.VK_T => T_KeyDown(),
+                EnumVirtualKeyCode.VK_U => U_KeyDown(),
+                EnumVirtualKeyCode.VK_V => V_KeyDown(),
+                EnumVirtualKeyCode.VK_W => W_KeyDown(),
+                EnumVirtualKeyCode.VK_X => X_KeyDown(),
+                EnumVirtualKeyCode.VK_Y => Y_KeyDown(),
+                EnumVirtualKeyCode.VK_Z => Z_KeyDown(),
+                EnumVirtualKeyCode.VK_ESCAPE => Escape_KeyDown(),
+                EnumVirtualKeyCode.VK_TAB => Tab_KeyDown(),
+                EnumVirtualKeyCode.VK_CAPITAL => CapsLock_KeyDown(),
+                EnumVirtualKeyCode.VK_SHIFT => Shift_KeyDown(),
+                EnumVirtualKeyCode.VK_CONTROL => Control_KeyDown(),
+                EnumVirtualKeyCode.VK_MENU => Alt_KeyDown(),
+                EnumVirtualKeyCode.VK_SPACE => Space_KeyDown(),
+                EnumVirtualKeyCode.VK_RETURN => Enter_KeyDown(),
+                EnumVirtualKeyCode.VK_BACK => Backspace_KeyDown(),
+
+                EnumVirtualKeyCode.VK_HOME => Home_KeyDown(),
+                EnumVirtualKeyCode.VK_END => End_KeyDown(),
+                EnumVirtualKeyCode.VK_PRIOR => PageUp_KeyDown(),
+                EnumVirtualKeyCode.VK_NEXT => PageDown_KeyDown(),
+                EnumVirtualKeyCode.VK_SNAPSHOT => PrintScreen_KeyDown(),
+                EnumVirtualKeyCode.VK_PAUSE => Pause_KeyDown(),
                 _ => ValueTask.CompletedTask
-            }; ;
+
+            };
         }
 
-        protected virtual ValueTask Q_KeyDown()
-        {
-            return ValueTask.CompletedTask;
-        }
+       
 
-        protected virtual ValueTask F1_KeyDown()
-        {
-            return ValueTask.CompletedTask;
-        }
+        protected virtual ValueTask F1_KeyDown() => ValueTask.CompletedTask;
         protected virtual ValueTask F2_KeyDown()
         {
             return ValueTask.CompletedTask;
@@ -335,6 +372,209 @@ namespace Maple.MonoGameAssistant.GameContext
         {
             return ValueTask.CompletedTask;
         }
+
+        protected virtual ValueTask A_KeyDown()
+        {
+            return ValueTask.CompletedTask;
+        }
+
+        protected virtual ValueTask B_KeyDown()
+        {
+            return ValueTask.CompletedTask;
+        }
+
+        protected virtual ValueTask C_KeyDown()
+        {
+            return ValueTask.CompletedTask;
+        }
+
+        protected virtual ValueTask D_KeyDown()
+        {
+            return ValueTask.CompletedTask;
+        }
+
+        protected virtual ValueTask E_KeyDown()
+        {
+            return ValueTask.CompletedTask;
+        }
+
+        protected virtual ValueTask F_KeyDown()
+        {
+            return ValueTask.CompletedTask;
+        }
+
+        protected virtual ValueTask G_KeyDown()
+        {
+            return ValueTask.CompletedTask;
+        }
+
+        protected virtual ValueTask H_KeyDown()
+        {
+            return ValueTask.CompletedTask;
+        }
+
+        protected virtual ValueTask I_KeyDown()
+        {
+            return ValueTask.CompletedTask;
+        }
+
+        protected virtual ValueTask J_KeyDown()
+        {
+            return ValueTask.CompletedTask;
+        }
+
+        protected virtual ValueTask K_KeyDown()
+        {
+            return ValueTask.CompletedTask;
+        }
+
+        protected virtual ValueTask L_KeyDown()
+        {
+            return ValueTask.CompletedTask;
+        }
+
+        protected virtual ValueTask M_KeyDown()
+        {
+            return ValueTask.CompletedTask;
+        }
+
+        protected virtual ValueTask N_KeyDown()
+        {
+            return ValueTask.CompletedTask;
+        }
+
+        protected virtual ValueTask O_KeyDown()
+        {
+            return ValueTask.CompletedTask;
+        }
+
+        protected virtual ValueTask P_KeyDown()
+        {
+            return ValueTask.CompletedTask;
+        }
+
+        protected virtual ValueTask Q_KeyDown() => ValueTask.CompletedTask;
+
+        protected virtual ValueTask R_KeyDown()
+        {
+            return ValueTask.CompletedTask;
+        }
+
+        protected virtual ValueTask S_KeyDown()
+        {
+            return ValueTask.CompletedTask;
+        }
+
+        protected virtual ValueTask T_KeyDown()
+        {
+            return ValueTask.CompletedTask;
+        }
+
+        protected virtual ValueTask U_KeyDown()
+        {
+            return ValueTask.CompletedTask;
+        }
+
+        protected virtual ValueTask V_KeyDown()
+        {
+            return ValueTask.CompletedTask;
+        }
+
+        protected virtual ValueTask W_KeyDown()
+        {
+            return ValueTask.CompletedTask;
+        }
+
+        protected virtual ValueTask X_KeyDown()
+        {
+            return ValueTask.CompletedTask;
+        }
+
+        protected virtual ValueTask Y_KeyDown()
+        {
+            return ValueTask.CompletedTask;
+        }
+
+        protected virtual ValueTask Z_KeyDown()
+        {
+            return ValueTask.CompletedTask;
+        }
+
+        protected virtual ValueTask Escape_KeyDown()
+        {
+            return ValueTask.CompletedTask;
+        }
+
+        protected virtual ValueTask Tab_KeyDown()
+        {
+            return ValueTask.CompletedTask;
+        }
+
+        protected virtual ValueTask CapsLock_KeyDown()
+        {
+            return ValueTask.CompletedTask;
+        }
+
+        protected virtual ValueTask Shift_KeyDown()
+        {
+            return ValueTask.CompletedTask;
+        }
+
+        protected virtual ValueTask Control_KeyDown()
+        {
+            return ValueTask.CompletedTask;
+        }
+
+        protected virtual ValueTask Alt_KeyDown()
+        {
+            return ValueTask.CompletedTask;
+        }
+
+        protected virtual ValueTask Space_KeyDown()
+        {
+            return ValueTask.CompletedTask;
+        }
+
+        protected virtual ValueTask Enter_KeyDown()
+        {
+            return ValueTask.CompletedTask;
+        }
+
+        protected virtual ValueTask Backspace_KeyDown()
+        {
+            return ValueTask.CompletedTask;
+        }
+
+        protected virtual ValueTask Home_KeyDown()
+        {
+            return ValueTask.CompletedTask;
+        }
+
+        protected virtual ValueTask End_KeyDown()
+        {
+            return ValueTask.CompletedTask;
+        }
+
+        protected virtual ValueTask PageUp_KeyDown()
+        {
+            return ValueTask.CompletedTask;
+        }
+
+        protected virtual ValueTask PageDown_KeyDown()
+        {
+            return ValueTask.CompletedTask;
+        }
+
+        protected virtual ValueTask PrintScreen_KeyDown()
+        {
+            return ValueTask.CompletedTask;
+        }
+
+        protected virtual ValueTask Pause_KeyDown()
+        {
+            return ValueTask.CompletedTask;
+        }
+
         #endregion
 
         #region WebApi
@@ -426,7 +666,7 @@ namespace Maple.MonoGameAssistant.GameContext
             }
         }
 
-       
+
 
         #endregion
     }
