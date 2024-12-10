@@ -4,6 +4,7 @@
 - https://github.com/blackmaple/Maple.Ghostmon
 - https://github.com/blackmaple/Maple.Bloomtown
 - https://github.com/blackmaple/Maple.TstdGame
+- https://github.com/blackmaple/Maple.Nexomon.Android
 
 ##      win x86:
 - https://github.com/blackmaple/Maple.CatQuest3
