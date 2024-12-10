@@ -1,3 +1,6 @@
+#  NuGet
+[NuGet](https://www.nuget.org/profiles/BlackMaple)
+
 #      Cheat Demo:
 ##      win x64:
 - https://github.com/blackmaple/Maple.AzureValley
