@@ -219,7 +219,7 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
             return runtimeContext.RuntimeType switch
             {
                 EnumMonoRuntimeType.MONO => new UnityEngineContext_MONO(runtimeContext, logger),
-                EnumMonoRuntimeType.IL2CPP => new UnityEngineContext_MONO(runtimeContext, logger),
+                EnumMonoRuntimeType.IL2CPP => new UnityEngineContext_IL2CPP(runtimeContext, logger),
                 _ => default
             };
         }
