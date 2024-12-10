@@ -19,33 +19,30 @@
     <Project Path="Maple.MonoGameAssistant.UnityCore\Maple.MonoGameAssistant.UnityCore.csproj" />
   </Folder>
   <Folder Name="/UI/" />
-  <Folder Name="/UI/GameUI/">
+  <Folder Name="/UI/GameUI/" Id="a96f4bca-44b6-af59-16cb-22c3559b8e69">
     <Project Path="Maple.MonoGameAssistant.GameCore\Maple.MonoGameAssistant.GameCore.csproj" />
     <Project Path="Maple.MonoGameAssistant.GameDTO\Maple.MonoGameAssistant.GameDTO.csproj" />
     <Project Path="Maple.MonoGameAssistant.GameShared\Maple.MonoGameAssistant.GameShared.csproj" />
     <Project Path="Maple.MonoGameAssistant.GameSSR\Maple.MonoGameAssistant.GameSSR.csproj" />
     <Project Path="Maple.MonoGameAssistant.GameWASM\Maple.MonoGameAssistant.GameWASM.csproj" />
   </Folder>
-  <Folder Name="/UI/GameWebAPI/">
+  <Folder Name="/UI/GameWebAPI/" Id="8550ca64-01d8-75ff-3a89-151525c7b3e4">
     <Project Path="Maple.MonoGameAssistant.WebApi\Maple.MonoGameAssistant.WebApi.csproj" />
   </Folder>
-  <Folder Name="/UI/MonoDataUI/">
-    <Project Path="Maple.MonoGameAssistant.MonoDataCollector\Maple.MonoGameAssistant.MonoDataCollector.csproj" Type="C#">
+  <Folder Name="/UI/MonoDataUI/" Id="004cdedf-2c4c-b74f-6dd6-79585b490eb5">
+    <Project Path="Maple.MonoGameAssistant.MonoDataCollector\Maple.MonoGameAssistant.MonoDataCollector.csproj">
       <BuildDependency Project="Maple.MonoGameAssistant.DllProxyStaticLib\Maple.MonoGameAssistant.DllProxyStaticLib.vcxproj" />
     </Project>
     <Project Path="Maple.MonoGameAssistant.UILogic\Maple.MonoGameAssistant.UILogic.csproj" />
     <Project Path="Maple.MonoGameAssistant.WinForm\Maple.MonoGameAssistant.WinForm.csproj" />
   </Folder>
   <Folder Name="/Windows/">
-    <Project Path="Maple.MonoGameAssistant.DllProxyStaticLib\Maple.MonoGameAssistant.DllProxyStaticLib.vcxproj" />
-    <Project Path="Maple.MonoGameAssistant.GameContext\Maple.MonoGameAssistant.GameContext.csproj" Type="C#" />
-    <Project Path="Maple.MonoGameAssistant.HookTask\Maple.MonoGameAssistant.HookTask.csproj" Type="C#" />
-    <Project Path="Maple.MonoGameAssistant.HotKey.Abstractions\Maple.MonoGameAssistant.HotKey.Abstractions.csproj" Type="C#" />
+    <Project Path="Maple.MonoGameAssistant.DllProxyStaticLib\Maple.MonoGameAssistant.DllProxyStaticLib.vcxproj" Id="387edf65-9b50-4d1d-832d-777411a112b1" />
+    <Project Path="Maple.MonoGameAssistant.GameContext\Maple.MonoGameAssistant.GameContext.csproj" />
+    <Project Path="Maple.MonoGameAssistant.HookTask\Maple.MonoGameAssistant.HookTask.csproj" />
+    <Project Path="Maple.MonoGameAssistant.HotKey.Abstractions\Maple.MonoGameAssistant.HotKey.Abstractions.csproj" />
     <Project Path="Maple.MonoGameAssistant.HotKey\Maple.MonoGameAssistant.HotKey.csproj" />
-    <Project Path="Maple.MonoGameAssistant.UITask\Maple.MonoGameAssistant.UITask.csproj" Type="C#" />
-    <Project Path="Maple.MonoGameAssistant.WinApi\Maple.MonoGameAssistant.WinApi.csproj" Type="C#" />
+    <Project Path="Maple.MonoGameAssistant.UITask\Maple.MonoGameAssistant.UITask.csproj" />
+    <Project Path="Maple.MonoGameAssistant.WinApi\Maple.MonoGameAssistant.WinApi.csproj" />
   </Folder>
-  <Properties Name="Visual Studio">
-    <Property Name="OpenWith" Value="Visual Studio Version 17" />
-  </Properties>
 </Solution>
