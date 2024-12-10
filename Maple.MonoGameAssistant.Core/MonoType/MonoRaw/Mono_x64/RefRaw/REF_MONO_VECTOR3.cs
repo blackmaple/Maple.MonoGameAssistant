@@ -1,9 +1,7 @@
-﻿using System;
-using System.Numerics;
-using System.Runtime.CompilerServices;
+﻿using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-namespace Maple.MonoGameAssistant.RawDotNet
+namespace Maple.MonoGameAssistant.Core
 {
     [StructLayout(LayoutKind.Sequential)]
     public struct REF_MONO_VECTOR3(float x, float y, float z)

@@ -15,7 +15,7 @@
 		<Description>Maple.MonoGameAssistant.MonoCollector</Description>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<PackageTags>mono;unity;game;maple</PackageTags>
-		<Version>1.0.0-rc</Version>
+		<Version>1.0.90-rc</Version>
 	</PropertyGroup>
 
 	<ItemGroup>

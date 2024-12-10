@@ -1,8 +1,13 @@
 ﻿using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.ObjectPool;
+using Microsoft.Win32.SafeHandles;
+using System.Collections.Concurrent;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
+using System.Reflection.Metadata;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Threading.Channels;
 
 namespace Maple.MonoGameAssistant.Logger
 {
@@ -10,86 +15,33 @@ namespace Maple.MonoGameAssistant.Logger
     /// <summary>
     /// 简单的一个日志
     /// </summary>
-    public sealed class MonoGameLogger : ILogger
+    public sealed class MonoGameLogger(string category, MonoGameLoggerChannel loggerChannel) : MonoDefaultLogger(category), ILogger
     {
-        public static ILogger Default { get; } = MonoGameLoggerExtensions.DefaultProvider.CreateLogger(typeof(MonoGameLogger).FullName ?? nameof(MonoGameLogger));
+        MonoGameLoggerChannel LoggerChannel { get; } = loggerChannel;
 
-        #region Imp
-        string Category { get; }
-        string FilePath { get; }
-
-        public MonoGameLogger(string category = nameof(MonoGameLogger))
+        public sealed override void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception? exception, Func<TState, Exception?, string> formatter)
         {
-            Category = category;
-
-            var path = AppContext.BaseDirectory;
-            path = Path.Combine(path, nameof(MonoGameLogger));
-            if (Directory.Exists(path) == false)
+            //我无法理解 在安卓系统执行这个方法 有操作集合容器添加数据行为 会引发应用崩溃  T_T
+            if (MonoGameLoggerExtensions.IsAndroidPlatform)
             {
-                Directory.CreateDirectory(path);
+                base.Log(logLevel, eventId, state, exception, formatter);
             }
-            FilePath = path;
+            else
+            {
+                this.LoggerChannel.TryWrite(new MonoLogData()
+                {
+                    Category = this.Category,
+                    FilePath = this.FilePath,
+                    LogLevel = logLevel,
+                    Content = formatter(state, exception),
+                    ThreadId = Environment.CurrentManagedThreadId
+                });
+            }
 
         }
 
-        /// <summary>
-        /// lock write log msg
-        /// </summary>
-        /// <param name="message"></param>
-        [MethodImpl(MethodImplOptions.Synchronized)]
-        public void LogImp(string message)
-        {
 
-
-            var file = Path.Combine(FilePath, $"{DateTime.Now:yyyyMMdd_HH}_{Category}.log");
-            using var stream = File.AppendText(file);
-            stream.WriteLine(message);
-        }
-        [MethodImpl(MethodImplOptions.Synchronized)]
-        public void LogImp(StringBuilder sb)
-        {
-            var file = Path.Combine(FilePath, $"{DateTime.Now:yyyyMMdd_HH}_{Category}.log");
-            using var stream = File.AppendText(file);
-            foreach (var str in sb.GetChunks())
-            {
-                stream.Write(str.Span);
-            }
-            stream.WriteLine();
-        }
-
-
-        #endregion
-
-        #region ILogger
-
-        readonly struct Disposable : IDisposable
-        {
-            public readonly void Dispose()
-            {
-
-            }
-        }
-        public IDisposable? BeginScope<TState>(TState state) where TState : notnull => new Disposable();
-        public bool IsEnabled(LogLevel logLevel) => true;
-
-        public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception? exception, Func<TState, Exception?, string> formatter)
-        {
-            StringBuilder sb = MonoGameLoggerProvider.StringBuilderPool.Get();
-            try
-            {
-                sb.Append($"{DateTime.Now:yyyy-MM-dd HH:mm:ss.ffff}-");
-                sb.Append($"[{Environment.CurrentManagedThreadId:x4}]-");
-                sb.Append($"[{logLevel}]-");
-                sb.Append($"[{Category}]-");
-                sb.Append($"{formatter(state, exception)}");
-                this.LogImp(sb);
-            }
-            finally
-            {
-                MonoGameLoggerProvider.StringBuilderPool.Return(sb);
-            }
-        }
-        #endregion
 
     }
+
 }

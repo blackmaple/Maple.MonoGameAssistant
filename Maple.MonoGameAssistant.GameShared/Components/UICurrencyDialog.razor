@@ -26,8 +26,8 @@
         <MCardSubtitle>@CurrencyDisplay.DisplayDesc</MCardSubtitle>
 
         <MCardActions>
-            <MTextField OnAppendClick="@OnUpdateCurrency"
-                        AppendIcon="mdi-pencil-outline"
+            <MTextField OnAppendOuterClick="@OnUpdateCurrency"
+                        AppendOuterIcon="mdi-pencil-outline"
                         Type="number"
                         TValue="decimal"
                         Loading="@CurrencyInfo.Loading"

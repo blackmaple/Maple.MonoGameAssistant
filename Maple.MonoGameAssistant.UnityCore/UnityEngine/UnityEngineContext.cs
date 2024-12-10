@@ -304,37 +304,26 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
 
     }
 
-    public partial class UnityEngineContext_MONO(MonoRuntimeContext runtimeContext, ILogger logger) : UnityEngineContext(runtimeContext, logger)
+    public sealed partial class UnityEngineContext_MONO(MonoRuntimeContext runtimeContext, ILogger logger) : UnityEngineContext(runtimeContext, logger)
     {
-       protected nint UnityPlayer { get; } = MonoCollectorMember.GetModuleBaseAddress("UnityPlayer.dll");
-        public int Func_ENCODE_TO_PNG { set; get; }
-        public int Func_BLIT2 { set; get; }
-        public int Func_GET_TEXTURE_RECT_INJECTED { set; get; }
-        public int Func_READ_PIXELS_IMPL_INJECTED { set; get; }
+        public static nint UnityPlayer { get; } = MonoCollectorMember.GetModuleBaseAddress("UnityPlayer.dll");
+        public static int Func_ENCODE_TO_PNG { get; set; }
+        public static int Func_BLIT2 { get; set; }
+        public static int Func_GET_TEXTURE_RECT_INJECTED { get; set; }
+        public static int Func_READ_PIXELS_IMPL_INJECTED { get; set; }
 
         protected sealed override bool TryGetCustomMethodPointer(MonoCollecotrClassSettings classSettings, string methodName, out nint address)
         {
-            if (methodName == Sprite.Name_Func_GET_TEXTURE_RECT_INJECTED)
+            var offset = methodName switch
             {
-                address = Func_GET_TEXTURE_RECT_INJECTED + UnityPlayer;
-            }
-            else if (methodName == ImageConversion.Name_Func_ENCODE_TO_PNG)
-            {
-                address = Func_ENCODE_TO_PNG + UnityPlayer;
-            }
-            else if (methodName == Graphics.Name_Func_BLIT2)
-            {
-                address = Func_BLIT2 + UnityPlayer;
-            }
-            else if (methodName == Texture2D.Name_Func_READ_PIXELS_IMPL_INJECTED)
-            {
-                address = Func_READ_PIXELS_IMPL_INJECTED + UnityPlayer;
-            }
-            else
-            {
-                address = nint.Zero;
-            }
-            return address != nint.Zero;
+                Name_Func_GET_TEXTURE_RECT_INJECTED => Func_GET_TEXTURE_RECT_INJECTED,
+                ImageConversion.Name_Func_ENCODE_TO_PNG => Func_ENCODE_TO_PNG,
+                Graphics.Name_Func_BLIT2 => Func_BLIT2,
+                Name_Func_READ_PIXELS_IMPL_INJECTED => Func_READ_PIXELS_IMPL_INJECTED,
+                _ => nint.Zero,
+            };
+            address = offset + UnityPlayer;
+            return offset != nint.Zero;
         }
 
 
@@ -413,26 +402,14 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
 
         protected sealed override bool TryGetCustomMethodPointer(MonoCollecotrClassSettings classSettings, string methodName, out nint address)
         {
-            if (methodName == Sprite.Name_Func_GET_TEXTURE_RECT_INJECTED)
+            address = methodName switch
             {
-                address = this.RuntimeContext.GetInternalCall(UnityEngine_Sprite_GetTextureRect_Injected);
-            }
-            else if (methodName == ImageConversion.Name_Func_ENCODE_TO_PNG)
-            {
-                address = this.RuntimeContext.GetInternalCall(UnityEngine_ImageConversion_EncodeToPNG);
-            }
-            else if (methodName == Graphics.Name_Func_BLIT2)
-            {
-                address = this.RuntimeContext.GetInternalCall(UnityEngine_Graphics_Blit2);
-            }
-            else if (methodName == Texture2D.Name_Func_READ_PIXELS_IMPL_INJECTED)
-            {
-                address = this.RuntimeContext.GetInternalCall(UnityEngine_Texture2D_ReadPixelsImpl_Injected);
-            }
-            else
-            {
-                address = nint.Zero;
-            }
+                Name_Func_GET_TEXTURE_RECT_INJECTED => (nint)RuntimeContext.GetInternalCall(UnityEngine_Sprite_GetTextureRect_Injected),
+                ImageConversion.Name_Func_ENCODE_TO_PNG => (nint)RuntimeContext.GetInternalCall(UnityEngine_ImageConversion_EncodeToPNG),
+                Graphics.Name_Func_BLIT2 => (nint)RuntimeContext.GetInternalCall(UnityEngine_Graphics_Blit2),
+                Name_Func_READ_PIXELS_IMPL_INJECTED => (nint)RuntimeContext.GetInternalCall(UnityEngine_Texture2D_ReadPixelsImpl_Injected),
+                _ => nint.Zero,
+            };
             return address != nint.Zero;
         }
     }

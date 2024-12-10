@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Maple.MonoGameAssistant.Common;
+using Microsoft.Extensions.Logging;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -6,10 +7,10 @@ using System.Runtime.InteropServices;
 namespace Maple.MonoGameAssistant.Core
 {
 
-    internal partial class MonoRuntimeApi(ILogger logger)
+    internal partial class MonoRuntimeApi(ILogger logger, MonoRuntimeModuleView runtimeModuleView)
     {
         ILogger Logger { get; } = logger;
-
+        MonoRuntimeModuleView MonoRuntimeModuleView { get; } = runtimeModuleView;
         #region MonoEnvironment
         public EnumMonoRuntimeType RuntimeType { get; private set; } = EnumMonoRuntimeType.UNKNOWN;
 
@@ -18,11 +19,11 @@ namespace Maple.MonoGameAssistant.Core
 
 
         #region Init RT
-        static readonly string[] Static_DLL_Files = ["mono-2.0-bdwgc.dll", "GameAssembly.dll"];
-        static IEnumerable<nint> GetCurrentProcessModuleHandles()
+
+        IEnumerable<nint> GetCurrentProcessModuleHandles()
         {
             //加载默认的DLL
-            foreach (var dll in Static_DLL_Files)
+            foreach (var dll in MonoRuntimeModuleView.ModuleViews)
             {
                 if (NativeLibrary.TryLoad(dll, out var hModule))
                 {
@@ -30,12 +31,14 @@ namespace Maple.MonoGameAssistant.Core
                 }
             }
 
-
             //遍历进程内部的所有模块句柄
             using var process = Process.GetCurrentProcess();
             foreach (ProcessModule m in process.Modules)
             {
-                yield return m.BaseAddress;
+                using (m)
+                {
+                    yield return m.BaseAddress;
+                }
             }
 
         }
@@ -46,6 +49,7 @@ namespace Maple.MonoGameAssistant.Core
             var runtimeType = EnumMonoRuntimeType.ERROR;
             foreach (var hModule in GetCurrentProcessModuleHandles())
             {
+
                 if (TryCreate(hModule, PMONO_THREAD_ATTACH.mono, out PMONO_THREAD_ATTACH func))
                 {
                     this.MONO_THREAD_ATTACH = func;

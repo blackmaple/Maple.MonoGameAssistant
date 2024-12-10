@@ -123,14 +123,14 @@ namespace Maple.MonoGameAssistant.WebApi
 
         }
 
-        public static MonoResultDTO<T_DTO> GetOk<T_DTO>(this T_DTO dto)
-            where T_DTO : notnull
-        {
-            return new MonoResultDTO<T_DTO>()
-            {
-                CODE = (int)EnumMonoCommonCode.OK,
-                DATA = dto
-            };
-        }
+        //public static MonoResultDTO<T_DTO> GetOk<T_DTO>(this T_DTO dto)
+        //    where T_DTO : notnull
+        //{
+        //    return new MonoResultDTO<T_DTO>()
+        //    {
+        //        CODE = (int)EnumMonoCommonCode.OK,
+        //        DATA = dto
+        //    };
+        //}
     }
 }

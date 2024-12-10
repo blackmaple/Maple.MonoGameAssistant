@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 namespace Maple.MonoGameAssistant.Common
@@ -11,6 +12,7 @@ namespace Maple.MonoGameAssistant.Common
         public static bool TryGet<T>(nint ptr, [MaybeNullWhen(false)] out T obj)
             where T : class
         {
+            Unsafe.SkipInit(out obj);
             if (ptr != nint.Zero)
             {
                 var handle = GCHandle.FromIntPtr(ptr);
@@ -20,8 +22,6 @@ namespace Maple.MonoGameAssistant.Common
                     return true;
                 }
             }
-
-            obj = default;
             return false;
         }
 

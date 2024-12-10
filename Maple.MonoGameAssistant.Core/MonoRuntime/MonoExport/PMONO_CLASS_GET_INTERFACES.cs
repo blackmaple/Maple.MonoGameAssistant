@@ -15,8 +15,14 @@ namespace Maple.MonoGameAssistant.Core
         public const string mono = "mono_class_get_interfaces";
         //nint MONO_CLASS_GET_INTERFACES (void *klass, void *iter)
         //typedef void* (__cdecl *MONO_CLASS_GET_INTERFACES)(void *klass, void *iter);
-        readonly delegate* unmanaged[Cdecl, SuppressGCTransition]<PMonoClass, ref PMonoIterator, PMonoInterface> _func = (delegate* unmanaged[Cdecl, SuppressGCTransition]<PMonoClass, ref PMonoIterator, PMonoInterface>)ptr;
-        public readonly unsafe PMonoInterface Invoke(PMonoClass pMonoClass, ref PMonoIterator iter) => _func(pMonoClass, ref iter);
+         readonly delegate* unmanaged[Cdecl, SuppressGCTransition]<PMonoClass, MapleRef<PMonoIterator>, PMonoInterface> _func
+             = (delegate* unmanaged[Cdecl, SuppressGCTransition]<PMonoClass, MapleRef<PMonoIterator>, PMonoInterface>)ptr;
+
+
+        public readonly unsafe PMonoInterface Invoke(PMonoClass pMonoClass, ref PMonoIterator iter)
+        {
+            return _func(pMonoClass, MapleRef<PMonoIterator>.FromRef(ref iter));
+        }
 
 
     }

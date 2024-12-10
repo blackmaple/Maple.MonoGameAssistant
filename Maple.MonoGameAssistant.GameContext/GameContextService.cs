@@ -55,13 +55,13 @@ namespace Maple.MonoGameAssistant.GameContext
             {
                 try
                 {
-                    this.LoadGameService();
+                    await this.LoadGameServiceAsync().ConfigureAwait(false);
 
                     this.HookWindowMessage();
 
-                    this.LoadListGameSwitch();
-
                     await this.LoadGameDataAsync().ConfigureAwait(false);
+
+                    this.LoadListGameSwitch();
 
                     this.TryAutoOpenUrl();
                 }
@@ -80,23 +80,34 @@ namespace Maple.MonoGameAssistant.GameContext
 
         #region Init Service
 
-        private void LoadGameService()
+        private async ValueTask LoadGameServiceAsync()
         {
             using (this.Logger.Running())
             {
-                using (this.RuntimeContext.CreateAttachContext())
-                {
-                    this.Context = this.LoadGameContext();
-                    this.Logger.LogInformation("LoadGameContext=>{ver}=>{api}", this.Context.TypeVersion, this.Context.ApiVersion);
-                    this.UnityEngineContext = this.TryLoadUnityEngineContext();
-                    this.Logger.LogInformation("LoadUnityEngineContext=>{load}=>{ver}=>{api}",
-                        this.UnityEngineContext is not null,
-                        this.UnityEngineContext?.TypeVersion,
-                        this.UnityEngineContext?.ApiVersion);
+                this.Context = await this.MonoTaskAsync((p, host) => host.LoadGameContext(), this).ConfigureAwait(false);
+                this.Logger.LogInformation("LoadGameContext=>{ver}=>{api}", this.Context.TypeVersion, this.Context.ApiVersion);
+                this.UnityEngineContext = await this.MonoTaskAsync((p, host) => host.TryLoadUnityEngineContext(), this).ConfigureAwait(false);
+                this.Logger.LogInformation("LoadUnityEngineContext=>{load}=>{ver}=>{api}",
+                    this.UnityEngineContext is not null,
+                    this.UnityEngineContext?.TypeVersion,
+                    this.UnityEngineContext?.ApiVersion);
+                //using (this.RuntimeContext.CreateAttachContext())
+                //{
+                //    this.Logger.Info("CreateAttachContext");
+                //    var data= this.RuntimeContext.EnumMonoImages().ToArray();
+                //    this.Logger.LogInformation("LoadGameContext=>{count}", data.Length);
 
-                }
+                //    this.Context = this.LoadGameContext();
+                //    this.Logger.LogInformation("LoadGameContext=>{ver}=>{api}", this.Context.TypeVersion, this.Context.ApiVersion);
+                //    this.UnityEngineContext = this.TryLoadUnityEngineContext();
+                //    this.Logger.LogInformation("LoadUnityEngineContext=>{load}=>{ver}=>{api}",
+                //        this.UnityEngineContext is not null,
+                //        this.UnityEngineContext?.TypeVersion,
+                //        this.UnityEngineContext?.ApiVersion);
+
+                //}
             }
-
+            //   return ValueTask.CompletedTask;
         }
         protected abstract T_CONTEXT LoadGameContext();
         protected virtual UnityEngineContext? LoadUnityEngineContext() => UnityEngineContext.LoadUnityContext(this.RuntimeContext, this.Logger);

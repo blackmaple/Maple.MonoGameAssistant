@@ -15,7 +15,7 @@
 		<Description>Maple.MonoGameAssistant.Logger</Description>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<PackageTags>mono;unity;game;maple</PackageTags>
-		<Version>1.0.0-rc</Version>
+		<Version>1.0.931-rc</Version>
 
 	</PropertyGroup>
 
@@ -30,7 +30,8 @@
 		</None>
 	</ItemGroup>
 	<ItemGroup>
-		<PackageReference Include="Microsoft.Extensions.Logging" Version="9.0.0-rc.1.24431.7" />
-		<PackageReference Include="Microsoft.Extensions.ObjectPool" Version="9.0.0-rc.1.24452.1" />
+		<PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="9.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Logging" Version="9.0.0" />
+		<PackageReference Include="Microsoft.Extensions.ObjectPool" Version="9.0.0" />
 	</ItemGroup>
 </Project>
