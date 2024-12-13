@@ -3,18 +3,19 @@
 ##  NuGet
 [NuGet](https://www.nuget.org/profiles/BlackMaple)
 
-##      Cheat Demo:
+##  Cheat Demo:
 ###      win x64:
 - https://github.com/blackmaple/Maple.AzureValley
 - https://github.com/blackmaple/Maple.Ghostmon
 - https://github.com/blackmaple/Maple.Bloomtown
 - https://github.com/blackmaple/Maple.TstdGame
+- https://github.com/blackmaple/Maple.Nexomon
 
 ###      win x86:
 - https://github.com/blackmaple/Maple.CatQuest3
 
 ###      android arm64:
-- https://github.com/blackmaple/Maple.Nexomon.Android
+- https://github.com/blackmaple/Maple.Nexomon
 - https://github.com/blackmaple/Maple.TstdGame
 
 ###      android mod ui:
