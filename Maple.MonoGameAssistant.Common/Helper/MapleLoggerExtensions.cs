@@ -22,12 +22,9 @@ namespace Maple.MonoGameAssistant.Common
         }
 
 
-        public static void DebugLine(this ILogger logger,
-            [CallerFilePath] string file = nameof(MapleStopwatchLogger),
-            [CallerMemberName] string msg = nameof(MapleStopwatchLogger),
-            [CallerLineNumber] int line = 0)
-        { 
-        
+        public static void DebugLine(this ILogger logger,[CallerMemberName] string msg = nameof(MapleStopwatchLogger),[CallerLineNumber] int line = 0)
+        {
+            logger.LogError("{msg}:{line}", msg, line.ToString());
         }
     }
 }
