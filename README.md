@@ -1,4 +1,4 @@
-#  enable interoperability between C# managed code and unity game.
+#  enable interoperability between C# AOT and unity game.
 
 ##  NuGet
 [NuGet](https://www.nuget.org/profiles/BlackMaple)
