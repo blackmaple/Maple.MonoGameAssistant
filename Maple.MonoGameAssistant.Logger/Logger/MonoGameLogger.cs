@@ -21,9 +21,13 @@ namespace Maple.MonoGameAssistant.Logger
 
         public sealed override void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception? exception, Func<TState, Exception?, string> formatter)
         {
-            //我无法理解 在安卓系统执行这个方法 有操作集合容器添加数据行为 会引发应用崩溃  T_T
-            if (MonoGameLoggerExtensions.IsAndroidPlatform)
+            if (logLevel == LogLevel.Error)
             {
+                base.Log(logLevel, eventId, state, exception, formatter);
+            }
+            else if (MonoGameLoggerExtensions.IsAndroidPlatform )
+            {
+                //我无法理解 在安卓系统执行这个方法 有操作集合容器添加数据行为 会引发应用崩溃  T_T
                 base.Log(logLevel, eventId, state, exception, formatter);
             }
             else

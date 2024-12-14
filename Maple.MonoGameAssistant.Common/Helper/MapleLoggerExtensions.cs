@@ -20,5 +20,14 @@ namespace Maple.MonoGameAssistant.Common
         {
             return new MapleStopwatchLogger(logger, msg);
         }
+
+
+        public static void DebugLine(this ILogger logger,
+            [CallerFilePath] string file = nameof(MapleStopwatchLogger),
+            [CallerMemberName] string msg = nameof(MapleStopwatchLogger),
+            [CallerLineNumber] int line = 0)
+        { 
+        
+        }
     }
 }
