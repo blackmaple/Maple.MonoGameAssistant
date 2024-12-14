@@ -219,7 +219,7 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
             return runtimeContext.RuntimeType switch
             {
                 EnumMonoRuntimeType.MONO => new UnityEngineContext_MONO(runtimeContext, logger),
-                EnumMonoRuntimeType.IL2CPP => new UnityEngineContext_MONO(runtimeContext, logger),
+                EnumMonoRuntimeType.IL2CPP => new UnityEngineContext_IL2CPP(runtimeContext, logger),
                 _ => default
             };
         }
@@ -306,7 +306,7 @@ namespace Maple.MonoGameAssistant.UnityCore.UnityEngine
 
     public sealed partial class UnityEngineContext_MONO(MonoRuntimeContext runtimeContext, ILogger logger) : UnityEngineContext(runtimeContext, logger)
     {
-        public static nint UnityPlayer { get; } = MonoCollectorMember.GetModuleBaseAddress("UnityPlayer.dll");
+        public static nint UnityPlayer { get; set; } = MonoCollectorMember.GetModuleBaseAddress("UnityPlayer.dll");
         public static int Func_ENCODE_TO_PNG { get; set; }
         public static int Func_BLIT2 { get; set; }
         public static int Func_GET_TEXTURE_RECT_INJECTED { get; set; }
