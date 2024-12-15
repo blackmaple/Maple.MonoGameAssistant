@@ -38,12 +38,7 @@
   </Folder>
   <Folder Name="/Windows/">
     <Project Path="Maple.MonoGameAssistant.DllProxyStaticLib\Maple.MonoGameAssistant.DllProxyStaticLib.vcxproj" Id="387edf65-9b50-4d1d-832d-777411a112b1" />
-    <Project Path="Maple.MonoGameAssistant.GameContext\Maple.MonoGameAssistant.GameContext.csproj" />
-    <Project Path="Maple.MonoGameAssistant.HookTask\Maple.MonoGameAssistant.HookTask.csproj" />
-    <Project Path="Maple.MonoGameAssistant.HotKey.Abstractions\Maple.MonoGameAssistant.HotKey.Abstractions.csproj" />
-    <Project Path="Maple.MonoGameAssistant.HotKey\Maple.MonoGameAssistant.HotKey.csproj" />
-    <Project Path="Maple.MonoGameAssistant.UITask\Maple.MonoGameAssistant.UITask.csproj" />
-    <Project Path="Maple.MonoGameAssistant.WinApi\Maple.MonoGameAssistant.WinApi.csproj" />
+    <Project Path="Maple.MonoGameAssistant.Windows/Maple.MonoGameAssistant.Windows.csproj" Id="fd613371-c9a0-4891-af8c-a3b049b45495" />
   </Folder>
   <Folder Name="/Android/">
     <Project Path="Maple.MonoGameAssistant.AndroidCore\Maple.MonoGameAssistant.AndroidCore.csproj" />
