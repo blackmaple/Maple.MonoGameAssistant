@@ -12,9 +12,9 @@
 		<RepositoryUrl>https://github.com/blackmaple/Maple.MonoGameAssistant</RepositoryUrl>
 		<PackageLicenseFile>LICENSE</PackageLicenseFile>
 		<PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
-		<Description>Maple.MonoGameAssistant.Model</Description>
+		<Description>enable interoperability between C# AOT and unity game.</Description>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
-		<PackageTags>mono;unity;game;maple</PackageTags>
+		<PackageTags>unity;mono;il2cpp;c#;dotnet;AOT</PackageTags>
 		<Version>1.0.90-rc</Version>
 	</PropertyGroup>
 

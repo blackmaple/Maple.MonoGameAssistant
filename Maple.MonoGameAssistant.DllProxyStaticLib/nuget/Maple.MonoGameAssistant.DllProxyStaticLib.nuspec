@@ -2,17 +2,18 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <metadata>
         <id>Maple.MonoGameAssistant.DllProxyStaticLib</id>
-        <version>1.0.2-rc</version>
+        <version>1.0.3-rc</version>
         <description>enable interoperability between C# AOT and unity game.</description>
         <authors>Maple</authors>
         <projectUrl>https://github.com/blackmaple/Maple.MonoGameAssistant</projectUrl>
-        <tags>mono;unity;game;maple</tags>
+        <tags>native;unity;mono;il2cpp;c#;dotnet;AOT</tags>
         <license type="expression">MIT</license>
 
 
     </metadata>
     <files>
-		<file src=".\x64\**" target="content" />
-		<file src=".\x86\**" target="build" />
+		<file src=".\x64\**" target="x64" />
+		<file src=".\x86\**" target="x86" />
+		<file src=".\Maple.MonoGameAssistant.DllProxyStaticLib.targets" target="Maple.MonoGameAssistant.DllProxyStaticLib.targets" />
     </files>
 </package>
