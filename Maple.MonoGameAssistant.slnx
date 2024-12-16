@@ -26,9 +26,6 @@
     <Project Path="Maple.MonoGameAssistant.GameSSR\Maple.MonoGameAssistant.GameSSR.csproj" />
     <Project Path="Maple.MonoGameAssistant.GameWASM\Maple.MonoGameAssistant.GameWASM.csproj" />
   </Folder>
-  <Folder Name="/UI/GameWebAPI/" Id="8550ca64-01d8-75ff-3a89-151525c7b3e4">
-    <Project Path="Maple.MonoGameAssistant.WebApi\Maple.MonoGameAssistant.WebApi.csproj" />
-  </Folder>
   <Folder Name="/UI/MonoDataUI/" Id="004cdedf-2c4c-b74f-6dd6-79585b490eb5">
     <Project Path="Maple.MonoGameAssistant.MonoDataCollector\Maple.MonoGameAssistant.MonoDataCollector.csproj">
       <BuildDependency Project="Maple.MonoGameAssistant.DllProxyStaticLib\Maple.MonoGameAssistant.DllProxyStaticLib.vcxproj" />
@@ -44,5 +41,8 @@
     <Project Path="Maple.MonoGameAssistant.AndroidCore\Maple.MonoGameAssistant.AndroidCore.csproj" />
     <Project Path="Maple.MonoGameAssistant.AndroidJNI\Maple.MonoGameAssistant.AndroidJNI.csproj" />
     <Project Path="Maple.MonoGameAssistant.AndroidModel\Maple.MonoGameAssistant.AndroidModel.csproj" />
+  </Folder>
+  <Folder Name="/Windows/GameWebAPI/" Id="8550ca64-01d8-75ff-3a89-151525c7b3e4">
+    <Project Path="Maple.MonoGameAssistant.WebApi\Maple.MonoGameAssistant.WebApi.csproj" />
   </Folder>
 </Solution>
