@@ -7,13 +7,16 @@
         <authors>Maple</authors>
         <projectUrl>https://github.com/blackmaple/Maple.MonoGameAssistant</projectUrl>
         <tags>native;unity;mono;il2cpp;c#;dotnet;AOT</tags>
-        <license type="expression">MIT</license>
-
-
+		<license type="file">LICENSE</license>
+		<licenseUrl>https://aka.ms/deprecateLicenseUrl</licenseUrl>
+		<readme>README.md</readme>
     </metadata>
+	
     <files>
-		<file src=".\x64\**" target="x64" />
-		<file src=".\x86\**" target="x86" />
-		<file src=".\Maple.MonoGameAssistant.DllProxyStaticLib.targets" target="Maple.MonoGameAssistant.DllProxyStaticLib.targets" />
+		<file src="LICENSE" target="LICENSE" />
+		<file src="README.md" target="README.md" />
+		<file src=".\x64\**" target="build\x64" />
+		<file src=".\x86\**" target="build\x86" />
+		<file src=".\build\Maple.MonoGameAssistant.DllProxyStaticLib.targets" target="build\Maple.MonoGameAssistant.DllProxyStaticLib.targets" />
     </files>
 </package>
