@@ -13,6 +13,11 @@
     <Project Path="Maple.MonoGameAssistant.MonoCollectorGeneratorV2\Maple.MonoGameAssistant.MonoCollectorGeneratorV2.csproj" />
     <Project Path="Maple.MonoGameAssistant.MonoCollector\Maple.MonoGameAssistant.MonoCollector.csproj" />
   </Folder>
+  <Folder Name="/Metadata/" Id="02ea681e-c7d8-13c7-8484-4ac65e1b71e8">
+    <Project Path="Maple.MonoGameAssistant.MetadataExtensions/Maple.MonoGameAssistant.MetadataExtensions.csproj" Id="235a8142-0fd0-4e63-9c44-dcaff72cbb37" />
+    <Project Path="Maple.MonoGameAssistant.MetadataModel/Maple.MonoGameAssistant.MetadataModel.csproj" Id="27a96b03-42b9-467f-a754-31bdba703474" />
+    <Project Path="Maple.MonoGameAssistant.MetadataSourceGenerator/Maple.MonoGameAssistant.MetadataSourceGenerator.csproj" Id="3db4a89b-5fab-4179-bcc8-d98d25f7b4f7" />
+  </Folder>
   <Folder Name="/MonoCore/">
     <Project Path="Maple.MonoGameAssistant.Core\Maple.MonoGameAssistant.Core.csproj" />
     <Project Path="Maple.MonoGameAssistant.Model\Maple.MonoGameAssistant.Model.csproj" />
