@@ -8,7 +8,7 @@
 		<InvariantGlobalization>true</InvariantGlobalization>
 		<LangVersion>preview</LangVersion>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-		<Title>Maple.MonoGameAssistant.GameContext.Windows</Title>
+		<Title>Maple.MonoGameAssistant.AndroidJNI</Title>
 		<RepositoryUrl>https://github.com/blackmaple/Maple.MonoGameAssistant</RepositoryUrl>
 		<PackageLicenseFile>LICENSE</PackageLicenseFile>
 		<PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
