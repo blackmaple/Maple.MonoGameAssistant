@@ -91,7 +91,7 @@ namespace Maple.MonoGameAssistant.Core
 
         #region MonoType
         PMonoClass GetMonoTypeClass(PMonoType pMonoType);
-        string? GetMonoTypeName(PMonoType pMonoType);
+        PMonoUtf8Char? GetMonoTypeName(PMonoType pMonoType);
         EnumMonoType GetMonoTypeEnum(PMonoType pMonoFieldType);
 
         #endregion

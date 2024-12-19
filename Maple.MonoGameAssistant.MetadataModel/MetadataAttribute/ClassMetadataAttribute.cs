@@ -7,4 +7,10 @@ namespace Maple.MonoGameAssistant.MetadataModel.MetadataAttribute
 
     }
 
+
+
+    public class ContextMetadataAttribute : Attribute
+    {
+
+    }
 }

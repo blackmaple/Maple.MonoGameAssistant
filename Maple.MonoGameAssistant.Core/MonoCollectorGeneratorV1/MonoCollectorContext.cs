@@ -10,28 +10,16 @@ using static Maple.MonoGameAssistant.Core.MonoRuntimeContext;
 namespace Maple.MonoGameAssistant.Core
 {
 
-    public abstract class MonoCollectorContext
+    [method: MonoCollectorFlag(EnumMonoCollectorFlag.ContextCtor)]
+    public abstract class MonoCollectorContext(MonoRuntimeContext runtimeContext, EnumMonoCollectorTypeVersion typeVersion, ILogger logger, string apiVer = "202407222030")
     {
-        public MonoRuntimeContext RuntimeContext { get; }
-        public EnumMonoCollectorTypeVersion TypeVersion { get; }
+        public MonoRuntimeContext RuntimeContext { get; } = runtimeContext;
+        public EnumMonoCollectorTypeVersion TypeVersion { get; } = typeVersion;
 
-        public ILogger Logger { get; }
-        public string ApiVersion { get; }
+        public ILogger Logger { get; } = logger;
+        public string ApiVersion { get; } = apiVer;
 
-        internal MonoImageInfoDTO[] ImageInfoDTOs { get; }
-
-        [method: MonoCollectorFlag(EnumMonoCollectorFlag.ContextCtor)]
-        public MonoCollectorContext(MonoRuntimeContext runtimeContext, EnumMonoCollectorTypeVersion typeVersion, ILogger logger, string apiVer = "202407222030")
-        {
-            this.RuntimeContext = runtimeContext;
-            this.TypeVersion = typeVersion;
-            this.Logger = logger;
-            this.ApiVersion = apiVer;
-            this.ImageInfoDTOs = [.. runtimeContext.EnumMonoImages()];
-        }
-
-
-
+        public MonoImageInfoDTO[] ImageInfoDTOs { get; } = [.. runtimeContext.EnumMonoImages()];
 
         public PMonoString T(string str) => this.RuntimeContext.GetMonoString(str);
         public MonoGCHandle<PMonoString> T2(string str) => this.RuntimeContext.CreateMonoGCHandle(this.RuntimeContext.GetMonoString(str));

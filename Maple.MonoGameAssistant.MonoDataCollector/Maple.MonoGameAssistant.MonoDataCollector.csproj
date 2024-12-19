@@ -9,7 +9,7 @@
 
 		<PublishAot>true</PublishAot>
 		<IsAotCompatible>true</IsAotCompatible>
-		
+
 		<OutputType>Library</OutputType>
 		<AssemblyName>winhttp</AssemblyName>
 
@@ -50,6 +50,7 @@
 		<ProjectReference Include="..\Maple.MonoGameAssistant.MonoCollectorDataV2\Maple.MonoGameAssistant.MonoCollectorDataV2.csproj" />
 		<ProjectReference Include="..\Maple.MonoGameAssistant.MonoCollector\Maple.MonoGameAssistant.MonoCollector.csproj" />
 		<ProjectReference Include="..\Maple.MonoGameAssistant.MonoCollectorGeneratorV2\Maple.MonoGameAssistant.MonoCollectorGeneratorV2.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" PrivateAssets="all" />
+		<ProjectReference Include="..\Maple.MonoGameAssistant.Windows\Maple.MonoGameAssistant.Windows.csproj" />
 	</ItemGroup>
 
 

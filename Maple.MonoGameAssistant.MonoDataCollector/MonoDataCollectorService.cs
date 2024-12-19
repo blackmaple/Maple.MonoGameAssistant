@@ -1,9 +1,9 @@
 ﻿using Maple.MonoGameAssistant.Common;
 using Maple.MonoGameAssistant.Core;
-using Maple.MonoGameAssistant.GameContext;
-using Maple.MonoGameAssistant.HotKey;
 using Maple.MonoGameAssistant.Model;
 using Maple.MonoGameAssistant.MonoCollectorDataV2;
+using Maple.MonoGameAssistant.Windows.HotKey.HookWindowMessage;
+using Maple.MonoGameAssistant.Windows.Service;
 using Microsoft.Extensions.Logging;
 namespace Maple.MonoGameAssistant.MonoDataCollector
 {

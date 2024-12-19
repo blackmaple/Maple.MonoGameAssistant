@@ -528,7 +528,7 @@ namespace Maple.MonoGameAssistant.Core
             }
 
 
-            
+
             T_STRUCT ref_data = this.Runtime.MONO_FIELD_STATIC_GET_VALUE.Invoke2<T_STRUCT>(pMonoVirtualTable, pMonoField);
             return ref_data;
 
@@ -565,10 +565,9 @@ namespace Maple.MonoGameAssistant.Core
         {
             return this.Runtime.MONO_CLASS_FROM_MONO_TYPE.Invoke(pMonoType);
         }
-        public string? GetMonoTypeName(PMonoType pMonoType)
+        public PMonoUtf8Char? GetMonoTypeName(PMonoType pMonoType)
         {
-            var pTypeName = this.Runtime.MONO_TYPE_GET_NAME.Invoke(pMonoType);
-            return pTypeName.ToString();
+            return this.Runtime.MONO_TYPE_GET_NAME.Invoke(pMonoType);
         }
         public EnumMonoType GetMonoTypeEnum(PMonoType pMonoFieldType)
         {

@@ -520,7 +520,7 @@ namespace Maple.MonoGameAssistant.Core
             //  var pMonoType = this.RuntimeService.GetMonoClassType(pMonoClass);
             var typeEnum = this.RuntiemProvider.GetMonoTypeEnum(pMonoType);
             classInfoDTO.TypeEnum = (uint)typeEnum;
-            classInfoDTO.TypeName = this.RuntiemProvider.GetMonoTypeName(pMonoType);
+            classInfoDTO.TypeName = this.RuntiemProvider.GetMonoTypeName(pMonoType).ToString();
 
 
             var classFlags = this.RuntiemProvider.GetMonoClassFlags(pMonoClass);
