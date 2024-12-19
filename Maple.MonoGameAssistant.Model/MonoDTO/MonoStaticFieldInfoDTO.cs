@@ -8,6 +8,4 @@ namespace Maple.MonoGameAssistant.Model
     }
 
 
- 
-
 }
