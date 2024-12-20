@@ -116,7 +116,14 @@ namespace Maple.MonoGameAssistant.Core
             var fileName = this.RuntiemProvider.GetMonoImageFileName(pMonoImage);
             return new MonoImageInfoDTO() { Pointer = pMonoImage, Name = imageName, Utf8Name = utf8ImageName, FileName = fileName };
         }
+        private MonoObjectNameDTO GetMonoImageNameDTO(PMonoImage pMonoImage)
+        {
+            var pUtf8ImageName = this.RuntiemProvider.GetMonoImageName(pMonoImage);
+            //   var imageName = pUtf8ImageName.GetRawString();
+            var utf8ImageName = pUtf8ImageName.ToArray();
 
+            return new MonoObjectNameDTO() { Pointer = pMonoImage,/* Name = imageName,*/ Utf8Name = utf8ImageName, };
+        }
         #endregion
 
         #region IMonoRuntiemProvider->Common
@@ -567,6 +574,7 @@ namespace Maple.MonoGameAssistant.Core
         }
 
         public MonoClassInfoDTO GetMonoClassInfoDTO(PMonoClass pMonoClass) => GetMonoClassInfoDTO(pMonoClass, new MonoClassInfoDTO(), false);
+
         #endregion
 
         #region IMonoRuntiemProvider->MonoType
@@ -627,6 +635,7 @@ namespace Maple.MonoGameAssistant.Core
 
         #region MonoDataCollector
 
+
         public IEnumerable<MonoImageInfoDTO> EnumMonoImages()
         {
 
@@ -638,6 +647,7 @@ namespace Maple.MonoGameAssistant.Core
                 yield return GetMonoImageInfoDTO(pMonoImage);
             }
         }
+
 
         public IEnumerable<MonoClassInfoDTO> EnumMonoClasses(PMonoImage pMonoImage)
         {
@@ -783,7 +793,7 @@ namespace Maple.MonoGameAssistant.Core
         {
             Unsafe.SkipInit(out collectorClassInfo);
             if (this.RuntiemProvider.TryGetMonoClass(imageInfoDTO.Pointer, classSettings.Utf8Namespace, classSettings.Utf8ClassName, out var pMonoClass)
-                || TryFindMonoClass(imageInfoDTO.Pointer, classSettings.Utf8Namespace, classSettings.Utf8ClassName, out pMonoClass))
+                || this.TryGetFirstMonoClass(imageInfoDTO.Pointer, classSettings.Utf8Namespace, classSettings.Utf8ClassName, out pMonoClass))
             {
                 collectorClassInfo = GetMonoCollectorClassInfo(pMonoClass);
                 return true;
@@ -792,26 +802,26 @@ namespace Maple.MonoGameAssistant.Core
             return false;
 
 
-            //参考CE直接遍历
-            bool TryFindMonoClass(PMonoImage pMonoImage, ReadOnlySpan<byte> utf8Namespace, ReadOnlySpan<byte> utf8ClassName, out PMonoClass pMonoClass)
+        }
+
+        //参考CE直接遍历
+        bool TryGetFirstMonoClass(PMonoImage pMonoImage, ReadOnlySpan<byte> utf8Namespace, ReadOnlySpan<byte> utf8ClassName, out PMonoClass pMonoClass)
+        {
+            Unsafe.SkipInit(out pMonoClass);
+            foreach (var ptrClass in this.RuntiemProvider.EnumMonoClasses(pMonoImage))
             {
-                Unsafe.SkipInit(out pMonoClass);
-                foreach (var ptrClass in this.RuntiemProvider.EnumMonoClasses(pMonoImage))
+                var nameSpace = this.RuntiemProvider.GetMonoClassNamespace(ptrClass).AsReadOnlySpan();
+                if (nameSpace.SequenceEqual(utf8Namespace))
                 {
-                    var nameSpace = this.RuntiemProvider.GetMonoClassNamespace(ptrClass).AsReadOnlySpan();
-                    if (nameSpace.SequenceEqual(utf8Namespace))
+                    var className = this.RuntiemProvider.GetMonoClassName(ptrClass).AsReadOnlySpan();
+                    if (className.SequenceEqual(utf8ClassName))
                     {
-                        var className = this.RuntiemProvider.GetMonoClassName(ptrClass).AsReadOnlySpan();
-                        if (className.SequenceEqual(utf8ClassName))
-                        {
-                            pMonoClass = ptrClass;
-                            return true;
-                        }
+                        pMonoClass = ptrClass;
+                        return true;
                     }
                 }
-                return false;
             }
-
+            return false;
         }
 
         public MonoCollectorClassInfo GetMonoCollectorClassInfo(PMonoClass pMonoClass)
@@ -825,9 +835,62 @@ namespace Maple.MonoGameAssistant.Core
         }
         #endregion
 
-        //#region WebApi
-        //public MonoRuntimeWebApiService CreateWebApiService() => new(this);
 
-        //#endregion
+        #region Matedata
+        public IEnumerable<MonoObjectNameDTO> EnumMonoImageNames()
+        {
+            var listAsm = this.RuntiemProvider.EnumMonoAssemblies(this.RootDomain);
+            var listImage = this.RuntiemProvider.EnumMonoImages(listAsm);
+            foreach (var pMonoImage in listImage)
+            {
+                yield return GetMonoImageNameDTO(pMonoImage);
+            }
+        }
+
+        public bool TryGetFirstClassInfo(MonoObjectNameDTO imageNameDTO, MonoSearchClassDTO searchClassDTO, [MaybeNullWhen(false)] out MonoMetadataCollection metadataCollection)
+        {
+            Unsafe.SkipInit(out metadataCollection);
+            if (this.RuntiemProvider.TryGetMonoClass(imageNameDTO.Pointer, searchClassDTO.Utf8Namespace, searchClassDTO.Utf8ClassName, out var pMonoClass)
+                || this.TryGetFirstMonoClass(imageNameDTO.Pointer, searchClassDTO.Utf8FullName, out pMonoClass))
+            {
+                metadataCollection = GetMonoMetadataCollection(pMonoClass);
+                return true;
+            }
+
+            return false;
+
+        }
+
+        public bool TryGetFirstMonoClass(PMonoImage pMonoImage, ReadOnlySpan<byte> fullName, out PMonoClass pMonoClass)
+        {
+            Unsafe.SkipInit(out pMonoClass);
+            foreach (var ptrClass in this.RuntiemProvider.EnumMonoClasses(pMonoImage))
+            {
+                var monoType = this.RuntiemProvider.GetMonoClassType(ptrClass);
+                var typeName = this.RuntiemProvider.GetMonoTypeName(monoType);
+                if (typeName.AsReadOnlySpan().SequenceEqual(fullName))
+                {
+                    pMonoClass = ptrClass;
+                    return true;
+                }
+            }
+            return false;
+        }
+
+
+        public MonoMetadataCollection GetMonoMetadataCollection(PMonoClass pMonoClass)
+        {
+            var classInfoDTO = this.GetMonoClassInfoDTO(pMonoClass);
+
+            var metadataCollection = new MonoMetadataCollection()
+            {
+                ClassInfo = classInfoDTO,
+                MethodInfos = this.EnumMonoMethods(pMonoClass, classInfoDTO.IsValueType).ToArray(),
+                FieldInfos = this.EnumMonoFields(pMonoClass, EnumMonoFieldOptions.None).ToArray(),
+            };
+            return metadataCollection;
+        }
+        #endregion
+
     }
 }

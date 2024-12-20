@@ -565,7 +565,7 @@ namespace Maple.MonoGameAssistant.Core
         {
             return this.Runtime.MONO_CLASS_FROM_MONO_TYPE.Invoke(pMonoType);
         }
-        public PMonoUtf8Char? GetMonoTypeName(PMonoType pMonoType)
+        public PMonoUtf8Char GetMonoTypeName(PMonoType pMonoType)
         {
             return this.Runtime.MONO_TYPE_GET_NAME.Invoke(pMonoType);
         }
